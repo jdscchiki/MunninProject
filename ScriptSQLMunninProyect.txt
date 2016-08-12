@@ -1,0 +1,474 @@
+/*==============================================================*/
+/* DBMS name:      MySQL                                        */
+/* Created on:     11/08/2016 11:00:00                          */
+/*==============================================================*/
+
+/*==============================================================*/
+/* DATABASE name:        MunninProject                          */
+/*==============================================================*/
+
+DROP DATABASE IF EXISTS munninProject;
+CREATE DATABASE munninProject;
+ALTER DATABASE munninProject DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE munninProject;
+
+/*==============================================================*/
+/* Table: ESTADO                                                */
+/*==============================================================*/
+
+CREATE TABLE estado (
+  id_estado INT UNSIGNED NOT NULL,
+  nombre_estado NVARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_estado))
+ENGINE = InnoDB;
+
+
+/*==============================================================*/
+/* Table: TIPO_ARCHIVO                                          */
+/*==============================================================*/
+
+CREATE TABLE tipo_archivo (
+  id_tipo_archivo INT UNSIGNED NOT NULL,
+  extencion_tipo_archivo NVARCHAR(7) NOT NULL,
+  PRIMARY KEY (id_tipo_archivo))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: TIPO_OBJETO_APRENDIZAJE                               */
+/*==============================================================*/
+
+CREATE TABLE tipo_objeto_aprendizaje (
+  id_tipo_objeto_aprendizaje INT UNSIGNED NOT NULL,
+  nombre_tipo_obj_apren NVARCHAR(20) NOT NULL,
+  PRIMARY KEY (id_tipo_objeto_aprendizaje))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: PRODUCTO                                              */
+/*==============================================================*/
+
+CREATE TABLE producto (
+  id_producto INT UNSIGNED NOT NULL,
+  nombre_producto NVARCHAR(100) NOT NULL,
+  descripcion_producto NVARCHAR(255) NOT NULL,
+  palabras_clave_producto NVARCHAR(200) NOT NULL,
+  id_tipo_objeto_aprendizaje_producto INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_producto),
+  FOREIGN KEY (id_tipo_objeto_aprendizaje_producto)
+	REFERENCES tipo_objeto_aprendizaje (id_tipo_objeto_aprendizaje))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: VERSION                                               */
+/*==============================================================*/
+
+CREATE TABLE version (
+  id_version INT UNSIGNED NOT NULL,
+  nombre_version NVARCHAR(100) NOT NULL,
+  url_version NVARCHAR(500) NOT NULL,
+  notificacion_version BOOLEAN NOT NULL,
+  fecha_version DATE NOT NULL,
+  fecha_caducidad_version DATE NOT NULL,
+  id_estado_version INT UNSIGNED NOT NULL,
+  id_tipo_archivo_version INT UNSIGNED NOT NULL,
+  id_producto_version INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_version),
+  FOREIGN KEY (id_estado_version )
+    REFERENCES estado (id_estado),
+  FOREIGN KEY (id_tipo_archivo_version )
+    REFERENCES tipo_archivo (id_tipo_archivo),
+  FOREIGN KEY (id_producto_version)
+    REFERENCES producto (id_producto))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: REGIONAL                                               */
+/*==============================================================*/
+
+CREATE TABLE Regional (
+  id_regional NVARCHAR(10) NOT NULL,
+  nombre_regional NVARCHAR(70) NOT NULL,
+  PRIMARY KEY (id_regional))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: CIUDAD                                                */
+/*==============================================================*/
+
+CREATE TABLE ciudad (
+  id_ciudad NVARCHAR(10) NOT NULL,
+  nombre_ciudad NVARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_ciudad))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: CENTRO                                                */
+/*==============================================================*/
+
+CREATE TABLE centro (
+  id_centro NVARCHAR(10) NOT NULL,
+  nombre_centro NVARCHAR(200) NOT NULL,
+  id_regional_centro NVARCHAR(10) NOT NULL,
+  id_ciudad_centro NVARCHAR(10) NOT NULL,
+  PRIMARY KEY (id_centro),
+  FOREIGN KEY (id_regional_centro)
+    REFERENCES regional (id_regional),
+  FOREIGN KEY (id_ciudad_centro)
+    REFERENCES ciudad (id_ciudad))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: FUNCIONARIO                                           */
+/*==============================================================*/
+
+CREATE TABLE funcionario (
+  id_funcionario INT UNSIGNED NOT NULL,
+  documento_funcionario NVARCHAR(8) NOT NULL,
+  correo_funcionario NVARCHAR(100) NOT NULL,
+  contrasena_funcionario NVARCHAR(255) NOT NULL,
+  nombre_funcionario NVARCHAR(70) NOT NULL,
+  apellido_funcionario NVARCHAR(70) NOT NULL,
+  cargo_funcionario NVARCHAR(45) NOT NULL,
+  telefono_funcionario NVARCHAR(10) NULL,
+  id_centro_funcionario NVARCHAR(10) NOT NULL,
+  PRIMARY KEY (id_funcionario),
+  UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
+  UNIQUE INDEX documento_funcionario_UNIQUE (documento_funcionario ASC),
+  FOREIGN KEY (id_centro_funcionario )
+    REFERENCES centro (id_centro))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: AUTOR                                                 */
+/*==============================================================*/
+
+CREATE TABLE autor (
+  id_funcionario_autor INT UNSIGNED NOT NULL,
+  id_version_autor INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_funcionario_autor, id_version_autor),
+  FOREIGN KEY (id_funcionario_autor)
+    REFERENCES funcionario (id_funcionario),
+  FOREIGN KEY (id_version_autor)
+    REFERENCES version (id_version))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: LISTA_CHEQUEO                                         */
+/*==============================================================*/
+
+CREATE TABLE lista_chequeo (
+  id_lista INT UNSIGNED NOT NULL,
+  nombre_lista NVARCHAR(100) NOT NULL,
+  descripcion_lista NVARCHAR(255) NOT NULL,
+  fecha_lista DATE NOT NULL,
+  tipo_lista NVARCHAR(20) NOT NULL,
+  id_autor_lista INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_lista),
+  FOREIGN KEY (id_autor_lista)
+    REFERENCES funcionario (id_funcionario))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: ITEM                                                  */
+/*==============================================================*/
+
+CREATE TABLE item (
+  id_item INT UNSIGNED NOT NULL,
+  descriptor_item NVARCHAR(200) NOT NULL,
+  id_autor_item INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_item),
+  FOREIGN KEY (id_autor_item)
+    REFERENCES funcionario (id_funcionario))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: DETALLE_LISTA                                         */
+/*==============================================================*/
+
+CREATE TABLE detalle_lista (
+  id_detalle_lista INT UNSIGNED NOT NULL,
+  id_lista_detalle_lista INT UNSIGNED NOT NULL,
+  id_item_detalle_lista INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_detalle_lista),
+  FOREIGN KEY (id_lista_detalle_lista)
+    REFERENCES lista_chequeo (id_lista),
+  FOREIGN KEY (id_item_detalle_lista)
+    REFERENCES item (id_item))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: EVAL_VERSION_GENERAL                                  */
+/*==============================================================*/
+
+CREATE TABLE eval_version_general (
+  id_eval_version_general INT UNSIGNED NOT NULL,
+  id_version_eval_version_general INT UNSIGNED NOT NULL,
+  id_lista_eval_version_general INT UNSIGNED NOT NULL,
+  calificacion_eval_version_general BOOLEAN NULL,
+  observaciones_eval_version_general NVARCHAR(100) NULL,
+  fecha_eval_version_general DATE NULL,
+  id_evaluador_eval_version_general INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_eval_version_general),
+  FOREIGN KEY (id_version_eval_version_general)
+    REFERENCES version (id_version),
+  FOREIGN KEY (id_lista_eval_version_general)
+    REFERENCES lista_chequeo (id_lista),
+  FOREIGN KEY (id_evaluador_eval_version_general)
+    REFERENCES funcionario (id_funcionario))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: EVAL_DETALLE_LISTA                                    */
+/*==============================================================*/
+
+CREATE TABLE eval_detalle_lista (
+  id_eval_detalle_lista INT UNSIGNED NOT NULL,
+  calificacion_eval_detalle_lista BOOLEAN NULL,
+  obsevacion_eval_detalle_lista NVARCHAR(100) NULL,
+  id_eval_version_general_eval_detalle_lista INT UNSIGNED NOT NULL,
+  id_detalle_lista_eval_detalle_lista INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_eval_detalle_lista),
+  FOREIGN KEY (id_eval_version_general_eval_detalle_lista)
+    REFERENCES eval_version_general (id_eval_version_general),
+  FOREIGN KEY (id_detalle_lista_eval_detalle_lista)
+    REFERENCES detalle_lista (id_detalle_lista))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: ROL                                                   */
+/*==============================================================*/
+
+CREATE TABLE rol (
+  id_rol INT NOT NULL,
+  nombre_rol NVARCHAR(45) NOT NULL,
+  descripcion_rol NVARCHAR(100) NOT NULL,
+  PRIMARY KEY (id_rol))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: AREA                                                  */
+/*==============================================================*/
+
+CREATE TABLE area (
+  id_area INT UNSIGNED NOT NULL,
+  nombre_area NVARCHAR(100) NOT NULL,
+  id_centro_area NVARCHAR(10) NOT NULL,
+  PRIMARY KEY (id_area),
+  FOREIGN KEY (id_centro_area)
+    REFERENCES centro (id_centro))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: PROGRAMA                                              */
+/*==============================================================*/
+
+CREATE TABLE programa (
+  id_programa INT UNSIGNED NOT NULL,
+  nombre_programa NVARCHAR(50) NOT NULL,
+  id_area_programa INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_programa),
+  FOREIGN KEY (id_area_programa)
+    REFERENCES area (id_area))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: COMENTARIO                                            */
+/*==============================================================*/
+
+CREATE TABLE comentario (
+  id_comentario INT UNSIGNED NOT NULL,
+  puntuacion_comentario NVARCHAR(45) NOT NULL,
+  valoracion_comentario INT UNSIGNED NOT NULL,
+  fecha_comentario DATE NOT NULL,
+  id_producto_comentario INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_comentario),
+  FOREIGN KEY (id_producto_comentario)
+    REFERENCES producto (id_producto))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: VISITA                                                */
+/*==============================================================*/
+
+CREATE TABLE visita (
+  fecha_visita DATE NOT NULL,
+  id_producto_visita INT UNSIGNED NOT NULL,
+  id_funcionario_visita INT UNSIGNED NOT NULL,
+  PRIMARY KEY (fecha_visita, id_producto_visita, id_funcionario_visita),
+  FOREIGN KEY (id_producto_visita)
+    REFERENCES producto (id_producto),
+  FOREIGN KEY (id_funcionario_visita)
+    REFERENCES funcionario (id_funcionario))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: CATEGORIA                                             */
+/*==============================================================*/
+
+CREATE TABLE Categoria (
+  id_categoria INT UNSIGNED NOT NULL,
+  nombre_categoria NVARCHAR(50) NOT NULL,
+  id_centro_categoria NVARCHAR(10) NOT NULL,
+  PRIMARY KEY (id_categoria),
+  FOREIGN KEY (id_centro_categoria)
+    REFERENCES centro (id_centro))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: PROGRAMA_PRODUCTO                                     */
+/*==============================================================*/
+
+CREATE TABLE programa_producto (
+  id_producto_prog_prod INT UNSIGNED NOT NULL,
+  id_programa_prog_prod INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_producto_prog_prod, id_programa_prog_prod),
+  FOREIGN KEY (id_producto_prog_prod)
+    REFERENCES producto (id_producto),
+  FOREIGN KEY (id_programa_prog_prod)
+    REFERENCES programa (id_programa))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: CATEGORIA_PRODUCTO                                    */
+/*==============================================================*/
+
+CREATE TABLE categoria_producto (
+  id_categoria_cat_prod INT UNSIGNED NOT NULL,
+  id_producto_cat_prod INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_categoria_cat_prod, id_producto_cat_prod),
+  FOREIGN KEY (id_categoria_cat_prod)
+    REFERENCES Categoria (id_categoria),
+  FOREIGN KEY (id_producto_cat_prod)
+    REFERENCES producto (id_producto))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: FUNCIONARIO_ROL                                       */
+/*==============================================================*/
+
+CREATE TABLE funcionario_rol (
+  id_funcionario_funci_rol INT UNSIGNED NOT NULL,
+  id_rol_funci_rol INT NOT NULL,
+  PRIMARY KEY (id_funcionario_funci_rol, id_rol_funci_rol),
+  FOREIGN KEY (id_funcionario_funci_rol)
+    REFERENCES funcionario (id_funcionario),
+  FOREIGN KEY (id_rol_funci_rol)
+    REFERENCES rol (id_rol))
+ENGINE = InnoDB;
+
+/*==============================================================*/
+/* PROCEDIMIENTOS ALMACENADOS                                   */
+/*==============================================================*/
+/* Primero los CRUD basicos de todas las tablas:                */
+/* crear_(nombre de la tabla)                                   */
+/* editar_(nombre de la tabla)                                  */
+/* eliminar_(nombre de la tabla)                                */
+/* ver_(nombre de la tabla)                                     */
+/*==============================================================*/
+
+/*==============================================================*/
+/* SP ESTADO                                                    */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar estado--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_estado$$
+CREATE PROCEDURE insertar_estado(
+	IN _id_estado INT UNSIGNED, 
+	IN _nombre_estado VARCHAR(45)) 
+BEGIN
+	INSERT INTO estado 
+	VALUES (
+		_id_estado, 
+		_nombre_estado);
+END $$
+
+/*---eliminar estado--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_estado$$
+CREATE PROCEDURE eliminar_estado(
+	IN _id_estado INT UNSIGNED)
+BEGIN
+	DELETE FROM estado
+	WHERE id_estado=_id_estado;
+END $$
+
+/*---editar estado----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_estado$$
+CREATE PROCEDURE editar_estado(
+	IN _id_estado INT UNSIGNED, 
+	IN _nombre_estado VARCHAR(45)) 
+BEGIN
+	UPDATE estado 
+	SET nombre_estado = _nombre_estado 
+	WHERE id_estado = _id_estado;
+END $$
+
+/*---ver estado-------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_estado$$
+CREATE PROCEDURE ver_estado(
+	IN _id_estado INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM estado 
+	WHERE id_estado = _id_estado;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP TIPO_ARCHIVO                                              */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar tipo_archivo--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_tipo_archivo$$
+CREATE PROCEDURE insertar_tipo_archivo(
+	IN _id_tipo_archivo INT UNSIGNED, 
+	IN _extencion_tipo_archivo VARCHAR(7)) 
+BEGIN
+	INSERT INTO tipo_archivo 
+	VALUES (
+		_id_tipo_archivo, 
+		_extencion_tipo_archivo);
+END $$
+
+/*---editar tipo_archivo----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_tipo_archivo$$
+CREATE PROCEDURE editar_tipo_archivo(
+	IN _id_tipo_archivo INT UNSIGNED, 
+	IN _extencion_tipo_archivo VARCHAR(7)) 
+BEGIN
+	UPDATE tipo_archivo 
+	SET extencion_tipo_archivo =_extencion_tipo_archivo
+	WHERE id_tipo_archivo = _id_tipo_archivo;
+END $$
+
+/*---eliminar tipo_archivo--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_tipo_archivo$$
+CREATE PROCEDURE eliminar_tipo_archivo(
+	IN _id_tipo_archivo INT UNSIGNED)
+BEGIN
+	DELETE FROM estado
+	WHERE id_tipo_archivo = _id_tipo_archivo;
+END $$
+
+/*---ver tipo_archivo-------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_tipo_archivo $$
+CREATE PROCEDURE ver_tipo_archivo (
+	IN _id_tipo_archivo INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM estado 
+	WHERE id_tipo_archivo = _id_tipo_archivo;
+END $$
+
+DELIMITER ;
