@@ -277,8 +277,8 @@ ENGINE = InnoDB;
 
 CREATE TABLE comentario (
   id_comentario INT UNSIGNED NOT NULL,
-  puntuacion_comentario NVARCHAR(45) NOT NULL,
-  valoracion_comentario INT UNSIGNED NOT NULL,
+  valoracion_comentario NVARCHAR(45) NOT NULL,
+  puntuacion_comentario INT UNSIGNED NOT NULL,
   fecha_comentario DATE NOT NULL,
   id_producto_comentario INT UNSIGNED NOT NULL,
   PRIMARY KEY (id_comentario),
@@ -366,6 +366,479 @@ ENGINE = InnoDB;
 /* ver_(nombre de la tabla)                                     */
 /*==============================================================*/
 
+
+/*==============================================================*/
+/* SP AREA                                                      */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar area----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_area $$
+CREATE PROCEDURE insertar_area (
+	IN _id_area INT UNSIGNED, 
+	IN _nombre_area VARCHAR(100),
+	IN _id_centro_area VARCHAR(10)) 
+BEGIN
+	INSERT INTO tipo_archivo 
+	VALUES (
+		_id_area,
+		_nombre_area,
+		_id_centro_area);
+END $$
+
+/*---editar area------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_area $$
+CREATE PROCEDURE editar_area (
+	IN _id_area INT UNSIGNED, 
+	IN _nombre_area VARCHAR(100),
+	IN _id_centro_area VARCHAR(10)) 
+BEGIN
+	UPDATE area 
+	SET _nombre_area = _nombre_area,
+		id_centro_area = _id_centro_area 
+	WHERE id_area = _id_area;
+END $$
+
+/*---eliminar area----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_area $$
+CREATE PROCEDURE eliminar_area (
+	IN _id_area INT UNSIGNED)
+BEGIN
+	DELETE FROM area
+	WHERE id_area = _id_area;
+END $$
+
+/*---ver area---------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_area $$
+CREATE PROCEDURE ver_area (
+	IN _id_area INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM area
+	WHERE id_area = _id_area;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP AUTOR                                                     */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar autor---------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_autor $$
+CREATE PROCEDURE insertar_autor (
+	IN _id_funcionario_autor INT UNSIGNED,
+	IN _id_version_autor INT UNSIGNED) 
+BEGIN
+	INSERT INTO autor 
+	VALUES (
+		_id_funcionario_autor,
+		_id_version_autor);
+END $$
+
+/*---editar autor-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_autor $$
+CREATE PROCEDURE editar_autor (
+	IN _id_funcionario_autor INT UNSIGNED,
+	IN _id_version_autor INT UNSIGNED,
+	IN _id_new_funcionario_autor INT UNSIGNED,
+	IN _id_new_version_autor INT UNSIGNED)
+BEGIN
+	UPDATE autor
+	SET id_funcionario_autor = _id_new_funcionario_autor,
+		id_version_autor = _id_new_version_autor
+	WHERE id_funcionario_autor = _id_funcionario_autor AND 
+		id_version_autor = _id_version_autor;
+END $$
+
+/*---eliminar autor---------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_autor $$
+CREATE PROCEDURE eliminar_autor (
+	IN _id_funcionario_autor INT UNSIGNED,
+	IN _id_version_autor INT UNSIGNED)
+BEGIN
+	DELETE FROM autor
+	WHERE id_funcionario_autor = _id_funcionario_autor AND 
+	id_version_autor = _id_version_autor;
+END $$
+
+/*---ver autor--------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_area $$
+CREATE PROCEDURE ver_area (
+	IN _id_funcionario_autor INT UNSIGNED,
+	IN _id_version_autor INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM autor
+	WHERE id_funcionario_autor = _id_funcionario_autor AND 
+	id_version_autor = _id_version_autor;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CATEGORIA                                                 */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar categoria-----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_categoria $$
+CREATE PROCEDURE insertar_categoria (
+	IN _id_categoria INT UNSIGNED,
+	IN _nombre_categoria VARCHAR(50),
+	IN _id_centro_categoria VARCHAR(10))
+BEGIN
+	INSERT INTO categoria
+	VALUES (
+		_id_categoria,
+		_nombre_categoria,
+		_id_centro_categoria);
+END $$
+
+/*---editar categoria-------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_categoria $$
+CREATE PROCEDURE editar_categoria (
+	IN _id_categoria INT UNSIGNED,
+	IN _nombre_categoria VARCHAR(50),
+	IN _id_centro_categoria VARCHAR(10))
+BEGIN
+	UPDATE categoria
+	SET nombre_categoria = _nombre_categoria,
+		id_centro_categoria = _id_centro_categoria
+	WHERE id_categoria = _id_categoria;
+END $$
+
+/*---eliminar categoria-----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_categoria $$
+CREATE PROCEDURE eliminar_categoria (
+	IN _id_categoria INT UNSIGNED)
+BEGIN
+	DELETE FROM categoria
+	WHERE id_categoria = _id_categoria;
+END $$
+
+/*---ver categoria----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_categoria $$
+CREATE PROCEDURE ver_categoria (
+	IN _id_categoria INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM categoria
+	WHERE id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CATEGORIA_PRODUCTO                                        */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar categoria_producto--------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_categoria_producto $$
+CREATE PROCEDURE insertar_categoria_producto (
+	IN _id_categoria_cat_prod INT UNSIGNED,
+	IN _id_producto_cat_prod INT UNSIGNED)
+BEGIN
+	INSERT INTO categoria_producto
+	VALUES (
+		_id_categoria_cat_prod,
+		_id_producto_cat_prod );
+END $$
+
+/*---editar categoria_producto----------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_categoria_producto $$
+CREATE PROCEDURE editar_categoria_producto (
+	IN _id_categoria_cat_prod INT UNSIGNED,
+	IN _id_producto_cat_prod INT UNSIGNED,
+	IN _id_new_categoria_cat_prod INT UNSIGNED,
+	IN _id_new_producto_cat_prod INT UNSIGNED)
+BEGIN
+	UPDATE categoria_producto
+	SET id_categoria_cat_prod = _id_new_categoria_cat_prod,
+		id_producto_cat_prod = _id_new_producto_cat_prod 
+	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
+		id_producto_cat_prod = _id_producto_cat_prod;
+END $$
+
+/*---eliminar categoria_producto--------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_categoria_producto $$
+CREATE PROCEDURE eliminar_categoria_producto (
+	IN _id_categoria_cat_prod INT UNSIGNED,
+	IN _id_producto_cat_prod INT UNSIGNED)
+BEGIN
+	DELETE FROM categoria_producto
+	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
+		id_producto_cat_prod = _id_producto_cat_prod;
+END $$
+
+/*---ver categoria_producto-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_categoria_producto $$
+CREATE PROCEDURE ver_categoria_producto (
+	IN _id_categoria_cat_prod INT UNSIGNED,
+	IN _id_producto_cat_prod INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM categoria_producto
+	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
+		id_producto_cat_prod = _id_producto_cat_prod;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CENTRO                                                    */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar centro--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_centro $$
+CREATE PROCEDURE insertar_centro (
+	IN _id_centro INT UNSIGNED,
+	IN _nombre_centro VARCHAR(200),
+	IN _id_regional_centro VARCHAR(10),
+	IN _id_ciudad_centro VARCHAR(10))
+BEGIN
+	INSERT INTO centro
+	VALUES (
+		_id_centro ,
+		_nombre_centro ,
+		_id_regional_centro ,
+		_id_ciudad_centro );
+END $$
+
+/*---editar centro----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_centro $$
+CREATE PROCEDURE editar_centro (
+	IN _id_centro INT UNSIGNED,
+	IN _nombre_centro VARCHAR(200),
+	IN _id_regional_centro VARCHAR(10),
+	IN _id_ciudad_centro VARCHAR(10))
+BEGIN
+	UPDATE centro
+	SET nombre_centro = _nombre_centro ,
+		id_regional_centro = _id_regional_centro ,
+		id_ciudad_centro = _id_ciudad_centro 
+	WHERE id_centro = _id_centro ;
+END $$
+
+/*---eliminar centro--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_centro $$
+CREATE PROCEDURE eliminar_centro (
+	IN _id_centro INT UNSIGNED)
+BEGIN
+	DELETE FROM centro
+	WHERE id_centro = _id_centro ;
+END $$
+
+/*---ver centro-------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_centro $$
+CREATE PROCEDURE ver_centro (
+	IN _id_centro INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM centro
+	WHERE id_centro = _id_centro ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CIUDAD                                                    */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar ciudad--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_ciudad $$
+CREATE PROCEDURE insertar_ciudad (
+	IN _id_ciudad VARCHAR(10),
+	IN _nombre_ciudad VARCHAR(45))
+BEGIN
+	INSERT INTO ciudad
+	VALUES (
+		_id_ciudad ,
+		_nombre_ciudad );
+END $$
+
+/*---editar ciudad----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_ciudad $$
+CREATE PROCEDURE editar_ciudad (
+	IN _id_ciudad VARCHAR(10),
+	IN _nombre_ciudad VARCHAR(45))
+BEGIN
+	UPDATE ciudad
+	SET nombre_ciudad = _nombre_ciudad
+	WHERE id_ciudad = _id_ciudad ;
+END $$
+
+/*---eliminar ciudad--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_ciudad $$
+CREATE PROCEDURE eliminar_ciudad (
+	IN _id_ciudad VARCHAR(10))
+BEGIN
+	DELETE FROM ciudad
+	WHERE id_ciudad = _id_ciudad ;
+END $$
+
+/*---ver ciudad-------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_ciudad $$
+CREATE PROCEDURE ver_ciudad (
+	IN _id_ciudad VARCHAR(10))
+BEGIN
+	SELECT * 
+	FROM ciudad
+	WHERE id_ciudad = _id_ciudad ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP COMENTARIO                                                */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar comentario----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_comentario $$
+CREATE PROCEDURE insertar_comentario (
+	IN _id_comentario INT UNSIGNED,
+	IN _valoracion_comentario VARCHAR(45),
+	IN _puntuacion_comentario INT UNSIGNED,
+	IN _fecha_comentario DATE,
+	IN _id_producto_comentario INT UNSIGNED)
+BEGIN
+	INSERT INTO comentario
+	VALUES (
+		_id_comentario ,
+		_valoracion_comentario ,
+		_puntuacion_comentario ,
+		_fecha_comentario ,
+		_id_producto_comentario );
+END $$
+
+/*---editar comentario------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_comentario $$
+CREATE PROCEDURE editar_comentario (
+	IN _id_comentario INT UNSIGNED,
+	IN _valoracion_comentario VARCHAR(45),
+	IN _puntuacion_comentario INT UNSIGNED,
+	IN _fecha_comentario DATE,
+	IN _id_producto_comentario INT UNSIGNED)
+BEGIN
+	UPDATE comentario
+	SET valoracion_comentario = _valoracion_comentario ,
+		puntuacion_comentario = _puntuacion_comentario ,
+		fecha_comentario = _fecha_comentario ,
+		id_producto_comentario = _id_producto_comentario
+	WHERE id_comentario = _id_comentario ;
+END $$
+
+/*---eliminar comentario----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_comentario $$
+CREATE PROCEDURE eliminar_comentario (
+	IN _id_comentario INT UNSIGNED)
+BEGIN
+	DELETE FROM comentario
+	WHERE id_comentario = _id_comentario ;
+END $$
+
+/*---ver comentario---------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_comentario $$
+CREATE PROCEDURE ver_comentario (
+	IN _id_comentario INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM comentario
+	WHERE id_comentario = _id_comentario ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP DETALLE_LISTA                                             */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar detalle_lista-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_detalle_lista $$
+CREATE PROCEDURE insertar_detalle_lista (
+	IN _id_detalle_lista INT UNSIGNED ,
+	IN _id_lista_detalle_lista INT UNSIGNED ,
+	IN _id_item_detalle_lista INT UNSIGNED )
+BEGIN
+	INSERT INTO detalle_lista
+	VALUES (
+		_id_detalle_lista ,
+		_id_lista_detalle_lista ,
+		_id_item_detalle_lista );
+END $$
+
+/*---editar detalle_lista---------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_detalle_lista $$
+CREATE PROCEDURE editar_detalle_lista (
+	IN _id_detalle_lista INT UNSIGNED ,
+	IN _id_lista_detalle_lista INT UNSIGNED ,
+	IN _id_item_detalle_lista INT UNSIGNED )
+BEGIN
+	UPDATE detalle_lista
+	SET _id_lista_detalle_lista = _id_lista_detalle_lista ,
+		_id_item_detalle_lista = _id_item_detalle_lista
+	WHERE id_detalle_lista = _id_detalle_lista ;
+END $$
+
+/*---eliminar detalle_lista-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_detalle_lista $$
+CREATE PROCEDURE eliminar_detalle_lista (
+	IN _id_detalle_lista INT UNSIGNED)
+BEGIN
+	DELETE FROM detalle_lista
+	WHERE id_detalle_lista = _id_detalle_lista;
+END $$
+
+/*---ver detalle_lista------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_detalle_lista $$
+CREATE PROCEDURE ver_detalle_lista (
+	IN _id_detalle_lista INT UNSIGNED)
+BEGIN
+	SELECT * 
+	FROM detalle_lista
+	WHERE id_detalle_lista = _id_detalle_lista ;
+END $$
+
+DELIMITER ;
+
 /*==============================================================*/
 /* SP ESTADO                                                    */
 /*==============================================================*/
@@ -374,31 +847,21 @@ DELIMITER $$
 
 /*---insertar estado--------------------------------------------*/
 
-DROP PROCEDURE IF EXISTS insertar_estado$$
-CREATE PROCEDURE insertar_estado(
-	IN _id_estado INT UNSIGNED, 
+DROP PROCEDURE IF EXISTS insertar_estado $$
+CREATE PROCEDURE insertar_estado (
+	IN _id_estado INT UNSIGNED , 
 	IN _nombre_estado VARCHAR(45)) 
 BEGIN
 	INSERT INTO estado 
 	VALUES (
-		_id_estado, 
+		_id_estado , 
 		_nombre_estado);
-END $$
-
-/*---eliminar estado--------------------------------------------*/
-
-DROP PROCEDURE IF EXISTS eliminar_estado$$
-CREATE PROCEDURE eliminar_estado(
-	IN _id_estado INT UNSIGNED)
-BEGIN
-	DELETE FROM estado
-	WHERE id_estado=_id_estado;
 END $$
 
 /*---editar estado----------------------------------------------*/
 
-DROP PROCEDURE IF EXISTS editar_estado$$
-CREATE PROCEDURE editar_estado(
+DROP PROCEDURE IF EXISTS editar_estado $$
+CREATE PROCEDURE editar_estado (
 	IN _id_estado INT UNSIGNED, 
 	IN _nombre_estado VARCHAR(45)) 
 BEGIN
@@ -407,15 +870,736 @@ BEGIN
 	WHERE id_estado = _id_estado;
 END $$
 
+/*---eliminar estado--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_estado $$
+CREATE PROCEDURE eliminar_estado (
+	IN _id_estado INT UNSIGNED)
+BEGIN
+	DELETE FROM estado
+	WHERE id_estado=_id_estado;
+END $$
+
 /*---ver estado-------------------------------------------------*/
 
-DROP PROCEDURE IF EXISTS ver_estado$$
-CREATE PROCEDURE ver_estado(
+DROP PROCEDURE IF EXISTS ver_estado $$
+CREATE PROCEDURE ver_estado (
 	IN _id_estado INT UNSIGNED) 
 BEGIN
 	SELECT * 
 	FROM estado 
 	WHERE id_estado = _id_estado;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP EVAL_DETALLE_LISTA                                        */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar eval_detalle_lista--------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_eval_detalle_lista $$
+CREATE PROCEDURE insertar_eval_detalle_lista (
+	IN _id_eval_detalle_lista INT UNSIGNED , 
+	IN _calificacion_eval_detalle_lista BOOlEAN ,
+	IN _observacion_eval_detalle_lista VARCHAR(100) ,
+	IN _id_eval_version_general_eval_detalle_lista INT UNSIGNED ,
+	IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED )
+BEGIN
+	INSERT INTO eval_detalle_lista
+	VALUES (
+		_id_eval_detalle_lista ,
+		_calificacion_eval_detalle_lista ,
+		_observacion_eval_detalle_lista ,
+		_id_eval_version_general_eval_detalle_lista ,
+		_id_detalle_lista_eval_detalle_lista );
+END $$
+
+/*---editar eval_detalle_lista----------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_eval_detalle_lista $$
+CREATE PROCEDURE editar_eval_detalle_lista (
+	IN _id_eval_detalle_lista INT UNSIGNED , 
+	IN _calificacion_eval_detalle_lista BOOlEAN ,
+	IN _observacion_eval_detalle_lista VARCHAR(100) ,
+	IN _id_eval_version_general_eval_detalle_lista INT UNSIGNED ,
+	IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED )
+BEGIN
+	UPDATE eval_detalle_lista
+	SET calificacion_eval_detalle_lista = _calificacion_eval_detalle_lista ,
+		observacion_eval_detalle_lista = _observacion_eval_detalle_lista ,
+		id_eval_version_general_eval_detalle_lista = _id_eval_version_general_eval_detalle_lista ,
+		id_detalle_lista_eval_detalle_lista = _id_detalle_lista_eval_detalle_lista 
+	WHERE id_eval_detalle_lista = _id_eval_detalle_lista ;
+END $$
+
+/*---eliminar eval_detalle_lista--------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_eval_detalle_lista $$
+CREATE PROCEDURE eliminar_eval_detalle_lista (
+	IN _id_eval_detalle_lista INT UNSIGNED)
+BEGIN
+	DELETE FROM eval_detalle_lista
+	WHERE id_eval_detalle_lista = _id_eval_detalle_lista ;
+END $$
+
+/*---ver eval_detalle_lista-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_eval_detalle_lista $$
+CREATE PROCEDURE ver_eval_detalle_lista (
+	IN _id_estado INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM eval_detalle_lista
+	WHERE id_eval_detalle_lista = _id_eval_detalle_lista ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP EVAL_VERSION_GENERAL                                      */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar eval_version_general------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_eval_version_general $$
+CREATE PROCEDURE insertar_eval_version_general (
+	IN _id_eval_version_general INT UNSIGNED ,
+	IN _id_version_eval_version_general INT UNSIGNED ,
+	IN _id_lista_eval_version_general INT UNSIGNED ,
+	IN _calificacion_eval_version_general BOOLEAN ,
+	IN _observaciones_eval_version_general VARCHAR(100) ,
+	IN _fecha_eval_version_general DATE ,
+	IN _id_evaluador_eval_version_general INT UNSIGNED )
+BEGIN
+	INSERT INTO eval_version_general
+	VALUES (
+		_id_eval_version_general ,
+		_id_version_eval_version_general ,
+		_id_lista_eval_version_general ,
+		_calificacion_eval_version_general ,
+		_observaciones_eval_version_general ,
+		_fecha_eval_version_general ,
+		_id_evaluador_eval_version_general );
+END $$
+
+/*---editar eval_version_general--------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_eval_version_general $$
+CREATE PROCEDURE editar_eval_version_general (
+	IN _id_eval_version_general INT UNSIGNED ,
+	IN _id_version_eval_version_general INT UNSIGNED ,
+	IN _id_lista_eval_version_general INT UNSIGNED ,
+	IN _calificacion_eval_version_general BOOLEAN ,
+	IN _observaciones_eval_version_general VARCHAR(100) ,
+	IN _fecha_eval_version_general DATE ,
+	IN _id_evaluador_eval_version_general INT UNSIGNED )
+BEGIN
+	UPDATE eval_version_general
+	SET id_version_eval_version_general = _id_version_eval_version_general ,
+		id_lista_eval_version_general = _id_lista_eval_version_general ,
+		calificacion_eval_version_general = _calificacion_eval_version_general ,
+		observaciones_eval_version_general = _observaciones_eval_version_general ,
+		fecha_eval_version_general = _fecha_eval_version_general ,
+		id_evaluador_eval_version_general = _id_evaluador_eval_version_general 
+	WHERE id_eval_version_general = _id_eval_version_general ;
+END $$
+
+/*---eliminar eval_version_general------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_eval_version_general $$
+CREATE PROCEDURE eliminar_eval_version_general (
+	IN _id_eval_detalle_lista INT UNSIGNED)
+BEGIN
+	DELETE FROM eval_version_general
+	WHERE id_eval_version_general = _id_eval_version_general ;
+END $$
+
+/*---ver eval_version_general-----------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_eval_version_general $$
+CREATE PROCEDURE ver_eval_version_general (
+	IN _id_estado INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM eval_version_general
+	WHERE id_eval_version_general = _id_eval_version_general ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP FUNCIONARIO                                               */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar funcionario---------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_funcionario $$
+CREATE PROCEDURE insertar_funcionario (
+	IN _id_funcionario INT UNSIGNED ,
+	IN _documento_funcionario VARCHAR(8) ,
+	IN _correo_funcionario VARCHAR(100) ,
+	IN _contrasena_funcionario VARCHAR(255) ,
+	IN _nombre_funcionario VARCHAR(70) ,
+	IN _apellido_funcionario VARCHAR(70) ,
+	IN _cargo_funcionario VARCHAR(45) ,
+	IN _telefono_funcionario VARCHAR(10) ,
+	IN _id_centro_funcionario VARCHAR(10) )
+BEGIN
+	INSERT INTO funcionario
+	VALUES (
+		_id_funcionario ,
+		_documento_funcionario ,
+		_correo_funcionario ,
+		_contrasena_funcionario ,
+		_nombre_funcionario ,
+		_apellido_funcionario ,
+		_cargo_funcionario ,
+		_telefono_funcionario ,
+		_id_centro_funcionario );
+END $$
+
+/*---editar funcionaro------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_funcionario $$
+CREATE PROCEDURE editar_funcionario (
+	IN _id_funcionario INT UNSIGNED ,
+	IN _documento_funcionario VARCHAR(8) ,
+	IN _correo_funcionario VARCHAR(100) ,
+	IN _contrasena_funcionario VARCHAR(255) ,
+	IN _nombre_funcionario VARCHAR(70) ,
+	IN _apellido_funcionario VARCHAR(70) ,
+	IN _cargo_funcionario VARCHAR(45) ,
+	IN _telefono_funcionario VARCHAR(10) ,
+	IN _id_centro_funcionario VARCHAR(10) )
+BEGIN
+	UPDATE funcionario
+	SET documento_funcionario = _documento_funcionario ,
+		correo_funcionario = _correo_funcionario ,
+		contrasena_funcionario = _contrasena_funcionario ,
+		nombre_funcionario = _nombre_funcionario ,
+		apellido_funcionario = _apellido_funcionario ,
+		cargo_funcionario = _cargo_funcionario ,
+		telefono_funcionario = _telefono_funcionario ,
+		id_centro_funcionario = _id_centro_funcionario 
+	WHERE id_funcionario = _id_funcionario ;
+END $$
+
+/*---eliminar funcionario---------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_funcionario $$
+CREATE PROCEDURE eliminar_funcionario (
+	IN _id_funcionario INT UNSIGNED)
+BEGIN
+	DELETE FROM funcionario
+	WHERE id_funcionario = _id_funcionario ;
+END $$
+
+/*---ver funcionario--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_funcionario $$
+CREATE PROCEDURE ver_funcionario (
+	IN _id_funcionario INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM funcionario
+	WHERE id_funcionario = _id_funcionario ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP FUNCIONARIO_ROL                                           */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar funcionario_rol-----------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_funcionario_rol $$
+CREATE PROCEDURE insertar_funcionario_rol (
+	IN _id_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_rol_funci_rol INT UNSIGNED )
+BEGIN
+	INSERT INTO funcionario_rol
+	VALUES (
+		_id_funcionario_funci_rol ,
+		_id_rol_funci_rol );
+END $$
+
+/*---editar funcionaro_rol--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_funcionario_rol $$
+CREATE PROCEDURE editar_funcionario_rol (
+	IN _id_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_rol_funci_rol INT UNSIGNED ,
+	IN _id_new_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_new_rol_funci_rol INT UNSIGNED )
+BEGIN
+	UPDATE funcionario_rol
+	SET id_funcionario_funci_rol = _id_new_funcionario_funci_rol ,
+		id_rol_funci_rol = _id_new_rol_funci_rol 
+	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
+		id_rol_funci_rol = _id_rol_funci_rol ;
+END $$
+
+/*---eliminar funcionario_rol-----------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_funcionario_rol $$
+CREATE PROCEDURE eliminar_funcionario_rol (
+	IN _id_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_rol_funci_rol INT UNSIGNED )
+BEGIN
+	DELETE FROM funcionario_rol
+	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
+		id_rol_funci_rol = _id_rol_funci_rol ;
+END $$
+
+/*---ver funcionario_rol----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_funcionario_rol $$
+CREATE PROCEDURE ver_funcionario_rol (
+	IN _id_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_rol_funci_rol INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM funcionario_rol
+	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
+		id_rol_funci_rol = _id_rol_funci_rol ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP ITEM                                                      */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar item----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_item $$
+CREATE PROCEDURE insertar_item (
+	IN _id_item INT UNSIGNED ,
+	IN _descriptor_item VARCHAR(200) ,
+	IN _id_autor_item INT UNSIGNED )
+BEGIN
+	INSERT INTO item
+	VALUES (
+		_id_item ,
+		_descriptor_item ,
+		_id_autor_item );
+END $$
+
+/*---editar item------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_item $$
+CREATE PROCEDURE editar_item (
+	IN _id_item INT UNSIGNED ,
+	IN _descriptor_item VARCHAR(200) ,
+	IN _id_autor_item INT UNSIGNED )
+BEGIN
+	UPDATE item
+	SET descriptor_item = _descriptor_item ,
+		id_autor_item = _id_autor_item 
+	WHERE id_item = _id_item ;
+END $$
+
+/*---eliminar item----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_item $$
+CREATE PROCEDURE eliminar_item (
+	IN _id_item INT UNSIGNED )
+BEGIN
+	DELETE FROM item
+	WHERE id_item = _id_item ;
+END $$
+
+/*---ver item---------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_item $$
+CREATE PROCEDURE ver_item (
+	IN _id_item INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM item
+	WHERE id_item = _id_item ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP LISTA_CHEQUEO                                             */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar lista_chequeo-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_lista_chequeo $$
+CREATE PROCEDURE insertar_lista_chequeo (
+	IN _id_lista INT UNSIGNED ,
+	IN _nombre_lista VARCHAR(100) ,
+	IN _descripcion_lista VARCHAR(255) ,
+	IN _fecha_lista DATE ,
+	IN _tipo_lista VARCHAR(20) ,
+	IN _id_autor_lista INT UNSIGNED )
+BEGIN
+	INSERT INTO lista_chequeo
+	VALUES (
+		_id_lista ,
+		_nombre_lista ,
+		_descripcion_lista ,
+		_fecha_lista ,
+		_tipo_lista ,
+		_id_autor_lista );
+END $$
+
+/*---editar lista_chequeo---------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_lista_chequeo $$
+CREATE PROCEDURE editar_lista_chequeo (
+	IN _id_lista INT UNSIGNED ,
+	IN _nombre_lista VARCHAR(100) ,
+	IN _descripcion_lista VARCHAR(255) ,
+	IN _fecha_lista DATE ,
+	IN _tipo_lista VARCHAR(20) ,
+	IN _id_autor_lista INT UNSIGNED )
+BEGIN
+	UPDATE lista_chequeo
+	SET nombre_lista = _nombre_lista ,
+		descripcion_lista = _descripcion_lista ,
+		fecha_lista = _fecha_lista ,
+		tipo_lista = _tipo_lista ,
+		id_autor_lista = _id_autor_lista 
+	WHERE id_lista = _id_lista ;
+END $$
+
+/*---eliminar lista_chequeo-------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_lista_chequeo $$
+CREATE PROCEDURE eliminar_lista_chequeo (
+	IN _id_lista INT UNSIGNED )
+BEGIN
+	DELETE FROM lista_chequeo
+	WHERE id_lista = _id_lista ;
+END $$
+
+/*---ver lista_chequeo------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_lista_chequeo $$
+CREATE PROCEDURE ver_lista_chequeo (
+	IN _id_lista INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM lista_chequeo
+	WHERE id_lista = _id_lista ;
+END $$
+
+DELIMITER ;
+
+
+/*==============================================================*/
+/* SP PRODUCTO                                                  */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar producto------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_producto $$
+CREATE PROCEDURE insertar_producto (
+	IN _id_producto INT UNSIGNED ,
+	IN _nombre_producto VARCHAR(100) ,
+	IN _descripcion_producto VARCHAR(255) ,
+	IN _palabras_clave_producto VARCHAR(200) ,
+	IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED )
+BEGIN
+	INSERT INTO producto
+	VALUES (
+		_id_producto ,
+		_nombre_producto ,
+		_descripcion_producto ,
+		_palabras_clave_producto ,
+		_id_tipo_objeto_aprendizaje_producto );
+END $$
+
+/*---editar producto--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_producto $$
+CREATE PROCEDURE editar_producto (
+	IN _id_producto INT UNSIGNED ,
+	IN _nombre_producto VARCHAR(100) ,
+	IN _descripcion_producto VARCHAR(255) ,
+	IN _palabras_clave_producto VARCHAR(200) ,
+	IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED )
+BEGIN
+	UPDATE producto
+	SET nombre_producto = _nombre_producto ,
+		descripcion_producto = _descripcion_producto ,
+		palabras_clave_producto = _palabras_clave_producto ,
+		id_tipo_objeto_aprendizaje_producto = _id_tipo_objeto_aprendizaje_producto 
+	WHERE id_producto = _id_producto ;
+END $$
+
+/*---eliminar producto------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_producto $$
+CREATE PROCEDURE eliminar_producto (
+	IN _id_producto INT UNSIGNED )
+BEGIN
+	DELETE FROM producto
+	WHERE id_producto = _id_producto ;
+END $$
+
+/*---ver producto-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_producto $$
+CREATE PROCEDURE ver_producto (
+	IN _id_producto INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM producto
+	WHERE id_producto = _id_producto ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP PROGRAMA                                                  */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar programa------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_programa $$
+CREATE PROCEDURE insertar_programa (
+	IN _id_programa INT UNSIGNED ,
+	IN _nombre_programa VARCHAR(50) ,
+	IN _id_area_programa INT UNSIGNED )
+BEGIN
+	INSERT INTO programa
+	VALUES (
+		_id_programa ,
+		_nombre_programa ,
+		_id_area_programa );
+END $$
+
+/*---editar programa--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_programa $$
+CREATE PROCEDURE editar_programa (
+	IN _id_programa INT UNSIGNED ,
+	IN _nombre_programa VARCHAR(50) ,
+	IN _id_area_programa INT UNSIGNED )
+BEGIN
+	UPDATE programa
+	SET nombre_programa = _nombre_programa ,
+		id_area_programa = _id_area_programa 
+	WHERE id_programa = _id_programa ;
+END $$
+
+/*---eliminar programa------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_programa $$
+CREATE PROCEDURE eliminar_programa (
+	IN _id_programa INT UNSIGNED )
+BEGIN
+	DELETE FROM programa
+	WHERE id_programa = _id_programa ;
+END $$
+
+/*---ver programa-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_programa $$
+CREATE PROCEDURE ver_programa (
+	IN _id_programa INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM programa
+	WHERE id_programa = _id_programa ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP PROGRAMA_PRODUCTO                                         */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar programa_producto---------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_programa_producto $$
+CREATE PROCEDURE insertar_programa_producto (
+	IN _id_producto_prog_prod INT UNSIGNED ,
+	IN _id_programa_prog_prod INT UNSIGNED )
+BEGIN
+	INSERT INTO programa_producto
+	VALUES (
+		_id_producto_prog_prod ,
+		_id_programa_prog_prod );
+END $$
+
+/*---editar programa_producto-----------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_programa_producto $$
+CREATE PROCEDURE editar_programa_producto (
+	IN _id_producto_prog_prod INT UNSIGNED ,
+	IN _id_programa_prog_prod INT UNSIGNED ,
+	IN _id_new_producto_prog_prod INT UNSIGNED ,
+	IN _id_new_programa_prog_prod INT UNSIGNED)
+BEGIN
+	UPDATE programa_producto
+	SET id_producto_prog_prod = _id_new_producto_prog_prod ,
+		id_programa_prog_prod = _id_new_programa_prog_prod 
+	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
+		id_programa_prog_prod = _id_programa_prog_prod ;
+END $$
+
+/*---eliminar programa_producto---------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_programa_producto $$
+CREATE PROCEDURE eliminar_programa_producto (
+	IN _id_producto_prog_prod INT UNSIGNED ,
+	IN _id_programa_prog_prod INT UNSIGNED )
+BEGIN
+	DELETE FROM programa_producto
+	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
+		id_programa_prog_prod = _id_programa_prog_prod ;
+END $$
+
+/*---ver programa_producto--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_programa_producto $$
+CREATE PROCEDURE ver_programa_producto (
+	IN _id_producto_prog_prod INT UNSIGNED ,
+	IN _id_programa_prog_prod INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM programa_producto
+	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
+		id_programa_prog_prod = _id_programa_prog_prod ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP REGIONAL                                                  */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar regional------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_regional $$
+CREATE PROCEDURE insertar_regional (
+	IN _id_regional INT UNSIGNED ,
+	IN _nombre_regional VARCHAR(50) )
+BEGIN
+	INSERT INTO regional
+	VALUES (
+		_id_regional ,
+		_nombre_regional );
+END $$
+
+/*---editar regional--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_regional $$
+CREATE PROCEDURE editar_regional (
+	IN _id_regional INT UNSIGNED ,
+	IN _nombre_regional VARCHAR(50) )
+BEGIN
+	UPDATE regional
+	SET nombre_regional = _nombre_regional 
+	WHERE id_regional = _id_regional ;
+END $$
+
+/*---eliminar regional------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_regional $$
+CREATE PROCEDURE eliminar_regional (
+	IN _id_regional INT UNSIGNED )
+BEGIN
+	DELETE FROM regional
+	WHERE id_regional = _id_regional ;
+END $$
+
+/*---ver regional-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_regional $$
+CREATE PROCEDURE ver_regional (
+	IN _id_regional INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM regional
+	WHERE id_regional = _id_regional ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP ROL                                                       */
+/*==============================================================*/
+
+DELIMITER $$
+
+/*---insertar rol-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_rol $$
+CREATE PROCEDURE insertar_rol (
+	IN _id_rol INT UNSIGNED ,
+	IN _nombre_rol VARCHAR(45) ,
+	IN _descripcion_rol VARCHAR(100) )
+BEGIN
+	INSERT INTO rol
+	VALUES (
+		_id_rol ,
+		_nombre_rol ,
+		_descripcion_rol );
+END $$
+
+/*---editar rol-------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_rol $$
+CREATE PROCEDURE editar_rol (
+	IN _id_rol INT UNSIGNED ,
+	IN _nombre_rol VARCHAR(45) ,
+	IN _descripcion_rol VARCHAR(100) )
+BEGIN
+	UPDATE rol
+	SET nombre_rol = _nombre_rol ,
+		descripcion_rol = _descripcion_rol 
+	WHERE id_rol = _id_rol ;
+END $$
+
+/*---eliminar rol-----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_rol $$
+CREATE PROCEDURE eliminar_rol (
+	IN _id_rol INT UNSIGNED )
+BEGIN
+	DELETE FROM rol
+	WHERE id_rol = _id_rol ;
+END $$
+
+/*---ver rol----------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_rol $$
+CREATE PROCEDURE ver_rol (
+	IN _id_rol INT UNSIGNED )
+BEGIN
+	SELECT * 
+	FROM rol
+	WHERE id_rol = _id_rol ;
 END $$
 
 DELIMITER ;
@@ -427,48 +1611,246 @@ DELIMITER $$
 
 /*---insertar tipo_archivo--------------------------------------*/
 
-DROP PROCEDURE IF EXISTS insertar_tipo_archivo$$
-CREATE PROCEDURE insertar_tipo_archivo(
-	IN _id_tipo_archivo INT UNSIGNED, 
-	IN _extencion_tipo_archivo VARCHAR(7)) 
+DROP PROCEDURE IF EXISTS insertar_tipo_archivo $$
+CREATE PROCEDURE insertar_tipo_archivo (
+	IN _id_tipo_archivo INT UNSIGNED , 
+	IN _extencion_tipo_archivo VARCHAR(7) ) 
 BEGIN
 	INSERT INTO tipo_archivo 
 	VALUES (
-		_id_tipo_archivo, 
-		_extencion_tipo_archivo);
+		_id_tipo_archivo , 
+		_extencion_tipo_archivo );
 END $$
 
 /*---editar tipo_archivo----------------------------------------*/
 
-DROP PROCEDURE IF EXISTS editar_tipo_archivo$$
-CREATE PROCEDURE editar_tipo_archivo(
-	IN _id_tipo_archivo INT UNSIGNED, 
-	IN _extencion_tipo_archivo VARCHAR(7)) 
+DROP PROCEDURE IF EXISTS editar_tipo_archivo $$
+CREATE PROCEDURE editar_tipo_archivo (
+	IN _id_tipo_archivo INT UNSIGNED , 
+	IN _extencion_tipo_archivo VARCHAR(7) ) 
 BEGIN
 	UPDATE tipo_archivo 
-	SET extencion_tipo_archivo =_extencion_tipo_archivo
-	WHERE id_tipo_archivo = _id_tipo_archivo;
+	SET extencion_tipo_archivo = _extencion_tipo_archivo
+	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
 
 /*---eliminar tipo_archivo--------------------------------------*/
 
-DROP PROCEDURE IF EXISTS eliminar_tipo_archivo$$
-CREATE PROCEDURE eliminar_tipo_archivo(
-	IN _id_tipo_archivo INT UNSIGNED)
+DROP PROCEDURE IF EXISTS eliminar_tipo_archivo $$
+CREATE PROCEDURE eliminar_tipo_archivo (
+	IN _id_tipo_archivo INT UNSIGNED )
 BEGIN
-	DELETE FROM estado
-	WHERE id_tipo_archivo = _id_tipo_archivo;
+	DELETE FROM tipo_archivo
+	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
 
 /*---ver tipo_archivo-------------------------------------------*/
 
 DROP PROCEDURE IF EXISTS ver_tipo_archivo $$
 CREATE PROCEDURE ver_tipo_archivo (
-	IN _id_tipo_archivo INT UNSIGNED) 
+	IN _id_tipo_archivo INT UNSIGNED ) 
 BEGIN
 	SELECT * 
-	FROM estado 
-	WHERE id_tipo_archivo = _id_tipo_archivo;
+	FROM tipo_archivo
+	WHERE id_tipo_archivo = _id_tipo_archivo ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP TIPO_OBJETO_APRENDIZAJE                                   */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar tipo_objeto_aprendizaje---------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_tipo_objeto_aprendizaje $$
+CREATE PROCEDURE insertar_tipo_objeto_aprendizaje (
+	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
+	IN _nombre_tipo_objeto_aprendizaje VARCHAR(20) ) 
+BEGIN
+	INSERT INTO tipo_archivo 
+	VALUES (
+		_id_tipo_objeto_aprendizaje , 
+		_nombre_tipo_objeto_aprendizaje );
+END $$
+
+/*---editar tipo_objeto_aprendizaje-----------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_tipo_objeto_aprendizaje $$
+CREATE PROCEDURE editar_tipo_objeto_aprendizaje (
+	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
+	IN _nombre_tipo_objeto_aprendizaje VARCHAR(20) )  
+BEGIN
+	UPDATE tipo_archivo 
+	SET nombre_tipo_objeto_aprendizaje = _nombre_tipo_objeto_aprendizaje 
+	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
+END $$
+
+/*---eliminar tipo_objeto_aprendizaje---------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_tipo_objeto_aprendizaje $$
+CREATE PROCEDURE eliminar_tipo_objeto_aprendizaje (
+	IN _id_tipo_objeto_aprendizaje INT UNSIGNED )
+BEGIN
+	DELETE FROM tipo_objeto_aprendizaje
+	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
+END $$
+
+/*---ver tipo_objeto_aprendizaje--------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_tipo_objeto_aprendizaje $$
+CREATE PROCEDURE ver_tipo_objeto_aprendizaje (
+	IN _id_tipo_objeto_aprendizaje INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM tipo_objeto_aprendizaje
+	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VERSION                                                   */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar version-------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_version $$
+CREATE PROCEDURE insertar_version (
+	IN _id_version INT UNSIGNED , 
+	IN _nombre_version VARCHAR(100) , 
+	IN _url_version VARCHAR(500) , 
+	IN _notificacion_version BOOLEAN , 
+	IN _fecha_version DATE , 
+	IN _fecha_caducidad_version DATE , 
+	IN _id_estado_version INT UNSIGNED , 
+	IN _id_tipo_archivo_version INT UNSIGNED , 
+	IN _id_producto_version INT UNSIGNED ) 
+BEGIN
+	INSERT INTO version
+	VALUES (
+		_id_tipo_objeto_aprendizaje , 
+		_nombre_tipo_objeto_aprendizaje );
+END $$
+
+/*---editar version---------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_version $$
+CREATE PROCEDURE editar_version (
+	IN _id_version INT UNSIGNED , 
+	IN _nombre_version VARCHAR(100) , 
+	IN _url_version VARCHAR(500) , 
+	IN _notificacion_version BOOLEAN , 
+	IN _fecha_version DATE , 
+	IN _fecha_caducidad_version DATE , 
+	IN _id_estado_version INT UNSIGNED , 
+	IN _id_tipo_archivo_version INT UNSIGNED , 
+	IN _id_producto_version INT UNSIGNED )  
+BEGIN
+	UPDATE version
+	SET nombre_version = _nombre_version ,
+		url_version = _url_version ,
+		notificacion_version = _notificacion_version ,
+		fecha_version = _fecha_version ,
+		fecha_caducidad_version = _fecha_caducidad_version ,
+		id_estado_version = _id_estado_version ,
+		id_tipo_archivo_version = _id_tipo_archivo_version ,
+		id_producto_version = _id_producto_version 
+	WHERE id_version = _id_version ;
+END $$
+
+/*---eliminar version-------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_version $$
+CREATE PROCEDURE eliminar_version (
+	IN _id_version INT UNSIGNED )
+BEGIN
+	DELETE FROM version
+	WHERE id_version = _id_version ;
+END $$
+
+/*---ver version------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_version $$
+CREATE PROCEDURE ver_version (
+	IN _id_version INT UNSIGNED) 
+BEGIN
+	SELECT * 
+	FROM version
+	WHERE id_version = _id_version ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VISITA                                                    */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar visita--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_visita $$
+CREATE PROCEDURE insertar_visita (
+	IN _fecha_visita DATE ,
+	IN _id_producto_visita INT UNSIGNED ,
+	IN _id_funcionario_visita INT UNSIGNED ) 
+BEGIN
+	INSERT INTO visita
+	VALUES (
+		_id_visita , 
+		_id_producto_visita ,
+		_id_funcionario_visita );
+END $$
+
+/*---editar visita----------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_visita $$
+CREATE PROCEDURE editar_visita (
+	IN _fecha_visita DATE ,
+	IN _id_producto_visita INT UNSIGNED ,
+	IN _id_funcionario_visita INT UNSIGNED ,
+	IN _fecha_new_visita INT UNSIGNED ,
+	IN _id_new_producto_visita INT UNSIGNED ,
+	IN _id_new_funcionario_visita INT UNSIGNED)  
+BEGIN
+	UPDATE visita
+	SET fecha_visita = _fecha_new_visita ,
+		id_producto_visita = _id_new_producto_visita ,
+		id_funcionario_visita = _id_new_funcionario_visita  
+	WHERE fecha_visita = _fecha_visita AND
+		id_producto_visita = _id_producto_visita AND
+		id_funcionario_visita = _id_funcionario_visita ;
+END $$
+
+/*---eliminar visita--------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_visita $$
+CREATE PROCEDURE eliminar_visita (
+	IN _fecha_visita DATE ,
+	IN _id_producto_visita INT UNSIGNED ,
+	IN _id_funcionario_visita INT UNSIGNED ) 
+BEGIN
+	DELETE FROM visita
+	WHERE fecha_visita = _fecha_visita AND
+		id_producto_visita = _id_producto_visita AND
+		id_funcionario_visita = _id_funcionario_visita ;
+END $$
+
+/*---ver visita-------------------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_visita $$
+CREATE PROCEDURE ver_visita (
+	IN _fecha_visita DATE ,
+	IN _id_producto_visita INT UNSIGNED ,
+	IN _id_funcionario_visita INT UNSIGNED )  
+BEGIN
+	SELECT * 
+	FROM visita
+	WHERE fecha_visita = _fecha_visita AND
+		id_producto_visita = _id_producto_visita AND
+		id_funcionario_visita = _id_funcionario_visita ;
 END $$
 
 DELIMITER ;
