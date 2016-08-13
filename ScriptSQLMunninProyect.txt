@@ -69,6 +69,7 @@ CREATE TABLE version (
   notificacion_version BOOLEAN NOT NULL,
   fecha_version DATE NOT NULL,
   fecha_caducidad_version DATE NOT NULL,
+  fecha_aprovaciob_version DATE NULL,
   id_estado_version INT UNSIGNED NOT NULL,
   id_tipo_archivo_version INT UNSIGNED NOT NULL,
   id_producto_version INT UNSIGNED NOT NULL,
@@ -281,9 +282,12 @@ CREATE TABLE comentario (
   puntuacion_comentario INT UNSIGNED NOT NULL,
   fecha_comentario DATE NOT NULL,
   id_producto_comentario INT UNSIGNED NOT NULL,
+  id_funcionario_comentario INT UNSIGNED NOT NULL,
   PRIMARY KEY (id_comentario),
   FOREIGN KEY (id_producto_comentario)
-    REFERENCES producto (id_producto))
+    REFERENCES producto (id_producto),
+  FOREIGN KEY (id_funcionario_comentario)
+    REFERENCES funcionario (id_funcionario))
 ENGINE = InnoDB;
 
 /*==============================================================*/
@@ -726,11 +730,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_comentario $$
 CREATE PROCEDURE insertar_comentario (
-	IN _id_comentario INT UNSIGNED,
-	IN _valoracion_comentario VARCHAR(45),
-	IN _puntuacion_comentario INT UNSIGNED,
-	IN _fecha_comentario DATE,
-	IN _id_producto_comentario INT UNSIGNED)
+	IN _id_comentario INT UNSIGNED ,
+	IN _valoracion_comentario VARCHAR(45) ,
+	IN _puntuacion_comentario INT UNSIGNED ,
+	IN _fecha_comentario DATE ,
+	IN _id_producto_comentario INT UNSIGNED ,
+        IN _id_funcionario_comentario INT UNSIGNED )
 BEGIN
 	INSERT INTO comentario
 	VALUES (
@@ -738,24 +743,27 @@ BEGIN
 		_valoracion_comentario ,
 		_puntuacion_comentario ,
 		_fecha_comentario ,
-		_id_producto_comentario );
+		_id_producto_comentario ,
+                _id_funcionario_comentario );
 END $$
 
 /*---editar comentario------------------------------------------*/
 
 DROP PROCEDURE IF EXISTS editar_comentario $$
 CREATE PROCEDURE editar_comentario (
-	IN _id_comentario INT UNSIGNED,
-	IN _valoracion_comentario VARCHAR(45),
-	IN _puntuacion_comentario INT UNSIGNED,
-	IN _fecha_comentario DATE,
-	IN _id_producto_comentario INT UNSIGNED)
+	IN _id_comentario INT UNSIGNED ,
+	IN _valoracion_comentario VARCHAR(45) ,
+	IN _puntuacion_comentario INT UNSIGNED ,
+	IN _fecha_comentario DATE ,
+	IN _id_producto_comentario INT UNSIGNED ,
+        IN _id_funcionario_comentario INT UNSIGNED )
 BEGIN
 	UPDATE comentario
 	SET valoracion_comentario = _valoracion_comentario ,
 		puntuacion_comentario = _puntuacion_comentario ,
 		fecha_comentario = _fecha_comentario ,
-		id_producto_comentario = _id_producto_comentario
+		id_producto_comentario = _id_producto_comentario ,
+                id_funcionario_comentario = _id_funcionario_comentario
 	WHERE id_comentario = _id_comentario ;
 END $$
 
@@ -1745,9 +1753,10 @@ CREATE PROCEDURE editar_version (
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
 	IN _fecha_caducidad_version DATE , 
+	IN _fecha_aprovacion_version DATE , 
 	IN _id_estado_version INT UNSIGNED , 
 	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED )  
+	IN _id_producto_version INT UNSIGNED )
 BEGIN
 	UPDATE version
 	SET nombre_version = _nombre_version ,
@@ -1755,6 +1764,7 @@ BEGIN
 		notificacion_version = _notificacion_version ,
 		fecha_version = _fecha_version ,
 		fecha_caducidad_version = _fecha_caducidad_version ,
+                fecha_aprobacion_version = _fecha_aprobacion_version ,
 		id_estado_version = _id_estado_version ,
 		id_tipo_archivo_version = _id_tipo_archivo_version ,
 		id_producto_version = _id_producto_version 
