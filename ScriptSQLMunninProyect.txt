@@ -68,8 +68,8 @@ CREATE TABLE version (
   url_version NVARCHAR(500) NOT NULL,
   notificacion_version BOOLEAN NOT NULL,
   fecha_version DATE NOT NULL,
-  fecha_caducidad_version DATE NOT NULL,
-  fecha_aprovaciob_version DATE NULL,
+  fecha_caducidad_version DATE NULL,
+  fecha_aprobacion_version DATE NULL,
   id_estado_version INT UNSIGNED NOT NULL,
   id_tipo_archivo_version INT UNSIGNED NOT NULL,
   id_producto_version INT UNSIGNED NOT NULL,
@@ -1675,12 +1675,12 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE insertar_tipo_objeto_aprendizaje (
 	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
-	IN _nombre_tipo_objeto_aprendizaje VARCHAR(20) ) 
+	IN _nombre_tipo_obj_apren VARCHAR(20) ) 
 BEGIN
-	INSERT INTO tipo_archivo 
+	INSERT INTO tipo_objeto_aprendizaje
 	VALUES (
 		_id_tipo_objeto_aprendizaje , 
-		_nombre_tipo_objeto_aprendizaje );
+		_nombre_tipo_obj_apren );
 END $$
 
 /*---editar tipo_objeto_aprendizaje-----------------------------*/
@@ -1688,10 +1688,10 @@ END $$
 DROP PROCEDURE IF EXISTS editar_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE editar_tipo_objeto_aprendizaje (
 	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
-	IN _nombre_tipo_objeto_aprendizaje VARCHAR(20) )  
+	IN _nombre_tipo_obj_apren VARCHAR(20) )  
 BEGIN
-	UPDATE tipo_archivo 
-	SET nombre_tipo_objeto_aprendizaje = _nombre_tipo_objeto_aprendizaje 
+	UPDATE tipo_objeto_aprendizaje
+	SET nombre_tipo_obj_apren = _nombre_tipo_obj_apren 
 	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
 END $$
 
@@ -1733,14 +1733,23 @@ CREATE PROCEDURE insertar_version (
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
 	IN _fecha_caducidad_version DATE , 
+	IN _fecha_aprobacion_version DATE , 
 	IN _id_estado_version INT UNSIGNED , 
 	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED ) 
+	IN _id_producto_version INT UNSIGNED )
 BEGIN
 	INSERT INTO version
 	VALUES (
-		_id_tipo_objeto_aprendizaje , 
-		_nombre_tipo_objeto_aprendizaje );
+		_id_version , 
+		_nombre_version ,
+                _url_version ,
+                _notificacion_version ,
+                _fecha_version ,
+                _fecha_caducidad_version ,
+                _fecha_aprobacion_version ,
+                _id_estado_version ,
+                _id_tipo_archivo_version ,
+                _id_producto_version );
 END $$
 
 /*---editar version---------------------------------------------*/
@@ -1753,7 +1762,7 @@ CREATE PROCEDURE editar_version (
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
 	IN _fecha_caducidad_version DATE , 
-	IN _fecha_aprovacion_version DATE , 
+	IN _fecha_aprobacion_version DATE , 
 	IN _id_estado_version INT UNSIGNED , 
 	IN _id_tipo_archivo_version INT UNSIGNED , 
 	IN _id_producto_version INT UNSIGNED )
