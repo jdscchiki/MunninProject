@@ -225,7 +225,7 @@ ENGINE = InnoDB;
 CREATE TABLE eval_detalle_lista (
   id_eval_detalle_lista INT UNSIGNED NOT NULL,
   calificacion_eval_detalle_lista BOOLEAN NULL,
-  obsevacion_eval_detalle_lista NVARCHAR(100) NULL,
+  observacion_eval_detalle_lista NVARCHAR(100) NULL,
   id_eval_version_general_eval_detalle_lista INT UNSIGNED NOT NULL,
   id_detalle_lista_eval_detalle_lista INT UNSIGNED NOT NULL,
   PRIMARY KEY (id_eval_detalle_lista),
@@ -251,10 +251,10 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE area (
-  id_area INT UNSIGNED NOT NULL,
-  nombre_area NVARCHAR(100) NOT NULL,
-  id_centro_area NVARCHAR(10) NOT NULL,
-  PRIMARY KEY (id_area),
+  id_area INT UNSIGNED NOT NULL ,
+  nombre_area NVARCHAR(100) NOT NULL ,
+  id_centro_area NVARCHAR(10) NOT NULL ,
+  PRIMARY KEY (id_area) ,
   FOREIGN KEY (id_centro_area)
     REFERENCES centro (id_centro))
 ENGINE = InnoDB;
@@ -380,15 +380,14 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_area $$
 CREATE PROCEDURE insertar_area (
-	IN _id_area INT UNSIGNED, 
-	IN _nombre_area VARCHAR(100),
-	IN _id_centro_area VARCHAR(10)) 
+	IN _id_area INT UNSIGNED , 
+	IN _nombre_area VARCHAR(100) ,
+	IN _id_centro_area VARCHAR(10) ) 
 BEGIN
-	INSERT INTO tipo_archivo 
-	VALUES (
-		_id_area,
-		_nombre_area,
-		_id_centro_area);
+	INSERT INTO area
+	VALUES (_id_area ,
+		_nombre_area ,
+		_id_centro_area );
 END $$
 
 /*---editar area------------------------------------------------*/
@@ -400,7 +399,7 @@ CREATE PROCEDURE editar_area (
 	IN _id_centro_area VARCHAR(10)) 
 BEGIN
 	UPDATE area 
-	SET _nombre_area = _nombre_area,
+	SET nombre_area = _nombre_area,
 		id_centro_area = _id_centro_area 
 	WHERE id_area = _id_area;
 END $$
@@ -958,7 +957,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_eval_detalle_lista $$
 CREATE PROCEDURE ver_eval_detalle_lista (
-	IN _id_estado INT UNSIGNED) 
+	IN _id_eval_detalle_lista INT UNSIGNED) 
 BEGIN
 	SELECT * 
 	FROM eval_detalle_lista
@@ -1818,7 +1817,7 @@ CREATE PROCEDURE insertar_visita (
 BEGIN
 	INSERT INTO visita
 	VALUES (
-		_id_visita , 
+		_fecha_visita , 
 		_id_producto_visita ,
 		_id_funcionario_visita );
 END $$
@@ -1830,7 +1829,7 @@ CREATE PROCEDURE editar_visita (
 	IN _fecha_visita DATE ,
 	IN _id_producto_visita INT UNSIGNED ,
 	IN _id_funcionario_visita INT UNSIGNED ,
-	IN _fecha_new_visita INT UNSIGNED ,
+	IN _fecha_new_visita DATE ,
 	IN _id_new_producto_visita INT UNSIGNED ,
 	IN _id_new_funcionario_visita INT UNSIGNED)  
 BEGIN
@@ -1863,7 +1862,7 @@ DROP PROCEDURE IF EXISTS ver_visita $$
 CREATE PROCEDURE ver_visita (
 	IN _fecha_visita DATE ,
 	IN _id_producto_visita INT UNSIGNED ,
-	IN _id_funcionario_visita INT UNSIGNED )  
+	IN _id_funcionario_visita INT UNSIGNED )
 BEGIN
 	SELECT * 
 	FROM visita
