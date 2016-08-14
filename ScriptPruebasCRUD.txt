@@ -48,12 +48,12 @@ CALL eliminar_tipo_objeto_aprendizaje(1);
 /* VERSION                                                      */
 /*==============================================================*/
 
-CALL insertar_estado(1, "Rechazado");
+CALL insertar_estado(1, "Aprovado");
 CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
 CALL insertar_tipo_archivo(1, ".rar");
 CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, "java 1.0", "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
-CALL editar_version(1, "java 1.0", "no se", TRUE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL editar_version(1, 1, "no se", TRUE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
 
 CALL ver_version(1);
 
@@ -129,7 +129,7 @@ CALL insertar_estado(1, "Rechazado");
 CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
 CALL insertar_tipo_archivo(1, ".rar");
 CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, "java 1.0", "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
 CALL insertar_autor(1,1);
 CALL editar_autor(1,1,1,1);
 
@@ -220,7 +220,7 @@ CALL insertar_estado(1, "Rechazado");
 CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
 CALL insertar_tipo_archivo(1, ".rar");
 CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, "java 1.0", "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
 CALL insertar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
 CALL editar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
 
@@ -250,7 +250,7 @@ CALL insertar_estado(1, "Rechazado");
 CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
 CALL insertar_tipo_archivo(1, ".rar");
 CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, "java 1.0", "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
 CALL insertar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
 CALL insertar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
 CALL insertar_item(1, "item pedagogico", 1);
@@ -453,3 +453,25 @@ CALL eliminar_funcionario(1);
 CALL eliminar_centro("9303");
 CALL eliminar_regional("11");
 CALL eliminar_ciudad("11001");
+
+/*==============================================================*/
+/* VER_PRODUCTOS_APROVADOS                                      */
+/*==============================================================*/
+
+CALL insertar_estado(1, "Aprovado");
+CALL insertar_estado(2, "Rechazado");
+CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
+CALL insertar_tipo_archivo(1, ".rar");
+CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
+CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1);
+CALL insertar_version(2, 2, "no se", FALSE, '11-11-11', '12-03-01', NULL, 2, 1, 1);
+
+CALL ver_productos_aprovados();
+
+CALL eliminar_version(1);
+CALL eliminar_version(2);
+CALL eliminar_producto(1);
+CALL eliminar_estado(1);
+CALL eliminar_estado(2);
+CALL eliminar_tipo_objeto_aprendizaje(1);
+CALL eliminar_tipo_archivo(1);

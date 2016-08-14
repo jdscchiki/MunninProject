@@ -64,7 +64,7 @@ ENGINE = InnoDB;
 
 CREATE TABLE version (
   id_version INT UNSIGNED NOT NULL,
-  nombre_version NVARCHAR(100) NOT NULL,
+  numero_version INT UNSIGNED NOT NULL,
   url_version NVARCHAR(500) NOT NULL,
   notificacion_version BOOLEAN NOT NULL,
   fecha_version DATE NOT NULL,
@@ -1727,7 +1727,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_version $$
 CREATE PROCEDURE insertar_version (
 	IN _id_version INT UNSIGNED , 
-	IN _nombre_version VARCHAR(100) , 
+	IN _numero_version INT UNSIGNED , 
 	IN _url_version VARCHAR(500) , 
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
@@ -1740,7 +1740,7 @@ BEGIN
 	INSERT INTO version
 	VALUES (
 		_id_version , 
-		_nombre_version ,
+		_numero_version ,
                 _url_version ,
                 _notificacion_version ,
                 _fecha_version ,
@@ -1756,7 +1756,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_version $$
 CREATE PROCEDURE editar_version (
 	IN _id_version INT UNSIGNED , 
-	IN _nombre_version VARCHAR(100) , 
+	IN _numero_version INT UNSIGNED , 
 	IN _url_version VARCHAR(500) , 
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
@@ -1767,7 +1767,7 @@ CREATE PROCEDURE editar_version (
 	IN _id_producto_version INT UNSIGNED )
 BEGIN
 	UPDATE version
-	SET nombre_version = _nombre_version ,
+	SET numero_version = _numero_version ,
 		url_version = _url_version ,
 		notificacion_version = _notificacion_version ,
 		fecha_version = _fecha_version ,
@@ -1869,6 +1869,73 @@ BEGIN
 	WHERE fecha_visita = _fecha_visita AND
 		id_producto_visita = _id_producto_visita AND
 		id_funcionario_visita = _id_funcionario_visita ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* PROCEDIMIENTOS ALMACENADOS AVANZADOS                         */
+/*==============================================================*/
+/* VER_PRODUCTOS_APROVADOS                                      */
+/* ENVIAR_NUEVO_PRODUCTO                                        */
+/* SP VISITA                                                    */
+/* SP VISITA                                                    */
+/* SP VISITA                                                    */
+/*==============================================================*/
+/*==============================================================*/
+/* SP VER_PRODUCTOS_APROVADOS                                   */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_productos_aprovados $$
+CREATE PROCEDURE ver_productos_aprovados (
+    )
+BEGIN
+    SELECT 
+        nombre_producto ,
+        numero_version ,
+        descripcion_producto ,
+        fecha_version ,
+        nombre_tipo_obj_apren,
+        extencion_tipo_archivo
+    FROM producto
+    INNER JOIN version
+    ON id_producto = id_producto_version
+    INNER JOIN tipo_archivo
+    ON id_tipo_archivo = id_tipo_archivo_version
+    INNER JOIN tipo_objeto_aprendizaje
+    ON id_tipo_objeto_aprendizaje = id_tipo_objeto_aprendizaje_producto 
+    WHERE id_estado_version = 1;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP ENVIAR_NUEVO_PRODUCTO                                     */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS enviar_nuevo_producto $$
+CREATE PROCEDURE enviar_nuevo_producto (
+    _nombre_producto 
+    )
+BEGIN
+    SELECT 
+        nombre_producto ,
+        descripcion_producto ,
+        fecha_version ,
+        nombre_tipo_obj_apren,
+        extencion_tipo_archivo
+    FROM producto
+    INNER JOIN version
+    ON id_producto = id_producto_version
+    INNER JOIN tipo_archivo
+    ON id_tipo_archivo = id_tipo_archivo_version
+    INNER JOIN tipo_objeto_aprendizaje
+    ON id_tipo_objeto_aprendizaje = id_tipo_objeto_aprendizaje_producto 
+    WHERE id_estado_version = 1;
 END $$
 
 DELIMITER ;
