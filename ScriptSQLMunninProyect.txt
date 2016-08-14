@@ -1919,23 +1919,39 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS enviar_nuevo_producto $$
 CREATE PROCEDURE enviar_nuevo_producto (
-    _nombre_producto 
+    IN _nombre_producto VARCHAR(100),
+    IN _descripcion_producto VARCHAR(255),
+    IN _palabras_clave_producto VARCHAR(200),
+    IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED,
+    IN _url_version VARCHAR(500),
+    IN _id_tipo_archivo_version INT UNSIGNED
     )
 BEGIN
-    SELECT 
-        nombre_producto ,
-        descripcion_producto ,
-        fecha_version ,
-        nombre_tipo_obj_apren,
-        extencion_tipo_archivo
-    FROM producto
-    INNER JOIN version
-    ON id_producto = id_producto_version
-    INNER JOIN tipo_archivo
-    ON id_tipo_archivo = id_tipo_archivo_version
-    INNER JOIN tipo_objeto_aprendizaje
-    ON id_tipo_objeto_aprendizaje = id_tipo_objeto_aprendizaje_producto 
-    WHERE id_estado_version = 1;
+    DECLARE _fecha DATE;
+    DECLARE _id_producto INT UNSIGNED;
+    DECLARE _id_version INT UNSIGNED;
+    SET _fecha = CURDATE();
+    SET _id_producto = (SELECT MAX(id_producto) FROM producto) + 1;
+    SET _id_producto = IFNULL(_id_producto, 1);
+    CALL insertar_producto(
+        _id_producto ,
+        _nombre_producto ,
+        _descripcion_producto ,
+        _palabras_clave_producto,
+        _id_tipo_objeto_aprendizaje_producto);
+    SET _id_version = (SELECT MAX(id_version) FROM version) + 1;
+    SET _id_version = IFNULL(_id_version, 1);
+    CALL insertar_version(
+        _id_version ,
+        1 ,
+        _url_version ,
+        0 ,
+        _fecha ,
+        NULL ,
+        NULL ,
+        3 ,
+        _id_tipo_archivo_version ,
+        _id_producto);
 END $$
 
 DELIMITER ;

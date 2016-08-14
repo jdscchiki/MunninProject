@@ -475,3 +475,24 @@ CALL eliminar_estado(1);
 CALL eliminar_estado(2);
 CALL eliminar_tipo_objeto_aprendizaje(1);
 CALL eliminar_tipo_archivo(1);
+
+/*==============================================================*/
+/* ENVIAR_NUEVO_PRODUCTO                                        */
+/*==============================================================*/
+
+CALL insertar_estado(1, "Aprovado");
+CALL insertar_estado(2, "Rechazado");
+CALL insertar_estado(3, "Revision del equipo tecnico");
+CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
+CALL insertar_tipo_archivo(1, ".rar");
+CALL enviar_nuevo_producto("java para dummies", "para cuando no te gusta java pero te toca verlo de todas formas", "java, poo", 1, "nose", 1);
+
+CALL ver_version(1);
+
+CALL eliminar_version(1);
+CALL eliminar_producto(1);
+CALL eliminar_estado(1);
+CALL eliminar_estado(2);
+CALL eliminar_estado(3);
+CALL eliminar_tipo_objeto_aprendizaje(1);
+CALL eliminar_tipo_archivo(1);
