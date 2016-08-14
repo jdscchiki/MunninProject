@@ -476,8 +476,8 @@ END $$
 
 /*---ver autor--------------------------------------------------*/
 
-DROP PROCEDURE IF EXISTS ver_area $$
-CREATE PROCEDURE ver_area (
+DROP PROCEDURE IF EXISTS ver_autor $$
+CREATE PROCEDURE ver_autor (
 	IN _id_funcionario_autor INT UNSIGNED,
 	IN _id_version_autor INT UNSIGNED)
 BEGIN
@@ -819,8 +819,8 @@ CREATE PROCEDURE editar_detalle_lista (
 	IN _id_item_detalle_lista INT UNSIGNED )
 BEGIN
 	UPDATE detalle_lista
-	SET _id_lista_detalle_lista = _id_lista_detalle_lista ,
-		_id_item_detalle_lista = _id_item_detalle_lista
+	SET id_lista_detalle_lista = _id_lista_detalle_lista ,
+		id_item_detalle_lista = _id_item_detalle_lista
 	WHERE id_detalle_lista = _id_detalle_lista ;
 END $$
 
@@ -1022,7 +1022,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_eval_version_general $$
 CREATE PROCEDURE eliminar_eval_version_general (
-	IN _id_eval_detalle_lista INT UNSIGNED)
+	IN _id_eval_version_general INT UNSIGNED)
 BEGIN
 	DELETE FROM eval_version_general
 	WHERE id_eval_version_general = _id_eval_version_general ;
@@ -1032,7 +1032,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_eval_version_general $$
 CREATE PROCEDURE ver_eval_version_general (
-	IN _id_estado INT UNSIGNED) 
+	IN _id_eval_version_general INT UNSIGNED) 
 BEGIN
 	SELECT * 
 	FROM eval_version_general
