@@ -59,30 +59,6 @@ CREATE TABLE producto (
 ENGINE = InnoDB;
 
 /*==============================================================*/
-/* Table: VERSION                                               */
-/*==============================================================*/
-
-CREATE TABLE version (
-  id_version INT UNSIGNED NOT NULL,
-  numero_version INT UNSIGNED NOT NULL,
-  url_version NVARCHAR(500) NOT NULL,
-  notificacion_version BOOLEAN NOT NULL,
-  fecha_version DATE NOT NULL,
-  fecha_caducidad_version DATE NULL,
-  fecha_aprobacion_version DATE NULL,
-  id_estado_version INT UNSIGNED NOT NULL,
-  id_tipo_archivo_version INT UNSIGNED NOT NULL,
-  id_producto_version INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id_version),
-  FOREIGN KEY (id_estado_version )
-    REFERENCES estado (id_estado),
-  FOREIGN KEY (id_tipo_archivo_version )
-    REFERENCES tipo_archivo (id_tipo_archivo),
-  FOREIGN KEY (id_producto_version)
-    REFERENCES producto (id_producto))
-ENGINE = InnoDB;
-
-/*==============================================================*/
 /* Table: REGIONAL                                               */
 /*==============================================================*/
 
@@ -117,6 +93,35 @@ CREATE TABLE centro (
   FOREIGN KEY (id_ciudad_centro)
     REFERENCES ciudad (id_ciudad))
 ENGINE = InnoDB;
+
+/*==============================================================*/
+/* Table: VERSION                                               */
+/*==============================================================*/
+
+CREATE TABLE version (
+  id_version INT UNSIGNED NOT NULL,
+  numero_version INT UNSIGNED NOT NULL,
+  url_version NVARCHAR(500) NOT NULL,
+  notificacion_version BOOLEAN NOT NULL,
+  fecha_version DATE NOT NULL,
+  fecha_caducidad_version DATE NULL,
+  fecha_aprobacion_version DATE NULL,
+  id_estado_version INT UNSIGNED NOT NULL,
+  id_tipo_archivo_version INT UNSIGNED NOT NULL,
+  id_producto_version INT UNSIGNED NOT NULL,
+  id_centro_version NVARCHAR(10) NOT NULL,
+  PRIMARY KEY (id_version),
+  FOREIGN KEY (id_estado_version )
+    REFERENCES estado (id_estado),
+  FOREIGN KEY (id_tipo_archivo_version )
+    REFERENCES tipo_archivo (id_tipo_archivo),
+  FOREIGN KEY (id_producto_version)
+    REFERENCES producto (id_producto),
+  FOREIGN KEY (id_centro_version)
+    REFERENCES centro (id_centro))
+ENGINE = InnoDB;
+
+
 
 /*==============================================================*/
 /* Table: FUNCIONARIO                                           */
@@ -1735,7 +1740,8 @@ CREATE PROCEDURE insertar_version (
 	IN _fecha_aprobacion_version DATE , 
 	IN _id_estado_version INT UNSIGNED , 
 	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED )
+	IN _id_producto_version INT UNSIGNED , 
+	IN _id_centro_version VARCHAR(10) )
 BEGIN
 	INSERT INTO version
 	VALUES (
@@ -1748,7 +1754,8 @@ BEGIN
                 _fecha_aprobacion_version ,
                 _id_estado_version ,
                 _id_tipo_archivo_version ,
-                _id_producto_version );
+                _id_producto_version ,
+                _id_centro_version);
 END $$
 
 /*---editar version---------------------------------------------*/
@@ -1764,7 +1771,8 @@ CREATE PROCEDURE editar_version (
 	IN _fecha_aprobacion_version DATE , 
 	IN _id_estado_version INT UNSIGNED , 
 	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED )
+	IN _id_producto_version INT UNSIGNED , 
+	IN _id_centro_version VARCHAR(10) )
 BEGIN
 	UPDATE version
 	SET numero_version = _numero_version ,
@@ -1775,7 +1783,8 @@ BEGIN
                 fecha_aprobacion_version = _fecha_aprobacion_version ,
 		id_estado_version = _id_estado_version ,
 		id_tipo_archivo_version = _id_tipo_archivo_version ,
-		id_producto_version = _id_producto_version 
+		id_producto_version = _id_producto_version ,
+                id_centro_version = _id_centro_version
 	WHERE id_version = _id_version ;
 END $$
 
@@ -1924,7 +1933,8 @@ CREATE PROCEDURE enviar_nuevo_producto (
     IN _palabras_clave_producto VARCHAR(200),
     IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED,
     IN _url_version VARCHAR(500),
-    IN _id_tipo_archivo_version INT UNSIGNED
+    IN _id_tipo_archivo_version INT UNSIGNED ,
+    IN _id_centro_version INT UNSIGNED
     )
 BEGIN
     DECLARE _fecha DATE;
@@ -1951,7 +1961,8 @@ BEGIN
         NULL ,
         3 ,
         _id_tipo_archivo_version ,
-        _id_producto);
+        _id_producto ,
+        _id_centro_version);
 END $$
 
 DELIMITER ;
