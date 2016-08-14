@@ -363,7 +363,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 /* PROCEDIMIENTOS ALMACENADOS                                   */
 /*==============================================================*/
-/* Primero los CRUD basicos de todas las tablas:                */
+/* Primero los CRUD de todas las tablas:                        */
 /* crear_(nombre de la tabla)                                   */
 /* editar_(nombre de la tabla)                                  */
 /* eliminar_(nombre de la tabla)                                */
