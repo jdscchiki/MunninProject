@@ -1887,9 +1887,16 @@ DELIMITER ;
 /*==============================================================*/
 /* VER_PRODUCTOS_APROVADOS                                      */
 /* ENVIAR_NUEVO_PRODUCTO                                        */
-/* SP VISITA                                                    */
-/* SP VISITA                                                    */
-/* SP VISITA                                                    */
+/* VER_INSTRUCTORES_CENTRO                                      */
+/* REGISTRAR_INSTRUCTOR_CENTRO                                  */
+/* CREAR_NUEVA_LISTA                                            */
+/* CREAR_NUEVO_ITEM                                             */
+/* CREAR_NUEVA_AREA                                             */
+/* CREAR_NUEVO_CATEGORIA                                        */
+/* CREAR_NUEVO_COMENTARIO                                       */
+/* CREAR_NUEVO_DETALLE_LISTA                                    */
+/* NUEVA_EVALUACION_ITEM                                        */
+/* NUEVA_EVALUACION_LISTA                                       */
 /*==============================================================*/
 /*==============================================================*/
 /* SP VER_PRODUCTOS_APROVADOS                                   */
@@ -1963,6 +1970,270 @@ BEGIN
         _id_tipo_archivo_version ,
         _id_producto ,
         _id_centro_version);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_INSTRUCTORES_CENTRO                                   */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_instructores_centro $$
+CREATE PROCEDURE ver_instructores_centro (
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    SELECT 
+        documento_funcionario,
+        nombre_funcionario,
+        apellido_funcionario,
+        correo_funcionario,
+        cargo_funcionario,
+        telefono_funcionario
+    FROM funcionario
+    WHERE id_centro_funcionario = _id_centro;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP REGISTRAR_INSTRUCTOR_CENTRO                               */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS registrar_instructor_centro $$
+CREATE PROCEDURE registrar_instructor_centro (
+        IN _documento_funcionario VARCHAR(8) ,
+        IN _correo_funcionario VARCHAR(100) ,
+        IN _contrasena_funcionario VARCHAR(255) ,
+        IN _nombre_funcionario VARCHAR(70) ,
+        IN _apellido_funcionario VARCHAR(70) ,
+        IN _cargo_funcionario VARCHAR(45) ,
+        IN _telefono_funcionario VARCHAR(10) ,
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    DECLARE _id_funcionario INT UNSIGNED;
+    SET _id_funcionario = (SELECT MAX(id_funcionario) FROM funcionario) + 1;
+    SET _id_funcionario = IFNULL(_id_funcionario, 1);
+    CALL insertar_funcionario(
+        _id_funcionario ,
+        _documento_funcionario ,
+        _correo_funcionario ,
+        _contrasena_funcionario ,
+        _nombre_funcionario ,
+        _apellido_funcionario ,
+        _cargo_funcionario ,
+        _telefono_funcionario ,
+        _id_centro);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CREAR_NUEVA_LISTA                                         */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nueva_lista $$
+CREATE PROCEDURE crear_nueva_lista (
+        IN _nombre_lista VARCHAR(100) ,
+        IN _descripcion_lista VARCHAR(255) ,
+        IN _tipo_lista VARCHAR(20) ,
+        IN _id_autor_lista INT UNSIGNED
+    )
+BEGIN
+    DECLARE _fecha_lista DATE ;
+    DECLARE _id_lista INT UNSIGNED ;
+    SET _fecha_lista = CURDATE() ;
+    SET _id_lista = (SELECT MAX(id_lista) FROM lista_chequeo) + 1;
+    SET _id_lista = IFNULL(_id_lista, 1);
+    CALL insertar_lista_chequeo(
+        _id_lista ,
+        _nombre_lista ,
+        _descripcion_lista ,
+        _fecha_lista ,
+        _tipo_lista ,
+        _id_autor_lista);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CREAR_NUEVO_ITEM                                          */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nuevo_item $$
+CREATE PROCEDURE crear_nuevo_item (
+        IN _descriptor_item VARCHAR(200),
+        IN _id_autor_item INT UNSIGNED
+    )
+BEGIN
+    DECLARE _id_item INT UNSIGNED ;
+    SET _id_item = (SELECT MAX(id_item) FROM item) + 1;
+    SET _id_item = IFNULL(_id_item, 1);
+    CALL insertar_item(
+        _id_item ,
+        _descriptor_item ,
+        _id_autor_item );
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CREAR_NUEVA_AREA                                          */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nueva_area $$
+CREATE PROCEDURE crear_nueva_area (
+        IN _nombre_area VARCHAR(100),
+        IN _id_centro_area VARCHAR(10)
+    )
+BEGIN
+    DECLARE _id_area INT UNSIGNED ;
+    SET _id_area = (SELECT MAX(id_area) FROM area) + 1;
+    SET _id_area = IFNULL(_id_area, 1);
+    CALL insertar_area(
+        _id_area ,
+        _nombre_area ,
+        _id_centro_area);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CREAR_NUEVA_CATEGORIA                                     */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nueva_categoria $$
+CREATE PROCEDURE crear_nueva_categoria (
+        IN _nombre_categoria VARCHAR(50),
+        IN _id_centro_categoria VARCHAR(10)
+    )
+BEGIN
+    DECLARE _id_categoria INT UNSIGNED ;
+    SET _id_categoria = (SELECT MAX(id_categoria) FROM categoria) + 1;
+    SET _id_categoria = IFNULL(_id_categoria, 1);
+    CALL insertar_categoria(
+        _id_categoria ,
+        _nombre_categoria ,
+        _id_centro_categoria);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CREAR_NUEVO_COMENTARIO                                    */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nuevo_comentario $$
+CREATE PROCEDURE crear_nuevo_comentario (
+        IN _valoracion_comentario VARCHAR(50) ,
+        IN _puntuacion_comentario INT ,
+        IN _id_producto_comentario INT UNSIGNED ,
+        IN _id_funcionario_comentario INT UNSIGNED
+    )
+BEGIN
+    DECLARE _id_comentario INT UNSIGNED ;
+    DECLARE _fecha_comentario DATE;
+    SET _fecha_comentario = CURDATE();
+    SET _id_comentario = (SELECT MAX(id_comentario) FROM comentario) + 1;
+    SET _id_comentario = IFNULL(_id_comentario, 1);
+    CALL insertar_comentario(
+        _id_comentario ,
+        _valoracion_comentario ,
+        _puntuacion_comentario ,
+        _fecha_comentario ,
+        _id_producto_comentario ,
+        _id_funcionario_comentario);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* CREAR_NUEVO_DETALLE_LISTA                                    */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS crear_nuevo_detalle_lista $$
+CREATE PROCEDURE crear_nuevo_detalle_lista (
+        IN _id_lista_detalle_lista INT UNSIGNED ,
+        IN _id_item_detalle_lista INT UNSIGNED 
+    )
+BEGIN
+    DECLARE _id_detalle_lista INT UNSIGNED ;
+    SET _id_detalle_lista = (SELECT MAX(id_detalle_lista) FROM detalle_lista) + 1;
+    SET _id_detalle_lista = IFNULL(_id_detalle_lista, 1);
+    CALL insertar_detalle_lista(
+        _id_detalle_lista ,
+        _id_lista_detalle_lista ,
+        _id_item_detalle_lista );
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* NUEVA_EVALUACION_ITEM                                        */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS nueva_evaluacion_item $$
+CREATE PROCEDURE nueva_evaluacion_item (
+        IN _id_eval_version_eval_detalle_lista INT UNSIGNED ,
+        IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED 
+    )
+BEGIN
+    DECLARE _id_eval_detalle_lista INT UNSIGNED ;
+    SET _id_eval_detalle_lista = (SELECT MAX(id_eval_detalle_lista) FROM eval_detalle_lista) + 1;
+    SET _id_eval_detalle_lista = IFNULL(_id_eval_detalle_lista, 1);
+    CALL insertar_eval_detalle_lista (
+        _id_eval_detalle_lista ,
+        NULL ,
+        NULL ,
+        _id_eval_version_eval_detalle_lista ,
+        _id_detalle_lista_eval_detalle_lista);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* NUEVA_EVALUACION_LISTA                                       */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS nueva_evaluacion_lista $$
+CREATE PROCEDURE nueva_evaluacion_lista (
+        IN _id_version_eval_version_general INT UNSIGNED ,
+        IN _id_lista_eval_version_general INT UNSIGNED ,
+        IN _id_evaluador_eval_version_general INT UNSIGNED 
+    )
+BEGIN
+    DECLARE _id_eval_version_general INT UNSIGNED ;
+    SET _id_eval_version_general = (SELECT MAX(id_eval_version_general) FROM eval_version_general) + 1;
+    SET _id_eval_version_general = IFNULL(_id_eval_version_general, 1);
+    CALL insertar_eval_version_general (
+        _id_eval_version_general ,
+        _id_version_eval_version_general ,
+        _id_lista_eval_version_general ,
+        NULL ,
+        NULL ,
+        NULL ,
+        _id_evaluador_eval_version_general );
 END $$
 
 DELIMITER ;
