@@ -22,7 +22,6 @@ CREATE TABLE estado (
   PRIMARY KEY (id_estado))
 ENGINE = InnoDB;
 
-
 /*==============================================================*/
 /* Table: TIPO_ARCHIVO                                          */
 /*==============================================================*/
@@ -1889,14 +1888,16 @@ DELIMITER ;
 /* ENVIAR_NUEVO_PRODUCTO                                        */
 /* VER_INSTRUCTORES_CENTRO                                      */
 /* REGISTRAR_INSTRUCTOR_CENTRO                                  */
-/* CREAR_NUEVA_LISTA                                            */
-/* CREAR_NUEVO_ITEM                                             */
-/* CREAR_NUEVA_AREA                                             */
-/* CREAR_NUEVO_CATEGORIA                                        */
-/* CREAR_NUEVO_COMENTARIO                                       */
-/* CREAR_NUEVO_DETALLE_LISTA                                    */
+/* NUEVA_LISTA                                                  */
+/* NUEVO_ITEM                                                   */
+/* NUEVA_AREA                                                   */
+/* NUEVA_CATEGORIA                                              */
+/* NUEVO_COMENTARIO                                             */
+/* NUEVO_DETALLE_LISTA                                          */
 /* NUEVA_EVALUACION_ITEM                                        */
 /* NUEVA_EVALUACION_LISTA                                       */
+/* NUEVO_PROGRAMA                                               */
+/* NUEVA_VISITA                                                 */
 /*==============================================================*/
 /*==============================================================*/
 /* SP VER_PRODUCTOS_APROVADOS                                   */
@@ -2034,13 +2035,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP CREAR_NUEVA_LISTA                                         */
+/* SP NUEVA_LISTA                                         */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nueva_lista $$
-CREATE PROCEDURE crear_nueva_lista (
+DROP PROCEDURE IF EXISTS nueva_lista $$
+CREATE PROCEDURE nueva_lista (
         IN _nombre_lista VARCHAR(100) ,
         IN _descripcion_lista VARCHAR(255) ,
         IN _tipo_lista VARCHAR(20) ,
@@ -2064,13 +2065,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP CREAR_NUEVO_ITEM                                          */
+/* SP NUEVO_ITEM                                          */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nuevo_item $$
-CREATE PROCEDURE crear_nuevo_item (
+DROP PROCEDURE IF EXISTS nuevo_item $$
+CREATE PROCEDURE nuevo_item (
         IN _descriptor_item VARCHAR(200),
         IN _id_autor_item INT UNSIGNED
     )
@@ -2087,13 +2088,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP CREAR_NUEVA_AREA                                          */
+/* SP NUEVA_AREA                                          */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nueva_area $$
-CREATE PROCEDURE crear_nueva_area (
+DROP PROCEDURE IF EXISTS nueva_area $$
+CREATE PROCEDURE nueva_area (
         IN _nombre_area VARCHAR(100),
         IN _id_centro_area VARCHAR(10)
     )
@@ -2110,13 +2111,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP CREAR_NUEVA_CATEGORIA                                     */
+/* SP NUEVA_CATEGORIA                                     */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nueva_categoria $$
-CREATE PROCEDURE crear_nueva_categoria (
+DROP PROCEDURE IF EXISTS nueva_categoria $$
+CREATE PROCEDURE nueva_categoria (
         IN _nombre_categoria VARCHAR(50),
         IN _id_centro_categoria VARCHAR(10)
     )
@@ -2133,13 +2134,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP CREAR_NUEVO_COMENTARIO                                    */
+/* SP NUEVO_COMENTARIO                                    */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nuevo_comentario $$
-CREATE PROCEDURE crear_nuevo_comentario (
+DROP PROCEDURE IF EXISTS nuevo_comentario $$
+CREATE PROCEDURE nuevo_comentario (
         IN _valoracion_comentario VARCHAR(50) ,
         IN _puntuacion_comentario INT ,
         IN _id_producto_comentario INT UNSIGNED ,
@@ -2163,13 +2164,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* CREAR_NUEVO_DETALLE_LISTA                                    */
+/* NUEVO_DETALLE_LISTA                                    */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS crear_nuevo_detalle_lista $$
-CREATE PROCEDURE crear_nuevo_detalle_lista (
+DROP PROCEDURE IF EXISTS nuevo_detalle_lista $$
+CREATE PROCEDURE nuevo_detalle_lista (
         IN _id_lista_detalle_lista INT UNSIGNED ,
         IN _id_item_detalle_lista INT UNSIGNED 
     )
@@ -2234,6 +2235,51 @@ BEGIN
         NULL ,
         NULL ,
         _id_evaluador_eval_version_general );
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* NUEVO_PROGRAMA                                               */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS nuevo_programa $$
+CREATE PROCEDURE nuevo_programa (
+        IN _nombre_programa VARCHAR(50) ,
+        IN _id_area_programa INT UNSIGNED
+    )
+BEGIN
+    DECLARE _id_programa INT UNSIGNED ;
+    SET _id_programa = (SELECT MAX(id_programa) FROM programa) + 1;
+    SET _id_programa = IFNULL(_id_programa, 1);
+    CALL insertar_programa (
+        _id_programa ,
+        _nombre_programa ,
+        _id_area_programa );
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* NUEVA_VISITA                                                 */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS nueva_visita $$
+CREATE PROCEDURE nueva_visita (
+        IN _id_producto_visita INT UNSIGNED ,
+        IN _id_funcionario_visita INT UNSIGNED
+    )
+BEGIN
+    DECLARE _fecha_visita DATE ;
+    SET _fecha_visita = CURDATE();
+    CALL insertar_visita (
+        _fecha_visita ,
+        _id_producto_visita ,
+        _id_funcionario_visita );
 END $$
 
 DELIMITER ;
