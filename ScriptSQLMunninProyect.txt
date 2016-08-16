@@ -619,7 +619,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_centro $$
 CREATE PROCEDURE insertar_centro (
-	IN _id_centro INT UNSIGNED,
+	IN _id_centro VARCHAR(10),
 	IN _nombre_centro VARCHAR(200),
 	IN _id_regional_centro VARCHAR(10),
 	IN _id_ciudad_centro VARCHAR(10))
@@ -636,7 +636,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_centro $$
 CREATE PROCEDURE editar_centro (
-	IN _id_centro INT UNSIGNED,
+	IN _id_centro VARCHAR(10),
 	IN _nombre_centro VARCHAR(200),
 	IN _id_regional_centro VARCHAR(10),
 	IN _id_ciudad_centro VARCHAR(10))
@@ -652,7 +652,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_centro $$
 CREATE PROCEDURE eliminar_centro (
-	IN _id_centro INT UNSIGNED)
+	IN _id_centro VARCHAR(10))
 BEGIN
 	DELETE FROM centro
 	WHERE id_centro = _id_centro ;
@@ -662,7 +662,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_centro $$
 CREATE PROCEDURE ver_centro (
-	IN _id_centro INT UNSIGNED)
+	IN _id_centro VARCHAR(10))
 BEGIN
 	SELECT * 
 	FROM centro
@@ -1898,6 +1898,7 @@ DELIMITER ;
 /* NUEVA_EVALUACION_LISTA                                       */
 /* NUEVO_PROGRAMA                                               */
 /* NUEVA_VISITA                                                 */
+/* ACTUALIZAR_PRODUCTO                                          */
 /*==============================================================*/
 /*==============================================================*/
 /* SP VER_PRODUCTOS_APROVADOS                                   */
@@ -1942,7 +1943,7 @@ CREATE PROCEDURE enviar_nuevo_producto (
     IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED,
     IN _url_version VARCHAR(500),
     IN _id_tipo_archivo_version INT UNSIGNED ,
-    IN _id_centro_version INT UNSIGNED
+    IN _id_centro_version VARCHAR(10)
     )
 BEGIN
     DECLARE _fecha DATE;
@@ -2035,7 +2036,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP NUEVA_LISTA                                         */
+/* SP NUEVA_LISTA                                               */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2065,7 +2066,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP NUEVO_ITEM                                          */
+/* SP NUEVO_ITEM                                                */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2088,7 +2089,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP NUEVA_AREA                                          */
+/* SP NUEVA_AREA                                                */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2111,7 +2112,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP NUEVA_CATEGORIA                                     */
+/* SP NUEVA_CATEGORIA                                           */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2134,7 +2135,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP NUEVO_COMENTARIO                                    */
+/* SP NUEVO_COMENTARIO                                          */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2164,7 +2165,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* NUEVO_DETALLE_LISTA                                    */
+/* SP NUEVO_DETALLE_LISTA                                       */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2187,7 +2188,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* NUEVA_EVALUACION_ITEM                                        */
+/* SP NUEVA_EVALUACION_ITEM                                     */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2212,7 +2213,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* NUEVA_EVALUACION_LISTA                                       */
+/* SP NUEVA_EVALUACION_LISTA                                    */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2240,7 +2241,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* NUEVO_PROGRAMA                                               */
+/* SP NUEVO_PROGRAMA                                            */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2263,7 +2264,7 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* NUEVA_VISITA                                                 */
+/* SP NUEVA_VISITA                                              */
 /*==============================================================*/
 
 DELIMITER $$
@@ -2280,6 +2281,42 @@ BEGIN
         _fecha_visita ,
         _id_producto_visita ,
         _id_funcionario_visita );
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP ACTUALIZAR_PRODUCTO                                       */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS actualizar_producto $$
+CREATE PROCEDURE actualizar_producto (
+        IN _id_producto_version INT UNSIGNED ,
+        IN _url_version VARCHAR(500),
+        IN _id_tipo_archivo_version INT UNSIGNED ,
+        IN _id_centro_version VARCHAR(10)
+    )
+BEGIN
+    DECLARE _fecha DATE;
+    DECLARE _id_version INT UNSIGNED;
+    DECLARE _numero_version INT UNSIGNED;
+    SET _fecha = CURDATE();
+    SET _id_version = (SELECT MAX(id_version) FROM version) + 1;
+    SET _numero_version = (SELECT MAX(numero_version) FROM version WHERE id_producto_version = _id_producto_version ) + 1;
+    CALL insertar_version(
+        _id_version ,
+        _numero_version ,
+        _url_version ,
+        0 ,
+        _fecha ,
+        NULL ,
+        NULL ,
+        3 ,
+        _id_tipo_archivo_version ,
+        _id_producto_version ,
+        _id_centro_version);
 END $$
 
 DELIMITER ;
