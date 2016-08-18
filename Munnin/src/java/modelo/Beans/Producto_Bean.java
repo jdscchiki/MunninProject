@@ -9,6 +9,6 @@ package modelo.Beans;
  *
  * @author Juan David
  */
-public class FuncionarioBean {
+public class Producto_Bean {
     
 }
