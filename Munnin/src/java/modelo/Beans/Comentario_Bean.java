@@ -78,5 +78,4 @@ public class Comentario_Bean {
         this.id_funcionario_comentario = id_funcionario_comentario;
     }
     
-    
 }

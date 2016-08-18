@@ -10,5 +10,31 @@ package modelo.Beans;
  * @author Juan David
  */
 public class Tipo_Archivo_Bean {
+    private long id_tipo_archivo;
+    private String extencion_tipo_archivo;
+
+    public Tipo_Archivo_Bean() {
+    }
+
+    public Tipo_Archivo_Bean(long id_tipo_archivo, String extencion_tipo_archivo) {
+        this.id_tipo_archivo = id_tipo_archivo;
+        this.extencion_tipo_archivo = extencion_tipo_archivo;
+    }
+
+    public long getId_tipo_archivo() {
+        return id_tipo_archivo;
+    }
+
+    public void setId_tipo_archivo(long id_tipo_archivo) {
+        this.id_tipo_archivo = id_tipo_archivo;
+    }
+
+    public String getExtencion_tipo_archivo() {
+        return extencion_tipo_archivo;
+    }
+
+    public void setExtencion_tipo_archivo(String extencion_tipo_archivo) {
+        this.extencion_tipo_archivo = extencion_tipo_archivo;
+    }
     
 }
