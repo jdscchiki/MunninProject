@@ -1,4 +1,4 @@
-Una pequeña descripción de todos los procedimientos almacenados
+Una pequeÃ±a descripciÃ³n de todos los procedimientos almacenados
 
 insertar_area (int unsigned id_area, 
         varchar(100) nombre_area, 
@@ -49,3 +49,5 @@ insertar_categoria( int unsigned id_categoria,
         varchar(50) nombre_categoria,
         varchar(10) id_centro_categoria )
     cuando la columna id_categoria coincide con el argumento id_categoria cambia los datos de las columnas nombre_categoria e id_centro_categoria
+    
+    prueba
