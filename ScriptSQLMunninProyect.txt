@@ -4,6 +4,31 @@
 /*==============================================================*/
 
 /*==============================================================*/
+/* PROCEDIMIENTOS ALMACENADOS AVANZADOS                         */
+/*==============================================================*/
+/* VER_PRODUCTOS_APROVADOS                                      */
+/* ENVIAR_NUEVO_PRODUCTO                                        */
+/* VER_INSTRUCTORES_CENTRO                                      */
+/* REGISTRAR_INSTRUCTOR_CENTRO                                  */
+/* NUEVA_LISTA                                                  */
+/* NUEVO_ITEM                                                   */
+/* NUEVA_AREA                                                   */
+/* NUEVA_CATEGORIA                                              */
+/* NUEVO_COMENTARIO                                             */
+/* NUEVO_DETALLE_LISTA                                          */
+/* NUEVA_EVALUACION_ITEM                                        */
+/* NUEVA_EVALUACION_LISTA                                       */
+/* NUEVO_PROGRAMA                                               */
+/* NUEVA_VISITA                                                 */
+/* ACTUALIZAR_PRODUCTO                                          */
+/* crear_(nombre de la tabla)                                   */
+/* editar_(nombre de la tabla)                                  */
+/* eliminar_(nombre de la tabla)                                */
+/* ver_(nombre de la tabla)                                     */
+/*==============================================================*/
+/*==============================================================*/
+
+/*==============================================================*/
 /* DATABASE name:        MunninProject                          */
 /*==============================================================*/
 
@@ -367,13 +392,6 @@ ENGINE = InnoDB;
 /*==============================================================*/
 /* PROCEDIMIENTOS ALMACENADOS                                   */
 /*==============================================================*/
-/* Primero los CRUD de todas las tablas:                        */
-/* crear_(nombre de la tabla)                                   */
-/* editar_(nombre de la tabla)                                  */
-/* eliminar_(nombre de la tabla)                                */
-/* ver_(nombre de la tabla)                                     */
-/*==============================================================*/
-
 
 /*==============================================================*/
 /* SP AREA                                                      */
@@ -455,12 +473,12 @@ DROP PROCEDURE IF EXISTS editar_autor $$
 CREATE PROCEDURE editar_autor (
 	IN _id_funcionario_autor INT UNSIGNED,
 	IN _id_version_autor INT UNSIGNED,
-	IN _id_new_funcionario_autor INT UNSIGNED,
-	IN _id_new_version_autor INT UNSIGNED)
+	IN _id_nuevo_funcionario_autor INT UNSIGNED,
+	IN _id_nuevo_version_autor INT UNSIGNED)
 BEGIN
 	UPDATE autor
-	SET id_funcionario_autor = _id_new_funcionario_autor,
-		id_version_autor = _id_new_version_autor
+	SET id_funcionario_autor = _id_nuevo_funcionario_autor,
+		id_version_autor = _id_nuevo_version_autor
 	WHERE id_funcionario_autor = _id_funcionario_autor AND 
 		id_version_autor = _id_version_autor;
 END $$
@@ -573,12 +591,12 @@ DROP PROCEDURE IF EXISTS editar_categoria_producto $$
 CREATE PROCEDURE editar_categoria_producto (
 	IN _id_categoria_cat_prod INT UNSIGNED,
 	IN _id_producto_cat_prod INT UNSIGNED,
-	IN _id_new_categoria_cat_prod INT UNSIGNED,
-	IN _id_new_producto_cat_prod INT UNSIGNED)
+	IN _id_nuevo_categoria_cat_prod INT UNSIGNED,
+	IN _id_nuevo_producto_cat_prod INT UNSIGNED)
 BEGIN
 	UPDATE categoria_producto
-	SET id_categoria_cat_prod = _id_new_categoria_cat_prod,
-		id_producto_cat_prod = _id_new_producto_cat_prod 
+	SET id_categoria_cat_prod = _id_nuevo_categoria_cat_prod,
+		id_producto_cat_prod = _id_nuevo_producto_cat_prod 
 	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
 		id_producto_cat_prod = _id_producto_cat_prod;
 END $$
@@ -1151,12 +1169,12 @@ DROP PROCEDURE IF EXISTS editar_funcionario_rol $$
 CREATE PROCEDURE editar_funcionario_rol (
 	IN _id_funcionario_funci_rol INT UNSIGNED ,
 	IN _id_rol_funci_rol INT UNSIGNED ,
-	IN _id_new_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_new_rol_funci_rol INT UNSIGNED )
+	IN _id_nuevo_funcionario_funci_rol INT UNSIGNED ,
+	IN _id_nuevo_rol_funci_rol INT UNSIGNED )
 BEGIN
 	UPDATE funcionario_rol
-	SET id_funcionario_funci_rol = _id_new_funcionario_funci_rol ,
-		id_rol_funci_rol = _id_new_rol_funci_rol 
+	SET id_funcionario_funci_rol = _id_nuevo_funcionario_funci_rol ,
+		id_rol_funci_rol = _id_nuevo_rol_funci_rol 
 	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
 		id_rol_funci_rol = _id_rol_funci_rol ;
 END $$
@@ -1466,12 +1484,12 @@ DROP PROCEDURE IF EXISTS editar_programa_producto $$
 CREATE PROCEDURE editar_programa_producto (
 	IN _id_producto_prog_prod INT UNSIGNED ,
 	IN _id_programa_prog_prod INT UNSIGNED ,
-	IN _id_new_producto_prog_prod INT UNSIGNED ,
-	IN _id_new_programa_prog_prod INT UNSIGNED)
+	IN _id_nuevo_producto_prog_prod INT UNSIGNED ,
+	IN _id_nuevo_programa_prog_prod INT UNSIGNED)
 BEGIN
 	UPDATE programa_producto
-	SET id_producto_prog_prod = _id_new_producto_prog_prod ,
-		id_programa_prog_prod = _id_new_programa_prog_prod 
+	SET id_producto_prog_prod = _id_nuevo_producto_prog_prod ,
+		id_programa_prog_prod = _id_nuevo_programa_prog_prod 
 	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
 		id_programa_prog_prod = _id_programa_prog_prod ;
 END $$
@@ -1837,14 +1855,14 @@ CREATE PROCEDURE editar_visita (
 	IN _fecha_visita DATE ,
 	IN _id_producto_visita INT UNSIGNED ,
 	IN _id_funcionario_visita INT UNSIGNED ,
-	IN _fecha_new_visita DATE ,
-	IN _id_new_producto_visita INT UNSIGNED ,
-	IN _id_new_funcionario_visita INT UNSIGNED)  
+	IN _fecha_nuevo_visita DATE ,
+	IN _id_nuevo_producto_visita INT UNSIGNED ,
+	IN _id_nuevo_funcionario_visita INT UNSIGNED)  
 BEGIN
 	UPDATE visita
-	SET fecha_visita = _fecha_new_visita ,
-		id_producto_visita = _id_new_producto_visita ,
-		id_funcionario_visita = _id_new_funcionario_visita  
+	SET fecha_visita = _fecha_nuevo_visita ,
+		id_producto_visita = _id_nuevo_producto_visita ,
+		id_funcionario_visita = _id_nuevo_funcionario_visita  
 	WHERE fecha_visita = _fecha_visita AND
 		id_producto_visita = _id_producto_visita AND
 		id_funcionario_visita = _id_funcionario_visita ;
@@ -1881,25 +1899,6 @@ END $$
 
 DELIMITER ;
 
-/*==============================================================*/
-/* PROCEDIMIENTOS ALMACENADOS AVANZADOS                         */
-/*==============================================================*/
-/* VER_PRODUCTOS_APROVADOS                                      */
-/* ENVIAR_NUEVO_PRODUCTO                                        */
-/* VER_INSTRUCTORES_CENTRO                                      */
-/* REGISTRAR_INSTRUCTOR_CENTRO                                  */
-/* NUEVA_LISTA                                                  */
-/* NUEVO_ITEM                                                   */
-/* NUEVA_AREA                                                   */
-/* NUEVA_CATEGORIA                                              */
-/* NUEVO_COMENTARIO                                             */
-/* NUEVO_DETALLE_LISTA                                          */
-/* NUEVA_EVALUACION_ITEM                                        */
-/* NUEVA_EVALUACION_LISTA                                       */
-/* NUEVO_PROGRAMA                                               */
-/* NUEVA_VISITA                                                 */
-/* ACTUALIZAR_PRODUCTO                                          */
-/*==============================================================*/
 /*==============================================================*/
 /* SP VER_PRODUCTOS_APROVADOS                                   */
 /*==============================================================*/
