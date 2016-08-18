@@ -2,13 +2,13 @@ Una pequeña descripción de todos los procedimientos almacenados
 
 insertar_area (int unsigned id_area, 
         varchar(100) nombre_area, 
-        varchar(10) id_centro)
+        varchar(10) id_centro_area)
     inserta en la tabla area una nueva fila con los datos que recive como argumentos
 
 editar_area (int unsigned id_area, 
         varchar(100) nombre_area, 
-        varchar(10) id_centro)
-    cuando la columna id_area coincide con el argumento id_area cambia los datos de las columnas nombre_area e id_area
+        varchar(10) id_centro_area)
+    cuando la columna id_area coincide con el argumento id_area cambia los datos de las columnas nombre_area e id_centro_area
 
 eliminar_area (int unsigned id_area)
     borra toda fila en que coincida el argumento id_area con la columna id_area 
@@ -44,3 +44,8 @@ insertar_categoria( int unsigned id_categoria,
         varchar(50) nombre_categoria,
         varchar(10) id_centro_categoria )
     inserta en la tabla area una nueva fila con los datos que recive como argumentos
+
+insertar_categoria( int unsigned id_categoria, 
+        varchar(50) nombre_categoria,
+        varchar(10) id_centro_categoria )
+    cuando la columna id_categoria coincide con el argumento id_categoria cambia los datos de las columnas nombre_categoria e id_centro_categoria
