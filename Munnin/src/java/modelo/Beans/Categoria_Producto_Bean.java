@@ -10,5 +10,31 @@ package modelo.Beans;
  * @author Juan David
  */
 public class Categoria_Producto_Bean {
+    private long id_categoria_cat_prod;
+    private long id_producto_cat_prod;
+
+    public Categoria_Producto_Bean() {
+    }
+    
+    public Categoria_Producto_Bean(long id_categoria_cat_prod, long id_producto_cat_prod) {
+        this.id_categoria_cat_prod = id_categoria_cat_prod;
+        this.id_producto_cat_prod = id_producto_cat_prod;
+    }
+
+    public long getId_categoria_cat_prod() {
+        return id_categoria_cat_prod;
+    }
+
+    public void setId_categoria_cat_prod(long id_categoria_cat_prod) {
+        this.id_categoria_cat_prod = id_categoria_cat_prod;
+    }
+
+    public long getId_producto_cat_prod() {
+        return id_producto_cat_prod;
+    }
+
+    public void setId_producto_cat_prod(long id_producto_cat_prod) {
+        this.id_producto_cat_prod = id_producto_cat_prod;
+    }
     
 }
