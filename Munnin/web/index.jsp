@@ -34,6 +34,7 @@
 					    <div class="form-group">
 					      	<h4>Contraseña</h4>
 					      	<input type="password" id="pwd" placeholder="Tu contraseña" name="textPass">
+                                                <!-- para el servlet se consulta es la contraseña encriptada -->
                                                 <input id="pwd_encrypt" type="hidden" name="textPassEncrypt">
 					      	<i><span class="glyphicon glyphicon-lock"></span></i>
 					    </div>
