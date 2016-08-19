@@ -15,6 +15,7 @@ public class Visita_Bean {
     private Date fecha_visita;
     private long id_producto_visita_visita;
     private long id_funcionario_visita;
+    
 
     public Visita_Bean() {
     }
