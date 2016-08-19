@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-
 import modelo.Beans.Comentario_Bean;
+import util.ClassConexion;
 
 
 
-public class Comentario_Dao {
+public class Comentario_Dao extends ClassConexion  {
     
      public Connection conn = null;
     public Statement st = null;

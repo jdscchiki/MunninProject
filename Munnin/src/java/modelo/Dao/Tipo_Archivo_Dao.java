@@ -5,8 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import modelo.Beans.Tipo_Archivo_Bean;
+import util.ClassConexion;
 
-public class Tipo_Archivo_Dao {
+public class Tipo_Archivo_Dao extends ClassConexion  {
 
     public Connection conn = null;
     public Statement st = null;

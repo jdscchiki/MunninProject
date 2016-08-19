@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import modelo.Beans.Estado_Bean;
+import util.ClassConexion;
 
 
-public class Estado_Dao {
+public class Estado_Dao extends ClassConexion {
     
     public Connection conn = null;
     public Statement st = null;

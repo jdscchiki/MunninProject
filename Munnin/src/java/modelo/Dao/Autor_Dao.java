@@ -19,14 +19,44 @@ public class Autor_Dao extends ClassConexion {
 
     public Autor_Dao(Autor_Bean Autor) {
         super();
+        conn = this.obtenerConexion();
+        id_funcionario_autor = Autor.getId_funcionario_autor();
+        id_version_autor = Autor.getId_funcionario_autor();
+
+    }
+
+    public boolean insertar_autor() {
         try {
-            //conn = this.obtenerConexion();
-            st = conn.createStatement();
+            CallableStatement cst = conn.prepareCall("{call insertar_autor (?,?,?)}");
+            } catch (SQLException e) {
+        }
+        return listo;
+    }
 
-            id_funcionario_autor = Autor.getId_funcionario_autor();
-            id_version_autor = Autor.getId_funcionario_autor();
+    public boolean editar_autor() {
+        try {
+            CallableStatement cst = conn.prepareCall("{call editar_autor (?,?,?)}");
+            } catch (SQLException e) {
+        }
+        return listo;
+    }
 
+    public boolean eliminar_autor() {
+        try {
+            CallableStatement cst = conn.prepareCall("{call eliminar_autor (?)}");
+            } catch (SQLException e) {
+        }
+        return listo;
+    }
+
+    public Autor_Bean ver_autor() {
+        Autor_Bean ab = null;
+        try {
+            CallableStatement cst = conn.prepareCall("{call ver_autor (?)}");
         } catch (SQLException e) {
         }
+        return ab;
     }
 }
+
+

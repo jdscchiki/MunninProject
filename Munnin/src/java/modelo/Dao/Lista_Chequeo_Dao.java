@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import modelo.Beans.Lista_Chequeo_Bean;
+import util.ClassConexion;
 
 
-public class Lista_Chequeo_Dao {
+public class Lista_Chequeo_Dao extends ClassConexion  {
     
     public Connection conn = null;
     public Statement st = null;

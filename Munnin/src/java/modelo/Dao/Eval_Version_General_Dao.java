@@ -6,9 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import modelo.Beans.Eval_Version_General_Bean;
+import util.ClassConexion;
 
 
-public class Eval_Version_General_Dao {
+public class Eval_Version_General_Dao extends ClassConexion {
     
     public Connection conn = null;
     public Statement st = null;

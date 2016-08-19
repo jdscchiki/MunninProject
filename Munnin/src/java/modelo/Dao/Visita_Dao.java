@@ -5,18 +5,16 @@
  */
 package modelo.Dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import modelo.Beans.Visita_Bean;
+import util.ClassConexion;
 
-/**
- *
- * @author Administrador
- */
-public class Visita_Dao {
+public class Visita_Dao extends ClassConexion {
 
     public Connection conn = null;
     public Statement st = null;
@@ -31,16 +29,44 @@ public class Visita_Dao {
 
     public Visita_Dao(Visita_Bean Visita) {
         super();
+        conn = this.obtenerConexion();
+        fecha_visita = Visita.getFecha_visita();
+        id_producto_visita_visita = Visita.getId_producto_visita_visita();
+        id_funcionario_visita = Visita.getId_funcionario_visita();
+
+    }
+    
+public boolean insertar_visita() {
         try {
-            //conn = this.obtenerConexion();
-            st = conn.createStatement();
-
-            fecha_visita = Visita.getFecha_visita();
-            id_producto_visita_visita = Visita.getId_producto_visita_visita();
-            id_funcionario_visita = Visita.getId_funcionario_visita();
-
-        } catch (SQLException e) {
+            CallableStatement cst = conn.prepareCall("{call insertar_visita (?,?,?)}");
+            } catch (SQLException e) {
         }
+        return listo;
     }
 
+    public boolean editar_visita() {
+        try {
+            CallableStatement cst = conn.prepareCall("{call editar_visita (?,?,?)}");
+            } catch (SQLException e) {
+        }
+        return listo;
+    }
+
+    public boolean eliminar_visita() {
+        try {
+            CallableStatement cst = conn.prepareCall("{call eliminar_visita (?)}");
+            } catch (SQLException e) {
+        }
+        return listo;
+    }
+
+    public Visita_Bean ver_visita() {
+        Visita_Bean ab = null;
+        try {
+            CallableStatement cst = conn.prepareCall("{call ver_visita (?)}");
+        } catch (SQLException e) {
+        }
+        return ab;
+    }
 }
+

@@ -5,8 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import modelo.Beans.Programa_Bean;
+import util.ClassConexion;
 
-public class Programa_Dao {
+public class Programa_Dao extends ClassConexion {
 
     public Connection conn = null;
     public Statement st = null;

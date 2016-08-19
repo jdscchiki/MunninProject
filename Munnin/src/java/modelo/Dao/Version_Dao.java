@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import modelo.Beans.Version_Bean;
+import util.ClassConexion;
 
 
-public class Version_Dao {
+public class Version_Dao extends ClassConexion {
     
     public Connection conn = null;
     public Statement st = null;
