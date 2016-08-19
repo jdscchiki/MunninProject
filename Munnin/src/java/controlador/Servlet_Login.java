@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Juan David
  */
 @WebServlet(name = "ServletLogin", urlPatterns = {"/validar"})
-public class ServletLogin extends HttpServlet {
+public class Servlet_Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
