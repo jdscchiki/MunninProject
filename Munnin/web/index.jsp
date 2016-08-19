@@ -36,6 +36,7 @@
 					    <div class="checkbox">
 					      	<p><input type="checkbox">Recuerdame </p> 
 						    <a href=""> ¡He olvidado mi contraseña! </a>
+                                                    
 					    </div>
 					    <button type="button" onclick="location='muninn.jsp'"><span>Entrar</span></button>
 				  	</form>
