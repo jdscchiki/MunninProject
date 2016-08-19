@@ -7,11 +7,14 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Beans.Funcionario_Bean;
+import modelo.Dao.Funcionario_Dao;
 
 /**
  *
@@ -32,7 +35,40 @@ public class Servlet_Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int opcion = Integer.parseInt(request.getParameter("textOption"));
+        Long id_funcionario = Long.parseLong(request.getParameter("textId"));
+        String documento_funcionario = request.getParameter("textDocumento");
+        String correo_funcionario = request.getParameter("textCorreo");
+        String contrasena_funcionario = request.getParameter("textContrasena");
+        String nombre_funcionario = request.getParameter("textNombre");
+        String apellido_funcionario = request.getParameter("textApellido");
+        String cargo_funcionario = request.getParameter("textCargo");
+        String telefono_funcionario = request.getParameter("textTelefono");
+        String id_centro_funcionario = request.getParameter("textIdCentro");
         
+        Funcionario_Bean BFuncionario = new Funcionario_Bean(id_funcionario, documento_funcionario, correo_funcionario, contrasena_funcionario, nombre_funcionario, apellido_funcionario, cargo_funcionario, telefono_funcionario, id_centro_funcionario);
+        Funcionario_Dao DFuncionario = new Funcionario_Dao(BFuncionario);
+        ResultSet rs;
+        
+//        switch(opcion){
+//            case 1://agregar registro
+//                if (Funcionario_Dao.agregarRegistro()) {
+//                    request.setAttribute("Exito", "<script> alert('El usuario fue registrado correctamente') </script>");
+//                } else{
+//                    request.setAttribute("Error", "<script> alert('El usuario no se registro correctamente') </script>");
+//                }
+//                request.getRequestDispatcher("registrar_usuario.jsp").forward(request, response);
+//                break;
+//            case 2://validar usuario
+//                if (DUsuario.validar(usuLogin, usuPassword)) {
+//                    request.getRequestDispatcher("menu.jsp").forward(request, response);
+//                } else{
+//                    request.setAttribute("Error", "<script> alert('Usuario y/o contraseña no son validos') </script>");
+//                    request.getRequestDispatcher("index.jsp").forward(request, response);
+//                }
+//                break;
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
