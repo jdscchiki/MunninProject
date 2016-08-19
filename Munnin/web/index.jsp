@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<title>Muninn</title>
@@ -29,13 +29,13 @@
 					    	<i><span class="glyphicon glyphicon-user"></span></i>	
 					    </div>
 					    <div class="form-group">
-					      	<h4>ContraseÃ±a</h4>
-					      	<input type="password" id="pwd" placeholder="Tu contraseÃ±a">
+					      	<h4>Contraseña</h4>
+					      	<input type="password" id="pwd" placeholder="Tu contraseña">
 					      	<i><span class="glyphicon glyphicon-lock"></span></i>
 					    </div>
 					    <div class="checkbox">
 					      	<p><input type="checkbox">Recuerdame </p> 
-						    <a href="">Â¡He olvidado mi contraseÃ±a! </a>
+						    <a href=""> ¡He olvidado mi contraseña! </a>
 					    </div>
 					    <button type="button" onclick="location='muninn.jsp'"><span>Entrar</span></button>
 				  	</form>
