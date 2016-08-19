@@ -52,7 +52,7 @@ public class Eval_Version_General_Dao extends ClassConexion{
             cst.setInt(4, calificacion_eval_version_general);
             cst.setString(5, observaciones_eval_version_general);
             cst.setDate(6, (java.sql.Date) fecha_eval_version_general);
-            cst.setLong(6, id_evaluador_eval_version_general);
+            cst.setLong(7, id_evaluador_eval_version_general);
 
             cst.execute();
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class Eval_Version_General_Dao extends ClassConexion{
             cst.setInt(4, calificacion_eval_version_general);
             cst.setString(5, observaciones_eval_version_general);
             cst.setDate(6, (java.sql.Date) fecha_eval_version_general);
-            cst.setLong(6, id_evaluador_eval_version_general); 
+            cst.setLong(7, id_evaluador_eval_version_general); 
             // Ejecuta el procedimiento almacenado
             cst.execute();
         } catch (SQLException e) {
