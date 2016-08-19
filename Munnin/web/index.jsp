@@ -4,7 +4,7 @@
 		<title>Muninn</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+		<link rel="shortcut icon" type="image/x-icon" href="imagenes/icono.png">
 		<link rel="stylesheet" href="css/estilos.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
