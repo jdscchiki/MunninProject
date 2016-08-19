@@ -27,16 +27,24 @@ public class Autor_Dao extends ClassConexion {
 
     public boolean insertar_autor() {
         try {
-            CallableStatement cst = conn.prepareCall("{call insertar_autor (?,?,?)}");
-            } catch (SQLException e) {
+            CallableStatement cst = conn.prepareCall("{call insertar_autor (?,?)}");
+            cst.setLong(1, id_funcionario_autor);
+            cst.setLong(2, id_version_autor);
+            cst.execute();
+        } catch (SQLException e) {
         }
         return listo;
     }
 
     public boolean editar_autor() {
         try {
-            CallableStatement cst = conn.prepareCall("{call editar_autor (?,?,?)}");
-            } catch (SQLException e) {
+            CallableStatement cst = conn.prepareCall("{call editar_autor (?,?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_funcionario_autor);
+            cst.setLong(2, id_version_autor);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+        } catch (SQLException e) {
         }
         return listo;
     }
@@ -44,19 +52,31 @@ public class Autor_Dao extends ClassConexion {
     public boolean eliminar_autor() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_autor (?)}");
-            } catch (SQLException e) {
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_funcionario_autor);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+        } catch (SQLException e) {
         }
         return listo;
     }
 
     public Autor_Bean ver_autor() {
-        Autor_Bean ab = null;
+        Autor_Bean au = null;
         try {
-            CallableStatement cst = conn.prepareCall("{call ver_autor (?)}");
+            CallableStatement cst = conn.prepareCall("{call ver_auro(?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_funcionario_autor);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            au = new Autor_Bean(id_funcionario_autor, cst.getLong(2));
         } catch (SQLException e) {
         }
-        return ab;
+        return au;
     }
 }
-
-

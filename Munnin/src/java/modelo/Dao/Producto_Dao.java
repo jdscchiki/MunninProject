@@ -36,7 +36,13 @@ public class Producto_Dao extends ClassConexion {
 
     public boolean insertar_producto() {
         try {
-            CallableStatement cst = conn.prepareCall("{call insertar_producto (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call insertar_producto (?,?,?,?,?)}");
+            cst.setLong(1, id_producto);
+            cst.setString(2, nombre_producto);
+            cst.setString(3, descripcion_producto);
+            cst.setString(4, palabras_clave_producto);
+            cst.setLong(5, id_tipo_objeto_aprendizaje_producto);
+            
         } catch (SQLException e) {
         }
         return listo;
@@ -44,7 +50,15 @@ public class Producto_Dao extends ClassConexion {
 
     public boolean editar_producto() {
         try {
-            CallableStatement cst = conn.prepareCall("{call editar_producto (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call editar_producto (?,?,?,?,?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_producto);
+            cst.setString(2, nombre_producto);
+            cst.setString(3, descripcion_producto);
+            cst.setString(4, palabras_clave_producto);
+            cst.setLong(5, id_tipo_objeto_aprendizaje_producto);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -53,17 +67,34 @@ public class Producto_Dao extends ClassConexion {
     public boolean eliminar_producto() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_producto (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_producto);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
     }
 
     public Producto_Bean ver_producto() {
-        Producto_Bean ab = null;
+        Producto_Bean pro = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_producto(?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_producto);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(4, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(5, java.sql.Types.VARCHAR);
+            
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            pro = new Producto_Bean(id_producto, cst.getString(2), cst.getString(3), cst.getString(4), cst.getLong(5));
         } catch (SQLException e) {
         }
-        return ab;
+        return pro;
     }
 }
+

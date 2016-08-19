@@ -26,14 +26,17 @@ public class Item_Dao extends ClassConexion  {
         super();
         conn = this.obtenerConexion();
         id_item = Item.getId_item();
-            descriptor_item = Item.getDescriptor_item();
-            id_autor_item = Item.getId_autor_item();
+        descriptor_item = Item.getDescriptor_item();
+        id_autor_item = Item.getId_autor_item();
           
         }
     
     public boolean insertar_item() {
         try {
             CallableStatement cst = conn.prepareCall("{call insertar_item (?,?,?)}");
+            cst.setLong(1, id_item);
+            cst.setString(2, descriptor_item);
+            cst.setLong(3, id_autor_item);
             } catch (SQLException e) {
         }
         return listo;
@@ -42,6 +45,11 @@ public class Item_Dao extends ClassConexion  {
     public boolean editar_item() {
         try {
             CallableStatement cst = conn.prepareCall("{call editar_item (?,?,?)}");
+             // Se envian parametros del procedimiento almacenado
+           cst.setLong(1, id_item);
+            cst.setString(2, descriptor_item);
+            cst.setLong(3, id_autor_item);
+            // Ejecuta el procedimiento almacenado
             } catch (SQLException e) {
         }
         return listo;
@@ -50,17 +58,30 @@ public class Item_Dao extends ClassConexion  {
     public boolean eliminar_item() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_item (?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_item);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
     }
 
     public Item_Bean ver_item() {
-        Item_Bean ab = null;
+        Item_Bean it = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_item (?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_item);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            it = new Item_Bean(id_item, cst.getString(2), cst.getLong(3));
         } catch (SQLException e) {
         }
-        return ab;
+        return it;
     }
 }

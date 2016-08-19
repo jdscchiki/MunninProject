@@ -35,6 +35,10 @@ public class Funcionario_Bean {
         this.id_centro_funcionario = id_centro_funcionario;
     }
 
+    public Funcionario_Bean(long id_funcionario, String string, String string0, String string1, String string2, String string3, String string4) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public long getId_funcionario() {
         return id_funcionario;
     }

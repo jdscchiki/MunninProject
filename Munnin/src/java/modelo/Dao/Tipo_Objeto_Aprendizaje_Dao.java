@@ -30,7 +30,10 @@ public class Tipo_Objeto_Aprendizaje_Dao extends ClassConexion {
     
 public boolean insertar_tipo_objeto_aprendizaje() {
         try {
-            CallableStatement cst = conn.prepareCall("{call insertar_tipo_objeto_aprendizaje (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call insertar_tipo_objeto_aprendizaje (?,?)}");
+            cst.setLong(1, id_tipo_objeto_aprendizaje);
+            cst.setString(2, nombre_tipo_objeto_aprendizaje);
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
@@ -38,7 +41,12 @@ public boolean insertar_tipo_objeto_aprendizaje() {
 
     public boolean editar_tipo_objeto_aprendizaje() {
         try {
-            CallableStatement cst = conn.prepareCall("{call editar_tipo_objeto_aprendizaje(?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call editar_tipo_objeto_aprendizaje(?,?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_tipo_objeto_aprendizaje);
+            cst.setString(2, nombre_tipo_objeto_aprendizaje);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
@@ -47,17 +55,29 @@ public boolean insertar_tipo_objeto_aprendizaje() {
     public boolean eliminar_tipo_objeto_aprendizaje() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_tipo_objeto_aprendizaje (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_tipo_objeto_aprendizaje);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
     }
 
     public Tipo_Objeto_Aprendizaje_Bean ver_tipo_objeto_aprendizaje() {
-        Tipo_Objeto_Aprendizaje_Bean ab = null;
+        Tipo_Objeto_Aprendizaje_Bean tad = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_tipo_objeto_aprendizaje (?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_tipo_objeto_aprendizaje);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            tad = new Tipo_Objeto_Aprendizaje_Bean(id_tipo_objeto_aprendizaje, cst.getString(2));
         } catch (SQLException e) {
         }
-        return ab;
+        return tad;
     }
 }

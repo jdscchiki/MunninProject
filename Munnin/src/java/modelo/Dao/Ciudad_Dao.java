@@ -29,7 +29,11 @@ public class Ciudad_Dao extends ClassConexion {
     }
     public boolean insertar_ciudad() {
         try {
-            CallableStatement cst = conn.prepareCall("{call insertar_ciudad (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call insertar_ciudad (?,?)}");
+            
+            cst.setString(1, id_ciudad);
+            cst.setString(2, nombre_ciudad);
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
@@ -37,7 +41,12 @@ public class Ciudad_Dao extends ClassConexion {
 
     public boolean editar_ciudad() {
         try {
-            CallableStatement cst = conn.prepareCall("{call editar_ciudad (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call editar_ciudad (?,?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setString(1, id_ciudad);
+            cst.setString(2, nombre_ciudad);
+           // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
@@ -46,18 +55,30 @@ public class Ciudad_Dao extends ClassConexion {
     public boolean eliminar_ciudad() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_ciudad (?)}");
+// Se envian parametros del procedimiento almacenado
+            cst.setString(1, id_ciudad);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
     }
 
     public Ciudad_Bean ver_ciudad() {
-        Ciudad_Bean ab = null;
+        Ciudad_Bean ciu = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_ciudad (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setString(1, id_ciudad);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            ciu = new Ciudad_Bean(id_ciudad, cst.getString(2));
         } catch (SQLException e) {
         }
-        return ab;
+        return ciu;
     }
 }
      

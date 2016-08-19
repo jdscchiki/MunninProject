@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import modelo.Beans.Autor_Bean;
 import modelo.Beans.Categoria_Producto_Bean;
 import util.ClassConexion;
 
@@ -35,7 +34,10 @@ public class Categoria_Producto_Dao extends ClassConexion {
     }
      public boolean insertar_categoria_producto() {
         try {
-            CallableStatement cst = conn.prepareCall("{call insertar_categoria_producto (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call insertar_categoria_producto (?,?)}");
+            cst.setLong(1, id_categoria_cat_prod);
+            cst.setLong(2, id_producto_cat_prod);
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
@@ -43,7 +45,12 @@ public class Categoria_Producto_Dao extends ClassConexion {
 
     public boolean editar_categoria_producto() {
         try {
-            CallableStatement cst = conn.prepareCall("{call editar_categotia_producto (?,?,?)}");
+            CallableStatement cst = conn.prepareCall("{call editar_categotia_producto (?,?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_categoria_cat_prod);
+            cst.setLong(2, id_producto_cat_prod);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
           } catch (SQLException e) {
         }
         return listo;
@@ -52,18 +59,31 @@ public class Categoria_Producto_Dao extends ClassConexion {
     public boolean eliminar_categoria_producto() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_categoria_producto (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_categoria_cat_prod);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
             } catch (SQLException e) {
         }
         return listo;
     }
 
     public Categoria_Producto_Bean ver_categoria_producto() {
-        Categoria_Producto_Bean ab = null;
+        Categoria_Producto_Bean cap = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_categoria_prodcuto (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_categoria_cat_prod);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            cap = new Categoria_Producto_Bean(id_categoria_cat_prod, cst.getLong(2));
             } catch (SQLException e) {
         }
-        return ab;
+        return cap;
     }
 }
 

@@ -18,7 +18,7 @@ public class Version_Bean {
     private boolean notificacion_version;
     private Date fecha_version;
     private Date fecha_caducidad_version;
-    private Date flecha_aprovacion_version;
+    private Date fecha_aprovacion_version;
     private int id_estdo_version;
     private int id_tipo_archivo_version;
     private int id_producto_version;
@@ -27,14 +27,14 @@ public class Version_Bean {
     public Version_Bean() {
     }
 
-    public Version_Bean(long id_version, long numero_version, String url_version, boolean notificacion_version, Date fecha_version, Date fecha_caducidad_version, Date flecha_aprovacion_version, int id_estdo_version, int id_tipo_archivo_version, int id_producto_version, String id_centro_version) {
+    public Version_Bean(long id_version, long numero_version, String url_version, boolean notificacion_version, Date fecha_version, Date fecha_caducidad_version, Date fecha_aprovacion_version, int id_estdo_version, int id_tipo_archivo_version, int id_producto_version, String id_centro_version) {
         this.id_version = id_version;
         this.numero_version = numero_version;
         this.url_version = url_version;
         this.notificacion_version = notificacion_version;
         this.fecha_version = fecha_version;
         this.fecha_caducidad_version = fecha_caducidad_version;
-        this.flecha_aprovacion_version = flecha_aprovacion_version;
+        this.fecha_aprovacion_version = fecha_aprovacion_version;
         this.id_estdo_version = id_estdo_version;
         this.id_tipo_archivo_version = id_tipo_archivo_version;
         this.id_producto_version = id_producto_version;
@@ -89,12 +89,12 @@ public class Version_Bean {
         this.fecha_caducidad_version = fecha_caducidad_version;
     }
 
-    public Date getFlecha_aprovacion_version() {
-        return flecha_aprovacion_version;
+    public Date getFecha_aprovacion_version() {
+        return fecha_aprovacion_version;
     }
 
-    public void setFlecha_aprovacion_version(Date flecha_aprovacion_version) {
-        this.flecha_aprovacion_version = flecha_aprovacion_version;
+    public void setFecha_aprovacion_version(Date fecha_aprovacion_version) {
+        this.fecha_aprovacion_version = fecha_aprovacion_version;
     }
 
     public int getId_estdo_version() {

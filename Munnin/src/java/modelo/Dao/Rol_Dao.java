@@ -33,6 +33,10 @@ public class Rol_Dao extends ClassConexion {
     public boolean insertar_rol() {
         try {
             CallableStatement cst = conn.prepareCall("{call insertar_rol(?,?,?)}");
+            cst.setLong(1, id_rol);
+            cst.setString(2, nombre_rol);
+            cst.setString(3, descripcion_rol);
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -41,6 +45,12 @@ public class Rol_Dao extends ClassConexion {
     public boolean editar_rol() {
         try {
             CallableStatement cst = conn.prepareCall("{call editar_rol (?,?,?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_rol);
+            cst.setString(2, nombre_rol);
+            cst.setString(3, descripcion_rol);;
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -49,17 +59,30 @@ public class Rol_Dao extends ClassConexion {
     public boolean eliminar_rol() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_rol (?)}");
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_rol);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
     }
 
     public Rol_Bean ver_rol() {
-        Rol_Bean ab = null;
+        Rol_Bean rol = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_rol (?)}");
+             // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_rol);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            rol = new Rol_Bean(id_rol, cst.getString(2), cst.getString(3));
         } catch (SQLException e) {
         }
-        return ab;
+        return rol;
     }
 }
