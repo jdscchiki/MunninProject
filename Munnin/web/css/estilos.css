@@ -19,7 +19,7 @@ button {
 	width: 320px;
     height: 70px;
     padding: 10px 10px;
-    background: #5eb319/* verde#5eb319 verdeN#238276 azulG#2196F3*/;
+    background: rgb(89,181,72)/* verde#5eb319 verdeN#238276 azulG#2196F3*/;
     display: block;
     border: none;
     margin-top: 20px;
@@ -34,7 +34,7 @@ button {
     border-bottom-width: 7px; 
 }
 button:hover {
-	background-color: #539c16;
+	background-color: rgb(83,168,67);
 }
 span {
 	color: #FFFFFF;
@@ -60,7 +60,7 @@ input {
 input:focus {
     outline: none;
     color: #444;
-    border-color: #fc7323/*naranja#fc7323 verde#5eb319 verdeN#238276 azulG#2196F3*/;
+    border-color: rgb(252,115,35)/*naranja#fc7323 verde#5eb319 verdeN#238276 azulG#2196F3*/;
     border-left-width: 35px;
 }
 
@@ -89,4 +89,9 @@ li {
     margin-left: 20px;
 }
 
-
+img{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+}

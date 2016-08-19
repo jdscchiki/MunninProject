@@ -20,6 +20,7 @@
 
 			<div class="clogin">
 				<div class="login">
+                                    <img src="imagenes/icono_munnin.png" alt="munnin_icono">
 					<h3>Ingreso</h3>
 					<hr>
 					<form role="form">	
