@@ -90,7 +90,7 @@ public class Eval_Version_General_Dao extends ClassConexion{
         return listo;
     }
 
-    public Eval_Version_General_Bean ver_comentario() {
+    public Eval_Version_General_Bean ver_eval_version_general() {
         Eval_Version_General_Bean evb = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_eval_version_general (?)}");
@@ -102,7 +102,7 @@ public class Eval_Version_General_Dao extends ClassConexion{
             cst.registerOutParameter(4, java.sql.Types.INTEGER);
             cst.registerOutParameter(5, java.sql.Types.VARCHAR);
             cst.registerOutParameter(6, java.sql.Types.DATE);
-            cst.registerOutParameter(6, java.sql.Types.DOUBLE);
+            cst.registerOutParameter(7, java.sql.Types.DOUBLE);
             // Ejecuta el procedimiento almacenado
             cst.execute();
             // Se obtienen la salida del procedimineto almacenado                
