@@ -19,14 +19,9 @@ public class Autor_Dao extends ClassConexion {
 
     public Autor_Dao(Autor_Bean Autor) {
         super();
-        try {
-            //conn = this.obtenerConexion();
-            st = conn.createStatement();
-
+            conn = this.obtenerConexion();
             id_funcionario_autor = Autor.getId_funcionario_autor();
             id_version_autor = Autor.getId_funcionario_autor();
-
-        } catch (SQLException e) {
-        }
     }
+    
 }

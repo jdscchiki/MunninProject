@@ -39,13 +39,12 @@ public class Area_Dao extends ClassConexion {
     public boolean insertar_area() {
         try {
             CallableStatement cst = conn.prepareCall("{call insertar_area (?,?,?)}");
-            do {
-                cst.setLong(1, id_area);
-                cst.setString(2, nombre_area);
-                cst.setString(3, id_centro_area);
-
-                cst.execute();
-            } while (id_area > 0);
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_area);
+            cst.setString(2, nombre_area);
+            cst.setString(3, id_centro_area);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -54,14 +53,12 @@ public class Area_Dao extends ClassConexion {
     public boolean editar_area() {
         try {
             CallableStatement cst = conn.prepareCall("{call editar_area (?,?,?)}");
-            do {
-                // Se envian parametros del procedimiento almacenado
-                cst.setLong(1, id_area);
-                cst.setString(2, nombre_area);
-                cst.setString(3, id_centro_area);
-                // Ejecuta el procedimiento almacenado
-                cst.execute();
-            } while (id_area > 0);
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_area);
+            cst.setString(2, nombre_area);
+            cst.setString(3, id_centro_area);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -70,12 +67,10 @@ public class Area_Dao extends ClassConexion {
     public boolean eliminar_area() {
         try {
             CallableStatement cst = conn.prepareCall("{call eliminar_area (?)}");
-            do {
-                // Se envian parametros del procedimiento almacenado
-                cst.setLong(1, id_area);
-                // Ejecuta el procedimiento almacenado
-                cst.execute();
-            } while (id_area > 0);
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_area);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
         } catch (SQLException e) {
         }
         return listo;
@@ -85,17 +80,15 @@ public class Area_Dao extends ClassConexion {
         Area_Bean ab = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_area (?)}");
-            do {
-                // Se envian parametros del procedimiento almacenado
-                cst.setLong(1, id_area);
-                // Definimos los tipos de los parametros de salida del procedimiento almacenado
-                cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-                cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-                // Ejecuta el procedimiento almacenado
-                cst.execute();
-                // Se obtienen la salida del procedimineto almacenado                
-                ab = new Area_Bean(id_area,cst.getString(2),cst.getString(3));
-            } while (id_area > 0);
+            // Se envian parametros del procedimiento almacenado
+            cst.setLong(1, id_area);
+            // Definimos los tipos de los parametros de salida del procedimiento almacenado
+            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
+            // Ejecuta el procedimiento almacenado
+            cst.execute();
+            // Se obtienen la salida del procedimineto almacenado                
+            ab = new Area_Bean(id_area, cst.getString(2), cst.getString(3));
         } catch (SQLException e) {
         }
         return ab;
