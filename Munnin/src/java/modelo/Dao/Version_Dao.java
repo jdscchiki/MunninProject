@@ -103,7 +103,7 @@ public class Version_Dao extends ClassConexion {
     }
 
     public Version_Bean ver_eval_version_general() {
-        Version_Bean lcb = null;
+        Version_Bean vb = null;
         try {
             CallableStatement cst = conn.prepareCall("{call ver_lista_chequeo (?)}");
             // Se envian parametros del procedimiento almacenado
@@ -122,9 +122,9 @@ public class Version_Dao extends ClassConexion {
             // Ejecuta el procedimiento almacenado
             cst.execute();
             // Se obtienen la salida del procedimineto almacenado                
-            lcb = new Version_Bean(id_version, cst.getLong(2), cst.getString(3), cst.getBoolean(4), cst.getDate(5), cst.getDate(6), cst.getDate(7), cst.getInt(8), cst.getInt(9), cst.getInt(10), cst.getString(11));
+            vb = new Version_Bean(id_version, cst.getLong(2), cst.getString(3), cst.getBoolean(4), cst.getDate(5), cst.getDate(6), cst.getDate(7), cst.getInt(8), cst.getInt(9), cst.getInt(10), cst.getString(11));
         } catch (SQLException e) {
         }
-        return lcb;
+        return vb;
     }
 }
