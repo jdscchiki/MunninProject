@@ -42,7 +42,7 @@ USE munninProject;
 /*==============================================================*/
 
 CREATE TABLE estado (
-  id_estado INT UNSIGNED NOT NULL,
+  id_estado INT NOT NULL,
   nombre_estado NVARCHAR(45) NOT NULL,
   PRIMARY KEY (id_estado))
 ENGINE = InnoDB;
@@ -52,7 +52,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE tipo_archivo (
-  id_tipo_archivo INT UNSIGNED NOT NULL,
+  id_tipo_archivo INT NOT NULL,
   extencion_tipo_archivo NVARCHAR(7) NOT NULL,
   PRIMARY KEY (id_tipo_archivo))
 ENGINE = InnoDB;
@@ -62,7 +62,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE tipo_objeto_aprendizaje (
-  id_tipo_objeto_aprendizaje INT UNSIGNED NOT NULL,
+  id_tipo_objeto_aprendizaje INT NOT NULL,
   nombre_tipo_obj_apren NVARCHAR(20) NOT NULL,
   PRIMARY KEY (id_tipo_objeto_aprendizaje))
 ENGINE = InnoDB;
@@ -72,11 +72,11 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE producto (
-  id_producto INT UNSIGNED NOT NULL,
+  id_producto INT NOT NULL,
   nombre_producto NVARCHAR(100) NOT NULL,
   descripcion_producto NVARCHAR(255) NOT NULL,
   palabras_clave_producto NVARCHAR(200) NOT NULL,
-  id_tipo_objeto_aprendizaje_producto INT UNSIGNED NOT NULL,
+  id_tipo_objeto_aprendizaje_producto INT NOT NULL,
   PRIMARY KEY (id_producto),
   FOREIGN KEY (id_tipo_objeto_aprendizaje_producto)
 	REFERENCES tipo_objeto_aprendizaje (id_tipo_objeto_aprendizaje))
@@ -123,16 +123,16 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE version (
-  id_version INT UNSIGNED NOT NULL,
-  numero_version INT UNSIGNED NOT NULL,
+  id_version INT NOT NULL,
+  numero_version INT NOT NULL,
   url_version NVARCHAR(500) NOT NULL,
   notificacion_version BOOLEAN NOT NULL,
   fecha_version DATE NOT NULL,
   fecha_caducidad_version DATE NULL,
   fecha_aprobacion_version DATE NULL,
-  id_estado_version INT UNSIGNED NOT NULL,
-  id_tipo_archivo_version INT UNSIGNED NOT NULL,
-  id_producto_version INT UNSIGNED NOT NULL,
+  id_estado_version INT NOT NULL,
+  id_tipo_archivo_version INT NOT NULL,
+  id_producto_version INT NOT NULL,
   id_centro_version NVARCHAR(10) NOT NULL,
   PRIMARY KEY (id_version),
   FOREIGN KEY (id_estado_version )
@@ -152,7 +152,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE funcionario (
-  id_funcionario INT UNSIGNED NOT NULL,
+  id_funcionario INT NOT NULL,
   documento_funcionario NVARCHAR(8) NOT NULL,
   correo_funcionario NVARCHAR(100) NOT NULL,
   contrasena_funcionario NVARCHAR(255) NOT NULL,
@@ -173,8 +173,8 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE autor (
-  id_funcionario_autor INT UNSIGNED NOT NULL,
-  id_version_autor INT UNSIGNED NOT NULL,
+  id_funcionario_autor INT NOT NULL,
+  id_version_autor INT NOT NULL,
   PRIMARY KEY (id_funcionario_autor, id_version_autor),
   FOREIGN KEY (id_funcionario_autor)
     REFERENCES funcionario (id_funcionario),
@@ -187,12 +187,12 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE lista_chequeo (
-  id_lista INT UNSIGNED NOT NULL,
+  id_lista INT NOT NULL,
   nombre_lista NVARCHAR(100) NOT NULL,
   descripcion_lista NVARCHAR(255) NOT NULL,
   fecha_lista DATE NOT NULL,
   tipo_lista NVARCHAR(20) NOT NULL,
-  id_autor_lista INT UNSIGNED NOT NULL,
+  id_autor_lista INT NOT NULL,
   PRIMARY KEY (id_lista),
   FOREIGN KEY (id_autor_lista)
     REFERENCES funcionario (id_funcionario))
@@ -203,9 +203,9 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE item (
-  id_item INT UNSIGNED NOT NULL,
+  id_item INT NOT NULL,
   descriptor_item NVARCHAR(200) NOT NULL,
-  id_autor_item INT UNSIGNED NOT NULL,
+  id_autor_item INT NOT NULL,
   PRIMARY KEY (id_item),
   FOREIGN KEY (id_autor_item)
     REFERENCES funcionario (id_funcionario))
@@ -216,9 +216,9 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE detalle_lista (
-  id_detalle_lista INT UNSIGNED NOT NULL,
-  id_lista_detalle_lista INT UNSIGNED NOT NULL,
-  id_item_detalle_lista INT UNSIGNED NOT NULL,
+  id_detalle_lista INT NOT NULL,
+  id_lista_detalle_lista INT NOT NULL,
+  id_item_detalle_lista INT NOT NULL,
   PRIMARY KEY (id_detalle_lista),
   FOREIGN KEY (id_lista_detalle_lista)
     REFERENCES lista_chequeo (id_lista),
@@ -231,13 +231,13 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE eval_version_general (
-  id_eval_version_general INT UNSIGNED NOT NULL,
-  id_version_eval_version_general INT UNSIGNED NOT NULL,
-  id_lista_eval_version_general INT UNSIGNED NOT NULL,
+  id_eval_version_general INT NOT NULL,
+  id_version_eval_version_general INT NOT NULL,
+  id_lista_eval_version_general INT NOT NULL,
   calificacion_eval_version_general BOOLEAN NULL,
   observaciones_eval_version_general NVARCHAR(100) NULL,
   fecha_eval_version_general DATE NULL,
-  id_evaluador_eval_version_general INT UNSIGNED NOT NULL,
+  id_evaluador_eval_version_general INT NOT NULL,
   PRIMARY KEY (id_eval_version_general),
   FOREIGN KEY (id_version_eval_version_general)
     REFERENCES version (id_version),
@@ -252,11 +252,11 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE eval_detalle_lista (
-  id_eval_detalle_lista INT UNSIGNED NOT NULL,
+  id_eval_detalle_lista INT NOT NULL,
   calificacion_eval_detalle_lista BOOLEAN NULL,
   observacion_eval_detalle_lista NVARCHAR(100) NULL,
-  id_eval_version_general_eval_detalle_lista INT UNSIGNED NOT NULL,
-  id_detalle_lista_eval_detalle_lista INT UNSIGNED NOT NULL,
+  id_eval_version_general_eval_detalle_lista INT NOT NULL,
+  id_detalle_lista_eval_detalle_lista INT NOT NULL,
   PRIMARY KEY (id_eval_detalle_lista),
   FOREIGN KEY (id_eval_version_general_eval_detalle_lista)
     REFERENCES eval_version_general (id_eval_version_general),
@@ -280,7 +280,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE area (
-  id_area INT UNSIGNED NOT NULL ,
+  id_area INT NOT NULL ,
   nombre_area NVARCHAR(100) NOT NULL ,
   id_centro_area NVARCHAR(10) NOT NULL ,
   PRIMARY KEY (id_area) ,
@@ -293,9 +293,9 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE programa (
-  id_programa INT UNSIGNED NOT NULL,
+  id_programa INT NOT NULL,
   nombre_programa NVARCHAR(50) NOT NULL,
-  id_area_programa INT UNSIGNED NOT NULL,
+  id_area_programa INT NOT NULL,
   PRIMARY KEY (id_programa),
   FOREIGN KEY (id_area_programa)
     REFERENCES area (id_area))
@@ -306,12 +306,12 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE comentario (
-  id_comentario INT UNSIGNED NOT NULL,
+  id_comentario INT NOT NULL,
   valoracion_comentario NVARCHAR(45) NOT NULL,
-  puntuacion_comentario INT UNSIGNED NOT NULL,
+  puntuacion_comentario INT NOT NULL,
   fecha_comentario DATE NOT NULL,
-  id_producto_comentario INT UNSIGNED NOT NULL,
-  id_funcionario_comentario INT UNSIGNED NOT NULL,
+  id_producto_comentario INT NOT NULL,
+  id_funcionario_comentario INT NOT NULL,
   PRIMARY KEY (id_comentario),
   FOREIGN KEY (id_producto_comentario)
     REFERENCES producto (id_producto),
@@ -325,8 +325,8 @@ ENGINE = InnoDB;
 
 CREATE TABLE visita (
   fecha_visita DATE NOT NULL,
-  id_producto_visita INT UNSIGNED NOT NULL,
-  id_funcionario_visita INT UNSIGNED NOT NULL,
+  id_producto_visita INT NOT NULL,
+  id_funcionario_visita INT NOT NULL,
   PRIMARY KEY (fecha_visita, id_producto_visita, id_funcionario_visita),
   FOREIGN KEY (id_producto_visita)
     REFERENCES producto (id_producto),
@@ -339,7 +339,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE Categoria (
-  id_categoria INT UNSIGNED NOT NULL,
+  id_categoria INT NOT NULL,
   nombre_categoria NVARCHAR(50) NOT NULL,
   id_centro_categoria NVARCHAR(10) NOT NULL,
   PRIMARY KEY (id_categoria),
@@ -352,8 +352,8 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE programa_producto (
-  id_producto_prog_prod INT UNSIGNED NOT NULL,
-  id_programa_prog_prod INT UNSIGNED NOT NULL,
+  id_producto_prog_prod INT NOT NULL,
+  id_programa_prog_prod INT NOT NULL,
   PRIMARY KEY (id_producto_prog_prod, id_programa_prog_prod),
   FOREIGN KEY (id_producto_prog_prod)
     REFERENCES producto (id_producto),
@@ -366,8 +366,8 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE categoria_producto (
-  id_categoria_cat_prod INT UNSIGNED NOT NULL,
-  id_producto_cat_prod INT UNSIGNED NOT NULL,
+  id_categoria_cat_prod INT NOT NULL,
+  id_producto_cat_prod INT NOT NULL,
   PRIMARY KEY (id_categoria_cat_prod, id_producto_cat_prod),
   FOREIGN KEY (id_categoria_cat_prod)
     REFERENCES Categoria (id_categoria),
@@ -380,7 +380,7 @@ ENGINE = InnoDB;
 /*==============================================================*/
 
 CREATE TABLE funcionario_rol (
-  id_funcionario_funci_rol INT UNSIGNED NOT NULL,
+  id_funcionario_funci_rol INT NOT NULL,
   id_rol_funci_rol INT NOT NULL,
   PRIMARY KEY (id_funcionario_funci_rol, id_rol_funci_rol),
   FOREIGN KEY (id_funcionario_funci_rol)
@@ -402,7 +402,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_area $$
 CREATE PROCEDURE insertar_area (
-	IN _id_area INT UNSIGNED , 
+	IN _id_area INT , 
 	IN _nombre_area VARCHAR(100) ,
 	IN _id_centro_area VARCHAR(10) ) 
 BEGIN
@@ -416,7 +416,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_area $$
 CREATE PROCEDURE editar_area (
-	IN _id_area INT UNSIGNED, 
+	IN _id_area INT , 
 	IN _nombre_area VARCHAR(100),
 	IN _id_centro_area VARCHAR(10)) 
 BEGIN
@@ -430,7 +430,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_area $$
 CREATE PROCEDURE eliminar_area (
-	IN _id_area INT UNSIGNED)
+	IN _id_area INT )
 BEGIN
 	DELETE FROM area
 	WHERE id_area = _id_area;
@@ -440,7 +440,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_area $$
 CREATE PROCEDURE ver_area (
-	IN _id_area INT UNSIGNED) 
+	IN _id_area INT ) 
 BEGIN
 	SELECT * 
 	FROM area
@@ -458,8 +458,8 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_autor $$
 CREATE PROCEDURE insertar_autor (
-	IN _id_funcionario_autor INT UNSIGNED,
-	IN _id_version_autor INT UNSIGNED) 
+	IN _id_funcionario_autor INT ,
+	IN _id_version_autor INT ) 
 BEGIN
 	INSERT INTO autor 
 	VALUES (
@@ -471,10 +471,10 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_autor $$
 CREATE PROCEDURE editar_autor (
-	IN _id_funcionario_autor INT UNSIGNED,
-	IN _id_version_autor INT UNSIGNED,
-	IN _id_nuevo_funcionario_autor INT UNSIGNED,
-	IN _id_nuevo_version_autor INT UNSIGNED)
+	IN _id_funcionario_autor INT ,
+	IN _id_version_autor INT ,
+	IN _id_nuevo_funcionario_autor INT ,
+	IN _id_nuevo_version_autor INT )
 BEGIN
 	UPDATE autor
 	SET id_funcionario_autor = _id_nuevo_funcionario_autor,
@@ -487,8 +487,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_autor $$
 CREATE PROCEDURE eliminar_autor (
-	IN _id_funcionario_autor INT UNSIGNED,
-	IN _id_version_autor INT UNSIGNED)
+	IN _id_funcionario_autor INT ,
+	IN _id_version_autor INT )
 BEGIN
 	DELETE FROM autor
 	WHERE id_funcionario_autor = _id_funcionario_autor AND 
@@ -499,8 +499,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_autor $$
 CREATE PROCEDURE ver_autor (
-	IN _id_funcionario_autor INT UNSIGNED,
-	IN _id_version_autor INT UNSIGNED)
+	IN _id_funcionario_autor INT ,
+	IN _id_version_autor INT )
 BEGIN
 	SELECT * 
 	FROM autor
@@ -519,7 +519,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_categoria $$
 CREATE PROCEDURE insertar_categoria (
-	IN _id_categoria INT UNSIGNED,
+	IN _id_categoria INT ,
 	IN _nombre_categoria VARCHAR(50),
 	IN _id_centro_categoria VARCHAR(10))
 BEGIN
@@ -534,7 +534,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_categoria $$
 CREATE PROCEDURE editar_categoria (
-	IN _id_categoria INT UNSIGNED,
+	IN _id_categoria INT ,
 	IN _nombre_categoria VARCHAR(50),
 	IN _id_centro_categoria VARCHAR(10))
 BEGIN
@@ -548,7 +548,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_categoria $$
 CREATE PROCEDURE eliminar_categoria (
-	IN _id_categoria INT UNSIGNED)
+	IN _id_categoria INT )
 BEGIN
 	DELETE FROM categoria
 	WHERE id_categoria = _id_categoria;
@@ -558,7 +558,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_categoria $$
 CREATE PROCEDURE ver_categoria (
-	IN _id_categoria INT UNSIGNED)
+	IN _id_categoria INT )
 BEGIN
 	SELECT * 
 	FROM categoria
@@ -576,8 +576,8 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_categoria_producto $$
 CREATE PROCEDURE insertar_categoria_producto (
-	IN _id_categoria_cat_prod INT UNSIGNED,
-	IN _id_producto_cat_prod INT UNSIGNED)
+	IN _id_categoria_cat_prod INT ,
+	IN _id_producto_cat_prod INT )
 BEGIN
 	INSERT INTO categoria_producto
 	VALUES (
@@ -589,10 +589,10 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_categoria_producto $$
 CREATE PROCEDURE editar_categoria_producto (
-	IN _id_categoria_cat_prod INT UNSIGNED,
-	IN _id_producto_cat_prod INT UNSIGNED,
-	IN _id_nuevo_categoria_cat_prod INT UNSIGNED,
-	IN _id_nuevo_producto_cat_prod INT UNSIGNED)
+	IN _id_categoria_cat_prod INT ,
+	IN _id_producto_cat_prod INT ,
+	IN _id_nuevo_categoria_cat_prod INT ,
+	IN _id_nuevo_producto_cat_prod INT )
 BEGIN
 	UPDATE categoria_producto
 	SET id_categoria_cat_prod = _id_nuevo_categoria_cat_prod,
@@ -605,8 +605,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_categoria_producto $$
 CREATE PROCEDURE eliminar_categoria_producto (
-	IN _id_categoria_cat_prod INT UNSIGNED,
-	IN _id_producto_cat_prod INT UNSIGNED)
+	IN _id_categoria_cat_prod INT ,
+	IN _id_producto_cat_prod INT )
 BEGIN
 	DELETE FROM categoria_producto
 	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
@@ -617,8 +617,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_categoria_producto $$
 CREATE PROCEDURE ver_categoria_producto (
-	IN _id_categoria_cat_prod INT UNSIGNED,
-	IN _id_producto_cat_prod INT UNSIGNED)
+	IN _id_categoria_cat_prod INT ,
+	IN _id_producto_cat_prod INT )
 BEGIN
 	SELECT * 
 	FROM categoria_producto
@@ -751,12 +751,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_comentario $$
 CREATE PROCEDURE insertar_comentario (
-	IN _id_comentario INT UNSIGNED ,
+	IN _id_comentario INT  ,
 	IN _valoracion_comentario VARCHAR(45) ,
-	IN _puntuacion_comentario INT UNSIGNED ,
+	IN _puntuacion_comentario INT ,
 	IN _fecha_comentario DATE ,
-	IN _id_producto_comentario INT UNSIGNED ,
-        IN _id_funcionario_comentario INT UNSIGNED )
+	IN _id_producto_comentario INT ,
+        IN _id_funcionario_comentario INT )
 BEGIN
 	INSERT INTO comentario
 	VALUES (
@@ -772,12 +772,12 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_comentario $$
 CREATE PROCEDURE editar_comentario (
-	IN _id_comentario INT UNSIGNED ,
+	IN _id_comentario INT ,
 	IN _valoracion_comentario VARCHAR(45) ,
-	IN _puntuacion_comentario INT UNSIGNED ,
+	IN _puntuacion_comentario INT ,
 	IN _fecha_comentario DATE ,
-	IN _id_producto_comentario INT UNSIGNED ,
-        IN _id_funcionario_comentario INT UNSIGNED )
+	IN _id_producto_comentario INT ,
+        IN _id_funcionario_comentario INT )
 BEGIN
 	UPDATE comentario
 	SET valoracion_comentario = _valoracion_comentario ,
@@ -792,7 +792,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_comentario $$
 CREATE PROCEDURE eliminar_comentario (
-	IN _id_comentario INT UNSIGNED)
+	IN _id_comentario INT )
 BEGIN
 	DELETE FROM comentario
 	WHERE id_comentario = _id_comentario ;
@@ -802,7 +802,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_comentario $$
 CREATE PROCEDURE ver_comentario (
-	IN _id_comentario INT UNSIGNED)
+	IN _id_comentario INT )
 BEGIN
 	SELECT * 
 	FROM comentario
@@ -820,9 +820,9 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_detalle_lista $$
 CREATE PROCEDURE insertar_detalle_lista (
-	IN _id_detalle_lista INT UNSIGNED ,
-	IN _id_lista_detalle_lista INT UNSIGNED ,
-	IN _id_item_detalle_lista INT UNSIGNED )
+	IN _id_detalle_lista INT ,
+	IN _id_lista_detalle_lista INT ,
+	IN _id_item_detalle_lista INT )
 BEGIN
 	INSERT INTO detalle_lista
 	VALUES (
@@ -835,9 +835,9 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_detalle_lista $$
 CREATE PROCEDURE editar_detalle_lista (
-	IN _id_detalle_lista INT UNSIGNED ,
-	IN _id_lista_detalle_lista INT UNSIGNED ,
-	IN _id_item_detalle_lista INT UNSIGNED )
+	IN _id_detalle_lista INT ,
+	IN _id_lista_detalle_lista INT ,
+	IN _id_item_detalle_lista INT )
 BEGIN
 	UPDATE detalle_lista
 	SET id_lista_detalle_lista = _id_lista_detalle_lista ,
@@ -849,7 +849,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_detalle_lista $$
 CREATE PROCEDURE eliminar_detalle_lista (
-	IN _id_detalle_lista INT UNSIGNED)
+	IN _id_detalle_lista INT )
 BEGIN
 	DELETE FROM detalle_lista
 	WHERE id_detalle_lista = _id_detalle_lista;
@@ -859,7 +859,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_detalle_lista $$
 CREATE PROCEDURE ver_detalle_lista (
-	IN _id_detalle_lista INT UNSIGNED)
+	IN _id_detalle_lista INT )
 BEGIN
 	SELECT * 
 	FROM detalle_lista
@@ -878,7 +878,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_estado $$
 CREATE PROCEDURE insertar_estado (
-	IN _id_estado INT UNSIGNED , 
+	IN _id_estado INT , 
 	IN _nombre_estado VARCHAR(45)) 
 BEGIN
 	INSERT INTO estado 
@@ -891,7 +891,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_estado $$
 CREATE PROCEDURE editar_estado (
-	IN _id_estado INT UNSIGNED, 
+	IN _id_estado INT , 
 	IN _nombre_estado VARCHAR(45)) 
 BEGIN
 	UPDATE estado 
@@ -903,7 +903,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_estado $$
 CREATE PROCEDURE eliminar_estado (
-	IN _id_estado INT UNSIGNED)
+	IN _id_estado INT )
 BEGIN
 	DELETE FROM estado
 	WHERE id_estado=_id_estado;
@@ -913,7 +913,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_estado $$
 CREATE PROCEDURE ver_estado (
-	IN _id_estado INT UNSIGNED) 
+	IN _id_estado INT ) 
 BEGIN
 	SELECT * 
 	FROM estado 
@@ -932,11 +932,11 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_eval_detalle_lista $$
 CREATE PROCEDURE insertar_eval_detalle_lista (
-	IN _id_eval_detalle_lista INT UNSIGNED , 
+	IN _id_eval_detalle_lista INT , 
 	IN _calificacion_eval_detalle_lista BOOlEAN ,
 	IN _observacion_eval_detalle_lista VARCHAR(100) ,
-	IN _id_eval_version_general_eval_detalle_lista INT UNSIGNED ,
-	IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED )
+	IN _id_eval_version_general_eval_detalle_lista INT ,
+	IN _id_detalle_lista_eval_detalle_lista INT )
 BEGIN
 	INSERT INTO eval_detalle_lista
 	VALUES (
@@ -951,11 +951,11 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_eval_detalle_lista $$
 CREATE PROCEDURE editar_eval_detalle_lista (
-	IN _id_eval_detalle_lista INT UNSIGNED , 
+	IN _id_eval_detalle_lista INT , 
 	IN _calificacion_eval_detalle_lista BOOlEAN ,
 	IN _observacion_eval_detalle_lista VARCHAR(100) ,
-	IN _id_eval_version_general_eval_detalle_lista INT UNSIGNED ,
-	IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED )
+	IN _id_eval_version_general_eval_detalle_lista INT ,
+	IN _id_detalle_lista_eval_detalle_lista INT )
 BEGIN
 	UPDATE eval_detalle_lista
 	SET calificacion_eval_detalle_lista = _calificacion_eval_detalle_lista ,
@@ -969,7 +969,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_eval_detalle_lista $$
 CREATE PROCEDURE eliminar_eval_detalle_lista (
-	IN _id_eval_detalle_lista INT UNSIGNED)
+	IN _id_eval_detalle_lista INT )
 BEGIN
 	DELETE FROM eval_detalle_lista
 	WHERE id_eval_detalle_lista = _id_eval_detalle_lista ;
@@ -979,7 +979,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_eval_detalle_lista $$
 CREATE PROCEDURE ver_eval_detalle_lista (
-	IN _id_eval_detalle_lista INT UNSIGNED) 
+	IN _id_eval_detalle_lista INT ) 
 BEGIN
 	SELECT * 
 	FROM eval_detalle_lista
@@ -998,13 +998,13 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_eval_version_general $$
 CREATE PROCEDURE insertar_eval_version_general (
-	IN _id_eval_version_general INT UNSIGNED ,
-	IN _id_version_eval_version_general INT UNSIGNED ,
-	IN _id_lista_eval_version_general INT UNSIGNED ,
+	IN _id_eval_version_general INT ,
+	IN _id_version_eval_version_general INT ,
+	IN _id_lista_eval_version_general INT ,
 	IN _calificacion_eval_version_general BOOLEAN ,
 	IN _observaciones_eval_version_general VARCHAR(100) ,
 	IN _fecha_eval_version_general DATE ,
-	IN _id_evaluador_eval_version_general INT UNSIGNED )
+	IN _id_evaluador_eval_version_general INT )
 BEGIN
 	INSERT INTO eval_version_general
 	VALUES (
@@ -1021,13 +1021,13 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_eval_version_general $$
 CREATE PROCEDURE editar_eval_version_general (
-	IN _id_eval_version_general INT UNSIGNED ,
-	IN _id_version_eval_version_general INT UNSIGNED ,
-	IN _id_lista_eval_version_general INT UNSIGNED ,
+	IN _id_eval_version_general INT ,
+	IN _id_version_eval_version_general INT ,
+	IN _id_lista_eval_version_general INT ,
 	IN _calificacion_eval_version_general BOOLEAN ,
 	IN _observaciones_eval_version_general VARCHAR(100) ,
 	IN _fecha_eval_version_general DATE ,
-	IN _id_evaluador_eval_version_general INT UNSIGNED )
+	IN _id_evaluador_eval_version_general INT )
 BEGIN
 	UPDATE eval_version_general
 	SET id_version_eval_version_general = _id_version_eval_version_general ,
@@ -1043,7 +1043,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_eval_version_general $$
 CREATE PROCEDURE eliminar_eval_version_general (
-	IN _id_eval_version_general INT UNSIGNED)
+	IN _id_eval_version_general INT )
 BEGIN
 	DELETE FROM eval_version_general
 	WHERE id_eval_version_general = _id_eval_version_general ;
@@ -1053,7 +1053,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_eval_version_general $$
 CREATE PROCEDURE ver_eval_version_general (
-	IN _id_eval_version_general INT UNSIGNED) 
+	IN _id_eval_version_general INT ) 
 BEGIN
 	SELECT * 
 	FROM eval_version_general
@@ -1072,7 +1072,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_funcionario $$
 CREATE PROCEDURE insertar_funcionario (
-	IN _id_funcionario INT UNSIGNED ,
+	IN _id_funcionario INT  ,
 	IN _documento_funcionario VARCHAR(8) ,
 	IN _correo_funcionario VARCHAR(100) ,
 	IN _contrasena_funcionario VARCHAR(255) ,
@@ -1099,7 +1099,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_funcionario $$
 CREATE PROCEDURE editar_funcionario (
-	IN _id_funcionario INT UNSIGNED ,
+	IN _id_funcionario INT ,
 	IN _documento_funcionario VARCHAR(8) ,
 	IN _correo_funcionario VARCHAR(100) ,
 	IN _contrasena_funcionario VARCHAR(255) ,
@@ -1125,7 +1125,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_funcionario $$
 CREATE PROCEDURE eliminar_funcionario (
-	IN _id_funcionario INT UNSIGNED)
+	IN _id_funcionario INT )
 BEGIN
 	DELETE FROM funcionario
 	WHERE id_funcionario = _id_funcionario ;
@@ -1135,7 +1135,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_funcionario $$
 CREATE PROCEDURE ver_funcionario (
-	IN _id_funcionario INT UNSIGNED) 
+	IN _id_funcionario INT ) 
 BEGIN
 	SELECT * 
 	FROM funcionario
@@ -1154,8 +1154,8 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_funcionario_rol $$
 CREATE PROCEDURE insertar_funcionario_rol (
-	IN _id_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_rol_funci_rol INT UNSIGNED )
+	IN _id_funcionario_funci_rol INT ,
+	IN _id_rol_funci_rol INT )
 BEGIN
 	INSERT INTO funcionario_rol
 	VALUES (
@@ -1167,10 +1167,10 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_funcionario_rol $$
 CREATE PROCEDURE editar_funcionario_rol (
-	IN _id_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_rol_funci_rol INT UNSIGNED ,
-	IN _id_nuevo_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_nuevo_rol_funci_rol INT UNSIGNED )
+	IN _id_funcionario_funci_rol INT ,
+	IN _id_rol_funci_rol INT ,
+	IN _id_nuevo_funcionario_funci_rol INT ,
+	IN _id_nuevo_rol_funci_rol INT )
 BEGIN
 	UPDATE funcionario_rol
 	SET id_funcionario_funci_rol = _id_nuevo_funcionario_funci_rol ,
@@ -1183,8 +1183,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_funcionario_rol $$
 CREATE PROCEDURE eliminar_funcionario_rol (
-	IN _id_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_rol_funci_rol INT UNSIGNED )
+	IN _id_funcionario_funci_rol INT ,
+	IN _id_rol_funci_rol INT )
 BEGIN
 	DELETE FROM funcionario_rol
 	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
@@ -1195,8 +1195,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_funcionario_rol $$
 CREATE PROCEDURE ver_funcionario_rol (
-	IN _id_funcionario_funci_rol INT UNSIGNED ,
-	IN _id_rol_funci_rol INT UNSIGNED )
+	IN _id_funcionario_funci_rol INT ,
+	IN _id_rol_funci_rol INT )
 BEGIN
 	SELECT * 
 	FROM funcionario_rol
@@ -1216,9 +1216,9 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_item $$
 CREATE PROCEDURE insertar_item (
-	IN _id_item INT UNSIGNED ,
+	IN _id_item INT ,
 	IN _descriptor_item VARCHAR(200) ,
-	IN _id_autor_item INT UNSIGNED )
+	IN _id_autor_item INT )
 BEGIN
 	INSERT INTO item
 	VALUES (
@@ -1231,9 +1231,9 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_item $$
 CREATE PROCEDURE editar_item (
-	IN _id_item INT UNSIGNED ,
+	IN _id_item INT ,
 	IN _descriptor_item VARCHAR(200) ,
-	IN _id_autor_item INT UNSIGNED )
+	IN _id_autor_item INT )
 BEGIN
 	UPDATE item
 	SET descriptor_item = _descriptor_item ,
@@ -1245,7 +1245,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_item $$
 CREATE PROCEDURE eliminar_item (
-	IN _id_item INT UNSIGNED )
+	IN _id_item INT )
 BEGIN
 	DELETE FROM item
 	WHERE id_item = _id_item ;
@@ -1255,7 +1255,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_item $$
 CREATE PROCEDURE ver_item (
-	IN _id_item INT UNSIGNED )
+	IN _id_item INT )
 BEGIN
 	SELECT * 
 	FROM item
@@ -1274,12 +1274,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_lista_chequeo $$
 CREATE PROCEDURE insertar_lista_chequeo (
-	IN _id_lista INT UNSIGNED ,
+	IN _id_lista INT ,
 	IN _nombre_lista VARCHAR(100) ,
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT UNSIGNED )
+	IN _id_autor_lista INT )
 BEGIN
 	INSERT INTO lista_chequeo
 	VALUES (
@@ -1295,12 +1295,12 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_lista_chequeo $$
 CREATE PROCEDURE editar_lista_chequeo (
-	IN _id_lista INT UNSIGNED ,
+	IN _id_lista INT ,
 	IN _nombre_lista VARCHAR(100) ,
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT UNSIGNED )
+	IN _id_autor_lista INT )
 BEGIN
 	UPDATE lista_chequeo
 	SET nombre_lista = _nombre_lista ,
@@ -1315,7 +1315,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_lista_chequeo $$
 CREATE PROCEDURE eliminar_lista_chequeo (
-	IN _id_lista INT UNSIGNED )
+	IN _id_lista INT )
 BEGIN
 	DELETE FROM lista_chequeo
 	WHERE id_lista = _id_lista ;
@@ -1325,7 +1325,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_lista_chequeo $$
 CREATE PROCEDURE ver_lista_chequeo (
-	IN _id_lista INT UNSIGNED )
+	IN _id_lista INT )
 BEGIN
 	SELECT * 
 	FROM lista_chequeo
@@ -1345,11 +1345,11 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_producto $$
 CREATE PROCEDURE insertar_producto (
-	IN _id_producto INT UNSIGNED ,
+	IN _id_producto INT ,
 	IN _nombre_producto VARCHAR(100) ,
 	IN _descripcion_producto VARCHAR(255) ,
 	IN _palabras_clave_producto VARCHAR(200) ,
-	IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED )
+	IN _id_tipo_objeto_aprendizaje_producto INT )
 BEGIN
 	INSERT INTO producto
 	VALUES (
@@ -1364,11 +1364,11 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_producto $$
 CREATE PROCEDURE editar_producto (
-	IN _id_producto INT UNSIGNED ,
+	IN _id_producto INT ,
 	IN _nombre_producto VARCHAR(100) ,
 	IN _descripcion_producto VARCHAR(255) ,
 	IN _palabras_clave_producto VARCHAR(200) ,
-	IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED )
+	IN _id_tipo_objeto_aprendizaje_producto INT )
 BEGIN
 	UPDATE producto
 	SET nombre_producto = _nombre_producto ,
@@ -1382,7 +1382,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_producto $$
 CREATE PROCEDURE eliminar_producto (
-	IN _id_producto INT UNSIGNED )
+	IN _id_producto INT )
 BEGIN
 	DELETE FROM producto
 	WHERE id_producto = _id_producto ;
@@ -1392,7 +1392,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_producto $$
 CREATE PROCEDURE ver_producto (
-	IN _id_producto INT UNSIGNED )
+	IN _id_producto INT  )
 BEGIN
 	SELECT * 
 	FROM producto
@@ -1411,9 +1411,9 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_programa $$
 CREATE PROCEDURE insertar_programa (
-	IN _id_programa INT UNSIGNED ,
+	IN _id_programa INT ,
 	IN _nombre_programa VARCHAR(50) ,
-	IN _id_area_programa INT UNSIGNED )
+	IN _id_area_programa INT )
 BEGIN
 	INSERT INTO programa
 	VALUES (
@@ -1426,9 +1426,9 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_programa $$
 CREATE PROCEDURE editar_programa (
-	IN _id_programa INT UNSIGNED ,
+	IN _id_programa INT ,
 	IN _nombre_programa VARCHAR(50) ,
-	IN _id_area_programa INT UNSIGNED )
+	IN _id_area_programa INT )
 BEGIN
 	UPDATE programa
 	SET nombre_programa = _nombre_programa ,
@@ -1440,7 +1440,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_programa $$
 CREATE PROCEDURE eliminar_programa (
-	IN _id_programa INT UNSIGNED )
+	IN _id_programa INT )
 BEGIN
 	DELETE FROM programa
 	WHERE id_programa = _id_programa ;
@@ -1450,7 +1450,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_programa $$
 CREATE PROCEDURE ver_programa (
-	IN _id_programa INT UNSIGNED )
+	IN _id_programa INT )
 BEGIN
 	SELECT * 
 	FROM programa
@@ -1469,8 +1469,8 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_programa_producto $$
 CREATE PROCEDURE insertar_programa_producto (
-	IN _id_producto_prog_prod INT UNSIGNED ,
-	IN _id_programa_prog_prod INT UNSIGNED )
+	IN _id_producto_prog_prod INT ,
+	IN _id_programa_prog_prod INT )
 BEGIN
 	INSERT INTO programa_producto
 	VALUES (
@@ -1482,10 +1482,10 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_programa_producto $$
 CREATE PROCEDURE editar_programa_producto (
-	IN _id_producto_prog_prod INT UNSIGNED ,
-	IN _id_programa_prog_prod INT UNSIGNED ,
-	IN _id_nuevo_producto_prog_prod INT UNSIGNED ,
-	IN _id_nuevo_programa_prog_prod INT UNSIGNED)
+	IN _id_producto_prog_prod INT ,
+	IN _id_programa_prog_prod INT ,
+	IN _id_nuevo_producto_prog_prod INT ,
+	IN _id_nuevo_programa_prog_prod INT )
 BEGIN
 	UPDATE programa_producto
 	SET id_producto_prog_prod = _id_nuevo_producto_prog_prod ,
@@ -1498,8 +1498,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_programa_producto $$
 CREATE PROCEDURE eliminar_programa_producto (
-	IN _id_producto_prog_prod INT UNSIGNED ,
-	IN _id_programa_prog_prod INT UNSIGNED )
+	IN _id_producto_prog_prod INT ,
+	IN _id_programa_prog_prod INT )
 BEGIN
 	DELETE FROM programa_producto
 	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
@@ -1510,8 +1510,8 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_programa_producto $$
 CREATE PROCEDURE ver_programa_producto (
-	IN _id_producto_prog_prod INT UNSIGNED ,
-	IN _id_programa_prog_prod INT UNSIGNED )
+	IN _id_producto_prog_prod INT ,
+	IN _id_programa_prog_prod INT )
 BEGIN
 	SELECT * 
 	FROM programa_producto
@@ -1531,7 +1531,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_regional $$
 CREATE PROCEDURE insertar_regional (
-	IN _id_regional INT UNSIGNED ,
+	IN _id_regional INT ,
 	IN _nombre_regional VARCHAR(50) )
 BEGIN
 	INSERT INTO regional
@@ -1544,7 +1544,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_regional $$
 CREATE PROCEDURE editar_regional (
-	IN _id_regional INT UNSIGNED ,
+	IN _id_regional INT ,
 	IN _nombre_regional VARCHAR(50) )
 BEGIN
 	UPDATE regional
@@ -1556,7 +1556,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_regional $$
 CREATE PROCEDURE eliminar_regional (
-	IN _id_regional INT UNSIGNED )
+	IN _id_regional INT )
 BEGIN
 	DELETE FROM regional
 	WHERE id_regional = _id_regional ;
@@ -1566,7 +1566,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_regional $$
 CREATE PROCEDURE ver_regional (
-	IN _id_regional INT UNSIGNED )
+	IN _id_regional INT )
 BEGIN
 	SELECT * 
 	FROM regional
@@ -1585,7 +1585,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_rol $$
 CREATE PROCEDURE insertar_rol (
-	IN _id_rol INT UNSIGNED ,
+	IN _id_rol INT ,
 	IN _nombre_rol VARCHAR(45) ,
 	IN _descripcion_rol VARCHAR(100) )
 BEGIN
@@ -1600,7 +1600,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_rol $$
 CREATE PROCEDURE editar_rol (
-	IN _id_rol INT UNSIGNED ,
+	IN _id_rol INT ,
 	IN _nombre_rol VARCHAR(45) ,
 	IN _descripcion_rol VARCHAR(100) )
 BEGIN
@@ -1614,7 +1614,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_rol $$
 CREATE PROCEDURE eliminar_rol (
-	IN _id_rol INT UNSIGNED )
+	IN _id_rol INT )
 BEGIN
 	DELETE FROM rol
 	WHERE id_rol = _id_rol ;
@@ -1624,7 +1624,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_rol $$
 CREATE PROCEDURE ver_rol (
-	IN _id_rol INT UNSIGNED )
+	IN _id_rol INT )
 BEGIN
 	SELECT * 
 	FROM rol
@@ -1642,7 +1642,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_tipo_archivo $$
 CREATE PROCEDURE insertar_tipo_archivo (
-	IN _id_tipo_archivo INT UNSIGNED , 
+	IN _id_tipo_archivo INT , 
 	IN _extencion_tipo_archivo VARCHAR(7) ) 
 BEGIN
 	INSERT INTO tipo_archivo 
@@ -1655,7 +1655,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_tipo_archivo $$
 CREATE PROCEDURE editar_tipo_archivo (
-	IN _id_tipo_archivo INT UNSIGNED , 
+	IN _id_tipo_archivo INT , 
 	IN _extencion_tipo_archivo VARCHAR(7) ) 
 BEGIN
 	UPDATE tipo_archivo 
@@ -1667,7 +1667,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_tipo_archivo $$
 CREATE PROCEDURE eliminar_tipo_archivo (
-	IN _id_tipo_archivo INT UNSIGNED )
+	IN _id_tipo_archivo INT )
 BEGIN
 	DELETE FROM tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
@@ -1677,7 +1677,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_tipo_archivo $$
 CREATE PROCEDURE ver_tipo_archivo (
-	IN _id_tipo_archivo INT UNSIGNED ) 
+	IN _id_tipo_archivo INT ) 
 BEGIN
 	SELECT * 
 	FROM tipo_archivo
@@ -1695,7 +1695,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE insertar_tipo_objeto_aprendizaje (
-	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
+	IN _id_tipo_objeto_aprendizaje INT , 
 	IN _nombre_tipo_obj_apren VARCHAR(20) ) 
 BEGIN
 	INSERT INTO tipo_objeto_aprendizaje
@@ -1708,7 +1708,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE editar_tipo_objeto_aprendizaje (
-	IN _id_tipo_objeto_aprendizaje INT UNSIGNED , 
+	IN _id_tipo_objeto_aprendizaje INT , 
 	IN _nombre_tipo_obj_apren VARCHAR(20) )  
 BEGIN
 	UPDATE tipo_objeto_aprendizaje
@@ -1720,7 +1720,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE eliminar_tipo_objeto_aprendizaje (
-	IN _id_tipo_objeto_aprendizaje INT UNSIGNED )
+	IN _id_tipo_objeto_aprendizaje INT )
 BEGIN
 	DELETE FROM tipo_objeto_aprendizaje
 	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
@@ -1730,7 +1730,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE ver_tipo_objeto_aprendizaje (
-	IN _id_tipo_objeto_aprendizaje INT UNSIGNED) 
+	IN _id_tipo_objeto_aprendizaje INT ) 
 BEGIN
 	SELECT * 
 	FROM tipo_objeto_aprendizaje
@@ -1748,16 +1748,16 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_version $$
 CREATE PROCEDURE insertar_version (
-	IN _id_version INT UNSIGNED , 
-	IN _numero_version INT UNSIGNED , 
+	IN _id_version INT , 
+	IN _numero_version INT , 
 	IN _url_version VARCHAR(500) , 
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
 	IN _fecha_caducidad_version DATE , 
 	IN _fecha_aprobacion_version DATE , 
-	IN _id_estado_version INT UNSIGNED , 
-	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED , 
+	IN _id_estado_version INT , 
+	IN _id_tipo_archivo_version INT , 
+	IN _id_producto_version INT , 
 	IN _id_centro_version VARCHAR(10) )
 BEGIN
 	INSERT INTO version
@@ -1779,16 +1779,16 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_version $$
 CREATE PROCEDURE editar_version (
-	IN _id_version INT UNSIGNED , 
-	IN _numero_version INT UNSIGNED , 
+	IN _id_version INT , 
+	IN _numero_version INT , 
 	IN _url_version VARCHAR(500) , 
 	IN _notificacion_version BOOLEAN , 
 	IN _fecha_version DATE , 
 	IN _fecha_caducidad_version DATE , 
 	IN _fecha_aprobacion_version DATE , 
-	IN _id_estado_version INT UNSIGNED , 
-	IN _id_tipo_archivo_version INT UNSIGNED , 
-	IN _id_producto_version INT UNSIGNED , 
+	IN _id_estado_version INT , 
+	IN _id_tipo_archivo_version INT , 
+	IN _id_producto_version INT , 
 	IN _id_centro_version VARCHAR(10) )
 BEGIN
 	UPDATE version
@@ -1809,7 +1809,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_version $$
 CREATE PROCEDURE eliminar_version (
-	IN _id_version INT UNSIGNED )
+	IN _id_version INT )
 BEGIN
 	DELETE FROM version
 	WHERE id_version = _id_version ;
@@ -1819,7 +1819,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_version $$
 CREATE PROCEDURE ver_version (
-	IN _id_version INT UNSIGNED) 
+	IN _id_version INT ) 
 BEGIN
 	SELECT * 
 	FROM version
@@ -1838,8 +1838,8 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_visita $$
 CREATE PROCEDURE insertar_visita (
 	IN _fecha_visita DATE ,
-	IN _id_producto_visita INT UNSIGNED ,
-	IN _id_funcionario_visita INT UNSIGNED ) 
+	IN _id_producto_visita INT ,
+	IN _id_funcionario_visita INT ) 
 BEGIN
 	INSERT INTO visita
 	VALUES (
@@ -1853,11 +1853,11 @@ END $$
 DROP PROCEDURE IF EXISTS editar_visita $$
 CREATE PROCEDURE editar_visita (
 	IN _fecha_visita DATE ,
-	IN _id_producto_visita INT UNSIGNED ,
-	IN _id_funcionario_visita INT UNSIGNED ,
+	IN _id_producto_visita INT ,
+	IN _id_funcionario_visita INT ,
 	IN _fecha_nuevo_visita DATE ,
-	IN _id_nuevo_producto_visita INT UNSIGNED ,
-	IN _id_nuevo_funcionario_visita INT UNSIGNED)  
+	IN _id_nuevo_producto_visita INT ,
+	IN _id_nuevo_funcionario_visita INT )  
 BEGIN
 	UPDATE visita
 	SET fecha_visita = _fecha_nuevo_visita ,
@@ -1873,8 +1873,8 @@ END $$
 DROP PROCEDURE IF EXISTS eliminar_visita $$
 CREATE PROCEDURE eliminar_visita (
 	IN _fecha_visita DATE ,
-	IN _id_producto_visita INT UNSIGNED ,
-	IN _id_funcionario_visita INT UNSIGNED ) 
+	IN _id_producto_visita INT ,
+	IN _id_funcionario_visita INT ) 
 BEGIN
 	DELETE FROM visita
 	WHERE fecha_visita = _fecha_visita AND
@@ -1887,8 +1887,8 @@ END $$
 DROP PROCEDURE IF EXISTS ver_visita $$
 CREATE PROCEDURE ver_visita (
 	IN _fecha_visita DATE ,
-	IN _id_producto_visita INT UNSIGNED ,
-	IN _id_funcionario_visita INT UNSIGNED )
+	IN _id_producto_visita INT ,
+	IN _id_funcionario_visita INT )
 BEGIN
 	SELECT * 
 	FROM visita
@@ -1939,15 +1939,15 @@ CREATE PROCEDURE enviar_nuevo_producto (
     IN _nombre_producto VARCHAR(100),
     IN _descripcion_producto VARCHAR(255),
     IN _palabras_clave_producto VARCHAR(200),
-    IN _id_tipo_objeto_aprendizaje_producto INT UNSIGNED,
+    IN _id_tipo_objeto_aprendizaje_producto INT ,
     IN _url_version VARCHAR(500),
-    IN _id_tipo_archivo_version INT UNSIGNED ,
+    IN _id_tipo_archivo_version INT ,
     IN _id_centro_version VARCHAR(10)
     )
 BEGIN
     DECLARE _fecha DATE;
-    DECLARE _id_producto INT UNSIGNED;
-    DECLARE _id_version INT UNSIGNED;
+    DECLARE _id_producto INT ;
+    DECLARE _id_version INT ;
     SET _fecha = CURDATE();
     SET _id_producto = (SELECT MAX(id_producto) FROM producto) + 1;
     SET _id_producto = IFNULL(_id_producto, 1);
@@ -2017,7 +2017,7 @@ CREATE PROCEDURE registrar_instructor_centro (
         IN _id_centro VARCHAR(10)
     )
 BEGIN
-    DECLARE _id_funcionario INT UNSIGNED;
+    DECLARE _id_funcionario INT ;
     SET _id_funcionario = (SELECT MAX(id_funcionario) FROM funcionario) + 1;
     SET _id_funcionario = IFNULL(_id_funcionario, 1);
     CALL insertar_funcionario(
@@ -2045,11 +2045,11 @@ CREATE PROCEDURE nueva_lista (
         IN _nombre_lista VARCHAR(100) ,
         IN _descripcion_lista VARCHAR(255) ,
         IN _tipo_lista VARCHAR(20) ,
-        IN _id_autor_lista INT UNSIGNED
+        IN _id_autor_lista INT 
     )
 BEGIN
     DECLARE _fecha_lista DATE ;
-    DECLARE _id_lista INT UNSIGNED ;
+    DECLARE _id_lista INT ;
     SET _fecha_lista = CURDATE() ;
     SET _id_lista = (SELECT MAX(id_lista) FROM lista_chequeo) + 1;
     SET _id_lista = IFNULL(_id_lista, 1);
@@ -2073,10 +2073,10 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS nuevo_item $$
 CREATE PROCEDURE nuevo_item (
         IN _descriptor_item VARCHAR(200),
-        IN _id_autor_item INT UNSIGNED
+        IN _id_autor_item INT 
     )
 BEGIN
-    DECLARE _id_item INT UNSIGNED ;
+    DECLARE _id_item INT ;
     SET _id_item = (SELECT MAX(id_item) FROM item) + 1;
     SET _id_item = IFNULL(_id_item, 1);
     CALL insertar_item(
@@ -2099,7 +2099,7 @@ CREATE PROCEDURE nueva_area (
         IN _id_centro_area VARCHAR(10)
     )
 BEGIN
-    DECLARE _id_area INT UNSIGNED ;
+    DECLARE _id_area INT ;
     SET _id_area = (SELECT MAX(id_area) FROM area) + 1;
     SET _id_area = IFNULL(_id_area, 1);
     CALL insertar_area(
@@ -2122,7 +2122,7 @@ CREATE PROCEDURE nueva_categoria (
         IN _id_centro_categoria VARCHAR(10)
     )
 BEGIN
-    DECLARE _id_categoria INT UNSIGNED ;
+    DECLARE _id_categoria INT ;
     SET _id_categoria = (SELECT MAX(id_categoria) FROM categoria) + 1;
     SET _id_categoria = IFNULL(_id_categoria, 1);
     CALL insertar_categoria(
@@ -2143,11 +2143,11 @@ DROP PROCEDURE IF EXISTS nuevo_comentario $$
 CREATE PROCEDURE nuevo_comentario (
         IN _valoracion_comentario VARCHAR(50) ,
         IN _puntuacion_comentario INT ,
-        IN _id_producto_comentario INT UNSIGNED ,
-        IN _id_funcionario_comentario INT UNSIGNED
+        IN _id_producto_comentario INT ,
+        IN _id_funcionario_comentario INT 
     )
 BEGIN
-    DECLARE _id_comentario INT UNSIGNED ;
+    DECLARE _id_comentario INT ;
     DECLARE _fecha_comentario DATE;
     SET _fecha_comentario = CURDATE();
     SET _id_comentario = (SELECT MAX(id_comentario) FROM comentario) + 1;
@@ -2171,11 +2171,11 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS nuevo_detalle_lista $$
 CREATE PROCEDURE nuevo_detalle_lista (
-        IN _id_lista_detalle_lista INT UNSIGNED ,
-        IN _id_item_detalle_lista INT UNSIGNED 
+        IN _id_lista_detalle_lista INT ,
+        IN _id_item_detalle_lista INT  
     )
 BEGIN
-    DECLARE _id_detalle_lista INT UNSIGNED ;
+    DECLARE _id_detalle_lista INT ;
     SET _id_detalle_lista = (SELECT MAX(id_detalle_lista) FROM detalle_lista) + 1;
     SET _id_detalle_lista = IFNULL(_id_detalle_lista, 1);
     CALL insertar_detalle_lista(
@@ -2194,11 +2194,11 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS nueva_evaluacion_item $$
 CREATE PROCEDURE nueva_evaluacion_item (
-        IN _id_eval_version_eval_detalle_lista INT UNSIGNED ,
-        IN _id_detalle_lista_eval_detalle_lista INT UNSIGNED 
+        IN _id_eval_version_eval_detalle_lista INT ,
+        IN _id_detalle_lista_eval_detalle_lista INT  
     )
 BEGIN
-    DECLARE _id_eval_detalle_lista INT UNSIGNED ;
+    DECLARE _id_eval_detalle_lista INT ;
     SET _id_eval_detalle_lista = (SELECT MAX(id_eval_detalle_lista) FROM eval_detalle_lista) + 1;
     SET _id_eval_detalle_lista = IFNULL(_id_eval_detalle_lista, 1);
     CALL insertar_eval_detalle_lista (
@@ -2219,12 +2219,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS nueva_evaluacion_lista $$
 CREATE PROCEDURE nueva_evaluacion_lista (
-        IN _id_version_eval_version_general INT UNSIGNED ,
-        IN _id_lista_eval_version_general INT UNSIGNED ,
-        IN _id_evaluador_eval_version_general INT UNSIGNED 
+        IN _id_version_eval_version_general INT ,
+        IN _id_lista_eval_version_general INT ,
+        IN _id_evaluador_eval_version_general INT  
     )
 BEGIN
-    DECLARE _id_eval_version_general INT UNSIGNED ;
+    DECLARE _id_eval_version_general INT ;
     SET _id_eval_version_general = (SELECT MAX(id_eval_version_general) FROM eval_version_general) + 1;
     SET _id_eval_version_general = IFNULL(_id_eval_version_general, 1);
     CALL insertar_eval_version_general (
@@ -2248,10 +2248,10 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS nuevo_programa $$
 CREATE PROCEDURE nuevo_programa (
         IN _nombre_programa VARCHAR(50) ,
-        IN _id_area_programa INT UNSIGNED
+        IN _id_area_programa INT 
     )
 BEGIN
-    DECLARE _id_programa INT UNSIGNED ;
+    DECLARE _id_programa INT ;
     SET _id_programa = (SELECT MAX(id_programa) FROM programa) + 1;
     SET _id_programa = IFNULL(_id_programa, 1);
     CALL insertar_programa (
@@ -2270,8 +2270,8 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS nueva_visita $$
 CREATE PROCEDURE nueva_visita (
-        IN _id_producto_visita INT UNSIGNED ,
-        IN _id_funcionario_visita INT UNSIGNED
+        IN _id_producto_visita INT ,
+        IN _id_funcionario_visita INT 
     )
 BEGIN
     DECLARE _fecha_visita DATE ;
@@ -2292,15 +2292,15 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS actualizar_producto $$
 CREATE PROCEDURE actualizar_producto (
-        IN _id_producto_version INT UNSIGNED ,
+        IN _id_producto_version INT ,
         IN _url_version VARCHAR(500),
-        IN _id_tipo_archivo_version INT UNSIGNED ,
+        IN _id_tipo_archivo_version INT ,
         IN _id_centro_version VARCHAR(10)
     )
 BEGIN
     DECLARE _fecha DATE;
-    DECLARE _id_version INT UNSIGNED;
-    DECLARE _numero_version INT UNSIGNED;
+    DECLARE _id_version INT ;
+    DECLARE _numero_version INT ;
     SET _fecha = CURDATE();
     SET _id_version = (SELECT MAX(id_version) FROM version) + 1;
     SET _numero_version = (SELECT MAX(numero_version) FROM version WHERE id_producto_version = _id_producto_version ) + 1;
