@@ -1,10 +1,10 @@
 /*==============================================================*/
-/* DBMS name:      MySQL                                        */
+/* DBMS name:      MariaDB 10                                   */
 /* Created on:     11/08/2016 11:00:00                          */
 /*==============================================================*/
 
 /*==============================================================*/
-/* PROCEDIMIENTOS ALMACENADOS AVANZADOS                         */
+/* PROCEDIMIENTOS ALMACENADOS                                   */
 /*==============================================================*/
 /* VER_PRODUCTOS_APROVADOS                                      */
 /* ENVIAR_NUEVO_PRODUCTO                                        */
@@ -21,10 +21,10 @@
 /* NUEVO_PROGRAMA                                               */
 /* NUEVA_VISITA                                                 */
 /* ACTUALIZAR_PRODUCTO                                          */
-/* crear_(nombre de la tabla)                                   */
-/* editar_(nombre de la tabla)                                  */
-/* eliminar_(nombre de la tabla)                                */
-/* ver_(nombre de la tabla)                                     */
+/* CREAR_(nombre de la tabla)                                   */
+/* EDITAR_(nombre de la tabla)                                  */
+/* ELIMINAR_(nombre de la tabla)                                */
+/* VER_(nombre de la tabla)                                     */
 /*==============================================================*/
 /*==============================================================*/
 
