@@ -21,7 +21,7 @@
 /* NUEVO_PROGRAMA                                               */
 /* NUEVA_VISITA                                                 */
 /* ACTUALIZAR_PRODUCTO                                          */
-/* CREAR_(nombre de la tabla)                                   */
+/* INSERTAR_(nombre de la tabla)                                   */
 /* EDITAR_(nombre de la tabla)                                  */
 /* ELIMINAR_(nombre de la tabla)                                */
 /* VER_(nombre de la tabla)                                     */
@@ -1531,7 +1531,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_regional $$
 CREATE PROCEDURE insertar_regional (
-	IN _id_regional INT ,
+	IN _id_regional NVARCHAR(10) ,
 	IN _nombre_regional VARCHAR(50) )
 BEGIN
 	INSERT INTO regional
@@ -1544,7 +1544,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS editar_regional $$
 CREATE PROCEDURE editar_regional (
-	IN _id_regional INT ,
+	IN _id_regional NVARCHAR(10) ,
 	IN _nombre_regional VARCHAR(50) )
 BEGIN
 	UPDATE regional
@@ -1556,7 +1556,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS eliminar_regional $$
 CREATE PROCEDURE eliminar_regional (
-	IN _id_regional INT )
+	IN _id_regional NVARCHAR(10) )
 BEGIN
 	DELETE FROM regional
 	WHERE id_regional = _id_regional ;
@@ -1566,7 +1566,7 @@ END $$
 
 DROP PROCEDURE IF EXISTS ver_regional $$
 CREATE PROCEDURE ver_regional (
-	IN _id_regional INT )
+	IN _id_regional NVARCHAR(10) )
 BEGIN
 	SELECT * 
 	FROM regional
