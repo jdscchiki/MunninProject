@@ -1,4 +1,22 @@
 /*==============================================================*/
+/* INSERT DATOS BASICOS                                         */
+/*==============================================================*/
+
+INSERT INTO estado VALUES(1, "Rechazado");
+INSERT INTO tipo_archivo VALUES(1, ".doc");
+INSERT INTO tipo_objeto_aprendizaje(1, "Guia");
+INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
+INSERT INTO regional VALUES("11", "Regional Distrito Capital");
+INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
+INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
+INSERT INTO version VALUES(1, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
+INSERT INTO funcionario VALUES(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
+INSERT INTO autor VALUES(1,1);
+INSERT INTO lista_chequeo VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
+INSERT INTO item VALUES(1, "item pedagogico", 1);
+INSERT INTO detalle_lista VALUES(1,1,1);
+
+/*==============================================================*/
 /* ESTADO                                                       */
 /*==============================================================*/
 
