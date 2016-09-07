@@ -21,7 +21,7 @@
 /* NUEVO_PROGRAMA                                               */
 /* NUEVA_VISITA                                                 */
 /* ACTUALIZAR_PRODUCTO                                          */
-/* INSERTAR_(nombre de la tabla)                                   */
+/* INSERTAR_(nombre de la tabla)                                */
 /* EDITAR_(nombre de la tabla)                                  */
 /* ELIMINAR_(nombre de la tabla)                                */
 /* VER_(nombre de la tabla)                                     */
@@ -442,7 +442,9 @@ DROP PROCEDURE IF EXISTS ver_area $$
 CREATE PROCEDURE ver_area (
 	IN _id_area INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_area , 
+	nombre_area ,
+	id_centro_area 
 	FROM area
 	WHERE id_area = _id_area;
 END $$
@@ -502,7 +504,8 @@ CREATE PROCEDURE ver_autor (
 	IN _id_funcionario_autor INT ,
 	IN _id_version_autor INT )
 BEGIN
-	SELECT * 
+	SELECT id_funcionario_autor ,
+	id_version_autor
 	FROM autor
 	WHERE id_funcionario_autor = _id_funcionario_autor AND 
 	id_version_autor = _id_version_autor;
@@ -560,7 +563,9 @@ DROP PROCEDURE IF EXISTS ver_categoria $$
 CREATE PROCEDURE ver_categoria (
 	IN _id_categoria INT )
 BEGIN
-	SELECT * 
+	SELECT id_categoria ,
+	nombre_categoria ,
+	id_centro_categoria
 	FROM categoria
 	WHERE id_categoria = _id_categoria;
 END $$
@@ -620,7 +625,8 @@ CREATE PROCEDURE ver_categoria_producto (
 	IN _id_categoria_cat_prod INT ,
 	IN _id_producto_cat_prod INT )
 BEGIN
-	SELECT * 
+	SELECT id_categoria_cat_prod,
+	id_producto_cat_prod
 	FROM categoria_producto
 	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
 		id_producto_cat_prod = _id_producto_cat_prod;
@@ -682,7 +688,10 @@ DROP PROCEDURE IF EXISTS ver_centro $$
 CREATE PROCEDURE ver_centro (
 	IN _id_centro VARCHAR(10))
 BEGIN
-	SELECT * 
+	SELECT id_centro ,
+	nombre_centro ,
+	id_regional_centro ,
+	id_ciudad_centro
 	FROM centro
 	WHERE id_centro = _id_centro ;
 END $$
@@ -735,7 +744,8 @@ DROP PROCEDURE IF EXISTS ver_ciudad $$
 CREATE PROCEDURE ver_ciudad (
 	IN _id_ciudad VARCHAR(10))
 BEGIN
-	SELECT * 
+	SELECT id_ciudad ,
+	nombre_ciudad
 	FROM ciudad
 	WHERE id_ciudad = _id_ciudad ;
 END $$
@@ -804,7 +814,12 @@ DROP PROCEDURE IF EXISTS ver_comentario $$
 CREATE PROCEDURE ver_comentario (
 	IN _id_comentario INT )
 BEGIN
-	SELECT * 
+	SELECT id_comentario ,
+	valoracion_comentario ,
+	puntuacion_comentario ,
+	fecha_comentario ,
+	id_producto_comentario ,
+        id_funcionario_comentario
 	FROM comentario
 	WHERE id_comentario = _id_comentario ;
 END $$
@@ -861,7 +876,9 @@ DROP PROCEDURE IF EXISTS ver_detalle_lista $$
 CREATE PROCEDURE ver_detalle_lista (
 	IN _id_detalle_lista INT )
 BEGIN
-	SELECT * 
+	SELECT id_detalle_lista ,
+	id_lista_detalle_lista ,
+	id_item_detalle_lista
 	FROM detalle_lista
 	WHERE id_detalle_lista = _id_detalle_lista ;
 END $$
@@ -884,7 +901,7 @@ BEGIN
 	INSERT INTO estado 
 	VALUES (
 		_id_estado , 
-		_nombre_estado);
+		_nombre_estado );
 END $$
 
 /*---editar estado----------------------------------------------*/
@@ -915,7 +932,8 @@ DROP PROCEDURE IF EXISTS ver_estado $$
 CREATE PROCEDURE ver_estado (
 	IN _id_estado INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_estado , 
+	nombre_estado
 	FROM estado 
 	WHERE id_estado = _id_estado;
 END $$
@@ -981,7 +999,11 @@ DROP PROCEDURE IF EXISTS ver_eval_detalle_lista $$
 CREATE PROCEDURE ver_eval_detalle_lista (
 	IN _id_eval_detalle_lista INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_eval_detalle_lista ,
+	calificacion_eval_detalle_lista ,
+	observacion_eval_detalle_lista ,
+	id_eval_version_general_eval_detalle_lista ,
+	id_detalle_lista_eval_detalle_lista
 	FROM eval_detalle_lista
 	WHERE id_eval_detalle_lista = _id_eval_detalle_lista ;
 END $$
@@ -1055,7 +1077,13 @@ DROP PROCEDURE IF EXISTS ver_eval_version_general $$
 CREATE PROCEDURE ver_eval_version_general (
 	IN _id_eval_version_general INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_eval_version_general ,
+	id_version_eval_version_general ,
+	id_lista_eval_version_general ,
+	calificacion_eval_version_general ,
+	observaciones_eval_version_general ,
+	fecha_eval_version_general ,
+	id_evaluador_eval_version_general
 	FROM eval_version_general
 	WHERE id_eval_version_general = _id_eval_version_general ;
 END $$
@@ -1137,7 +1165,15 @@ DROP PROCEDURE IF EXISTS ver_funcionario $$
 CREATE PROCEDURE ver_funcionario (
 	IN _id_funcionario INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_funcionario ,
+	documento_funcionario ,
+	correo_funcionario ,
+	contrasena_funcionario ,
+	nombre_funcionario ,
+	apellido_funcionario ,
+	cargo_funcionario ,
+	telefono_funcionario ,
+	id_centro_funcionario
 	FROM funcionario
 	WHERE id_funcionario = _id_funcionario ;
 END $$
@@ -1198,7 +1234,8 @@ CREATE PROCEDURE ver_funcionario_rol (
 	IN _id_funcionario_funci_rol INT ,
 	IN _id_rol_funci_rol INT )
 BEGIN
-	SELECT * 
+	SELECT id_funcionario_funci_rol ,
+	id_rol_funci_rol
 	FROM funcionario_rol
 	WHERE id_funcionario_funci_rol = _id_funcionario_funci_rol AND
 		id_rol_funci_rol = _id_rol_funci_rol ;
@@ -1257,7 +1294,9 @@ DROP PROCEDURE IF EXISTS ver_item $$
 CREATE PROCEDURE ver_item (
 	IN _id_item INT )
 BEGIN
-	SELECT * 
+	SELECT id_item ,
+	descriptor_item ,
+	id_autor_item
 	FROM item
 	WHERE id_item = _id_item ;
 END $$
@@ -1327,7 +1366,12 @@ DROP PROCEDURE IF EXISTS ver_lista_chequeo $$
 CREATE PROCEDURE ver_lista_chequeo (
 	IN _id_lista INT )
 BEGIN
-	SELECT * 
+	SELECT id_lista ,
+	nombre_lista ,
+	descripcion_lista ,
+	fecha_lista ,
+	tipo_lista ,
+	id_autor_lista 
 	FROM lista_chequeo
 	WHERE id_lista = _id_lista ;
 END $$
@@ -1394,7 +1438,11 @@ DROP PROCEDURE IF EXISTS ver_producto $$
 CREATE PROCEDURE ver_producto (
 	IN _id_producto INT  )
 BEGIN
-	SELECT * 
+	SELECT id_producto ,
+	nombre_producto ,
+	descripcion_producto ,
+	palabras_clave_producto ,
+	id_tipo_objeto_aprendizaje_producto
 	FROM producto
 	WHERE id_producto = _id_producto ;
 END $$
@@ -1452,7 +1500,9 @@ DROP PROCEDURE IF EXISTS ver_programa $$
 CREATE PROCEDURE ver_programa (
 	IN _id_programa INT )
 BEGIN
-	SELECT * 
+	SELECT id_programa ,
+	nombre_programa ,
+	id_area_programa
 	FROM programa
 	WHERE id_programa = _id_programa ;
 END $$
@@ -1513,7 +1563,8 @@ CREATE PROCEDURE ver_programa_producto (
 	IN _id_producto_prog_prod INT ,
 	IN _id_programa_prog_prod INT )
 BEGIN
-	SELECT * 
+	SELECT id_producto_prog_prod ,
+	id_programa_prog_prod
 	FROM programa_producto
 	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
 		id_programa_prog_prod = _id_programa_prog_prod ;
@@ -1568,7 +1619,8 @@ DROP PROCEDURE IF EXISTS ver_regional $$
 CREATE PROCEDURE ver_regional (
 	IN _id_regional NVARCHAR(10) )
 BEGIN
-	SELECT * 
+	SELECT id_regional ,
+	nombre_regional
 	FROM regional
 	WHERE id_regional = _id_regional ;
 END $$
@@ -1626,7 +1678,9 @@ DROP PROCEDURE IF EXISTS ver_rol $$
 CREATE PROCEDURE ver_rol (
 	IN _id_rol INT )
 BEGIN
-	SELECT * 
+	SELECT id_rol ,
+	nombre_rol ,
+	descripcion_rol
 	FROM rol
 	WHERE id_rol = _id_rol ;
 END $$
@@ -1679,7 +1733,8 @@ DROP PROCEDURE IF EXISTS ver_tipo_archivo $$
 CREATE PROCEDURE ver_tipo_archivo (
 	IN _id_tipo_archivo INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_tipo_archivo , 
+	extencion_tipo_archivo 
 	FROM tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
@@ -1732,7 +1787,8 @@ DROP PROCEDURE IF EXISTS ver_tipo_objeto_aprendizaje $$
 CREATE PROCEDURE ver_tipo_objeto_aprendizaje (
 	IN _id_tipo_objeto_aprendizaje INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_tipo_objeto_aprendizaje , 
+	nombre_tipo_obj_apren
 	FROM tipo_objeto_aprendizaje
 	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
 END $$
@@ -1821,7 +1877,17 @@ DROP PROCEDURE IF EXISTS ver_version $$
 CREATE PROCEDURE ver_version (
 	IN _id_version INT ) 
 BEGIN
-	SELECT * 
+	SELECT id_version , 
+	numero_version ,
+        url_version ,
+        notificacion_version ,
+        fecha_version ,
+        fecha_caducidad_version ,
+        fecha_aprobacion_version ,
+        id_estado_version ,
+        id_tipo_archivo_version ,
+        id_producto_version ,
+        id_centro_version
 	FROM version
 	WHERE id_version = _id_version ;
 END $$
@@ -1890,7 +1956,9 @@ CREATE PROCEDURE ver_visita (
 	IN _id_producto_visita INT ,
 	IN _id_funcionario_visita INT )
 BEGIN
-	SELECT * 
+	SELECT fecha_visita , 
+	id_producto_visita ,
+	id_funcionario_visita
 	FROM visita
 	WHERE fecha_visita = _fecha_visita AND
 		id_producto_visita = _id_producto_visita AND
