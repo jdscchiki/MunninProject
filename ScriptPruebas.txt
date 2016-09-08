@@ -57,6 +57,93 @@ CALL insertar_categoria_producto(1,2);
 CALL insertar_funcionario_rol(2,1);
 
 /*==============================================================*/
+/* SP EDITAR                                                    */
+/*==============================================================*/
+
+CALL editar_estado(2, "Aprobado");
+CALL editar_tipo_archivo(2, ".rar");
+CALL editar_tipo_objeto_aprendizaje(2, "Presentación");
+CALL editar_producto(2, "GUIA PHP", "mucho php", "java", 2);
+CALL editar_regional("1", "Direccion General");
+CALL editar_ciudad("05001", "Medellín");
+CALL editar_centro("9214", "Centro Metalmecanico", "11", "11001");
+CALL editar_version(2, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
+CALL editar_funcionario(2, "02", "funcionario2@misena.edu.co", "pass2", "funcionario2", "voluntario2", "empleado", NULL, "9303");
+CALL editar_autor(2,2,2,2);
+CALL editar_lista_chequeo(2, "Lista para Presentaciones", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
+CALL editar_item(2, "item pedagogico 2", 1);
+CALL editar_detalle_lista(2,2,2);
+CALL editar_eval_version_general(2, 2, 2, NULL, NULL, NULL, 1);
+CALL editar_eval_detalle_lista(2, NULL, NULL, 2, 2);
+CALL editar_rol(2, "Equipo Tecnico", "Da concepto de provación tecnica al material de formación");
+CALL editar_area(2, "Mercadeo", "9303");
+CALL editar_programa(2, "Redes", 1);
+CALL editar_comentario(2, "muy bonito x2", 4, '2016-08-13', 1, 2);
+CALL editar_visita('2016-12-13', 1, 2, '2016-12-13', 1, 2);
+CALL editar_categoria(2, "Infraestructura", "9303");
+CALL editar_programa_producto(2,1,2,1);
+CALL editar_categoria_producto(1,2,1,2);
+CALL editar_funcionario_rol(2,1,2,1);
+
+/*==============================================================*/
+/* SP VER (ejecutar uno por uno)                                */
+/*==============================================================*/
+
+CALL ver_estado(2);
+CALL ver_tipo_archivo(2);
+CALL ver_tipo_objeto_aprendizaje(2);
+CALL ver_producto(2);
+CALL ver_regional("1");
+CALL ver_ciudad("05001");
+CALL ver_centro("9214");
+CALL ver_version(2);
+CALL ver_funcionario(2);
+CALL ver_autor(2,2);
+CALL ver_lista_chequeo(2);
+CALL ver_item(2);
+CALL ver_detalle_lista(2);
+CALL ver_eval_version_general(2);
+CALL ver_eval_detalle_lista(2);
+CALL ver_rol(2);
+CALL ver_area(2);
+CALL ver_programa(2);
+CALL ver_comentario(2);
+CALL ver_visita('2016-12-13', 1, 2);
+CALL ver_categoria(2);
+CALL ver_programa_producto(2,1);
+CALL ver_categoria_producto(1,2);
+CALL ver_funcionario_rol(2,1);
+
+/*==============================================================*/
+/* SP ELIMINAR                                                  */
+/*==============================================================*/
+
+CALL eliminar_funcionario_rol(2,1);
+CALL eliminar_categoria_producto(1,2);
+CALL eliminar_programa_producto(2,1);
+CALL eliminar_categoria(2);
+CALL eliminar_visita('2016-12-13', 1, 2);
+CALL eliminar_comentario(2);
+CALL eliminar_programa(2);
+CALL eliminar_area(2);
+CALL eliminar_rol(2);
+CALL eliminar_eval_detalle_lista(2);
+CALL eliminar_eval_version_general(2);
+CALL eliminar_detalle_lista(2);
+CALL eliminar_item(2);
+CALL eliminar_lista_chequeo(2);
+CALL eliminar_autor(2,2);
+CALL eliminar_funcionario(2);
+CALL eliminar_version(2);
+CALL eliminar_centro("9214");
+CALL eliminar_ciudad("05001");
+CALL eliminar_regional("1");
+CALL eliminar_producto(2);
+CALL eliminar_tipo_objeto_aprendizaje(2);
+CALL eliminar_tipo_archivo(2);
+CALL eliminar_estado(2);
+
+/*==============================================================*/
 /* ESTADO                                                       */
 /*==============================================================*/
 
