@@ -4,7 +4,7 @@
 
 INSERT INTO estado VALUES(1, "Rechazado");
 INSERT INTO tipo_archivo VALUES(1, ".doc");
-INSERT INTO tipo_objeto_aprendizaje(1, "Guia");
+INSERT INTO tipo_objeto_aprendizaje VALUES(1, "Guia");
 INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
 INSERT INTO regional VALUES("11", "Regional Distrito Capital");
 INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
@@ -15,6 +15,46 @@ INSERT INTO autor VALUES(1,1);
 INSERT INTO lista_chequeo VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
 INSERT INTO item VALUES(1, "item pedagogico", 1);
 INSERT INTO detalle_lista VALUES(1,1,1);
+INSERT INTO eval_version_general VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
+INSERT INTO eval_detalle_lista VALUES(1, 1, "bueno", 1, 1);
+INSERT INTO rol VALUES(1, "coordinador", "administra el centro de formacion");
+INSERT INTO area VALUES(1, "teleinformatica", "9303");
+INSERT INTO programa VALUES(1, "ADSI", 1);
+INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
+INSERT INTO visita VALUES('2016-12-13', 1, 1);
+INSERT INTO categoria VALUES(1, "programación", "9303");
+INSERT INTO programa_producto VALUES(1,1);
+INSERT INTO categoria_producto VALUES(1,1);
+INSERT INTO funcionario_rol VALUES(1,1);
+
+/*==============================================================*/
+/* SP INSERTAR                                                  */
+/*==============================================================*/
+
+CALL insertar_estado(2, "Aprobado");
+CALL insertar_tipo_archivo(2, ".rar");
+CALL insertar_tipo_objeto_aprendizaje(2, "Presentación");
+CALL insertar_producto(2, "GUIA PHP", "mucho php", "java", 2);
+CALL insertar_regional("1", "Direccion General");
+CALL insertar_ciudad("05001", "Medellín");
+CALL insertar_centro("9214", "Centro Metalmecanico", "11", "11001");
+CALL insertar_version(2, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
+CALL insertar_funcionario(2, "02", "funcionario2@misena.edu.co", "pass2", "funcionario2", "voluntario2", "empleado", NULL, "9303");
+CALL insertar_autor(2,2);
+CALL insertar_lista_chequeo(2, "Lista para Presentaciones", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
+CALL insertar_item(2, "item pedagogico 2", 1);
+CALL insertar_detalle_lista(2,2,2);
+CALL insertar_eval_version_general(2, 2, 2, NULL, NULL, NULL, 1);
+CALL insertar_eval_detalle_lista(2, NULL, NULL, 2, 2);
+CALL insertar_rol(2, "Equipo Tecnico", "Da concepto de provación tecnica al material de formación");
+CALL insertar_area(2, "Mercadeo", "9303");
+CALL insertar_programa(2, "Redes", 1);
+CALL insertar_comentario(2, "muy bonito x2", 4, '2016-08-13', 1, 2);
+CALL insertar_visita('2016-12-13', 1, 2);
+CALL insertar_categoria(2, "Infraestructura", "9303");
+CALL insertar_programa_producto(2,1);
+CALL insertar_categoria_producto(1,2);
+CALL insertar_funcionario_rol(2,1);
 
 /*==============================================================*/
 /* ESTADO                                                       */
