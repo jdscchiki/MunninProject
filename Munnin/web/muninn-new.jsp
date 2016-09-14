@@ -4,7 +4,7 @@
 		<title>Munnin</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="">
+		<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/skin-start.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -14,7 +14,14 @@
 				width: 270px;
 				height: 95px;
 			}
+			textarea {
+				resize: none;
+			}
+			.modal-body{
+				background:#F6FBFC;
+			}
 		</style>
+		<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
 	</head>
 <body>
 	<div class="container-fluid" style="background-color:#FFFFFF;color:#fff;height:100px;">
@@ -29,11 +36,9 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a  class="navbar-brand" href="#">Munnin</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="#vtn0" class="btn" data-toggle="modal">Prueba</a></li>
 					<li><a href="#vtn1" class="btn" data-toggle="modal">Material de Apoyo </a></li>
 					<li><a href="#vtn2" class="btn" data-toggle="modal">listas de chequeo </a></li>
 					<li><a href="#vtn3" class="btn" data-toggle="modal">buscar </a></li>
@@ -41,7 +46,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><input type="text" name="search" class="search" placeholder="Buscar..."></li>
-					<li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
+					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Imagen</a></li>
 					<li><a href="index.jsp"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
 				</ul>
@@ -50,17 +55,7 @@
 	</nav>
 
 	<div class="container">
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
-		<h1>Some text to enable scrolling</h1>
+		<h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>
 	</div>
 	
 	
@@ -99,6 +94,10 @@
 							<h4>Comentarios : </h4>
 							<textarea name="" id="" cols="77" rows="10"></textarea>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary">Enviar</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>	
+						</div>
 					</div>
 				</div>
 			</div>
@@ -113,34 +112,27 @@
 							<h3 class="modal-title">Lista de chequeo equipo X </h3>
 						</div>
 						<div class="modal-body">
-							<form role="form">
-								<div class="checkbox"><label><input type="checkbox">Option 1</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 2</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 3</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 4</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 5</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 6</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 7</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 8</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 9</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
-								<div class="checkbox"><label><input type="checkbox">Option 10</label></div>
-								<textarea name="" id="" cols="77" rows="3"></textarea>
+							<form method="POST">
+								<label for="nombreLista">nombre de la lista:</label>
+								<input type="text" class="form-control" id="nombreLista">
+							    <div id="dynamicInput">
+							        <input type="checkbox"><label for="item"> Item 1</label>
+							        <textarea class="form-control" cols="77" rows="3"></textarea><br>
+							    </div>
+							    <input type="button" class="btn btn-default" value="Agregar Item" onClick="addInput('dynamicInput');">
+							    <a href="#" title="Ayuda al Usuario" data-toggle="popover" data-content="El boton 'guardar' permitira que el usuario pueda guardar la lista de chequeo actual para usarla posteriormente, y el boton 'agregar' añadira la lista de chequeo sin guardarla.">¿Primera vez?</a>
 							</form>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success">Guardar</button>
+							<button type="button" class="btn btn-primary">Agregar</button>
+				            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				        </div>
 					</div>
 				</div>
 			</div>
 			
-			<!--menu lateral izquierdo-->
+			<!--pruebas filtro-->
 			
 			<div class="modal fade" id="vtn3">
 				<div class="modal-dialog">	
@@ -216,29 +208,11 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button>Añadir </button>
+							<button type="button" class="btn btn-success">Añadir </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-
-	<div class="modal fade" id="vtn0">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Modal Header</h4>
-				</div>
-				<div class="modal-body">
-					<p>Some text in the modal.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 </body>
 </html>
