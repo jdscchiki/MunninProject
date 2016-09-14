@@ -1,7 +1,7 @@
 .container {
 	padding-top: 70px;
 }
-input[type=text] {
+input.search[type=text] {
     margin-top: 5px;
     width: 130px;
     box-sizing: border-box;
@@ -16,6 +16,6 @@ input[type=text] {
     color: #BCBCBC;
 }
 
-input[type=text]:focus {
+input.search[type=text]:focus {
     width: 100%;
 }
