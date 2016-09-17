@@ -6,6 +6,7 @@
 /*==============================================================*/
 /* PROCEDIMIENTOS ALMACENADOS                                   */
 /*==============================================================*/
+/* LOGIN                                                        */
 /* VER_PRODUCTOS_APROVADOS                                      */
 /* ENVIAR_NUEVO_PRODUCTO                                        */
 /* VER_INSTRUCTORES_CENTRO                                      */
@@ -2384,6 +2385,32 @@ BEGIN
         _id_tipo_archivo_version ,
         _id_producto_version ,
         _id_centro_version);
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP LOGIN                                                     */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS login $$
+CREATE PROCEDURE login (
+        IN _correo_funcionario VARCHAR(100) ,
+        IN _contrasena_funcionario VARCHAR(255) 
+    )
+BEGIN
+    SELECT id_funcionario, 
+        documento_funcionario,
+        correo_funcionario,
+        nombre_funcionario,
+        apellido_funcionario,
+        cargo_funcionario,
+        telefono_funcionario,
+        id_centro_funcionario
+    FROM funcionario
+    WHERE correo_funcionario = _correo_funcionario AND contrasena_funcionario = _contrasena_funcionario ;
 END $$
 
 DELIMITER ;
