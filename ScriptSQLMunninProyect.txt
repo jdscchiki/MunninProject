@@ -162,6 +162,7 @@ CREATE TABLE funcionario (
   cargo_funcionario NVARCHAR(45) NOT NULL,
   telefono_funcionario NVARCHAR(10) NULL,
   id_centro_funcionario NVARCHAR(10) NOT NULL,
+  activo_funcionario BIT(1) NOT NULL, 
   PRIMARY KEY (id_funcionario),
   UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
   UNIQUE INDEX documento_funcionario_UNIQUE (documento_funcionario ASC),
@@ -194,6 +195,7 @@ CREATE TABLE lista_chequeo (
   fecha_lista DATE NOT NULL,
   tipo_lista NVARCHAR(20) NOT NULL,
   id_autor_lista INT NOT NULL,
+  activo_lista BIT(1) NOT NULL,
   PRIMARY KEY (id_lista),
   FOREIGN KEY (id_autor_lista)
     REFERENCES funcionario (id_funcionario))
@@ -272,7 +274,6 @@ ENGINE = InnoDB;
 CREATE TABLE rol (
   id_rol INT NOT NULL,
   nombre_rol NVARCHAR(45) NOT NULL,
-  descripcion_rol NVARCHAR(100) NOT NULL,
   PRIMARY KEY (id_rol))
 ENGINE = InnoDB;
 
@@ -1109,7 +1110,8 @@ CREATE PROCEDURE insertar_funcionario (
 	IN _apellido_funcionario VARCHAR(70) ,
 	IN _cargo_funcionario VARCHAR(45) ,
 	IN _telefono_funcionario VARCHAR(10) ,
-	IN _id_centro_funcionario VARCHAR(10) )
+	IN _id_centro_funcionario VARCHAR(10) ,
+        IN _activo_funcionario BIT(1) )
 BEGIN
 	INSERT INTO funcionario
 	VALUES (
@@ -1121,7 +1123,8 @@ BEGIN
 		_apellido_funcionario ,
 		_cargo_funcionario ,
 		_telefono_funcionario ,
-		_id_centro_funcionario );
+		_id_centro_funcionario ,
+                _activo_funcionario );
 END $$
 
 /*---editar funcionaro------------------------------------------*/
@@ -1136,7 +1139,8 @@ CREATE PROCEDURE editar_funcionario (
 	IN _apellido_funcionario VARCHAR(70) ,
 	IN _cargo_funcionario VARCHAR(45) ,
 	IN _telefono_funcionario VARCHAR(10) ,
-	IN _id_centro_funcionario VARCHAR(10) )
+	IN _id_centro_funcionario VARCHAR(10) ,
+        IN _activo_funcionario BIT(1) )
 BEGIN
 	UPDATE funcionario
 	SET documento_funcionario = _documento_funcionario ,
@@ -1146,7 +1150,8 @@ BEGIN
 		apellido_funcionario = _apellido_funcionario ,
 		cargo_funcionario = _cargo_funcionario ,
 		telefono_funcionario = _telefono_funcionario ,
-		id_centro_funcionario = _id_centro_funcionario 
+		id_centro_funcionario = _id_centro_funcionario ,
+                activo_funcionario = _activo_funcionario
 	WHERE id_funcionario = _id_funcionario ;
 END $$
 
@@ -1319,7 +1324,8 @@ CREATE PROCEDURE insertar_lista_chequeo (
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT )
+	IN _id_autor_lista INT ,
+        IN _activo_lista BIT(1) )
 BEGIN
 	INSERT INTO lista_chequeo
 	VALUES (
@@ -1328,7 +1334,8 @@ BEGIN
 		_descripcion_lista ,
 		_fecha_lista ,
 		_tipo_lista ,
-		_id_autor_lista );
+		_id_autor_lista ,
+                _activo_lista );
 END $$
 
 /*---editar lista_chequeo---------------------------------------*/
@@ -1340,14 +1347,16 @@ CREATE PROCEDURE editar_lista_chequeo (
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT )
+	IN _id_autor_lista INT ,
+        IN _activo_lista BIT(1) )
 BEGIN
 	UPDATE lista_chequeo
 	SET nombre_lista = _nombre_lista ,
 		descripcion_lista = _descripcion_lista ,
 		fecha_lista = _fecha_lista ,
 		tipo_lista = _tipo_lista ,
-		id_autor_lista = _id_autor_lista 
+		id_autor_lista = _id_autor_lista ,
+                activo_lista = _activo_lista
 	WHERE id_lista = _id_lista ;
 END $$
 
@@ -1372,7 +1381,8 @@ BEGIN
 	descripcion_lista ,
 	fecha_lista ,
 	tipo_lista ,
-	id_autor_lista 
+	id_autor_lista ,
+        activo_lista 
 	FROM lista_chequeo
 	WHERE id_lista = _id_lista ;
 END $$
@@ -1639,14 +1649,12 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_rol $$
 CREATE PROCEDURE insertar_rol (
 	IN _id_rol INT ,
-	IN _nombre_rol VARCHAR(45) ,
-	IN _descripcion_rol VARCHAR(100) )
+	IN _nombre_rol VARCHAR(45) )
 BEGIN
 	INSERT INTO rol
 	VALUES (
 		_id_rol ,
-		_nombre_rol ,
-		_descripcion_rol );
+		_nombre_rol );
 END $$
 
 /*---editar rol-------------------------------------------------*/
@@ -1654,12 +1662,10 @@ END $$
 DROP PROCEDURE IF EXISTS editar_rol $$
 CREATE PROCEDURE editar_rol (
 	IN _id_rol INT ,
-	IN _nombre_rol VARCHAR(45) ,
-	IN _descripcion_rol VARCHAR(100) )
+	IN _nombre_rol VARCHAR(45) )
 BEGIN
 	UPDATE rol
-	SET nombre_rol = _nombre_rol ,
-		descripcion_rol = _descripcion_rol 
+	SET nombre_rol = _nombre_rol 
 	WHERE id_rol = _id_rol ;
 END $$
 
@@ -1680,8 +1686,7 @@ CREATE PROCEDURE ver_rol (
 	IN _id_rol INT )
 BEGIN
 	SELECT id_rol ,
-	nombre_rol ,
-	descripcion_rol
+	nombre_rol 
 	FROM rol
 	WHERE id_rol = _id_rol ;
 END $$
@@ -2128,7 +2133,8 @@ BEGIN
         _descripcion_lista ,
         _fecha_lista ,
         _tipo_lista ,
-        _id_autor_lista);
+        _id_autor_lista ,
+        1);
 END $$
 
 DELIMITER ;
