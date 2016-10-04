@@ -5,15 +5,16 @@
  */
 package modelo.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Juan David
  */
-public class Funcionario {
+public class Funcionario implements Serializable {
     private int id;
-    private int documento;
+    private String documento;
     private String correo;
     private String contrasena;
     private String nombre;
@@ -24,14 +25,6 @@ public class Funcionario {
 
     private ArrayList<Rol> roles;
 
-    public ArrayList<Rol> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(ArrayList<Rol> roles) {
-        this.roles = roles;
-    }
-    
     public int getId() {
         return id;
     }
@@ -40,11 +33,11 @@ public class Funcionario {
         this.id = id;
     }
 
-    public int getDocumento() {
+    public String getDocumento() {
         return documento;
     }
 
-    public void setDocumento(int documento) {
+    public void setDocumento(String documento) {
         this.documento = documento;
     }
 
@@ -104,6 +97,15 @@ public class Funcionario {
         this.id_centro = id_centro;
     }
 
+    public ArrayList<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Rol> roles) {
+        this.roles = roles;
+    }
+
+    
     public Funcionario() {
     
     }
