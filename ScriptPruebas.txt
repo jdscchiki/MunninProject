@@ -38,7 +38,8 @@ INSERT INTO regional VALUES("11", "Regional Distrito Capital");
 INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
 INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
 INSERT INTO version VALUES(1, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-INSERT INTO funcionario VALUES(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303", 1);
+/*pass= admin */
+INSERT INTO funcionario VALUES(1, "01", "funcionario@misena.edu.co", "sha512:64000:153:f+wOQwSiGRIkzKqQ5xMIVuo97vr6N7Zq:3lZ91iyvH7omaY6i4FLBo5LLXR2552pkh11ag/+WSOVHi9yZUSme8zbd/kjAQF4FCAf6StzOfZITWpnLNefqZ4UFdWbanZ1oQDyWS+90OPyPINQhjOSkPS3fqDGUuCjkUX6CnMWG5E+XTWuLlWRz67ds/Cqco+wjkfEu+QLZXr2cwqiV1NKcY146klqF/+qtZenknRSfwy2M", "funcionario", "voluntario", "empleado", NULL, "9303", 1);
 INSERT INTO autor VALUES(1,1);
 INSERT INTO lista_chequeo VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1, 1);
 INSERT INTO item VALUES(1, "item pedagogico", 1);
