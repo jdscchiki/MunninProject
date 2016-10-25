@@ -7,28 +7,18 @@
 		<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/skin-start.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
 		<style>
-			.full-logo {
-				width: 270px;
-				height: 95px;
-			}
-			textarea {
-				resize: none;
-			}
-			.modal-body{
-				background:#F6FBFC;
-			}
+
 		</style>
-		<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
+		
 	</head>
 <body>
 	<div class="container-fluid" style="background-color:#FFFFFF;color:#fff;height:100px;">
 		<img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
 	</div>
 
-	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
+	<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -47,15 +37,1190 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><input type="text" name="search" class="search" placeholder="Buscar..."></li>
 					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Imagen</a></li>
+					<li class="dropdown">
+			            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
+		              	<ul class="dropdown-menu ">
+		                	<li><a href="#"><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+		                	<li><a href="#"><span class="glyphicon glyphicon-envelope"></span> Bandeja</a></li>
+		               		<li><a href="#"><span class="glyphicon glyphicon-credit-card"></span> Calendario</a></li>
+		               		<li><a href="#"><span class="glyphicon glyphicon-warning-sign"></span> PF</a></li>
+		              	</ul>
+		            </li>
 					<li><a href="index.jsp"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	  	<a href="#">Administrador</a>
+	  	<a href="#">Profesor</a>
+	  	<a href="#">ETecnico</a>
+	  	<a href="#">EPedagojico</a>
+	</div>
 
-	<div class="container">
-		<h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>
+	<div class="container-fluid">
+	<span style="cursor:pointer" onclick="openNav()">Rol</span>
+		<!--<h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>-->
+
+		<div class="inbox-mail container-fluid">
+			<div class="col-md-4 compose">
+		            <h2>Compose</h2>
+		    <nav class="nav-sidebar">
+				<ul class="nav tabs">
+		          <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-inbox"></i>Inbox <span>9</span><div class="clearfix"></div></a></li>
+		          <li class=""><a href="#tab2" data-toggle="tab"><i class="fa fa-paper-plane-o"></i>Sent</a></li>
+		          <li class=""><a href="#tab3" data-toggle="tab"><i class="fa fa-star-o"></i>Important</a></li> 
+		          <li class=""><a href="#tab4" data-toggle="tab"><i class="fa fa-pencil-square-o"></i>Draft <span>6</span><div class="clearfix"></div></a></li>  
+		          <li class=""><a href="#tab5" data-toggle="tab"><i class="fa fa-trash-o"></i>Delete</a></li>                              
+				</ul>
+			</nav>
+				<div class="content-box container-fluid">
+					<ul>
+					<li><span>Folder</span></li>
+					<li><a href="#"><i class="fa fa-folder-o"></i>Tasks</a></li>
+					<li><a href="#"><i class="fa fa-folder-o"></i>Jobs</a></li>
+					<li><a href="#"><i class="fa fa-folder-o"></i>Client</a></li>
+					</ul>
+		        </div>
+		</div>
+		<!-- tab content -->
+		<div class="col-md-8 tab-content tab-content-in">
+		<div class="tab-pane active text-style" id="tab1">
+		  <div class="inbox-right">
+		         	
+		            <div class="mailbox-content">
+		               <div class="mail-toolbar clearfix">
+					     <div class="float-left">
+					       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Social</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                        <li><a href="#">Updates</a></li>
+		                                       
+		                                        <li><a href="#">Spam</a></li>
+		                                        <li><a href="#">Trash</a></li>
+		                                       
+		                                        <li><a href="#">New</a></li>
+		                                    </ul>
+		                                </div>
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Work</a></li>
+		                                        <li><a href="#">Family</a></li>
+		                                        <li><a href="#">Social</a></li>
+		                                       
+		                                        <li><a href="#">Primary</a></li>
+		                                        <li><a href="#">Promotions</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                    </ul>
+		                                </div>
+		                            </div>
+					        
+					        
+					    </div>
+					    <div class="float-right">
+		<div class="dropdown">
+					            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-cog icon_8"></i>
+					                <i class="fa fa-chevron-down icon_8"></i>
+					            <div class="ripple-wrapper"></div></a>
+					            <ul class="dropdown-menu float-right">
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-pencil-square-o icon_9"></i>
+					                        Edit
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-calendar icon_9"></i>
+					                        Schedule
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-download icon_9"></i>
+					                        Download
+					                    </a>
+					                </li>
+					               
+					                <li>
+					                    <a href="#" class="font-red" title="">
+					                        <i class="fa fa-times" icon_9=""></i>
+					                        Delete
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+		                            
+		                            <div class="btn-group">
+		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+		                            </div>
+		                        
+					        
+					    </div>
+						
+		               </div>
+		                <table class="table">
+		                    <tbody>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                               in 5 days 
+		                            </td>
+		                          
+		                             <td >
+									 <i class="fa fa-star-half-o icon-state-warning"></i>
+		                                
+		                            </td>
+		                        </tr>
+		                       <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in1.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in2.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="work">work</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in3.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                              in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in4.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in5.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 3 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in6.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                               in 2 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in7.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in8.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in9.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in10.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in11.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                    </tbody>
+		                </table>
+		               </div>
+		            </div>
+		</div>
+		<div class="tab-pane text-style" id="tab2">
+			<div class="inbox-right">
+		         	
+		            <div class="mailbox-content">
+		               <div class="mail-toolbar clearfix">
+					     <div class="float-left">
+					       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Social</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                        <li><a href="#">Updates</a></li>
+		                                       
+		                                        <li><a href="#">Spam</a></li>
+		                                        <li><a href="#">Trash</a></li>
+		                                       
+		                                        <li><a href="#">New</a></li>
+		                                    </ul>
+		                                </div>
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Work</a></li>
+		                                        <li><a href="#">Family</a></li>
+		                                        <li><a href="#">Social</a></li>
+		                                       
+		                                        <li><a href="#">Primary</a></li>
+		                                        <li><a href="#">Promotions</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                    </ul>
+		                                </div>
+		                            </div>
+					        
+					        
+					    </div>
+					    <div class="float-right">
+		<div class="dropdown">
+					            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-cog icon_8"></i>
+					                <i class="fa fa-chevron-down icon_8"></i>
+					            <div class="ripple-wrapper"></div></a>
+					            <ul class="dropdown-menu float-right">
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-pencil-square-o icon_9"></i>
+					                        Edit
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-calendar icon_9"></i>
+					                        Schedule
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-download icon_9"></i>
+					                        Download
+					                    </a>
+					                </li>
+					               
+					                <li>
+					                    <a href="#" class="font-red" title="">
+					                        <i class="fa fa-times" icon_9=""></i>
+					                        Delete
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+		                            
+		                            <div class="btn-group">
+		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+		                            </div>
+		                        
+					        
+					    </div>
+						
+		               </div>
+		                <table class="table">
+		                    <tbody>
+		                    
+		                       <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in1.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in2.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="work">work</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in3.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                              in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in4.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in5.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 3 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in6.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                               in 2 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                      
+		                    </tbody>
+		                </table>
+		               </div>
+		            </div>
+		</div>
+		<div class="tab-pane text-style" id="tab3">
+			<div class="inbox-right">
+		         	
+		            <div class="mailbox-content">
+		               <div class="mail-toolbar clearfix">
+					     <div class="float-left">
+					       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Social</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                        <li><a href="#">Updates</a></li>
+		                                       
+		                                        <li><a href="#">Spam</a></li>
+		                                        <li><a href="#">Trash</a></li>
+		                                       
+		                                        <li><a href="#">New</a></li>
+		                                    </ul>
+		                                </div>
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Work</a></li>
+		                                        <li><a href="#">Family</a></li>
+		                                        <li><a href="#">Social</a></li>
+		                                       
+		                                        <li><a href="#">Primary</a></li>
+		                                        <li><a href="#">Promotions</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                    </ul>
+		                                </div>
+		                            </div>
+					        
+					        
+					    </div>
+					    <div class="float-right">
+		<div class="dropdown">
+					            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-cog icon_8"></i>
+					                <i class="fa fa-chevron-down icon_8"></i>
+					            <div class="ripple-wrapper"></div></a>
+					            <ul class="dropdown-menu float-right">
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-pencil-square-o icon_9"></i>
+					                        Edit
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-calendar icon_9"></i>
+					                        Schedule
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-download icon_9"></i>
+					                        Download
+					                    </a>
+					                </li>
+					               
+					                <li>
+					                    <a href="#" class="font-red" title="">
+					                        <i class="fa fa-times" icon_9=""></i>
+					                        Delete
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+		                            
+		                            <div class="btn-group">
+		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+		                            </div>
+		                        
+					        
+					    </div>
+						
+		               </div>
+		                <table class="table">
+		                    <tbody>
+		                        
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in6.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                               in 2 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in7.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in8.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in9.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in10.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in11.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                    </tbody>
+		                </table>
+		               </div>
+		            </div>
+		 </div>
+		  <div class="tab-pane text-style" id="tab4">
+		  <div class="inbox-right">
+		         	
+		            <div class="mailbox-content">
+		               <div class="mail-toolbar clearfix">
+					     <div class="float-left">
+					       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Social</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                        <li><a href="#">Updates</a></li>
+		                                       
+		                                        <li><a href="#">Spam</a></li>
+		                                        <li><a href="#">Trash</a></li>
+		                                       
+		                                        <li><a href="#">New</a></li>
+		                                    </ul>
+		                                </div>
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Work</a></li>
+		                                        <li><a href="#">Family</a></li>
+		                                        <li><a href="#">Social</a></li>
+		                                       
+		                                        <li><a href="#">Primary</a></li>
+		                                        <li><a href="#">Promotions</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                    </ul>
+		                                </div>
+		                            </div>
+					        
+					        
+					    </div>
+					    <div class="float-right">
+		<div class="dropdown">
+					            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-cog icon_8"></i>
+					                <i class="fa fa-chevron-down icon_8"></i>
+					            <div class="ripple-wrapper"></div></a>
+					            <ul class="dropdown-menu float-right">
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-pencil-square-o icon_9"></i>
+					                        Edit
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-calendar icon_9"></i>
+					                        Schedule
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-download icon_9"></i>
+					                        Download
+					                    </a>
+					                </li>
+					               
+					                <li>
+					                    <a href="#" class="font-red" title="">
+					                        <i class="fa fa-times" icon_9=""></i>
+					                        Delete
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+		                            
+		                            <div class="btn-group">
+		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+		                            </div>
+		                        
+					        
+					    </div>
+						
+		               </div>
+		                <table class="table">
+		                    <tbody>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                               in 5 days 
+		                            </td>
+		                          
+		                             <td >
+									 <i class="fa fa-star-half-o icon-state-warning"></i>
+		                                
+		                            </td>
+		                        </tr>
+		                       <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in1.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in2.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="work">work</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in3.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                              in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in4.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in5.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 3 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                
+		                    </tbody>
+		                </table>
+		               </div>
+		            </div>
+		  </div>
+		  <div class="tab-pane text-style" id="tab5">
+		  	<div class="inbox-right">
+		         	
+		            <div class="mailbox-content">
+		               <div class="mail-toolbar clearfix">
+					     <div class="float-left">
+					       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Social</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                        <li><a href="#">Updates</a></li>
+		                                       
+		                                        <li><a href="#">Spam</a></li>
+		                                        <li><a href="#">Trash</a></li>
+		                                       
+		                                        <li><a href="#">New</a></li>
+		                                    </ul>
+		                                </div>
+		                                <div class="btn-group">
+		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		                                        <li><a href="#">Work</a></li>
+		                                        <li><a href="#">Family</a></li>
+		                                        <li><a href="#">Social</a></li>
+		                                       
+		                                        <li><a href="#">Primary</a></li>
+		                                        <li><a href="#">Promotions</a></li>
+		                                        <li><a href="#">Forums</a></li>
+		                                    </ul>
+		                                </div>
+		                            </div>
+					        
+					        
+					    </div>
+					    <div class="float-right">
+		<div class="dropdown">
+					            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+					                <i class="fa fa-cog icon_8"></i>
+					                <i class="fa fa-chevron-down icon_8"></i>
+					            <div class="ripple-wrapper"></div></a>
+					            <ul class="dropdown-menu float-right">
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-pencil-square-o icon_9"></i>
+					                        Edit
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-calendar icon_9"></i>
+					                        Schedule
+					                    </a>
+					                </li>
+					                <li>
+					                    <a href="#" title="">
+					                        <i class="fa fa-download icon_9"></i>
+					                        Download
+					                    </a>
+					                </li>
+					               
+					                <li>
+					                    <a href="#" class="font-red" title="">
+					                        <i class="fa fa-times" icon_9=""></i>
+					                        Delete
+					                    </a>
+					                </li>
+					            </ul>
+					        </div>
+		                            
+		                            <div class="btn-group">
+		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+		                            </div>
+		                        
+					        
+					    </div>
+						
+		               </div>
+		                <table class="table">
+		                    <tbody>
+		                       
+		                       <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in1.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 5 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                       
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in3.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="fam">Family</span>
+		                            </td>
+		                            <td class="march">
+		                              in 4 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                       
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in5.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	
+		                            </td>
+		                            <td class="march">
+		                                in 3 days  
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                       
+		                        <tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in7.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 2 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in10.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="mar">Market</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+								<tr class="table-row">
+		                            <td class="table-img">
+		                               <img src="imagenes/in11.jpg" alt="" />
+		                            </td>
+		                            <td class="table-text">
+		                            	<h6> Lorem ipsum</h6>
+		                                <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+		                            </td>
+		                            <td>
+		                            	<span class="ur">urgent</span>
+		                            </td>
+		                            <td class="march">
+		                                in 1 days 
+		                            </td>
+		                          
+		                             <td >
+		                               <i class="fa fa-star-half-o icon-state-warning"></i>
+		                            </td>
+		                        </tr>
+		                    </tbody>
+		                </table>
+		               </div>
+		            </div>
+		</div>
+		</div>
+		<div class="clearfix"> </div>
+		   </div>
+		    
+		</div>
 	</div>
 	
 	
@@ -214,5 +1379,12 @@
 					</div>
 				</div>
 			</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
+	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
+
 </body>
+
 </html>

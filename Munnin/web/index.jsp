@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/skin-index.css">
-	<link rel="stylesheet" href="css/skin-indexConfig">
+	<link rel="stylesheet" href="css/skin-indexConfig.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="js/prefixfree.min.js"></script>
@@ -23,8 +23,8 @@
 			<h4> Contraseña </h4>
 			<input type="password" maxlength="16" id="pwd" placeholder="Tu contraseña" name="textPass">
 			<!-- para el servlet se consulta es la contraseña encriptada -->
-            <input id="pwd_encrypt" type="hidden" name="textPassEncrypt">
 			<i class="fa fa-key"><span class="glyphicon glyphicon-lock"></span></i>
+            <input id="pwd_encrypt" type="hidden" name="textPassEncrypt">
 			<a href="#"> ¡He olvidado mi contraseña! </a>
 			<div id="respuesta">
 				<% if(request.getAttribute("Error")!= null){ %>
@@ -39,6 +39,6 @@
 		<footer><a href="#">©copyright</a></footer>
 	</div>
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-	<script src="js/slave.js"></script>
+	<script src="js/action.js"></script>
 </body>
 </html>
