@@ -6,15 +6,17 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelo.dao.FuncionarioDAO;
 import modelo.bean.Funcionario;
+import modelo.negocio.LoginClass;
+import util.Encriptado;
 
 /**
  *
@@ -44,20 +46,27 @@ public class ServletLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String correo = request.getParameter("textCorreo");
         String contrasena = request.getParameter("textContr");
-        
-        FuncionarioDAO fdao = new FuncionarioDAO();
-        Funcionario funcionario = fdao.ingresar(correo, contrasena);
         try{
-            if(funcionario == null){
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            }else{
-                HttpSession sesion = (HttpSession) request.getSession();
-                sesion.setAttribute("correo", correo);
-                request.getRequestDispatcher("munnin.jsp").forward(request, response);
+            Funcionario funcionario = LoginClass.verificarFuncionario(correo, contrasena);
+            try{
+                if(funcionario == null){
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }else{
+                    HttpSession sesion = (HttpSession) request.getSession();
+                    sesion.setAttribute("correo", correo);
+                    request.getRequestDispatcher("munnin-new.jsp").forward(request, response);
+                }
+            }catch(Exception e){
+                System.out.println("Error : " + e);
             }
-        }catch(Exception e){
-            System.out.println("Error : " + e);
+        }catch (NamingException ex){
+            //aqui redirecciona a una una pagina en donde salga el error
+        }catch (SQLException ex){
+            //aqui redirecciona a una una pagina en donde salga el error
+        }catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex){
+            //aqui redirecciona a una una pagina en donde salga el error
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
