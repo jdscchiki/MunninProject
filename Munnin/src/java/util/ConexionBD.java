@@ -18,23 +18,16 @@ import javax.naming.NamingException;
  */
 public class ConexionBD {
     private Connection conexion;
-
-    public ConexionBD() {
+    private static final String JDNI = "jdbc/munnin";
+    
+    public ConexionBD() throws NamingException, SQLException {
         conectar();
     }
     
-    private void conectar(){
-        try {
-            //se realiza una conexion a bases de datos con JDNI
-            Context ctx = new InitialContext();
-            DataSource ds = (DataSource)ctx.lookup("jdbc/munnin");
-            conexion = ds.getConnection();
-            System.out.println("Conexion a bases de datos ok");
-        } catch (NamingException e) {
-            System.out.println("error al usar context: " + e);
-        } catch(SQLException e){
-            System.out.println("error al obtener conexion: " + e);
-        }
+    private void conectar() throws NamingException, SQLException{
+        Context ctx = new InitialContext();
+        DataSource ds = (DataSource)ctx.lookup(JDNI);
+        conexion = ds.getConnection();
     }
 
     public Connection getConexion() {
@@ -44,7 +37,6 @@ public class ConexionBD {
     public Connection cerrarConexion() throws SQLException{
         conexion.close();
         conexion = null;
-        System.out.println("Deconexion completa");
         return conexion;
     }
 }
