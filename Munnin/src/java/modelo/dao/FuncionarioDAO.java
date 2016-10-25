@@ -8,6 +8,7 @@ package modelo.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import util.ConexionBD;
 import util.Encriptado;
 import modelo.bean.Funcionario;
@@ -24,61 +25,57 @@ import modelo.bean.Rol;
  * @author Juan David Segura Castro <JBadCode>
  */
 public class FuncionarioDAO extends ConexionBD{
-
-    //se establece la conexion a bases de datos en el momento en el que se crea un nuevo funcionarioDAO
-    public FuncionarioDAO() {
+    /**
+     * String usado para llamar el procedimento almacenado en la base de datos
+     * llamado login.
+     */
+    private static final String CALLPROCEDURE_INGRESO = "{CALL login(?)}";
+    
+    /**
+     * String usado para llamar el procedimento almacenado en la base de datos
+     * llamado registrar_instructor_centro.
+     */
+    private static final String CALLPROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?) }}";
+    
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     * 
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public FuncionarioDAO() throws NamingException, SQLException{
         super();
     }
     
     /**
-     * Ejecuta el procedimiento almacenado <code>LOGIN</code> de la base de datos
-     * para obtener los datos del Usuario
+     * Ejecuta el procedimiento almacenado LOGIN de la base de datos
+     * para obtener los datos del Usuario con el correo
      * 
-     * @param correo Correo ingresado por el Usuario
-     * @param contrasena Contraseña ingresada por el Usuario
-     * @return Retorna Null si el correo o contraseña son incorrectos, 
-     * de lo contrario retorna los datos del Usuario (excepto la contraseña)
+     * @param correo Correo del usuario
+     * @return Retorna Null si el correo no se encuetra en la base de datos, 
+     * de lo contrario retorna los datos del Usuario.
      * @version 1.0
+     * @throws java.sql.SQLException
     */
-    public Funcionario ingresar(String correo, String contrasena){
+    public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException{
         Funcionario funcionario = new Funcionario();
         funcionario.setCorreo(correo);
-        try{
-            String query = "{call LOGIN(?)}";
-            CallableStatement statement = getConexion().prepareCall(query);
-            statement.setString(1, correo);
-            ResultSet rs = statement.executeQuery();
-            boolean encontrado = false;
-            while(rs.next()){
-                encontrado = true;
-                funcionario.setDocumento(rs.getString(2));
-                funcionario.setContrasena(rs.getString(3));
-                funcionario.setNombre(rs.getString(4));
-                funcionario.setApellido(rs.getString(5));
-                funcionario.setCargo(rs.getString(6));
-                funcionario.setTelefono(rs.getString(7));
-                funcionario.setId_centro(rs.getString(8));
-            }
-            if(encontrado){
-                System.out.println("Contraseña: " + funcionario.getContrasena());
-                if(Encriptado.verifyPassword(contrasena, funcionario.getContrasena())){
-                    funcionario.setContrasena("");
-                }else{
-                    funcionario = null;
-                }
-            }else{
-                funcionario = null;
-            }
-        }catch(SQLException e){
-            System.out.println("Error al realizar consulta operacion Ingresar: " + e);
-        }catch(Exception e){
-            System.out.println("Error al realizar operacion Ingresar: " + e);
-        }finally{
-            try {
-                cerrarConexion();
-            } catch (Exception e) {
-                System.out.println("Error al cerrar la conexion: " + e);
-            }
+        CallableStatement statement = getConexion().prepareCall(CALLPROCEDURE_INGRESO);
+        statement.setString(1, correo);
+        ResultSet rs = statement.executeQuery();
+        boolean encontrado = false;
+        while(rs.next()){
+            encontrado = true;
+            funcionario.setDocumento(rs.getString(2));
+            funcionario.setContrasena(rs.getString(3));
+            funcionario.setNombre(rs.getString(4));
+            funcionario.setApellido(rs.getString(5));
+            funcionario.setCargo(rs.getString(6));
+            funcionario.setTelefono(rs.getString(7));
+            funcionario.setId_centro(rs.getString(8));
+        }
+        if(!encontrado){
+            funcionario = null;
         }
         return funcionario;
     }
@@ -89,8 +86,7 @@ public class FuncionarioDAO extends ConexionBD{
         try {
             funcionario.setContrasena(Encriptado.createHash(funcionario.getContrasena()));
             try{
-                String query = "{call REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?) }";
-                CallableStatement statement = getConexion().prepareCall(query);
+                CallableStatement statement = getConexion().prepareCall(CALLPROCEDURE_REGISTRO_FUNCIONARIO);
                 statement.setString(1, funcionario.getDocumento());
                 statement.setString(2, funcionario.getCorreo());
                 statement.setString(3, funcionario.getContrasena());
@@ -103,7 +99,7 @@ public class FuncionarioDAO extends ConexionBD{
                 if(statement.executeUpdate()>0){
                     resultado = true;
                 }
-            }catch(Exception e){
+            }catch(SQLException e){
                 System.out.println("Error al realizar operacion Ingresar: " + e);
             }
         } catch (Encriptado.CannotPerformOperationException ex) {
