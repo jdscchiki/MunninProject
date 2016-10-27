@@ -9,7 +9,7 @@ package modelo.bean;
  *
  * @author Juan David
  */
-public class Rol {
+public class Rol implements java.io.Serializable{
     private int id;
     private String nombre;
 
