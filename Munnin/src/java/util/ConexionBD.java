@@ -13,20 +13,34 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 /**
- *
+ *  En esta clase se realiza la conexion a una JDNI que se encuentra en el servidor de aplicaciones.
+ * 
  * @author Juan David
  */
 public class ConexionBD {
     private Connection conexion;
-    private static final String JDNI = "jdbc/munnin";
+    private static final String JNDI = "jdbc/munnin";
     
+    /**
+     * Establece la conexion con la base de datos
+     * 
+     * @throws NamingException si la JNDI no es la correcta
+     * @throws SQLException 
+     */
     public ConexionBD() throws NamingException, SQLException {
         conectar();
     }
     
+    /**
+     * Conecta con la JNDI del servidor de aplicaciones.
+     * por medio de esta se establece la conexion a la base de datos
+     * 
+     * @throws NamingException si la JNDI no es la correcta
+     * @throws SQLException 
+     */
     private void conectar() throws NamingException, SQLException{
         Context ctx = new InitialContext();
-        DataSource ds = (DataSource)ctx.lookup(JDNI);
+        DataSource ds = (DataSource)ctx.lookup(JNDI);
         conexion = ds.getConnection();
     }
 
@@ -34,6 +48,12 @@ public class ConexionBD {
         return conexion;
     }
     
+    /**
+     * Metodo para cerrar la conexion con la base de datos.
+     * 
+     * @return null si la conexion se cerro correctamente
+     * @throws SQLException 
+     */
     public Connection cerrarConexion() throws SQLException{
         conexion.close();
         conexion = null;
