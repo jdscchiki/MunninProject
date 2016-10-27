@@ -62,7 +62,7 @@ public class FuncionarioDAO extends ConexionBD{
     public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException{
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
         funcionario.setCorreo(correo);
-        CallableStatement statement = getConexion().prepareCall(PROCEDURE_INGRESO);
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INGRESO);
         statement.setString(PROCEDURE_INGRESO_CORREO_INDEX, correo);//asigna los valores necesarios para ejecutar el QUERY
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         boolean encontrado = false;//una bandera
