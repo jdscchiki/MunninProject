@@ -37,7 +37,7 @@ public class FuncionarioDAO extends ConexionBD{
     
     private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
     private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
-    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?) }}";//tal ves no funcione aun
+    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
     
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -81,6 +81,9 @@ public class FuncionarioDAO extends ConexionBD{
         }
         if(!encontrado){
             funcionario = null;//si no existe el correo en la base de datos retorna null
+        }
+        if(this.cerrarConexion()!=null){
+            System.out.println("Error al cerrar la conexion con la base de datos");
         }
         return funcionario;
     }
