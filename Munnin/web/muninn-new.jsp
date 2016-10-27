@@ -44,6 +44,7 @@
 		                	<li><a href="#"><span class="glyphicon glyphicon-envelope"></span> Bandeja</a></li>
 		               		<li><a href="#"><span class="glyphicon glyphicon-credit-card"></span> Calendario</a></li>
 		               		<li><a href="#"><span class="glyphicon glyphicon-warning-sign"></span> PF</a></li>
+		               		<li><a href="#" onclick="openNav()"> Rol</a></li>			
 		              	</ul>
 		            </li>
 					<li><a href="index.jsp"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
@@ -60,7 +61,6 @@
 	</div>
 
 	<div class="container-fluid">
-	<span style="cursor:pointer" onclick="openNav()">Rol</span>
 		<!--<h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>-->
 
 		<div class="inbox-mail container-fluid">
