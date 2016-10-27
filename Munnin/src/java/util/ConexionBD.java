@@ -43,7 +43,10 @@ public class ConexionBD {
         DataSource ds = (DataSource)ctx.lookup(JNDI);
         conexion = ds.getConnection();
     }
-
+    /**
+     * 
+     * @return conexion con la base de datos
+     */
     public Connection getConexion() {
         return conexion;
     }
