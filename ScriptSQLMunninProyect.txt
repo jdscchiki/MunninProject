@@ -146,27 +146,39 @@ CREATE TABLE version (
     REFERENCES centro (id_centro))
 ENGINE = InnoDB;
 
+/*==============================================================*/
+/* Table: TIPO_DOCUMENTO                                        */
+/*==============================================================*/
 
+CREATE TABLE tipo_documento(
+    id_tipo_documento INT NOT NULL,
+    nombre_tipo_documento NVARCHAR(30) NOT NULL,
+    PRIMARY KEY (id_tipo_documento)
+)
+ENGINE = InnoDB;
 
 /*==============================================================*/
 /* Table: FUNCIONARIO                                           */
 /*==============================================================*/
 
 CREATE TABLE funcionario (
-  id_funcionario INT NOT NULL,
-  documento_funcionario NVARCHAR(8) NOT NULL,
-  correo_funcionario NVARCHAR(100) NOT NULL,
-  contrasena_funcionario NVARCHAR(255) NOT NULL,
-  nombre_funcionario NVARCHAR(70) NOT NULL,
-  apellido_funcionario NVARCHAR(70) NOT NULL,
-  cargo_funcionario NVARCHAR(45) NOT NULL,
-  telefono_funcionario NVARCHAR(10) NULL,
-  id_centro_funcionario NVARCHAR(10) NOT NULL,
-  activo_funcionario BIT(1) NOT NULL, 
-  PRIMARY KEY (id_funcionario),
-  UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
-  UNIQUE INDEX documento_funcionario_UNIQUE (documento_funcionario ASC),
-  FOREIGN KEY (id_centro_funcionario )
+    id_funcionario INT NOT NULL,
+    activo_funcionario BIT(1) NOT NULL,
+    id_tipo_documento_funcionario INT NOT NULL,
+    documento_funcionario NVARCHAR(8) NOT NULL,
+    correo_funcionario NVARCHAR(100) NOT NULL,
+    contrasena_funcionario NVARCHAR(255) NOT NULL,
+    nombre_funcionario NVARCHAR(70) NOT NULL,
+    apellido_funcionario NVARCHAR(70) NOT NULL,
+    telefono_funcionario NVARCHAR(10) NULL,
+    id_centro_funcionario NVARCHAR(10) NOT NULL,
+    PRIMARY KEY (id_funcionario),
+    UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
+    UNIQUE INDEX documento_funcionario_UNIQUE (id_tipo_documento_funcionario, documento_funcionario ),
+    CONSTRAINT documento_tipodoc_funcionario_unique UNIQUE (documento_funcionario, id_tipo_documento_funcionario),
+    FOREIGN KEY (id_tipo_documento_funcionario )
+    REFERENCES tipo_documento (id_tipo_documento),
+    FOREIGN KEY (id_centro_funcionario )
     REFERENCES centro (id_centro))
 ENGINE = InnoDB;
 
@@ -1102,29 +1114,31 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_funcionario $$
 CREATE PROCEDURE insertar_funcionario (
-	IN _id_funcionario INT  ,
-	IN _documento_funcionario VARCHAR(8) ,
-	IN _correo_funcionario VARCHAR(100) ,
-	IN _contrasena_funcionario VARCHAR(255) ,
-	IN _nombre_funcionario VARCHAR(70) ,
-	IN _apellido_funcionario VARCHAR(70) ,
-	IN _cargo_funcionario VARCHAR(45) ,
-	IN _telefono_funcionario VARCHAR(10) ,
-	IN _id_centro_funcionario VARCHAR(10) ,
-        IN _activo_funcionario BIT(1) )
+    IN _id_funcionario INT  ,
+    IN _activo_funcionario BIT(1) ,
+    IN _id_tipo_documento_funcionario INT ,
+    IN _documento_funcionario VARCHAR(8) ,
+    IN _correo_funcionario VARCHAR(100) ,
+    IN _contrasena_funcionario VARCHAR(255) ,
+    IN _nombre_funcionario VARCHAR(70) ,
+    IN _apellido_funcionario VARCHAR(70) ,
+    IN _telefono_funcionario VARCHAR(10) ,
+    IN _id_centro_funcionario VARCHAR(10) 
+    )
 BEGIN
-	INSERT INTO funcionario
-	VALUES (
-		_id_funcionario ,
-		_documento_funcionario ,
-		_correo_funcionario ,
-		_contrasena_funcionario ,
-		_nombre_funcionario ,
-		_apellido_funcionario ,
-		_cargo_funcionario ,
-		_telefono_funcionario ,
-		_id_centro_funcionario ,
-                _activo_funcionario );
+    INSERT INTO funcionario
+    VALUES (
+        _id_funcionario ,
+        _activo_funcionario ,
+        _id_tipo_documento_funcionario ,
+        _documento_funcionario ,
+        _correo_funcionario ,
+        _contrasena_funcionario ,
+        _nombre_funcionario ,
+        _apellido_funcionario ,
+        _telefono_funcionario ,
+        _id_centro_funcionario 
+    );
 END $$
 
 /*---editar funcionaro------------------------------------------*/
@@ -1132,23 +1146,24 @@ END $$
 DROP PROCEDURE IF EXISTS editar_funcionario $$
 CREATE PROCEDURE editar_funcionario (
 	IN _id_funcionario INT ,
-	IN _documento_funcionario VARCHAR(8) ,
+	IN _activo_funcionario BIT(1) ,
+        IN _id_tipo_documento_funcionario INT ,
+        IN _documento_funcionario VARCHAR(8) ,
 	IN _correo_funcionario VARCHAR(100) ,
 	IN _contrasena_funcionario VARCHAR(255) ,
 	IN _nombre_funcionario VARCHAR(70) ,
 	IN _apellido_funcionario VARCHAR(70) ,
-	IN _cargo_funcionario VARCHAR(45) ,
 	IN _telefono_funcionario VARCHAR(10) ,
-	IN _id_centro_funcionario VARCHAR(10) ,
-        IN _activo_funcionario BIT(1) )
+	IN _id_centro_funcionario VARCHAR(10) )
 BEGIN
 	UPDATE funcionario
-	SET documento_funcionario = _documento_funcionario ,
+	SET activo_funcionario = _activo_funcionario ,
+                id_tipo_documento_funcionario = _id_tipo_documento_funcionario ,
+                documento_funcionario = _documento_funcionario ,
 		correo_funcionario = _correo_funcionario ,
 		contrasena_funcionario = _contrasena_funcionario ,
 		nombre_funcionario = _nombre_funcionario ,
 		apellido_funcionario = _apellido_funcionario ,
-		cargo_funcionario = _cargo_funcionario ,
 		telefono_funcionario = _telefono_funcionario ,
 		id_centro_funcionario = _id_centro_funcionario ,
                 activo_funcionario = _activo_funcionario
@@ -1172,12 +1187,13 @@ CREATE PROCEDURE ver_funcionario (
 	IN _id_funcionario INT ) 
 BEGIN
 	SELECT id_funcionario ,
+        activo_funcionario,
+        id_tipo_documento_funcionario ,
 	documento_funcionario ,
 	correo_funcionario ,
 	contrasena_funcionario ,
 	nombre_funcionario ,
 	apellido_funcionario ,
-	cargo_funcionario ,
 	telefono_funcionario ,
 	id_centro_funcionario
 	FROM funcionario
@@ -1748,6 +1764,60 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
+/* SP TIPO_DOCUMENTO                                            */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar tipo_documento------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_tipo_documento $$
+CREATE PROCEDURE insertar_tipo_documento (
+	IN _id_tipo_documento INT , 
+	IN _nombre_tipo_documento VARCHAR(30) ) 
+BEGIN
+	INSERT INTO tipo_documento 
+	VALUES (
+		_id_tipo_documento , 
+		_nombre_tipo_documento );
+END $$
+
+/*---editar tipo_documento--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_tipo_documento $$
+CREATE PROCEDURE editar_tipo_documento (
+	IN _id_tipo_documento INT , 
+	IN _nombre_tipo_documento VARCHAR(30) ) 
+BEGIN
+	UPDATE tipo_documento 
+	SET nombre_tipo_documento = _nombre_tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+/*---eliminar tipo_documento------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_tipo_documento $$
+CREATE PROCEDURE eliminar_tipo_documento (
+	IN _id_tipo_documento INT )
+BEGIN
+	DELETE FROM tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+/*---ver tipo_documento-----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_tipo_documento $$
+CREATE PROCEDURE ver_tipo_documento (
+	IN _id_tipo_documento INT ) 
+BEGIN
+	SELECT id_tipo_documento ,
+        nombre_tipo_documento
+	FROM tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
 /* SP TIPO_OBJETO_APRENDIZAJE                                   */
 /*==============================================================*/
 DELIMITER $$
@@ -2061,11 +2131,11 @@ CREATE PROCEDURE ver_instructores_centro (
     )
 BEGIN
     SELECT 
+        id_tipo_documento_funcionario ,
         documento_funcionario,
         nombre_funcionario,
         apellido_funcionario,
         correo_funcionario,
-        cargo_funcionario,
         telefono_funcionario
     FROM funcionario
     WHERE id_centro_funcionario = _id_centro;
@@ -2081,12 +2151,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS registrar_instructor_centro $$
 CREATE PROCEDURE registrar_instructor_centro (
+        IN _id_tipo_documento_funcionario INT ,
         IN _documento_funcionario VARCHAR(8) ,
         IN _correo_funcionario VARCHAR(100) ,
         IN _contrasena_funcionario VARCHAR(255) ,
         IN _nombre_funcionario VARCHAR(70) ,
         IN _apellido_funcionario VARCHAR(70) ,
-        IN _cargo_funcionario VARCHAR(45) ,
         IN _telefono_funcionario VARCHAR(10) ,
         IN _id_centro VARCHAR(10)
     )
@@ -2096,15 +2166,15 @@ BEGIN
     SET _id_funcionario = IFNULL(_id_funcionario, 1);
     CALL insertar_funcionario(
         _id_funcionario ,
+        1 ,
+        _id_tipo_documento_funcionario ,
         _documento_funcionario ,
         _correo_funcionario ,
         _contrasena_funcionario ,
         _nombre_funcionario ,
         _apellido_funcionario ,
-        _cargo_funcionario ,
         _telefono_funcionario ,
-        _id_centro,
-        1);
+        _id_centro);
 END $$
 
 DELIMITER ;
@@ -2408,11 +2478,12 @@ CREATE PROCEDURE login (
     )
 BEGIN
     SELECT id_funcionario ,
+        activo_funcionario ,
+        id_tipo_documento_funcionario ,
 	documento_funcionario ,
     	contrasena_funcionario ,
 	nombre_funcionario ,
 	apellido_funcionario ,
-	cargo_funcionario ,
 	telefono_funcionario ,
 	id_centro_funcionario
     FROM funcionario
