@@ -5,14 +5,13 @@
  */
 package modelo.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Juan David
  */
-public class Funcionario implements Serializable {
+public class Funcionario implements java.io.Serializable {
     private int id;
     private boolean activo;
     private int idTipoDocumento;
