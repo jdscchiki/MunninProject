@@ -12,7 +12,6 @@ import javax.naming.NamingException;
 import util.ConexionBD;
 import util.Encriptado;
 import modelo.bean.Funcionario;
-import modelo.bean.Rol;
 
 //cosas a tener en cuenta:
 //  documentar los metodos, es facil con la herramienta javadoc
@@ -21,26 +20,29 @@ import modelo.bean.Rol;
 /**
  * Esta clase realiza y procesa las consultas a bases de datos, de las tablas 
  * funcionario, rol y rol funcionario
- * @version 1.0
+ * @version 1.2
  * @author Juan David Segura Castro <JBadCode>
  */
 public class FuncionarioDAO extends ConexionBD{
-    /**
-     * String usado para llamar el procedimento almacenado en la base de datos
-     * llamado login.
-     */
-    private static final String CALLPROCEDURE_INGRESO = "{CALL login(?)}";
+    private static final String COL_ID = "id_funcionario";
+    private static final String COL_ACTIVO = "activo_funcionario";
+    private static final String COL_ID_TIPODOCUMENTO = "id_tipo_documento_funcionario";
+    private static final String COL_DOCUMENTO = "documento_funcionario";
+    private static final String COL_CORREO = "correo_funcionario";
+    private static final String COL_CONTRASENA = "contrasena_funcionario";
+    private static final String COL_NOMBRE = "nombre_funcionario";
+    private static final String COL_APELLIDO = "apellido_funcionario";
+    private static final String COL_TELEFONO = "telefono_funcionario";
+    private static final String COL_ID_CENTRO = "id_centro_funcionario";
     
-    /**
-     * String usado para llamar el procedimento almacenado en la base de datos
-     * llamado registrar_instructor_centro.
-     */
-    private static final String CALLPROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?) }}";
+    private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
+    private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
+    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?) }}";//tal ves no funcione aun
     
     /**
      * Este constructor permite establecer la conexion con la base de datos
      * 
-     * @throws NamingException
+     * @throws NamingException 
      * @throws SQLException
      */
     public FuncionarioDAO() throws NamingException, SQLException{
@@ -58,35 +60,39 @@ public class FuncionarioDAO extends ConexionBD{
      * @throws java.sql.SQLException
     */
     public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException{
-        Funcionario funcionario = new Funcionario();
+        Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
         funcionario.setCorreo(correo);
-        CallableStatement statement = getConexion().prepareCall(CALLPROCEDURE_INGRESO);
-        statement.setString(1, correo);
-        ResultSet rs = statement.executeQuery();
-        boolean encontrado = false;
+        CallableStatement statement = getConexion().prepareCall(PROCEDURE_INGRESO);
+        statement.setString(PROCEDURE_INGRESO_CORREO_INDEX, correo);//asigna los valores necesarios para ejecutar el QUERY
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        boolean encontrado = false;//una bandera
         while(rs.next()){
             encontrado = true;
-            funcionario.setDocumento(rs.getString(2));
-            funcionario.setContrasena(rs.getString(3));
-            funcionario.setNombre(rs.getString(4));
-            funcionario.setApellido(rs.getString(5));
-            funcionario.setCargo(rs.getString(6));
-            funcionario.setTelefono(rs.getString(7));
-            funcionario.setId_centro(rs.getString(8));
+            //asigna los valores resultantes de la consulta
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
+            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setContrasena(rs.getString(COL_CONTRASENA));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setTelefono(rs.getString(COL_TELEFONO));
+            funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
         }
         if(!encontrado){
-            funcionario = null;
+            funcionario = null;//si no existe el correo en la base de datos retorna null
         }
         return funcionario;
     }
     
+    //no le pongan atencion a este metodo aun
     public boolean registrar(Funcionario funcionario){
         boolean resultado = false;
         //encriptacion de contraseña
         try {
             funcionario.setContrasena(Encriptado.createHash(funcionario.getContrasena()));
             try{
-                CallableStatement statement = getConexion().prepareCall(CALLPROCEDURE_REGISTRO_FUNCIONARIO);
+                CallableStatement statement = getConexion().prepareCall(PROCEDURE_REGISTRO_FUNCIONARIO);
                 statement.setString(1, funcionario.getDocumento());
                 statement.setString(2, funcionario.getCorreo());
                 statement.setString(3, funcionario.getContrasena());
@@ -94,7 +100,7 @@ public class FuncionarioDAO extends ConexionBD{
                 statement.setString(5, funcionario.getApellido());
                 statement.setString(6, funcionario.getCargo());
                 statement.setString(7, funcionario.getTelefono());
-                statement.setString(8, funcionario.getId_centro());
+                statement.setString(8, funcionario.getIdCentro());
 
                 if(statement.executeUpdate()>0){
                     resultado = true;
