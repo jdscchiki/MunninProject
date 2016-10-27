@@ -5,10 +5,22 @@
  */
 package modelo.negocio;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.naming.NamingException;
+import modelo.bean.TipoDocumento;
+import modelo.dao.TipoDocumentoDAO;
+
 /**
  *
  * @author Juan David Segura Castro <JBadCode>
  */
 public class NegocioCoordinador {
     
+    public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException{
+        ArrayList<TipoDocumento> tiposDoc;
+        TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
+        tiposDoc = tipoDocumentoDAO.verTodos();
+        return tiposDoc;
+    }
 }
