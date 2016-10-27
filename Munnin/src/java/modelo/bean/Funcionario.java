@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class Funcionario implements Serializable {
     private int id;
+    private boolean activo;
+    private int idTipoDocumento;
     private String documento;
     private String correo;
     private String contrasena;
@@ -21,7 +23,7 @@ public class Funcionario implements Serializable {
     private String apellido;
     private String cargo;
     private String telefono;
-    private String id_centro;
+    private String idCentro;
 
     private ArrayList<Rol> roles;
 
@@ -33,6 +35,22 @@ public class Funcionario implements Serializable {
         this.id = id;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public int getIdTipoDocumento() {
+        return idTipoDocumento;
+    }
+
+    public void setIdTipoDocumento(int idTipoDocumento) {
+        this.idTipoDocumento = idTipoDocumento;
+    }
+    
     public String getDocumento() {
         return documento;
     }
@@ -89,12 +107,12 @@ public class Funcionario implements Serializable {
         this.telefono = telefono;
     }
 
-    public String getId_centro() {
-        return id_centro;
+    public String getIdCentro() {
+        return idCentro;
     }
 
-    public void setId_centro(String id_centro) {
-        this.id_centro = id_centro;
+    public void setIdCentro(String idCentro) {
+        this.idCentro = idCentro;
     }
 
     public ArrayList<Rol> getRoles() {
