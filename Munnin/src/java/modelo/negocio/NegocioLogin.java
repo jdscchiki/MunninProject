@@ -15,7 +15,7 @@ import util.Encriptado;
  * 
  * @author Juan David Segura Castro <JBadCode>
  */
-public class LoginClass {
+public class NegocioLogin {
     /**
      * Verifica si la contraseña correspondiente al correo del funcionario es correcta
      * 
