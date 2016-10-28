@@ -15,7 +15,7 @@
     </head>
     <body>
         <h1>Registro</h1>
-        <form role="form" method="POST" action="ingreso">
+        <form role="form" method="POST" action="registro">
             <label for="tipoDoc">Tipo de documento:</label>
             <select id="tipoDoc" name="tipoDoc">
                 <!-- Las opciones se actualizan con una consulta al servidor-->
@@ -42,6 +42,8 @@
             <input type="text" id="apellido" name="apellido">
             <label for="telefono">Telefono:</label>
             <input type="text" id="telefono" name="telefono">
+            <label for="idCentro">Id Centro:</label>
+            <input type="text" id="idCentro" name="idCentro">
             <button type="submit">Registrar Funcionario</button>
             <button type="reset">Borrar datos del formulario</button>
         </form>
