@@ -26,6 +26,7 @@
 /* EDITAR_(nombre de la tabla)                                  */
 /* ELIMINAR_(nombre de la tabla)                                */
 /* VER_(nombre de la tabla)                                     */
+/* VERTODOS_TIPO_DOCUMENTO                                      */
 /*==============================================================*/
 /*==============================================================*/
 
@@ -2144,13 +2145,13 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP REGISTRAR_INSTRUCTOR_CENTRO                               */
+/* SP REGISTRAR_FUNCIONARIO                                     */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS registrar_instructor_centro $$
-CREATE PROCEDURE registrar_instructor_centro (
+DROP PROCEDURE IF EXISTS registrar_funcionario $$
+CREATE PROCEDURE registrar_funcionario (
         IN _id_tipo_documento_funcionario INT ,
         IN _documento_funcionario VARCHAR(8) ,
         IN _correo_funcionario VARCHAR(100) ,
@@ -2488,6 +2489,23 @@ BEGIN
 	id_centro_funcionario
     FROM funcionario
     WHERE correo_funcionario = _correo_funcionario ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VERTODOS_TIPO_DOCUMENTO                                   */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS vertodos_tipo_documento $$
+CREATE PROCEDURE vertodos_tipo_documento (
+    )
+BEGIN
+    SELECT id_tipo_documento ,
+        nombre_tipo_documento
+    FROM tipo_documento ;
 END $$
 
 DELIMITER ;
