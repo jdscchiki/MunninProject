@@ -40,8 +40,9 @@ public class ConexionBD {
      */
     private void conectar() throws NamingException, SQLException{
         Context ctx = new InitialContext();
-        DataSource ds = (DataSource)ctx.lookup(JNDI);
-        conexion = ds.getConnection();
+        DataSource ds = (DataSource)ctx.lookup(JNDI);//se conecta con el JNDI
+        conexion = ds.getConnection();//establese la conexion con la base de datos
+        conexion.setAutoCommit(false);//para poder arrepentise de una mala transaccion
     }
     /**
      * 
