@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import util.ConexionBD;
-import util.Encriptado;
 import modelo.bean.Funcionario;
 
 //cosas a tener en cuenta:
@@ -37,8 +36,15 @@ public class FuncionarioDAO extends ConexionBD{
     
     private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
     private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
-    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_INSTRUCTOR_CENTRO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
-    
+    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX = 1;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_DOCUMENTO_INDEX = 2;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_CORREO_INDEX = 3;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_CONTASENA_INDEX = 4;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_NOMBRE_INDEX = 5;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX = 6;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX = 7;
+    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX = 8;
     /**
      * Este constructor permite establecer la conexion con la base de datos
      * 
@@ -88,38 +94,34 @@ public class FuncionarioDAO extends ConexionBD{
         return funcionario;
     }
     
-    //no le pongan atencion a este metodo aun
-    public boolean registrar(Funcionario funcionario){
-        boolean resultado = false;
-        //encriptacion de contraseña
-        try {
-            funcionario.setContrasena(Encriptado.createHash(funcionario.getContrasena()));
-            try{
-                CallableStatement statement = getConexion().prepareCall(PROCEDURE_REGISTRO_FUNCIONARIO);
-                statement.setString(1, funcionario.getDocumento());
-                statement.setString(2, funcionario.getCorreo());
-                statement.setString(3, funcionario.getContrasena());
-                statement.setString(4, funcionario.getNombre());
-                statement.setString(5, funcionario.getApellido());
-                statement.setString(6, funcionario.getCargo());
-                statement.setString(7, funcionario.getTelefono());
-                statement.setString(8, funcionario.getIdCentro());
+    /**
+     * Metodo para realizar el registro de un nuevo funcionario en la base de datos de la aplicacion.
+     * 
+     * @param funcionario Nuevo funcionario registrado
+     * @return True, si el funcionario fue registrado correctamente en la base de datos,
+     * false en caso contrario
+     * @throws SQLException 
+     */
+    public boolean registrar(Funcionario funcionario) throws SQLException{
+        boolean resultado;
+        CallableStatement statement = getConexion().prepareCall(PROCEDURE_REGISTRO_FUNCIONARIO);
+        statement.setInt(PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX, funcionario.getIdTipoDocumento());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_DOCUMENTO_INDEX, funcionario.getDocumento());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_CORREO_INDEX, funcionario.getCorreo());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_CONTASENA_INDEX, funcionario.getContrasena());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_NOMBRE_INDEX, funcionario.getNombre());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX, funcionario.getApellido());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX, funcionario.getTelefono());
+        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX, funcionario.getIdCentro());
 
-                if(statement.executeUpdate()>0){
-                    resultado = true;
-                }
-            }catch(SQLException e){
-                System.out.println("Error al realizar operacion Ingresar: " + e);
-            }
-        } catch (Encriptado.CannotPerformOperationException ex) {
-            ex.getMessage();
-        } finally{
-            try {
-                cerrarConexion();
-            } catch (Exception e) {
-                System.out.println("Error al cerrar la conexion: " + e);
-            }
+        if(statement.executeUpdate()==1){
+            this.getConexion().commit();
+            resultado = true;
+        }else{//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
         }
+            
         return resultado;
     }
     
