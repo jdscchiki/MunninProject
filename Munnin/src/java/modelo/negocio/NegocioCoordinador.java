@@ -30,7 +30,7 @@ public class NegocioCoordinador {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         if(funcionarioDAO.registrar(funcionario)){
             funcionario.setContrasena(null);
-            if(Mail.enviarContrasena(funcionario, contrasena)){
+            if(Mail.enviarPrimeraContrasena(funcionario, contrasena)){
                 resultado = true;
             }
         }
