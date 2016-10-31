@@ -61,11 +61,14 @@ public class ServletLogin extends HttpServlet {
                 System.out.println("Error : " + e);
             }
         } catch (NamingException ex) {
-            //aqui redirecciona a una una pagina en donde salga el error
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         } catch (SQLException ex) {
-            //aqui redirecciona a una una pagina en donde salga el error
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         } catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex) {
-            //aqui redirecciona a una una pagina en donde salga el error
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }
