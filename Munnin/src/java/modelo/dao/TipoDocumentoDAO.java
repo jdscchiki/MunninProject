@@ -51,9 +51,7 @@ public class TipoDocumentoDAO extends ConexionBD {
             td.setNombre(rs.getString(COL_NOMBRE));
             tiposDoc.add(td);
         }
-        if (this.cerrarConexion() != null) {
-            System.out.println("Error al cerrar la conexion con la base de datos");
-        }
+
         return tiposDoc;
     }
 
