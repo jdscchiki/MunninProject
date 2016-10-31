@@ -8,9 +8,11 @@ package modelo.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import util.ConexionBD;
 import modelo.bean.Funcionario;
+import modelo.bean.Rol;
 
 //cosas a tener en cuenta:
 //  documentar los metodos, es facil con la herramienta javadoc
@@ -37,6 +39,7 @@ public class FuncionarioDAO extends ConexionBD {
 
     private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
     private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
+
     private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX = 1;
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_DOCUMENTO_INDEX = 2;
@@ -46,6 +49,11 @@ public class FuncionarioDAO extends ConexionBD {
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX = 6;
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX = 7;
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX = 8;
+
+    private static final String PROCEDURE_VER_ROLES_FUNCIONARIO = "{CALL VER_ROLES_FUNCIONARIO(?)}";
+    private static final int PROCEDURE_VER_ROLES_FUNCIONARIO_ID_INDEX = 1;
+    private static final String RPROCEDURE_VER_ROLES_FUNCIONARIO_ID_ROL = "id_rol_funci_rol";
+    private static final String RPROCEDURE_VER_ROLES_FUNCIONARIO_NORBRE_ROL = "nombre_rol";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -58,8 +66,7 @@ public class FuncionarioDAO extends ConexionBD {
     }
 
     /**
-     * Ejecuta el procedimiento almacenado LOGIN de la base de datos para
-     * obtener los datos del Usuario con el correo
+     * Consulta los datos del funcionario
      *
      * @param correo Correo del usuario
      * @return Retorna Null si el correo no se encuetra en la base de datos, de
@@ -126,6 +133,28 @@ public class FuncionarioDAO extends ConexionBD {
         }
 
         return resultado;
+    }
+
+    /**
+     * Consulta los roles de un funcionario
+     *
+     * @param id id del funcionario
+     * @return ArrayList de los roles
+     * @throws SQLException
+     */
+    public ArrayList<Rol> verRoles(int id) throws SQLException {
+        ArrayList<Rol> roles = new ArrayList<>();
+        CallableStatement statement = getConexion().prepareCall(PROCEDURE_VER_ROLES_FUNCIONARIO);
+        statement.setInt(PROCEDURE_VER_ROLES_FUNCIONARIO_ID_INDEX, id);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(RPROCEDURE_VER_ROLES_FUNCIONARIO_ID_ROL));
+            rol.setNombre(rs.getString(RPROCEDURE_VER_ROLES_FUNCIONARIO_NORBRE_ROL));
+            roles.add(rol);
+        }
+        return roles;
     }
 
 }
