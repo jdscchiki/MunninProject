@@ -17,11 +17,23 @@ import util.Mail;
 import modelo.dao.FuncionarioDAO;
 
 /**
+ * clase dedicada a la logica de negocio usada por el coordinador
  *
  * @author Juan David Segura Castro <JBadCode>
+ *
  */
 public class NegocioCoordinador {
 
+    /**
+     * registro de funcionarios con la logica de un admin
+     *
+     * @param funcionario Datos del funcionario a registrar
+     * @param idCentro Id del centro en que va a ser registrado
+     * @return True si la operacion fue completada
+     * @throws util.Encriptado.CannotPerformOperationException
+     * @throws NamingException
+     * @throws SQLException
+     */
     public static boolean registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException {
         boolean resultado = false;
         funcionario.setIdCentro(idCentro);
@@ -30,6 +42,7 @@ public class NegocioCoordinador {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         if (funcionarioDAO.registrar(funcionario)) {
             funcionario.setContrasena(null);
+            funcionarioDAO.cerrarConexion();
             if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
                 resultado = true;
             }
@@ -37,10 +50,18 @@ public class NegocioCoordinador {
         return resultado;
     }
 
+    /**
+     * consulta de los tipos de documento
+     *
+     * @return ArrayList de tipos de documento
+     * @throws NamingException
+     * @throws SQLException
+     */
     public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException {
         ArrayList<TipoDocumento> tiposDoc;
         TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
         tiposDoc = tipoDocumentoDAO.verTodos();
+        tipoDocumentoDAO.cerrarConexion();
         return tiposDoc;
     }
 }
