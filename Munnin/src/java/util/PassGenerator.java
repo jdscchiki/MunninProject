@@ -14,6 +14,7 @@ http://www.programacionenjava.com/blog/2008/04/09/javabasico/generacion-de-contr
 y fue adaptado para las necesidades del proyecto.
  */
 /**
+ * clase dedicada a la generacion de contraseñas
  *
  * @author Juan David Segura Castro <JBadCode>
  */
