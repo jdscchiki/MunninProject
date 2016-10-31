@@ -42,6 +42,8 @@ public class NegocioLogin {
                 funcionarioLog.setContrasena(null);
             }
         }
+        funcionarioLog.setRoles(consulta.verRoles(funcionarioLog.getId()));
+        consulta.cerrarConexion();
         return funcionarioLog;
     }
 
