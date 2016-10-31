@@ -97,9 +97,7 @@ public class FuncionarioDAO extends ConexionBD {
         if (!encontrado) {
             funcionario = null;//si no existe el correo en la base de datos retorna null
         }
-        if (this.cerrarConexion() != null) {
-            System.out.println("Error al cerrar la conexion con la base de datos");
-        }
+
         return funcionario;
     }
 
