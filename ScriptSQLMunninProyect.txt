@@ -10,7 +10,7 @@
 /* VER_PRODUCTOS_APROVADOS                                      */
 /* ENVIAR_NUEVO_PRODUCTO                                        */
 /* VER_INSTRUCTORES_CENTRO                                      */
-/* REGISTRAR_INSTRUCTOR_CENTRO                                  */
+/* REGISTRAR_FUNCIONARIO                                        */
 /* NUEVA_LISTA                                                  */
 /* NUEVO_ITEM                                                   */
 /* NUEVA_AREA                                                   */
@@ -27,6 +27,7 @@
 /* ELIMINAR_(nombre de la tabla)                                */
 /* VER_(nombre de la tabla)                                     */
 /* VERTODOS_TIPO_DOCUMENTO                                      */
+/* VER_ROLES_FUNCIONARIO                                        */
 /*==============================================================*/
 /*==============================================================*/
 
@@ -2506,6 +2507,26 @@ BEGIN
     SELECT id_tipo_documento ,
         nombre_tipo_documento
     FROM tipo_documento ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_ROLES_FUNCIONARIO                                     */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_roles_funcionario $$
+CREATE PROCEDURE ver_roles_funcionario (
+        IN _id_funcionario INT
+    )
+BEGIN
+    SELECT fr.id_rol_funci_rol , r.nombre_rol
+    FROM  funcionario_rol fr
+    INNER JOIN rol r
+    ON id_rol_funci_rol = id_rol
+    WHERE id_funcionario_funci_rol = _id_funcionario;
 END $$
 
 DELIMITER ;
