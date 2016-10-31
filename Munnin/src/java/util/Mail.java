@@ -17,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import modelo.bean.Funcionario;
 
 /**
+ * clase dedicada para operaciones de envio de datos via eMail
  *
  * @author Juan David Segura Castro <JBadCode>
  */
