@@ -57,23 +57,23 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setTelefono(telefono);
             if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
                 //debe mandar un mensaje con js, diciendo que el registro ha sido existoso
-                System.out.println("exito");
                 response.sendRedirect("registro-funcionario.jsp");
             } else {
                 //debe mandar un mensaje con js, diciendo que el registro no se ha podido realizar
-                System.out.println("pos gg");
                 response.sendRedirect("registro-funcionario.jsp");
             }
-            System.out.println("flag");
         } catch (NumberFormatException e) {
             //debe mandar un mensaje con js, diciendo que ha ocurrido un error al seleccionar un tipo de documento
             request.getRequestDispatcher("registro-funcionario.jsp").forward(request, response);
         } catch (Encriptado.CannotPerformOperationException ex) {
-            System.out.println("error: " + ex);
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         } catch (NamingException ex) {
-            System.out.println("error: " + ex);
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         } catch (SQLException ex) {
-            System.out.println("error: " + ex);
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }
