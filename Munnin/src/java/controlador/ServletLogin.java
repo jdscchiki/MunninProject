@@ -20,9 +20,9 @@ import util.Encriptado;
 
 /**
  *
- * Se encarga de administrar la solicitudes realizadas 
- * desde el login de la aplicación
- * 
+ * Se encarga de administrar la solicitudes realizadas desde el login de la
+ * aplicación
+ *
  * @version 1.0
  * @author Juan David Segura Castro <JBadCode>
  */
@@ -30,11 +30,12 @@ import util.Encriptado;
 public class ServletLogin extends HttpServlet {
 
     /**
-     * Procesa las solicitudes para ambos HTTP <code>GET</code> y <code>POST</code>
-     * methods.
-     * Realiza la conexion a Bases de datos y redirecciona a index.jsp si los datos ingresados no son correctos
-     * y si lo son correctos redirecciona a munnin.jsp, envia los datos del Usuario logueado a traves de HttpSession
-     * 
+     * Procesa las solicitudes para ambos HTTP <code>GET</code> y
+     * <code>POST</code> methods. Realiza la conexion a Bases de datos y
+     * redirecciona a index.jsp si los datos ingresados no son correctos y si lo
+     * son correctos redirecciona a munnin.jsp, envia los datos del Usuario
+     * logueado a traves de HttpSession
+     *
      *
      * @param request servlet request
      * @param response servlet response
@@ -46,27 +47,27 @@ public class ServletLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String correo = request.getParameter("textCorreo");
         String contrasena = request.getParameter("textContr");
-        try{
+        try {
             Funcionario funcionario = NegocioLogin.verificarFuncionario(correo, contrasena);
-            try{
-                if(funcionario == null){
+            try {
+                if (funcionario == null) {
                     request.getRequestDispatcher("index.jsp").forward(request, response);
-                }else{
+                } else {
                     HttpSession sesion = (HttpSession) request.getSession();
                     sesion.setAttribute("correo", correo);
                     request.getRequestDispatcher("munnin-new.jsp").forward(request, response);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("Error : " + e);
             }
-        }catch (NamingException ex){
+        } catch (NamingException ex) {
             //aqui redirecciona a una una pagina en donde salga el error
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             //aqui redirecciona a una una pagina en donde salga el error
-        }catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex){
+        } catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex) {
             //aqui redirecciona a una una pagina en donde salga el error
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

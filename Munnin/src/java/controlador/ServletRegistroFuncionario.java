@@ -39,14 +39,14 @@ public class ServletRegistroFuncionario extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String tipoDoc = request.getParameter("tipoDoc");
-        int idTipoDoc = 0;
+        int idTipoDoc;
         String documento = request.getParameter("documento");
         String correo = request.getParameter("correo");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String telefono = request.getParameter("telefono");
         String idCentro = request.getParameter("idCentro");
-        try{//conversion de datos
+        try {//conversion de datos
             idTipoDoc = Integer.parseInt(tipoDoc);
             Funcionario nuevoFuncionario = new Funcionario();
             nuevoFuncionario.setIdTipoDocumento(idTipoDoc);
@@ -55,25 +55,27 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setNombre(nombre);
             nuevoFuncionario.setApellido(apellido);
             nuevoFuncionario.setTelefono(telefono);
-            if(NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)){
+            if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
                 //debe mandar un mensaje con js, diciendo que el registro ha sido existoso
-                request.getRequestDispatcher("registro-funcionario.jsp").forward(request, response);
-            }else{
+                System.out.println("exito");
+                response.sendRedirect("registro-funcionario.jsp");
+            } else {
                 //debe mandar un mensaje con js, diciendo que el registro no se ha podido realizar
-                request.getRequestDispatcher("registro-funcionario.jsp").forward(request, response);
+                System.out.println("pos gg");
+                response.sendRedirect("registro-funcionario.jsp");
             }
-            
-        }catch(NumberFormatException e){
+            System.out.println("flag");
+        } catch (NumberFormatException e) {
             //debe mandar un mensaje con js, diciendo que ha ocurrido un error al seleccionar un tipo de documento
             request.getRequestDispatcher("registro-funcionario.jsp").forward(request, response);
         } catch (Encriptado.CannotPerformOperationException ex) {
-            Logger.getLogger(ServletRegistroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error: " + ex);
         } catch (NamingException ex) {
-            Logger.getLogger(ServletRegistroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error: " + ex);
         } catch (SQLException ex) {
-            Logger.getLogger(ServletRegistroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error: " + ex);
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

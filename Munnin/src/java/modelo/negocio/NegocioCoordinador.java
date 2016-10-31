@@ -12,7 +12,7 @@ import modelo.bean.Funcionario;
 import modelo.bean.TipoDocumento;
 import modelo.dao.TipoDocumentoDAO;
 import util.Encriptado;
-import util.ContrasenaGenerator;
+import util.PassGenerator;
 import util.Mail;
 import modelo.dao.FuncionarioDAO;
 
@@ -21,23 +21,23 @@ import modelo.dao.FuncionarioDAO;
  * @author Juan David Segura Castro <JBadCode>
  */
 public class NegocioCoordinador {
-    
-    public static boolean registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException{
+
+    public static boolean registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException {
         boolean resultado = false;
         funcionario.setIdCentro(idCentro);
-        String contrasena = ContrasenaGenerator.GenerarContrasena();
+        String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if(funcionarioDAO.registrar(funcionario)){
+        if (funcionarioDAO.registrar(funcionario)) {
             funcionario.setContrasena(null);
-            if(Mail.enviarPrimeraContrasena(funcionario, contrasena)){
+            if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
                 resultado = true;
             }
         }
         return resultado;
     }
-    
-    public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException{
+
+    public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException {
         ArrayList<TipoDocumento> tiposDoc;
         TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
         tiposDoc = tipoDocumentoDAO.verTodos();

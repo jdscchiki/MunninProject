@@ -148,4 +148,22 @@ public class PassGenerator {
         }
         return false;
     }
+
+    /**
+     * Retorna una contraseña segura
+     *
+     * @return contraseña
+     * @see util.PassGenerator#isSecure(java.lang.String)
+     */
+    public static String getSecurePassword() {
+        String pass = "";
+        boolean flag = true;
+        while (flag) {
+            pass = getPassword();
+            if (isSecure(pass)) {
+                flag = false;
+            }
+        }
+        return pass;
+    }
 }

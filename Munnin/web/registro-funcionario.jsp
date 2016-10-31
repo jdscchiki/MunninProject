@@ -19,18 +19,20 @@
             <label for="tipoDoc">Tipo de documento:</label>
             <select id="tipoDoc" name="tipoDoc">
                 <!-- Las opciones se actualizan con una consulta al servidor-->
-                <% 
-                    ArrayList<TipoDocumento> tiposDoc = (ArrayList<TipoDocumento>)request.getAttribute("tiposDoc");
-                    if(!tiposDoc.isEmpty()){
-                        for(int i = 0; i<tiposDoc.size();i++){
+                <%
+                    if (request.getAttribute("tiposDoc") != null) {
+                        ArrayList<TipoDocumento> tiposDoc = (ArrayList<TipoDocumento>) request.getAttribute("tiposDoc");
+                        if (!tiposDoc.isEmpty()) {
+                            for (int i = 0; i < tiposDoc.size(); i++) {
+
                 %>
-                
                 <option value="<%=tiposDoc.get(i).getId()%>"> <%=tiposDoc.get(i).getNombre()%> </option>
                 <%
+                            }
                         }
                     }
                 %>
-                
+
             </select>
             <label for="documento">Documento:</label>
             <input type="text" id="documento" name="documento">

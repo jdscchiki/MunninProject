@@ -9,7 +9,8 @@ package modelo.bean;
  *
  * @author Juan David Segura Castro <JBadCode>
  */
-public class TipoDocumento implements java.io.Serializable{
+public class TipoDocumento implements java.io.Serializable {
+
     private int id;
     private String nombre;
 
@@ -31,5 +32,5 @@ public class TipoDocumento implements java.io.Serializable{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
 }

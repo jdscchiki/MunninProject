@@ -15,14 +15,15 @@ import modelo.bean.Funcionario;
 //cosas a tener en cuenta:
 //  documentar los metodos, es facil con la herramienta javadoc
 //  traten de ser lo mas explicitos posibles en la descripcion de los metodos
-
 /**
- * Esta clase realiza y procesa las consultas a bases de datos, de las tablas 
+ * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
  * funcionario, rol y rol funcionario
+ *
  * @version 1.2
  * @author Juan David Segura Castro <JBadCode>
  */
-public class FuncionarioDAO extends ConexionBD{
+public class FuncionarioDAO extends ConexionBD {
+
     private static final String COL_ID = "id_funcionario";
     private static final String COL_ACTIVO = "activo_funcionario";
     private static final String COL_ID_TIPODOCUMENTO = "id_tipo_documento_funcionario";
@@ -33,7 +34,7 @@ public class FuncionarioDAO extends ConexionBD{
     private static final String COL_APELLIDO = "apellido_funcionario";
     private static final String COL_TELEFONO = "telefono_funcionario";
     private static final String COL_ID_CENTRO = "id_centro_funcionario";
-    
+
     private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
     private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
     private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
@@ -45,34 +46,35 @@ public class FuncionarioDAO extends ConexionBD{
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX = 6;
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX = 7;
     private static final int PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX = 8;
+
     /**
      * Este constructor permite establecer la conexion con la base de datos
-     * 
-     * @throws NamingException 
+     *
+     * @throws NamingException
      * @throws SQLException
      */
-    public FuncionarioDAO() throws NamingException, SQLException{
+    public FuncionarioDAO() throws NamingException, SQLException {
         super();
     }
-    
+
     /**
-     * Ejecuta el procedimiento almacenado LOGIN de la base de datos
-     * para obtener los datos del Usuario con el correo
-     * 
+     * Ejecuta el procedimiento almacenado LOGIN de la base de datos para
+     * obtener los datos del Usuario con el correo
+     *
      * @param correo Correo del usuario
-     * @return Retorna Null si el correo no se encuetra en la base de datos, 
-     * de lo contrario retorna los datos del Usuario.
+     * @return Retorna Null si el correo no se encuetra en la base de datos, de
+     * lo contrario retorna los datos del Usuario.
      * @version 1.0
      * @throws java.sql.SQLException
-    */
-    public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException{
+     */
+    public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
         funcionario.setCorreo(correo);
         CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INGRESO);
         statement.setString(PROCEDURE_INGRESO_CORREO_INDEX, correo);//asigna los valores necesarios para ejecutar el QUERY
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         boolean encontrado = false;//una bandera
-        while(rs.next()){
+        while (rs.next()) {
             encontrado = true;
             //asigna los valores resultantes de la consulta
             funcionario.setId(rs.getInt(COL_ID));
@@ -85,24 +87,25 @@ public class FuncionarioDAO extends ConexionBD{
             funcionario.setTelefono(rs.getString(COL_TELEFONO));
             funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
         }
-        if(!encontrado){
+        if (!encontrado) {
             funcionario = null;//si no existe el correo en la base de datos retorna null
         }
-        if(this.cerrarConexion()!=null){
+        if (this.cerrarConexion() != null) {
             System.out.println("Error al cerrar la conexion con la base de datos");
         }
         return funcionario;
     }
-    
+
     /**
-     * Metodo para realizar el registro de un nuevo funcionario en la base de datos de la aplicacion.
-     * 
+     * Metodo para realizar el registro de un nuevo funcionario en la base de
+     * datos de la aplicacion.
+     *
      * @param funcionario Nuevo funcionario registrado
-     * @return True, si el funcionario fue registrado correctamente en la base de datos,
-     * false en caso contrario
-     * @throws SQLException 
+     * @return True, si el funcionario fue registrado correctamente en la base
+     * de datos, false en caso contrario
+     * @throws SQLException
      */
-    public boolean registrar(Funcionario funcionario) throws SQLException{
+    public boolean registrar(Funcionario funcionario) throws SQLException {
         boolean resultado;
         CallableStatement statement = getConexion().prepareCall(PROCEDURE_REGISTRO_FUNCIONARIO);
         statement.setInt(PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX, funcionario.getIdTipoDocumento());
@@ -114,15 +117,15 @@ public class FuncionarioDAO extends ConexionBD{
         statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX, funcionario.getTelefono());
         statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX, funcionario.getIdCentro());
 
-        if(statement.executeUpdate()==1){
+        if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
-        }else{//se cancela el registro cuando se agrega mas o menos de 1 una fila
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
             resultado = false;
         }
-            
+
         return resultado;
     }
-    
+
 }

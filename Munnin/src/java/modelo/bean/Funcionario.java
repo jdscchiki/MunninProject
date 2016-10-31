@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Juan David
  */
 public class Funcionario implements java.io.Serializable {
+
     private int id;
     private boolean activo;
     private int idTipoDocumento;
@@ -49,7 +50,7 @@ public class Funcionario implements java.io.Serializable {
     public void setIdTipoDocumento(int idTipoDocumento) {
         this.idTipoDocumento = idTipoDocumento;
     }
-    
+
     public String getDocumento() {
         return documento;
     }
@@ -90,14 +91,6 @@ public class Funcionario implements java.io.Serializable {
         this.apellido = apellido;
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
     public String getTelefono() {
         return telefono;
     }
@@ -122,10 +115,8 @@ public class Funcionario implements java.io.Serializable {
         this.roles = roles;
     }
 
-    
     public Funcionario() {
-    
+
     }
-    
-    
+
 }
