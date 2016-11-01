@@ -28,31 +28,7 @@
             <img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
         </div>
 
-        <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#vtn1" class="btn" data-toggle="modal">Material de Apoyo </a></li>
-                        <li><a href="#vtn2" class="btn" data-toggle="modal">listas de chequeo </a></li>
-                        <li><a href="#vtn3" class="btn" data-toggle="modal">buscar </a></li>
-                        <li><a href="#vtn4" class="btn" data-toggle="modal">agregar usuario</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><input type="text" name="search" class="search" placeholder="Buscar..."></li>
-                        <li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Imagen</a></li>
-                        <li><a href="index.jsp"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="Content/Navbar.jsp" ></jsp:include>
 
         <div class="container">
             <h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>
