@@ -8,13 +8,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Munnin Error</title>
+        <meta charset="utf-8">
+        <jsp:include page="contenido/head.jsp"></jsp:include>
     </head>
     <body>
-        <h1>Munnin</h1>
-        <p>Lo sentimos, a ocurrido un error</p>
-        <p>
+            <h1>Munnin</h1>
+            <p>Lo sentimos, a ocurrido un error</p>
+            <p>
             <%
                 if (request.getAttribute("Mensaje") != null) {
             %>
