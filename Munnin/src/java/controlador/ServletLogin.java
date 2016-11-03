@@ -55,7 +55,7 @@ public class ServletLogin extends HttpServlet {
                 } else {
                     HttpSession sesion = (HttpSession) request.getSession();
                     sesion.setAttribute("correo", correo);
-                    request.getRequestDispatcher("munnin-new.jsp").forward(request, response);
+                    request.getRequestDispatcher("inicio.jsp").forward(request, response);
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e);

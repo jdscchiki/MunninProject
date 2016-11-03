@@ -57,14 +57,14 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setTelefono(telefono);
             if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
                 //debe mandar un mensaje con js, diciendo que el registro ha sido existoso
-                response.sendRedirect("registro-funcionario.jsp");
+                response.sendRedirect("coordinador/registro-funcionario.jsp");
             } else {
                 //debe mandar un mensaje con js, diciendo que el registro no se ha podido realizar
-                response.sendRedirect("registro-funcionario.jsp");
+                response.sendRedirect("coordinador/registro-funcionario.jsp");
             }
         } catch (NumberFormatException e) {
             //debe mandar un mensaje con js, diciendo que ha ocurrido un error al seleccionar un tipo de documento
-            request.getRequestDispatcher("registro-funcionario.jsp").forward(request, response);
+            request.getRequestDispatcher("coordinador/registro-funcionario.jsp").forward(request, response);
         } catch (Encriptado.CannotPerformOperationException ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("error.jsp").forward(request, response);
