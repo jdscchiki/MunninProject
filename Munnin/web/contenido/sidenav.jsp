@@ -1,6 +1,5 @@
 <%@page import="modelo.bean.Rol"%>
 <%@page import="modelo.bean.Funcionario"%>
-<%@ page language="java" session="false"%>
 
 <div id="sidenav" class="sidenav">
     <div class="item-right-rs">
@@ -17,23 +16,23 @@
             for (Rol rol : fun.getRoles()) {
                 if (rol.getId() == 1) {
                     isCoordinador = true;
-                    break;
+                    continue;
                 }
                 if (rol.getId() == 2) {
                     isETecnico = true;
-                    break;
+                    continue;
                 }
                 if (rol.getId() == 3) {
                     isEPedagogico = true;
-                    break;
+                    continue;
                 }
                 if (rol.getId() == 4) {
                     isInstructor = true;
-                    break;
+                    continue;
                 }
                 if (rol.getId() == 5) {
                     isAdmin = true;
-                    break;
+                    continue;
                 }
             }
 

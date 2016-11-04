@@ -150,6 +150,7 @@ public class FuncionarioDAO extends ConexionBD {
             Rol rol = new Rol();
             rol.setId(rs.getInt(RPROCEDURE_VER_ROLES_FUNCIONARIO_ID_ROL));
             rol.setNombre(rs.getString(RPROCEDURE_VER_ROLES_FUNCIONARIO_NORBRE_ROL));
+            System.out.println("rol:"+rol.getId());
             roles.add(rol);
         }
         return roles;

@@ -33,8 +33,7 @@ public class ServletSalida extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = (HttpSession) request.getSession();
-        sesion.removeAttribute("usuario");
-        System.out.println("ya sale");
+        sesion.invalidate();
         response.sendRedirect("index.jsp");
     }
 
