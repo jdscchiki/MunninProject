@@ -4,6 +4,8 @@
     Author     : Juan David Segura Castro <JBadCode>
 --%>
 
+<%@page import="modelo.bean.Rol"%>
+<%@page import="modelo.bean.Funcionario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java" session="false"%>
 
@@ -37,11 +39,59 @@
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="#">Inicio</a></li>
+                            <%
+                                HttpSession s = request.getSession(false);
+                                Funcionario fun = (Funcionario) s.getAttribute("usuario");
+                                boolean isCoordinador = false;
+                                boolean isETecnico = false;
+                                boolean isEPedagogico = false;
+                                boolean isInstructor = false;
+                                boolean isAdmin = false;
+                                for (Rol rol : fun.getRoles()) {
+                                    if (rol.getId() == 1) {
+                                        isCoordinador = true;
+                                        continue;
+                                    }
+                                    if (rol.getId() == 2) {
+                                        isETecnico = true;
+                                        continue;
+                                    }
+                                    if (rol.getId() == 3) {
+                                        isEPedagogico = true;
+                                        continue;
+                                    }
+                                    if (rol.getId() == 4) {
+                                        isInstructor = true;
+                                        continue;
+                                    }
+                                    if (rol.getId() == 5) {
+                                        isAdmin = true;
+                                        continue;
+                                    }
+                                }
+                                
+                                if(isCoordinador){
+                                    %>
                             <li><a href="coordinador.jsp">Coordinador</a></li>
+                            <%
+                                }if(isETecnico){
+                            %>
                             <li><a href="equipo-tecnico.jsp">Equipo Tecnico</a></li>
+                            <%
+                                }if(isEPedagogico){
+                            %>
                             <li><a href="equipo-pedagogico.jsp">Equipo Pedagógico</a></li>
+                            <%
+                                }if(isInstructor){
+                            %>
                             <li><a href="instructor.jsp">Instructor</a></li>
+                            <%
+                                }if(isAdmin){
+                            %>
                             <li><a href="administrador.jsp">Administrador</a></li>
+                            <%
+                                }
+                            %>
                         </ul>
                         <jsp:include page="contenido/navbar.jsp"></jsp:include>
                     </div>
