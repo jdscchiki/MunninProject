@@ -14,19 +14,22 @@
 		</style>
 		
 	</head>
-<body>
-	<div class="container-fluid" style="background-color:#FFFFFF;color:#fff;height:100px;">
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+	<!--<div class="container-fluid" style="background-color:#FFFFFF;color:#fff;height:100px;">
 		<img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
-	</div>
+	</div>-->
 
-	<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197" style="margin-bottom: 0px;">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="padding-top: 1px;padding-bottom: 0px;padding-left: 5px;padding-right: 5px;">
+					<div class="container" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
 				</button>
+				<a class="navbar-brand" href="#">Munnin</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -82,34 +85,32 @@
 		</div>    
 	</div>
 
-	<div class="container-fluid">
-		<!--<h1>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.</h1>-->
-
-		<div class="inbox-mail container-fluid">
-			<div class="col-md-4 compose">
+	<div class="container-fluid filled">
+		<div class="inbox-mail">
+			<div class="col-md-3 compose">
 		            <h2>Compose</h2>
 		    <nav class="nav-sidebar">
 				<ul class="nav tabs">
-		          <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-inbox"></i>Inbox <span>9</span><div class="clearfix"></div></a></li>
-		          <li class=""><a href="#tab2" data-toggle="tab"><i class="fa fa-paper-plane-o"></i>Sent</a></li>
-		          <li class=""><a href="#tab3" data-toggle="tab"><i class="fa fa-star-o"></i>Important</a></li> 
-		          <li class=""><a href="#tab4" data-toggle="tab"><i class="fa fa-pencil-square-o"></i>Draft <span>6</span><div class="clearfix"></div></a></li>  
-		          <li class=""><a href="#tab5" data-toggle="tab"><i class="fa fa-trash-o"></i>Delete</a></li>                              
+		          <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-inbox"></i> Inbox <span>9</span><div class="clearfix"></div></a></li>
+		          <li class=""><a href="#tab2" data-toggle="tab"><i class="fa fa-paper-plane-o"></i> Sent</a></li>
+		          <li class=""><a href="#tab3" data-toggle="tab"><i class="fa fa-star-o"></i> Important</a></li> 
+		          <li class=""><a href="#tab4" data-toggle="tab"><i class="fa fa-pencil-square-o"></i> Draft <span>6</span><div class="clearfix"></div></a></li>  
+		          <li class=""><a href="#tab5" data-toggle="tab"><i class="fa fa-trash-o"></i> Delete</a></li>                              
 				</ul>
 			</nav>
-				<div class="content-box container-fluid">
-					<ul>
-					<li><span>Folder</span></li>
-					<li><a href="#"><i class="fa fa-folder-o"></i>Tasks</a></li>
-					<li><a href="#"><i class="fa fa-folder-o"></i>Jobs</a></li>
-					<li><a href="#"><i class="fa fa-folder-o"></i>Client</a></li>
-					</ul>
-		        </div>
+			<div class="content-box">
+				<ul>
+				<li><span>Folder</span></li>
+				<li><a href="#"><i class="fa fa-folder-o"></i>Tasks</a></li>
+				<li><a href="#"><i class="fa fa-folder-o"></i>Jobs</a></li>
+				<li><a href="#"><i class="fa fa-folder-o"></i>Client</a></li>
+				</ul>
+	        </div>
 		</div>
-		<!-- tab content -->
-		<div class="col-md-8 tab-content tab-content-in">
+
+		<div class="col-md-6 tab-content tab-content-in">
 		<div class="tab-pane active text-style" id="tab1">
-		  <div class="inbox-right">
+		  	<div class="inbox-right">
 		         	
 		            <div class="mailbox-content">
 		               <div class="mail-toolbar clearfix">
@@ -1408,11 +1409,16 @@
 					</div>
 				</div>
 			</div>
+	
+	<div class="copy">
+        <p> © 2016 Muunnin </p>	    
+    </div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
+	<script src="js/menu.js" languaje="Javascript" type="text/javascript"></script>
 
 </body>
 
