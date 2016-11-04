@@ -7,6 +7,7 @@
 		<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/skin-start.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 	
 		<style>
 
@@ -18,7 +19,7 @@
 		<img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
 	</div>
 
-	<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197">
+	<nav class="navbar navbar-default" data-spy="affix" data-offset-top="197" style="margin-bottom: 0px;">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -58,6 +59,27 @@
 	  	<a href="#">Profesor</a>
 	  	<a href="#">ETecnico</a>
 	  	<a href="#">EPedagojico</a>
+	</div>
+
+	<div class="left">
+		<div class="item">
+			<span class="glyphicon glyphicon-th-large"></span>
+		</div>
+		<div class="item active">
+			<span class="glyphicon glyphicon-th-list"></span>opcion1
+		</div>
+		<div class="item">
+			<span class="glyphicon glyphicon-log-out"></span>opcion2
+		</div>
+		<div class="item">
+			<span class="fa fa-group glyphicon" style="font-size:18px"></span></span>opcion3
+		</div> 
+		<div class="item">
+			<span class="glyphicon glyphicon-random"></span>opcion4
+		</div>
+		<div class="item">
+			<span class="glyphicon glyphicon-remove"></span>opcion5
+		</div>    
 	</div>
 
 	<div class="container-fluid">
@@ -1349,27 +1371,34 @@
 						<div class="modal-body">
 							<div style="position:relative">
 							<form action="">
-									<label for="nombre">Nombre: </label>
-									<input type="text" class="form-control" id="nombre">
-									<label for="apellido">Apellido: </label>
-									<input type="text" class="form-control" id="apellido">
-									<label for="correo">Correo: </label>
-									<input type="text" class="form-control" id="correo">
-									<label for="correo1">Confirme su correo: </label>
-									<input type="text" class="form-control" id="correo1">
-									<label for="contraseña">Contraseña:</label>
-									<input type="text" class="form-control" id="contraseña">
-									<label for="contraseña1">Confirme su contraseña:</label>
-									<input type="text" class="form-control" id="contraseña1">
-									<label for="rol">Seleccione rol:</label>
-									<select id="rol" class="form-control">
-										<option>Instructor </option>
-										<option>Jefe equipo tecnico</option>
-										<option>Jefe equipo pedagogico</option>
-										<option>Cordinador </option>
-										<option disabled>Admin </option>
-									</select>
-								</form>
+								<label for="nombre">Nombres : </label>
+								<input type="text" class="form-control" id="nombre">
+								<label for="apellido">Apellidos : </label>
+								<input type="text" class="form-control" id="apellido">
+								<label for="documento">Documento :</label>
+								<select id="documento" class="form-control" style="width:120px">
+									<option value="">C.C. </option>
+									<option value="">C.E. </option>
+									<option value="">Pasaporte </option>	
+								</select>
+								<input type="text" class="form-control" id="documento">
+								<label for="correo">Correo : </label>
+								<input type="text" class="form-control" id="correo">
+								<label for="correo1">Confirme su correo  </label>
+								<input type="text" class="form-control" id="correo1">
+								<label for="contraseña">Contraseña :</label>
+								<input type="text" class="form-control" id="contraseña">
+								<label for="contraseña1">Confirme su contraseña :</label>
+								<input type="text" class="form-control" id="contraseña1">
+								<label for="rol">Seleccione rol :</label>
+								<select id="rol" class="form-control">
+									<option value="">Instructor </option>
+									<option value="">Jefe equipo tecnico</option>
+									<option value="">Jefe equipo pedagogico</option>
+									<option value="">Cordinador </option>
+									<option value="" disabled>Admin </option>
+								</select>
+							</form>
 							</div>
 						</div>
 						<div class="modal-footer">
