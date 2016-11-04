@@ -167,7 +167,7 @@ CREATE TABLE funcionario (
     id_funcionario INT NOT NULL,
     activo_funcionario BIT(1) NOT NULL,
     id_tipo_documento_funcionario INT NOT NULL,
-    documento_funcionario NVARCHAR(8) NOT NULL,
+    documento_funcionario NVARCHAR(12) NOT NULL,
     correo_funcionario NVARCHAR(100) NOT NULL,
     contrasena_funcionario NVARCHAR(255) NOT NULL,
     nombre_funcionario NVARCHAR(70) NOT NULL,
@@ -2154,7 +2154,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS registrar_funcionario $$
 CREATE PROCEDURE registrar_funcionario (
         IN _id_tipo_documento_funcionario INT ,
-        IN _documento_funcionario VARCHAR(8) ,
+        IN _documento_funcionario VARCHAR(12) ,
         IN _correo_funcionario VARCHAR(100) ,
         IN _contrasena_funcionario VARCHAR(255) ,
         IN _nombre_funcionario VARCHAR(70) ,
