@@ -6,8 +6,10 @@
 package modelo.negocio;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import modelo.bean.Funcionario;
+import modelo.bean.Rol;
 import modelo.dao.FuncionarioDAO;
 import util.Encriptado;
 
@@ -39,10 +41,14 @@ public class NegocioLogin {
             if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;
             } else {
+                ArrayList<Rol> roles = consulta.verRoles(funcionarioLog.getId());
+                if (roles != null) {
+                    funcionarioLog.setRoles(roles);
+                }
                 funcionarioLog.setContrasena(null);
             }
         }
-        funcionarioLog.setRoles(consulta.verRoles(funcionarioLog.getId()));
+        
         consulta.cerrarConexion();
         return funcionarioLog;
     }

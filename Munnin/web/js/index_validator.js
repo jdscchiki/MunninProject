@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
 function validar(){
     var user, pass;
     user = $("#email").val();
@@ -23,4 +25,5 @@ function validar(){
         $("#mensaje").text("");
     }
 }
+
 

@@ -1,5 +1,6 @@
 <%@page import="modelo.bean.TipoDocumento"%>
 <%@page import="java.util.ArrayList"%>
+<%@ page language="java" session="false"%>
 <form role="form" method="POST" action="registro">
     <label for="tipoDoc">Tipo de documento:</label>
     <select id="tipoDoc" name="tipoDoc">

@@ -51,6 +51,7 @@ public class ServletLogin extends HttpServlet {
             Funcionario funcionario = NegocioLogin.verificarFuncionario(correo, contrasena);
             try {
                 if (funcionario == null) {
+                    request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 } else {
                     HttpSession sesion = (HttpSession) request.getSession();

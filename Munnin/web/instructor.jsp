@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" session="false"%>
 
 <!DOCTYPE html>
 <html lang="">
@@ -34,7 +35,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Munnin</a>
+                        <a class="navbar-brand" href="inicio.jsp">Munnin</a>
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
@@ -43,22 +44,7 @@
                             <li><a data-toggle="tab" href="#menu2">Enviar</a></li>
                             <li><a data-toggle="tab" href="#menu3">Mi material</a></li>
                         </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Usuario<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Mis datos</a></li>
-                                    <li><a href="#">Cambiar de contraseña</a></li>
-                                    <li><a type="button" class="botonraro-toogle" data-toggle="collapse" data-target="#sidenav">
-                                            roles
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="glyphicon glyphicon-off"></span> Salir</a>
-                            </li>
-                        </ul>
+                        <jsp:include page="contenido/navbar.jsp"></jsp:include>
                     </div>
                 </div>
             </nav>

@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" session="false"%>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -10,6 +12,7 @@
         <link rel="stylesheet" href="css/skin-indexConfig.css">
         <link rel="stylesheet" href="css/skin-index.css">
         <script src="js/index_validator.js" type="text/javascript"></script>
+        <script src="js/mensajes.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -27,9 +30,7 @@
                 <a href="#">¡He olvidado mi contraseña! </a>
                 <div id="div_mensaje" class="">
                     <p id="mensaje">
-                        <% if (request.getAttribute("Mensaje") != null) { %>
-                        ${Mensaje}
-                        <% }%>
+
                     </p>
                 </div>
                 <button>
@@ -41,5 +42,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="js/prefixfree.min.js"></script>
+        <% if (request.getAttribute("Mensaje") != null) { %>
+        ${Mensaje}
+        <% }%>
     </body>
 </html>
