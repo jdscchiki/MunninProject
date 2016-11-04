@@ -7,15 +7,9 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <!--como dice que es del index, supongo que solo se va a plicar en esta pagina, le hare modificaciones -->
+        <link rel="stylesheet" href="css/skin-indexConfig.css">
         <link rel="stylesheet" href="css/skin-index.css">
-        <!--no vi ninguna diferencia con ese css-->
-        <!--	<link rel="stylesheet" href="css/skin-indexConfig.css">-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="js/index_validator.js" type="text/javascript"></script>
-        <!--este tambien es inutil-->
-        <!--	<script src="js/prefixfree.min.js"></script>-->
     </head>
     <body>
         <div class="wrapper">
@@ -44,5 +38,8 @@
             </form>
             <footer><a href="#">©copyright</a></footer>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="js/prefixfree.min.js"></script>
     </body>
 </html>

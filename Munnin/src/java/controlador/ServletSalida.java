@@ -6,36 +6,23 @@
 package controlador;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelo.bean.Funcionario;
-import modelo.negocio.NegocioLogin;
-import util.Encriptado;
 
 /**
  *
- * Se encarga de administrar la solicitudes realizadas desde el login de la
- * aplicación
- *
- * @version 1.0
  * @author Juan David Segura Castro <JBadCode>
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ingreso"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletSalida", urlPatterns = {"/salida"})
+public class ServletSalida extends HttpServlet {
 
     /**
-     * Procesa las solicitudes para ambos HTTP <code>GET</code> y
-     * <code>POST</code> methods. Realiza la conexion a Bases de datos y
-     * redirecciona a index.jsp si los datos ingresados no son correctos y si lo
-     * son correctos redirecciona a munnin.jsp, envia los datos del Usuario
-     * logueado a traves de HttpSession
-     *
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -45,32 +32,10 @@ public class ServletLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String correo = request.getParameter("textCorreo");
-        String contrasena = request.getParameter("textContr");
-        try {
-            Funcionario funcionario = NegocioLogin.verificarFuncionario(correo, contrasena);
-            try {
-                if (funcionario == null) {
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                } else {
-                    HttpSession sesion = (HttpSession) request.getSession();
-                    sesion.setAttribute("usuario", funcionario);
-                    request.getRequestDispatcher("inicio.jsp").forward(request, response);
-                }
-            } catch (Exception e) {
-                System.out.println("Error : " + e);
-            }
-        } catch (NamingException ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        } catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-
+        HttpSession sesion = (HttpSession) request.getSession();
+        sesion.removeAttribute("usuario");
+        System.out.println("ya sale");
+        response.sendRedirect("index.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -109,7 +74,7 @@ public class ServletLogin extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Este servlet se encarga de procesar las peticiones de ingreso a la plataforma";
+        return "Short description";
     }// </editor-fold>
 
 }

@@ -1,7 +1,7 @@
 body{
     min-width: 200px;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .sidenav{
@@ -22,6 +22,7 @@ body{
     position: relative;
     background: #fff;
     width: 100%;
+    min-height: 100vh;
     overflow:hidden;
     padding-bottom: 20px;
     transition: width 1s;
@@ -55,6 +56,15 @@ span.glyphicon.glyphicon-refresh{
     color:#fff;
     display: inline-block;
     width: 50px;
+}
+.nice-link {
+    text-decoration: none;
+    color:#fff;
+}
+
+.nice-link:hover {
+    text-decoration: none;
+    background-color:#ccc;
 }
 
 .sidenav{
@@ -116,10 +126,6 @@ footer{
 
     .sidenav:hover {
         width: 250px;
-    }    
-
-    .item:hover {
-        background-color:#ccc;
     }
 
     .sidenav .glyphicon {
@@ -140,7 +146,6 @@ footer{
     .item {
         height:50px;
         overflow:hidden;
-        color:#fff;
         display: block;
         width: auto;
     }
@@ -158,4 +163,9 @@ footer{
         display: block;
     }
 
+}
+@media (min-width: 768px) {
+    .botonraro-toggle {
+        display: none;
+    }
 }
