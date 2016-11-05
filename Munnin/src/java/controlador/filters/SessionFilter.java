@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionFilter implements Filter {
     
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -123,20 +123,14 @@ public class SessionFilter implements Filter {
             }
             //valida que no exista una sesion de usuario activa
             if(sesion.getAttribute("usuario")==null){
-                System.out.println("no se ha logueado");
                 if(fromIndex){
-                    System.out.println("no debe habaer bucle");
                 }else{
                     continuar=false;
                     ((HttpServletResponse)response).sendRedirect("index.jsp");
-                    System.out.println("debe redireccionar");
-//                    ((HttpServletRequest)request).getRequestDispatcher("index.jsp").include(request, response);
                 }
             }else{
                 //revisa que no venga del inicio para avitar otro logeo
-                System.out.println("Esta logueado");
                 if(fromIndex){
-                    System.out.println("redirexiona a inicio");
                     ((HttpServletResponse)response).sendRedirect("inicio.jsp");
                 }
             }
