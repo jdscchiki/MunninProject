@@ -56,7 +56,7 @@ public class ServletLogin extends HttpServlet {
                 } else {
                     HttpSession sesion = (HttpSession) request.getSession();
                     sesion.setAttribute("usuario", funcionario);
-                    request.getRequestDispatcher("inicio.jsp").forward(request, response);
+                    response.sendRedirect("inicio.jsp");
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e);
