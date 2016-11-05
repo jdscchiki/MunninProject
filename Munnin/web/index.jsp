@@ -21,7 +21,7 @@
                 <img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
                 <h2 class="title"> Ingreso </h2>
                 <label for="email"> Correo </label>
-                <input type="text" id="email" maxlength="40" placeholder="Tu correo" name="textCorreo">
+                <input type="email" id="email" maxlength="40" placeholder="Tu correo" name="textCorreo">
                 <i class="fa fa-user"><span class="glyphicon glyphicon-user"></span></i>
                 <label for="pwd"> Contraseña </label>
                 <input type="password" maxlength="16" id="pwd" placeholder="Tu contraseña" name="textContr">
