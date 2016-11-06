@@ -1,5 +1,7 @@
 body {
+      font-family: "Open Sans", sans-serif;  
       position: relative;
+       background-color: #ececec; 
   }
 .filled {
     padding-top: 50px;
@@ -221,7 +223,7 @@ td.table-text h6{
 td.table-text p{
     font-size:0.9em;
     line-height: 1.5em;
-    font-family: 'Muli-Regular';
+    /*font-family: 'Muli-Regular';*/
     color:#999;
 }
 td i{
@@ -231,13 +233,13 @@ td span{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    font-family: 'Muli-Regular';
+    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    font-family: 'Muli-Regular';
+    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     background:#3BB2D0;
