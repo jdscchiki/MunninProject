@@ -15,7 +15,7 @@ import modelo.bean.TipoDocumento;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class TipoDocumentoDAO extends ConexionBD {
 
@@ -27,8 +27,8 @@ public class TipoDocumentoDAO extends ConexionBD {
     /**
      * Establece conexion con la base de datos
      *
-     * @throws NamingException
-     * @throws SQLException
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
      */
     public TipoDocumentoDAO() throws NamingException, SQLException {
         super();
@@ -39,7 +39,7 @@ public class TipoDocumentoDAO extends ConexionBD {
      * el aplicativo
      *
      * @return ArrayList de objetos TipoDocumento
-     * @throws SQLException
+     * @throws SQLException Error al realizar la consulta, revisar el procedimiento almacenado
      */
     public ArrayList<TipoDocumento> verTodos() throws SQLException {
         ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();

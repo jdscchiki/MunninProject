@@ -24,11 +24,11 @@ import modelo.bean.TipoDocumento;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class RegistroFilter implements Filter {
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -147,6 +147,7 @@ public class RegistroFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);

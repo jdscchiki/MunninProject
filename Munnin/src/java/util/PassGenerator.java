@@ -16,7 +16,7 @@ y fue adaptado para las necesidades del proyecto.
 /**
  * clase dedicada a la generacion de contraseñas
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro
  */
 public class PassGenerator {
 

@@ -16,7 +16,7 @@ import util.Encriptado;
 /**
  * Clase dedicada a Procesar los datos recividos en ServletLogin
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class NegocioLogin {
 
@@ -24,14 +24,14 @@ public class NegocioLogin {
      * Verifica si la contraseña correspondiente al correo del funcionario es
      * correcta
      *
-     * @param correo
-     * @param contrasena
+     * @param correo Correo usado para ingresar al aplicativo
+     * @param contrasena Contraseña usado para ingresar al aplicativo
      * @return Datos funcionario, si es correcto, null si la contraseña o
      * funcionario no son los correctos
-     * @throws NamingException
-     * @throws SQLException
-     * @throws util.Encriptado.CannotPerformOperationException
-     * @throws util.Encriptado.InvalidHashException
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
+     * @throws util.Encriptado.CannotPerformOperationException Error al encriptar la contraseña, revisar la version de java
+     * @throws util.Encriptado.InvalidHashException Error al verificar la contraseña, revisar los datos almacenados en la base de datos y comprarlos con el funcionamiento de la aplicacion
      */
     public static Funcionario verificarFuncionario(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
         Funcionario funcionarioLog;

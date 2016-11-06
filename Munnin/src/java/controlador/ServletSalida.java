@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro
  */
 @WebServlet(name = "ServletSalida", urlPatterns = {"/salida"})
 public class ServletSalida extends HttpServlet {

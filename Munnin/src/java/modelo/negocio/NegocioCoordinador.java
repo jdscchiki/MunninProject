@@ -19,7 +19,7 @@ import modelo.dao.FuncionarioDAO;
 /**
  * clase dedicada a la logica de negocio usada por el coordinador
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  *
  */
 public class NegocioCoordinador {
@@ -30,9 +30,9 @@ public class NegocioCoordinador {
      * @param funcionario Datos del funcionario a registrar
      * @param idCentro Id del centro en que va a ser registrado
      * @return True si la operacion fue completada
-     * @throws util.Encriptado.CannotPerformOperationException
-     * @throws NamingException
-     * @throws SQLException
+     * @throws util.Encriptado.CannotPerformOperationException Error al realizar la encriptacion de la contraseña, verificar la version de java
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
      */
     public static boolean registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException {
         boolean resultado = false;
@@ -54,8 +54,8 @@ public class NegocioCoordinador {
      * consulta de los tipos de documento
      *
      * @return ArrayList de tipos de documento
-     * @throws NamingException
-     * @throws SQLException
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
      */
     public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException {
         ArrayList<TipoDocumento> tiposDoc;

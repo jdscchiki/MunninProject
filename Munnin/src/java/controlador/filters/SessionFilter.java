@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -21,20 +22,20 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro
  */
 public class SessionFilter implements Filter {
-    
+
     private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public SessionFilter() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -61,8 +62,8 @@ public class SessionFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -100,44 +101,67 @@ public class SessionFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("SessionFilter:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
-        
+
         Throwable problem = null;
         try {
-            //accede a la sesion almacenada
-            HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
+            //todo el codigo para revisar 
+            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
+            boolean isComp = false;
+            ArrayList<String> componenetes = new ArrayList<>();
+            componenetes.add(".js");
+            componenetes.add(".css");
+            componenetes.add(".png");
+            for (String componenete : componenetes) {
+                if (((HttpServletRequest) request).getRequestURI().endsWith(componenete)) {
+                    isComp = true;
+                }
+            }
+            //quitar de los comentarios el siguiente codigo si algun elemento no carga, y añadirlo al ArrayList de componentes
+            //System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
+
             boolean continuar = true;
-            boolean fromIndex = false;
-            //verifica que la pagina que se ingresa no sea la de inicio
-            if(((HttpServletRequest)request).getRequestURI().endsWith("/")){
-                fromIndex = true;
-            }else if(((HttpServletRequest)request).getRequestURI().endsWith("/index.jsp")){
-                fromIndex = true;
-            }else if(((HttpServletRequest)request).getRequestURI().endsWith("/ingreso")){
-                fromIndex = true;
-            }
-            //valida que no exista una sesion de usuario activa
-            if(sesion.getAttribute("usuario")==null){
-                if(fromIndex){
-                }else{
-                    continuar=false;
-                    ((HttpServletResponse)response).sendRedirect("index.jsp");
+            //si es un componente, no es necesario el filtro
+            if (!isComp) {
+                boolean ExcepcionUri = false;
+                //las execepciones del filtro de inicio de sesion
+                ArrayList<String> excepcionesUriEnd = new ArrayList<>();
+                excepcionesUriEnd.add("/index.jsp");
+                excepcionesUriEnd.add("/ingreso");
+                excepcionesUriEnd.add("/error.jsp");
+                for (String UriEnd : excepcionesUriEnd) {
+                    if (((HttpServletRequest) request).getRequestURI().endsWith(UriEnd)) {
+                        ExcepcionUri = true;
+                        break;
+                    }
                 }
-            }else{
-                //revisa que no venga del inicio para avitar otro logeo
-                if(fromIndex){
-                    ((HttpServletResponse)response).sendRedirect("inicio.jsp");
+
+                //acede al contexto de la aplicacion, es decir, al nombre de la aplicacion
+                String contextPath = ((HttpServletRequest) request).getContextPath();
+
+                //accede a la sesion almacenada
+                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+
+                //valida que no exista una sesion de usuario activa
+                if (sesion.getAttribute("usuario") == null) {
+                    if (!ExcepcionUri) {
+                        continuar = false;
+                        ((HttpServletResponse) response).sendRedirect(contextPath + "/index.jsp");
+                    }
+                } else //revisa que no venga del login para evitar otro ingreso a la aplicacion
+                if (ExcepcionUri) {
+                    ((HttpServletResponse) response).sendRedirect("inicio.jsp");
                 }
             }
-            if(continuar){
+            if (continuar) {
                 chain.doFilter(request, response);
             }
-            
+
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
@@ -145,7 +169,7 @@ public class SessionFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -163,6 +187,8 @@ public class SessionFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     *
+     * @return Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -180,16 +206,16 @@ public class SessionFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("SessionFilter:Initializing filter");
             }
         }
@@ -208,20 +234,20 @@ public class SessionFilter implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -238,7 +264,7 @@ public class SessionFilter implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -252,9 +278,9 @@ public class SessionFilter implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

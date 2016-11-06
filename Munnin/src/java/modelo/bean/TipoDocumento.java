@@ -7,7 +7,7 @@ package modelo.bean;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class TipoDocumento implements java.io.Serializable {
 

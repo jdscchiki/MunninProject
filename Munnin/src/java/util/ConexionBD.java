@@ -27,7 +27,7 @@ public class ConexionBD {
      * Establece la conexion con la base de datos
      *
      * @throws NamingException si la JNDI no es la correcta
-     * @throws SQLException
+     * @throws SQLException No se puede estableser la conexion con la base de datos
      */
     public ConexionBD() throws NamingException, SQLException {
         conectar();
@@ -59,7 +59,7 @@ public class ConexionBD {
      * Metodo para cerrar la conexion con la base de datos.
      *
      * @return null si la conexion se cerro correctamente
-     * @throws SQLException
+     * @throws SQLException no se pudo ejecutar el metodo .close
      */
     public Connection cerrarConexion() throws SQLException {
         conexion.close();

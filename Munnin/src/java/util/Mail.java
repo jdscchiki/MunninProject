@@ -19,7 +19,7 @@ import modelo.bean.Funcionario;
 /**
  * clase dedicada para operaciones de envio de datos via eMail
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class Mail {
 
@@ -43,7 +43,7 @@ public class Mail {
      *
      * @param destinatario Funcionario al cual se le envia el correo
      * @param Contrasena Contraseña sin encriptar que sera enviada al correo
-     * @return
+     * @return True si se envio correctamente la contraseña, False en caso contrario
      */
     public static boolean enviarPrimeraContrasena(Funcionario destinatario, String Contrasena) {
         boolean resultado = true;

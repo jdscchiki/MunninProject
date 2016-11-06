@@ -22,7 +22,7 @@ import modelo.bean.Rol;
  * funcionario, rol y rol funcionario
  *
  * @version 1.2
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro 
  */
 public class FuncionarioDAO extends ConexionBD {
 
@@ -58,8 +58,8 @@ public class FuncionarioDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException
-     * @throws SQLException
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
      */
     public FuncionarioDAO() throws NamingException, SQLException {
         super();
@@ -72,7 +72,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @return Retorna Null si el correo no se encuetra en la base de datos, de
      * lo contrario retorna los datos del Usuario.
      * @version 1.0
-     * @throws java.sql.SQLException
+     * @throws java.sql.SQLException existe un priblema en la consulta
      */
     public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
@@ -108,7 +108,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @param funcionario Nuevo funcionario registrado
      * @return True, si el funcionario fue registrado correctamente en la base
      * de datos, false en caso contrario
-     * @throws SQLException
+     * @throws SQLException existe un priblema en la consulta
      */
     public boolean registrar(Funcionario funcionario) throws SQLException {
         boolean resultado;
@@ -138,7 +138,7 @@ public class FuncionarioDAO extends ConexionBD {
      *
      * @param id id del funcionario
      * @return ArrayList de los roles
-     * @throws SQLException
+     * @throws SQLException existe un priblema en la consulta
      */
     public ArrayList<Rol> verRoles(int id) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();

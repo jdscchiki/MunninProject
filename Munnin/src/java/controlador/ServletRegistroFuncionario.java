@@ -21,7 +21,7 @@ import util.Encriptado;
 
 /**
  *
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro
  */
 @WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/registro"})
 public class ServletRegistroFuncionario extends HttpServlet {

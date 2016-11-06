@@ -24,7 +24,7 @@ import util.Encriptado;
  * aplicación
  *
  * @version 1.0
- * @author Juan David Segura Castro <JBadCode>
+ * @author Juan David Segura Castro
  */
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ingreso"})
 public class ServletLogin extends HttpServlet {
@@ -56,7 +56,7 @@ public class ServletLogin extends HttpServlet {
                 } else {
                     HttpSession sesion = (HttpSession) request.getSession();
                     sesion.setAttribute("usuario", funcionario);
-                    response.sendRedirect("inicio.jsp");
+                    response.sendRedirect(request.getContextPath() + "/inicio.jsp");
                 }
             } catch (Exception e) {
                 System.out.println("Error : " + e);
