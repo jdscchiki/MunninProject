@@ -11,7 +11,7 @@ $('.login').on('submit', function(e) {
         $this.addClass('ok');
         $state.html('Bienvenido !');
         /*--aqui se redirecciona--*/
-        location.href="https://www.google.com.co/";
+        location.href="muninn-new.jps";
         setTimeout(function() {
             $state.html('Log in');
             $this.removeClass('ok loading');

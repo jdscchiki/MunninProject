@@ -1399,13 +1399,16 @@
 			</div>
 		</div>
 	</div>
+	
+	
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/menu.js" languaje="Javascript" type="text/javascript"></script>
-
+	<!-- <script src="js/jquery.nicescroll.js"></script> -->
+	<!-- <script src="js/scripts.js"></script> -->
 </body>
 </html>
 
