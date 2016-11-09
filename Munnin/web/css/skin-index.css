@@ -157,6 +157,6 @@ footer a, footer a:link {
 	text-decoration: none;
 }
 .full-logo {
-		width: 270px;
-		height: 95px;
+	width: 100%;
+	height: 95px;
 }

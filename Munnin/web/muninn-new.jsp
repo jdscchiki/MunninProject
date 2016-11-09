@@ -108,7 +108,7 @@
 		        </div>
 			</div>
 
-			<div class="col-md-6 tab-content tab-content-in">
+			<div class="col-md-9 tab-content tab-content-in">
 				<div class="tab-pane text-style" id="tab1">
 			  		<div class="inbox-right">	
 			            <div class="mailbox-content">

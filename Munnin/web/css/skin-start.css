@@ -5,7 +5,9 @@ body {
   }
 .filled {
     padding-top: 50px;
-    padding-left: 50px;
+    height: 100vh;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 .full-logo {
     width: 270px;
@@ -142,7 +144,7 @@ input.search[type=text]:focus {
 .type{
     height: 47px;;
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 1024px) {
     .left {
         display: none;
     }
@@ -402,15 +404,13 @@ nav.nav-sidebar {
 tr.table-row:hover{
     background:#FAFAFA;
 }
-.tab-content {
-    padding-left: 0px;
-}
 tr.table-row {
     border-top: 1px solid #F3F3F4;
 }
 .tab-content-in{
-    margin:0;
+    margin: 1em 0;
 }
+
 /*--/content--*/
 /*--footer--*/
 .Footer__topMenu__item__link,
@@ -420,38 +420,27 @@ tr.table-row {
 }
 .Footer__topMenu__item__link,
 .Footer__topMenu__item__link:visited {
-    font-size: 15px;
-    font-size: 1.5rem;
+    font-size: 13px;
 }
 .Footer__copyrightText {
-    font-size: 12px;
-    font-size: 1.2rem;
-    line-height: 35.2px;
-    line-height: 2.2rem;
+    font-size: 10px;
+    line-height: 20px;
 }
 .Footer {
     position: relative;
-    padding: 32px 0;
-    padding: 2rem 0;
+    padding: 20px 0;
     text-align: center;
 }
 .Footer__topMenu {
     width: 100%;
 }
 .Footer__topMenu__item {
-    line-height: 64px;
-    line-height: 4rem;
+    line-height: 40px;
     display: inline;
-    margin-left: 32px;
-    margin-left: 2rem;
+    margin-left: 15px;
 }
 .Footer__bottomMenu__item {
     display: inline-block;
-}
-.Footer__pipe {
-    display: inline-block;
-    margin: 0 16px;
-    margin: 0 1rem;
 }
 .Restricted__footer a{
     color: #999;

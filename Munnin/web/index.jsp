@@ -33,7 +33,7 @@
 			</div>
 			<button>
 				<i class="spinner"></i>
-				<span class="state"> Ingresar </span>
+				<span class="state" style="font-size: 25px;"> Ingresar </span>
 			</button>
 		</form>
 		<footer><a href="#">©copyright</a></footer>
