@@ -26,6 +26,9 @@ textarea {
 .affix + .container-fluid {
     padding-top: 70px;
 }
+.navbar-right{
+    text-align: center;
+}
 /*--search--*/
 input.search[type=text] {
     margin-top: 5px;
@@ -270,7 +273,7 @@ td span.mar{
     -ms-border-radius: 4px;
 }
 .inbox-mail{
-    padding: 1em 0;
+    padding: 20px 0;
 }
 .float-right {
     float: right;

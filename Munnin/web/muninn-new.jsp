@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/skin-start.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
 	<!--<div class="container-fluid" style="background-color:#FFFFFF;color:#fff;height:100px;">
@@ -35,7 +35,6 @@
 					<li><a href="#vtn4" class="btn" data-toggle="modal">agregar usuario</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><input type="text" name="search" class="search" placeholder="Buscar..."></li>
 					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
 					<li class="dropdown">
 			            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
@@ -56,31 +55,29 @@
 	<!--changing role-->
 	<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-	  	<a href="#">Administrador</a>
-	  	<a href="#">Profesor</a>
+	  	<a href="#"><span class="fa fa-eye" style="font-size:18px"></span> Administrador</a>
+	  	<a href="#">Cordinador</a>
 	  	<a href="#">ETecnico</a>
 	  	<a href="#">EPedagojico</a>
+	  	<a href="#">Instructor</a>
 	</div>
 
 	<!--left changing_role-->
 	<div class="left">
 		<div class="item">
-			<span class="glyphicon glyphicon-th-large"></span>
+			<span class="fa fa-eye glyphicon" style="font-size:18px"></span>Administrador
 		</div>
 		<div class="item active">
-			<span class="glyphicon glyphicon-th-list"></span>opcion1
+			<span class="fa fa-file-o glyphicon" style="font-size:18px"></span>Cordinador
 		</div>
 		<div class="item">
-			<span class="glyphicon glyphicon-log-out"></span>opcion2
+			<span class="fa fa-group glyphicon" style="font-size:18px"></span>ETecnico
 		</div>
 		<div class="item">
-			<span class="fa fa-group glyphicon" style="font-size:18px"></span></span>opcion3
+			<span class="fa fa-group glyphicon" style="font-size:18px"></span>EPedagojico
 		</div> 
 		<div class="item">
-			<span class="glyphicon glyphicon-random"></span>opcion4
-		</div>
-		<div class="item">
-			<span class="glyphicon glyphicon-remove"></span>opcion5
+			<span class="fa fa-user-circle glyphicon" style="font-size:18px"></span>Instructor
 		</div>    
 	</div>
 
