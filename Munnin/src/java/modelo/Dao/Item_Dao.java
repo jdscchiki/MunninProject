@@ -6,82 +6,88 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Item_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Item_Dao extends ClassConexion  {
-    
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+public class Item_Dao extends ConexionBD {
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String COL_ID_ITEM = "id_item";
+    private static final String COL_DESCRIPTOR_ITEM = "descriptor_item";
+    private static final String COL_ID_AUTOR_ITEM = "id_autor_item";
 
-    public long id_item;
-    public String descriptor_item;
-    public long id_autor_item;
-    
-    public Item_Dao(Item_Bean Item) {
+    private static final String PROCEDURE_INSERT_ITEM = "{CALL INSERTAR_ITEM(?,?,?)}";
+    private static final String PROCEDURE_UPDATE_ITEM = "{CALL EDITAR_ITEM(?,?,?)}";
+    private static final String PROCEDURE_DELETE_ITEM = "{CALL ElIMINAR_ITEM(?,?,?)}";
+
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Item_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-        id_item = Item.getId_item();
-        descriptor_item = Item.getDescriptor_item();
-        id_autor_item = Item.getId_autor_item();
-          
-        }
-    
-    public boolean insertar_item() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_item (?,?,?)}");
-            cst.setLong(1, id_item);
-            cst.setString(2, descriptor_item);
-            cst.setLong(3, id_autor_item);
-            } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_item() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_item (?,?,?)}");
-             // Se envian parametros del procedimiento almacenado
-           cst.setLong(1, id_item);
-            cst.setString(2, descriptor_item);
-            cst.setLong(3, id_autor_item);
-            // Ejecuta el procedimiento almacenado
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_item Id del Item
+     * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Item.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Item_Bean InsertarItem(Long Id_item) throws SQLException {
+        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
+        item.setId_item(Id_item);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ITEM(?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DESCRIPTOR_ITEM);
+        statement.setString(3, COL_ID_AUTOR_ITEM);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return item;
     }
 
-    public boolean eliminar_item() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_item (?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_item);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_item Id del Item
+     * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Item.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Item_Bean UpdateItem(Long Id_item) throws SQLException {
+        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
+        item.setId_item(Id_item);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ITEM(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DESCRIPTOR_ITEM);
+        statement.setString(3, COL_ID_AUTOR_ITEM);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return item;
     }
 
-    public Item_Bean ver_item() {
-        Item_Bean it = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_item (?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_item);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            it = new Item_Bean(id_item, cst.getString(2), cst.getLong(3));
-        } catch (SQLException e) {
-        }
-        return it;
+    /**
+     * @param Id_item Id del Item
+     * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Item.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Item_Bean DeleteItem(long Id_item) throws SQLException {
+        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
+        item.setId_item(Id_item);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ITEM(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DESCRIPTOR_ITEM);
+        statement.setString(3, COL_ID_AUTOR_ITEM);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return item;
     }
+
 }

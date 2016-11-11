@@ -11,85 +11,89 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import javax.naming.NamingException;
 import modelo.Beans.Visita_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Visita_Dao extends ClassConexion {
+public class Visita_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_FECHA_VISITA= "fecha_visita";
+    private static final String COL_ID_PRODUCTO_VISITA_VISITA = "id_producto_visita_visita";
+    private static final String COL_ID_FUNCIONARIO_VISITA = "id_funcionario_visita";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_VISITA = "{CALL INSERTAR_VISITA(?,?,?)}";
+    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_UPDATE_VISITA = "{CALL EDITAR_VISITA(?,?,?)}";
+    private static final String PROCEDURE_DELETE_VISITA = "{CALL ElIMINAR_VISITA(?,?,?)}";
 
-    public Date fecha_visita;
-    public long id_producto_visita_visita;
-    public long id_funcionario_visita;
-
-    public Visita_Dao(Visita_Bean Visita) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Visita_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-        fecha_visita = Visita.getFecha_visita();
-        id_producto_visita_visita = Visita.getId_producto_visita_visita();
-        id_funcionario_visita = Visita.getId_funcionario_visita();
-
-    }
-    
-public boolean insertar_visita() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_visita (?,?,?)}");
-            cst.setDate(1, (java.sql.Date) fecha_visita);
-            cst.setLong(2, id_producto_visita_visita);
-            cst.setLong(3, id_funcionario_visita);
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_visita() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_visita (?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setDate(1, (java.sql.Date) fecha_visita);
-            cst.setLong(2, id_producto_visita_visita);
-            cst.setLong(3, id_funcionario_visita);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Area_Bean InsertarArea(Long Id_area) throws SQLException {
+        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
+        area.setId_area(Id_area);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERT_AREA(?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_AREA);
+        statement.setString(3, COL_ID_CENTRO_AREA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return area;
     }
 
-    public boolean eliminar_visita() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_visita (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setDate(1,(java.sql.Date) fecha_visita);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Area_Bean UpdateArea(Long Id_area) throws SQLException {
+        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
+        area.setId_area(Id_area);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL UPDATE_AREA(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_AREA);
+        statement.setString(3, COL_ID_CENTRO_AREA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return area;
     }
 
-    public Visita_Bean ver_visita() {
-        Visita_Bean vis = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_visita (?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setDate(1,(java.sql.Date) fecha_visita);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            vis = new Visita_Bean(fecha_visita, cst.getLong(2), cst.getLong(3));
-        } catch (SQLException e) {
-        }
-        return vis;
+    /**
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Area_Bean DeleteArea(long Id_area) throws SQLException {
+        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
+        area.setId_area(Id_area);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL DELETE_AREA(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_AREA);
+        statement.setString(3, COL_ID_CENTRO_AREA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return area;
     }
+
 }
-

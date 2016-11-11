@@ -7,103 +7,102 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import javax.naming.NamingException;
 import modelo.Beans.Lista_Chequeo_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 
-public class Lista_Chequeo_Dao extends ClassConexion{
+public class Lista_Chequeo_Dao extends ConexionBD {
 
-    
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_LISTA = "id_lista";
+    private static final String COL_NOMBRE_LISTA = "nombre_lista";
+    private static final String COL_DESCRIPCION_LISTA = "descripcion_lista";
+    private static final String COL_FECHA_LISTA = "fecha_lista";
+    private static final String COL_TIPO_LISTA = "tipo_lista";
+    private static final String COL_ID_AUTOR_LISTA = "id_autor_lista";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_LISTA = "{CALL INSERTAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
+    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_UPDATE_LISTA = "{CALL EDITAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_LISTA = "{CALL ElIMINAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
 
-    public long id_lista;
-    public String nombre_lista;
-    public String descripcion_lista;
-    public Date fecha_lista;
-    public String tipo_lista;
-    public long id_autor_lista;
-    
-    public Lista_Chequeo_Dao(Lista_Chequeo_Bean Lista_Chequeo) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Lista_Chequeo_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_lista = Lista_Chequeo.getId_lista();
-            nombre_lista = Lista_Chequeo.getNombre_lista();
-            descripcion_lista = Lista_Chequeo.getDescripcion_lista();
-            fecha_lista = Lista_Chequeo.getFecha_lista();
-            tipo_lista = Lista_Chequeo.getTipo_lista();
-            id_autor_lista = Lista_Chequeo.getId_autor_lista();
-    
-    } 
-    
-    public boolean insertar_lista_chequeo_dao() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_lista_chequeo_dao (?,?,?,?,?,?,?)}");
-            cst.setLong(1, id_lista);
-            cst.setString(2, nombre_lista);
-            cst.setString(3, descripcion_lista);
-            cst.setDate(4, (java.sql.Date) fecha_lista);
-            cst.setString(5, tipo_lista);
-            cst.setLong(6, id_autor_lista);            
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_lista_chequeo() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_lista_chequeo (?,?,?,?,?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_lista);
-            cst.setString(2, nombre_lista);
-            cst.setString(3, descripcion_lista);
-            cst.setDate(4, (java.sql.Date) fecha_lista);
-            cst.setString(5, tipo_lista);
-            cst.setLong(6, id_autor_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_lista Id del Lista_Chequeo
+     * @return Retorna Null si el Lista_Chequeo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Lista_Chequeo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Lista_Chequeo_Bean InsertarLista(Long Id_lista) throws SQLException {
+        Lista_Chequeo_Bean lista = new Lista_Chequeo_Bean();//el objeto en donde se guardan los resultados de la consulta
+        lista.setId_lista(Id_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_LISTA(?,?,?,?,?,?))}");
+        statement.setLong(PROCEDURE_INSERT_LISTA, Id_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_LISTA);
+        statement.setString(3, COL_DESCRIPCION_LISTA);
+        statement.setString(4, COL_FECHA_LISTA);
+        statement.setString(5, COL_TIPO_LISTA);
+        statement.setString(6, COL_ID_AUTOR_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return lista;
     }
 
-    public boolean eliminar_lista_chequeo() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_lista_chequeo (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_lista Id del Lista_chequeo
+     * @return Retorna Null si el Lista_chequeo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Lista_chequeo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Lista_Chequeo_Bean  UpdateLista(Long Id_lista) throws SQLException {
+        Lista_Chequeo_Bean  lista = new Lista_Chequeo_Bean ();//el objeto en donde se guardan los resultados de la consulta
+        lista.setId_lista(Id_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_LISTA(?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_LISTA, Id_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_LISTA);
+        statement.setString(3, COL_DESCRIPCION_LISTA);
+        statement.setString(4, COL_FECHA_LISTA);
+        statement.setString(5, COL_TIPO_LISTA);
+        statement.setString(6, COL_ID_AUTOR_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return lista;
     }
 
-    public Lista_Chequeo_Bean ver_eval_version_general() {
-        Lista_Chequeo_Bean lcb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_lista_chequeo (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_lista);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(4, java.sql.Types.DATE);
-            cst.registerOutParameter(5, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(6, java.sql.Types.DOUBLE);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            lcb = new Lista_Chequeo_Bean(id_lista, cst.getString(2), cst.getString(3), cst.getDate(4), cst.getString(5),cst.getLong(6));
-        } catch (SQLException e) {
-        }
-        return lcb;
+    /**
+     * @param Id_lista Id del Lista_chequeo
+     * @return Retorna Null si el Lista_chequeo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Lista_chequeo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Lista_Chequeo_Bean DeleteLista(long Id_lista) throws SQLException {
+        Lista_Chequeo_Bean lista = new Lista_Chequeo_Bean();//el objeto en donde se guardan los resultados de la consulta
+        lista.setId_lista(Id_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_LISTA(?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_LISTA, Id_lista);//asigna los valores necesarios para ejecutar el QUERY
+         statement.setString(2, COL_NOMBRE_LISTA);
+        statement.setString(3, COL_DESCRIPCION_LISTA);
+        statement.setString(4, COL_FECHA_LISTA);
+        statement.setString(5, COL_TIPO_LISTA);
+        statement.setString(6, COL_ID_AUTOR_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return lista;
     }
+
 }

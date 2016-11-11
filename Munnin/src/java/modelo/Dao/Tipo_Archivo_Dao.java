@@ -5,81 +5,85 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Tipo_Archivo_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 
-public class Tipo_Archivo_Dao extends ClassConexion  {
+public class Tipo_Archivo_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_TIPO_ARCHIVO= "id_tipo_archivo";
+    private static final String COL_EXTENCION_TIPO_ARCHIVO = "extencion_tipo_archivo";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_TIPO_ARCHIVO = "{CALL INSERTAR_TIPO_ARCHIVO(?,?)}";
+    private static final String PROCEDURE_UPDATE_TIPO_ARCHIVO = "{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
+    private static final String PROCEDURE_DELETE_TIPO_ARCHIVO = "{CALL ElIMINAR_TIPO_ARCHIVO(?,?)}";
 
-    public long id_tipo_archivo;
-    public String extencion_tipo_archivo;
-
-    public Tipo_Archivo_Dao(Tipo_Archivo_Bean Tipo_Archivo) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Tipo_Archivo_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_tipo_archivo = Tipo_Archivo.getId_tipo_archivo();
-            extencion_tipo_archivo = Tipo_Archivo.getExtencion_tipo_archivo();
-    }
-    
-    public boolean insertar_tipo_archivo() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_tipo_archivo (?,?)}");
-            cst.setLong(1, id_tipo_archivo);
-            cst.setString(2, extencion_tipo_archivo);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_tipo_archivo() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_tipo_archivo (?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_tipo_archivo);
-            cst.setString(2, extencion_tipo_archivo);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_tipo_archivo Id del Tipo_Archivo
+     * @return Retorna Null si el Tipo_Archivo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Tipo_Archivo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Tipo_Archivo_Bean InsertarTipoArchivo(Long Id_tipo_archivo) throws SQLException {
+        Tipo_Archivo_Bean tipo = new Tipo_Archivo_Bean();//el objeto en donde se guardan los resultados de la consulta
+        tipo.setId_tipo_archivo(Id_tipo_archivo);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_TIPO_ARCHIVO(?,?)}");
+        statement.setLong(PROCEDURE_INSERT_TIPO_ARCHIVO, Id_tipo_archivo);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_EXTENCION_TIPO_ARCHIVO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return tipo;
     }
 
-    public boolean eliminar_tipo_archivo() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_tipo_archivo (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_tipo_archivo);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_tipo_archivo Id del Tipo_Archivo
+     * @return Retorna Null si el Tipo_Archivo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Tipo_Archivo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Tipo_Archivo_Bean UpdateTipoArchivo(Long Id_tipo_archivo) throws SQLException {
+        Tipo_Archivo_Bean tipo = new Tipo_Archivo_Bean();//el objeto en donde se guardan los resultados de la consulta
+        tipo.setId_tipo_archivo(Id_tipo_archivo);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_TIPO_ARCHIVO(?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_TIPO_ARCHIVO, Id_tipo_archivo);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_EXTENCION_TIPO_ARCHIVO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return tipo;
     }
 
-    public Tipo_Archivo_Bean ver_regional() {
-        Tipo_Archivo_Bean tab = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_regional (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_tipo_archivo);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            tab = new Tipo_Archivo_Bean(id_tipo_archivo, cst.getString(2));
-        } catch (SQLException e) {
-        }
-        return tab;
+    /**
+     * @param Id_tipo_archivo Id del Tipo_Archivo
+     * @return Retorna Null si el Tipo_Archivo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Tipo_Archivo.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Tipo_Archivo_Bean DeleteArea(long Id_tipo_archivo) throws SQLException {
+        Tipo_Archivo_Bean tipo = new Tipo_Archivo_Bean();//el objeto en donde se guardan los resultados de la consulta
+        tipo.setId_tipo_archivo(Id_tipo_archivo);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_TIPO_ARCHIVO(?,?)}");
+        statement.setLong(PROCEDURE_DELETE_TIPO_ARCHIVO, Id_tipo_archivo);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_EXTENCION_TIPO_ARCHIVO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return tipo;
     }
+
 }

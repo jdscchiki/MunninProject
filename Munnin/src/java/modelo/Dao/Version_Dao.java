@@ -6,125 +6,122 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import javax.naming.NamingException;
 import modelo.Beans.Version_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Version_Dao extends ClassConexion {
+public class Version_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_VERSION = "id_version";
+    private static final String COL_NUMERO_VERSION = "numero_version";
+    private static final String COL_URL_VERSION = "url_version";
+    private static final String COL_NOTIFICACION_VERSION = "notificacion_version";
+    private static final String COL_FECHA_VERSION = "fecha_version";
+     private static final String COL_FECHA_CADUCIDAD_VERSION= "fecha_caducidad_version";
+    private static final String COL_FECHA_APROVACION_VERSION = "fecha_aprovacion_version";
+    private static final String COL_ID_ESTADO_VERSION = "id_estdo_version";
+    private static final String COL_ID_TIPO_ARCHIVO_VERSION = "id_tipo_archivo_version";
+    private static final String COL_ID_PRODUCTO_VERSION = "id_producto_version";
+    private static final String COL_ID_CENTRO_VERSION = "id_centro_version";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
 
-    public long id_version;
-    public long numero_version;
-    public String url_version;
-    public boolean notificacion_version;
-    public Date fecha_version;
-    public Date fecha_caducidad_version;
-    public Date fecha_aprovacion_version;
-    public int id_estdo_version;
-    public int id_tipo_archivo_version;
-    public int id_producto_version;
-    public String id_centro_version;
+    private static final String PROCEDURE_INSERT_VERSION = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
+    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_UPDATE_VERSION = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_VERSION = "{CALL ElIMINAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
 
-    public Version_Dao(Version_Bean Version) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Version_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-
-        id_version = Version.getId_version();
-        numero_version = Version.getNumero_version();
-        url_version = Version.getUrl_version();
-        notificacion_version = Version.isNotificacion_version();
-        fecha_version = Version.getFecha_version();
-        fecha_caducidad_version = Version.getFecha_caducidad_version();
-        fecha_aprovacion_version = Version.getFecha_aprovacion_version();
-        id_estdo_version = Version.getId_estdo_version();
-        id_tipo_archivo_version = Version.getId_tipo_archivo_version();
-        id_producto_version = Version.getId_producto_version();
-        id_centro_version = Version.getId_centro_version();
     }
 
-    public boolean insertar_version() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_version (?,?,?,?,?,?,?,?,?,?,?)}");
-            cst.setLong(1, id_version);
-            cst.setLong(2, numero_version);
-            cst.setString(3, url_version);
-            cst.setBoolean(4, notificacion_version);
-            cst.setDate(5, (java.sql.Date) fecha_version);
-            cst.setDate(6, (java.sql.Date) fecha_caducidad_version);
-            cst.setDate(7, (java.sql.Date) fecha_aprovacion_version);
-            cst.setInt(8, id_estdo_version);
-            cst.setInt(9, id_tipo_archivo_version);
-            cst.setInt(10, id_producto_version);
-            cst.setString(11, id_centro_version);
+    /**
+     *
+     * @param Id_version Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Version_Bean InsertarVersion(Long Id_version) throws SQLException {
+        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
+        version.setId_version(Id_version);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_AREA(?,?,?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NUMERO_VERSION);
+        statement.setString(3, COL_URL_VERSION);
+        statement.setString(4, COL_NOTIFICACION_VERSION);
+        statement.setString(5, COL_FECHA_VERSION);
+        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
+        statement.setString(7, COL_FECHA_APROVACION_VERSION);
+        statement.setString(8, COL_ID_ESTADO_VERSION);
+        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
+        statement.setString(10, COL_ID_PRODUCTO_VERSION);
+        statement.setString(11, COL_ID_CENTRO_VERSION);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
 
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+       
+        return version;
     }
 
-    public boolean editar_version() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_lista_chequeo (?,?,?,?,?,?,?,?,?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_version);
-            cst.setLong(2, numero_version);
-            cst.setString(3, url_version);
-            cst.setBoolean(4, notificacion_version);
-            cst.setDate(5, (java.sql.Date) fecha_version);
-            cst.setDate(6, (java.sql.Date) fecha_caducidad_version);
-            cst.setDate(7, (java.sql.Date) fecha_aprovacion_version);
-            cst.setInt(8, id_estdo_version);
-            cst.setInt(9, id_tipo_archivo_version);
-            cst.setInt(10, id_producto_version);
-            cst.setString(11, id_centro_version);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_version Id de la version
+     * @return Retorna Null si la version no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la version.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Version_Bean UpdateVersion(Long Id_version) throws SQLException {
+        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
+        version.setId_version(Id_version);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_AREA(?,?,?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NUMERO_VERSION);
+        statement.setString(3, COL_URL_VERSION);
+        statement.setString(4, COL_NOTIFICACION_VERSION);
+        statement.setString(5, COL_FECHA_VERSION);
+        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
+        statement.setString(7, COL_FECHA_APROVACION_VERSION);
+        statement.setString(8, COL_ID_ESTADO_VERSION);
+        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
+        statement.setString(10, COL_ID_PRODUCTO_VERSION);
+        statement.setString(11, COL_ID_CENTRO_VERSION);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return version;
     }
 
-    public boolean eliminar_version() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_version (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_version);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_version Id de la version
+     * @return Retorna Null si la version no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la version.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Version_Bean DeleteVersion(long Id_version) throws SQLException {
+        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
+        version.setId_version(Id_version);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NUMERO_VERSION);
+        statement.setString(3, COL_URL_VERSION);
+        statement.setString(4, COL_NOTIFICACION_VERSION);
+        statement.setString(5, COL_FECHA_VERSION);
+        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
+        statement.setString(7, COL_FECHA_APROVACION_VERSION);
+        statement.setString(8, COL_ID_ESTADO_VERSION);
+        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
+        statement.setString(10, COL_ID_PRODUCTO_VERSION);
+        statement.setString(11, COL_ID_CENTRO_VERSION);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return version;
     }
 
-    public Version_Bean ver_eval_version_general() {
-        Version_Bean vb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_lista_chequeo (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_version);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.DOUBLE);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(4, java.sql.Types.BOOLEAN);
-            cst.registerOutParameter(5, java.sql.Types.DATE);
-            cst.registerOutParameter(6, java.sql.Types.DATE);
-            cst.registerOutParameter(7, java.sql.Types.DATE);
-            cst.registerOutParameter(8, java.sql.Types.INTEGER);
-            cst.registerOutParameter(9, java.sql.Types.INTEGER);
-            cst.registerOutParameter(10, java.sql.Types.INTEGER);
-            cst.registerOutParameter(11, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            vb = new Version_Bean(id_version, cst.getLong(2), cst.getString(3), cst.getBoolean(4), cst.getDate(5), cst.getDate(6), cst.getDate(7), cst.getInt(8), cst.getInt(9), cst.getInt(10), cst.getString(11));
-        } catch (SQLException e) {
-        }
-        return vb;
-    }
 }

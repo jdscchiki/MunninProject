@@ -5,112 +5,111 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Funcionario_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Funcionario_Dao extends ClassConexion {
+public class Funcionario_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_FUNCIONARIO = "id_funcionario";
+    private static final String COL_DOCUMENTO_FUNCIONARIO = "documento_funcionario";
+    private static final String COL_CORREO_FUNCIONARIO = "correo_funcionario";
+    private static final String COL_CONTRASEÑA_FUNCIONARIO = "contraseña_funcionario";
+    private static final String COL_NOMBRE_FUNCIONARIO = "nombre_funcionario";
+    private static final String COL_APELLIDO_FUNCIONARIO = "apellido_funcionario";
+    private static final String COL_CARGO_FUNCIONARIO = "cargo_funcinario";
+    private static final String COL_TELEFONO_FUNCIONARIO = "telefono_funcionario";
+    private static final String COL_ID_CENTRO_FUNCIONARIO = "id_centro_funcionario";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_FUNCIONARIO = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
+    private static final String PROCEDURE_UPDATE_FUNCIONARIO = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_FUNCIONARIO = "{CALL ElIMINAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
 
-    public long id_funcionario;
-    public String documento_funcionario;
-    public String correo_funcionario;
-    public String contrasena_funcionario;
-    public String nombre_funcionario;
-    public String apellido_funcionario;
-    public String cargo_funcionario;
-    public String telefono_funcionario;
-    public String id_centro_funcionario;
-
-    public Funcionario_Dao(Funcionario_Bean Funcionario) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Funcionario_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-        id_funcionario = Funcionario.getId_funcionario();
-        documento_funcionario = Funcionario.getDocumento_funcionario();
-        correo_funcionario = Funcionario.getCorreo_funcionario();
-        contrasena_funcionario = Funcionario.getContrasena_funcionario();
-        nombre_funcionario = Funcionario.getNombre_funcionario();
-        apellido_funcionario = Funcionario.getApellido_funcionario();
-        cargo_funcionario = Funcionario.getCargo_funcionario();
-        telefono_funcionario = Funcionario.getTelefono_funcionario();
-        id_centro_funcionario = Funcionario.getId_centro_funcionario();
-
     }
 
-    public boolean insertar_funcionario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_funcionario (?,?,?,?,?,?,?)}");
-            cst.setLong(1, id_funcionario);
-            cst.setString(2, documento_funcionario);
-            cst.setString(3, contrasena_funcionario);
-            cst.setString(4, contrasena_funcionario);
-            cst.setString(5, nombre_funcionario);
-            cst.setString(6, apellido_funcionario);
-            cst.setString(7, cargo_funcionario);
-            cst.setString(6, telefono_funcionario);
-            cst.setString(7, id_centro_funcionario);
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_funcionario Id del Funcionario
+     * @return Retorna Null si el Funcionario no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del funcionario.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Funcionario_Bean InsertarFuncionario(Long Id_funcionario) throws SQLException {
+        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcionario.setId_funcionario(Id_funcionario);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERT_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
+        statement.setString(3, COL_CORREO_FUNCIONARIO);
+        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
+        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
+        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
+        statement.setString(7, COL_CARGO_FUNCIONARIO);
+        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
+        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+        return funcionario;
     }
 
-    public boolean editar_funcionario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_funcionario (?,?,?,?,?,?,?)}");
-
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario);
-            cst.setString(2, documento_funcionario);
-            cst.setString(3, contrasena_funcionario);
-            cst.setString(4, contrasena_funcionario);
-            cst.setString(5, nombre_funcionario);
-            cst.setString(6, apellido_funcionario);
-            cst.setString(7, cargo_funcionario);
-            cst.setString(6, telefono_funcionario);
-            cst.setString(7, id_centro_funcionario);
-            // Ejecuta el procedimiento almacenado
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_funcionario Id del funcionario
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Funcionario_Bean UpdateFuncionario(Long Id_funcionario) throws SQLException {
+        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcionario.setId_funcionario(Id_funcionario);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL UPDATE_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
+        statement.setString(3, COL_CORREO_FUNCIONARIO);
+        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
+        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
+        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
+        statement.setString(7, COL_CARGO_FUNCIONARIO);
+        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
+        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return funcionario;
     }
 
-    public boolean eliminar_funcionario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_funcionario (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_funcionario Id del funcionario
+     * @return Retorna Null si el funcionario no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del funcionario.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Funcionario_Bean DeleteArea(long Id_funcionario) throws SQLException {
+        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcionario.setId_funcionario(Id_funcionario);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL DELETE_AREA(?,?,?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
+        statement.setString(3, COL_CORREO_FUNCIONARIO);
+        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
+        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
+        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
+        statement.setString(7, COL_CARGO_FUNCIONARIO);
+        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
+        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return funcionario;
     }
 
-    public Funcionario_Bean ver_funcionario() {
-        Funcionario_Bean evb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_funcionario (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(4, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(5, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(6, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(7, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            evb = new Funcionario_Bean(id_funcionario, cst.getString(2), cst.getString(3), cst.getString(4), cst.getString(5), cst.getString(6), cst.getString(7));
-
-        } catch (SQLException e) {
-        }
-        return evb;
-    }
 }

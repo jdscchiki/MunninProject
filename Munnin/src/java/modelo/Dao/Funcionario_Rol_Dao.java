@@ -6,81 +6,85 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Funcionario_Rol_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 
-public class Funcionario_Rol_Dao extends ClassConexion{
- public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+public class Funcionario_Rol_Dao extends ConexionBD {
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String COL_ID_FUNCIONARIO_FUNCI_ROL = "id_funcionario_funci_rol";
+    private static final String COL_ID_ROL_FUNCI_ROL = "id_rol_funci_rol";
+  
+    private static final String PROCEDURE_INSERT_FUNCIONARIO_ROL = "{CALL INSERTAR_FUNCIONARIO_ROL(?,?)}";
+    private static final String PROCEDURE_UPDATE_FUNCIONARIO_ROL = "{CALL EDITAR_FUNCIONARIO_ROL(?,?)}";
+    private static final String PROCEDURE_DELETE_FUNCIONARIO_ROL = "{CALL ElIMINAR_FUNCIONARIO_ROL(?,?)}";
 
-    public long id_funcionario_funci_rol;
-    public long id_rol_funci_rol;
-    
-    public Funcionario_Rol_Dao(Funcionario_Rol_Bean Funcionario_Rol) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Funcionario_Rol_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_funcionario_funci_rol = Funcionario_Rol.getId_funcionario_funci_rol();
-            id_rol_funci_rol = Funcionario_Rol.getId_rol_funci_rol();
-    
-    } 
-    
-    public boolean insertar_funcionario_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_funcionario_rol (?,?)}");
-            cst.setLong(1, id_funcionario_funci_rol);
-            cst.setLong(2, id_rol_funci_rol);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_funcionario_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_funcionario_rol (?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario_funci_rol);
-            cst.setLong(2, id_rol_funci_rol);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Funcionario_Rol_Bean InsertarFuncionarioRol(Long Id_funcionario_funci_rol) throws SQLException {
+        Funcionario_Rol_Bean funcirol = new Funcionario_Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcirol.setId_funcionario_funci_rol(Id_funcionario_funci_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERT_FUNCIONARIO_ROL(?,?)}");
+        statement.setLong(PROCEDURE_INSERT_FUNCIONARIO_ROL, Id_funcionario_funci_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_ROL_FUNCI_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return funcirol;
     }
 
-    public boolean eliminar_funcionario_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_funcionario_rol (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario_funci_rol);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_funcionario_funci_rol  Id del Funcionario_rol
+     * @return Retorna Null si el Funcionario_rol no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del funcionario_rol.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Funcionario_Rol_Bean UpdateFuncionarioRol(Long Id_funcionario_funci_rol) throws SQLException {
+        Funcionario_Rol_Bean funcirol = new Funcionario_Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcirol.setId_funcionario_funci_rol(Id_funcionario_funci_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL UPDATE_FUNCIONARIO_ROL(?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_FUNCIONARIO_ROL, Id_funcionario_funci_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_ROL_FUNCI_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return funcirol;
     }
 
-    public Funcionario_Rol_Bean ver_estado() {
-        Funcionario_Rol_Bean frb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_estado (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_funcionario_funci_rol);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.DOUBLE);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            frb = new Funcionario_Rol_Bean(id_funcionario_funci_rol, cst.getLong(2));
-        } catch (SQLException e) {
-        }
-        return frb;
+    /**
+     * @param Id_funcionario_funci_rol  Id del funcionario rol
+     * @return Retorna Null si el funcionario rol no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del funcionario rol.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Funcionario_Rol_Bean DeleteArea(long Id_funcionario_funci_rol) throws SQLException {
+        Funcionario_Rol_Bean funcirol = new Funcionario_Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        funcirol.setId_funcionario_funci_rol(Id_funcionario_funci_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL DELETE_FUNCIONARIO_ROL(?,?)}");
+        statement.setLong(PROCEDURE_DELETE_FUNCIONARIO_ROL, Id_funcionario_funci_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_ROL_FUNCI_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return funcirol;
     }
+
 }

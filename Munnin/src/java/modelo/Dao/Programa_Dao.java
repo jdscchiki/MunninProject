@@ -5,86 +5,88 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Programa_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Programa_Dao extends ClassConexion {
+public class Programa_Dao extends ConexionBD {
 
+    private static final String COL_ID_PROGRAMA = "id_programa";
+    private static final String COL_NOMBRE_PROGRAMA = "nombre_programa";
+    private static final String COL_ID_AREA_PROGRAMA = "id_area_programa";
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String PROCEDURE_INSERT_PROGRAMA = "{CALL INSERTAR_PROGRAMA(?,?,?)}";
+    private static final String PROCEDURE_UPDATE_PROGRAMA = "{CALL EDITAR_PROGRAMA(?,?,?)}";
+    private static final String PROCEDURE_DELETE_PROGRAMA = "{CALL ElIMINAR_PROGRAMA(?,?,?)}";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
-
-    public long id_programa;
-    public String nombre_programa;
-    public long id_area_programa;
-
-    public Programa_Dao(Programa_Bean Programa) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Programa_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_programa = Programa.getId_programa();
-            nombre_programa = Programa.getNombre_programa();
-            id_area_programa = Programa.getId_area_programa();
-    }
-    
-    public boolean insertar_programa() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_programa (?,?,?)}");
-            cst.setLong(1, id_programa);
-            cst.setString(2, nombre_programa);
-            cst.setLong(3, id_area_programa);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_programa() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_programa (?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_programa);
-            cst.setString(2, nombre_programa);
-            cst.setLong(3, id_area_programa);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_programa Id del Programa
+     * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Programa.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Programa_Bean InsertarPrograma(Long Id_programa) throws SQLException {
+        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
+        programa.setId_programa(Id_programa);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_PROGRAMA(?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_PROGRAMA);
+        statement.setString(3, COL_ID_AREA_PROGRAMA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return programa;
     }
 
-    public boolean eliminar_programa() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_programa (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_programa);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_programa Id del Programa
+     * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Programa.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Programa_Bean UpdatePrograma(Long Id_programa) throws SQLException {
+        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
+        programa.setId_programa(Id_programa);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_PROGRAMA(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_PROGRAMA);
+        statement.setString(3, COL_ID_AREA_PROGRAMA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return programa;
     }
 
-    public Programa_Bean ver_estado() {
-        Programa_Bean pb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_programa (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_programa);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(2, java.sql.Types.DOUBLE);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            pb = new Programa_Bean(id_programa, cst.getString(2), cst.getLong(3));
-        } catch (SQLException e) {
-        }
-        return pb;
+    /**
+     * @param Id_programa Id del Programa
+     * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Programa.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Programa_Bean DeletePrograma(long Id_programa) throws SQLException {
+        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
+        programa.setId_programa(Id_programa);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_PROGRAMA(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_PROGRAMA);
+        statement.setString(3, COL_ID_AREA_PROGRAMA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return programa;
     }
+
 }

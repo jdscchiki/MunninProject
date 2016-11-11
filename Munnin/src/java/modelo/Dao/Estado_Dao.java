@@ -6,86 +6,85 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Estado_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 
-public class Estado_Dao extends ClassConexion{
+ public class Estado_Dao extends ConexionBD {
 
-    
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
-
-    public boolean encontrado = false;
-    public boolean listo = false;
-
-    public long id_estado;
-    public String nombre_estado;
-
+    private static final String COL_ID_ESTADO = "id_estado";
+    private static final String COL_NOMBRE_ESTADO = "nombre_estado";
     
 
-    
-    public Estado_Dao(Estado_Bean Estado) {
+    private static final String PROCEDURE_INSERT_ESTADO = "{CALL INSERTAR_ESTADO(?,?)}";
+    private static final String PROCEDURE_UPDATE_ESTADO = "{CALL EDITAR_ESTADO(?,?)}";
+    private static final String PROCEDURE_DELETE_ESTADO = "{CALL ElIMINAR_ESTADO(?,?)}";
+
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Estado_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_estado = Estado.getId_estado();
-            nombre_estado = Estado.getNombre_estado();
-    
-    }
-    
-    public boolean insertar_estado() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_estado (?,?)}");
-            cst.setLong(1, id_estado);
-            cst.setString(2, nombre_estado);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_estado() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_estado (?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_estado);
-            cst.setString(2, nombre_estado);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_estado Id del estado
+     * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Estado_Bean InsertarEstado(Long Id_estado) throws SQLException {
+        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
+        estado.setId_estado(Id_estado);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ESTADO(?,?)}");
+        statement.setLong(PROCEDURE_INSERT_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ESTADO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+       
+        return estado;
     }
 
-    public boolean eliminar_estado() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_estado (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_estado);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_estado Id del Estado
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Estado_Bean Updateestado(Long Id_estado) throws SQLException {
+        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
+        estado.setId_estado(Id_estado);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ESTADO(?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ESTADO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return estado;
     }
 
-    public Estado_Bean ver_estado() {
-        Estado_Bean eb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_estado (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_estado);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            eb = new Estado_Bean(id_estado, cst.getString(2));
-        } catch (SQLException e) {
-        }
-        return eb;
+    /**
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Estado_Bean DeleteEstado(long Id_estado) throws SQLException {
+        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
+        estado.setId_estado(Id_estado);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ESTADO(?,?)}");
+        statement.setLong(PROCEDURE_DELETE_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ESTADO);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return estado;
     }
+
 }

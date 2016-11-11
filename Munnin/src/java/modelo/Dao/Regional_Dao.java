@@ -5,81 +5,85 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Regional_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 
-public class Regional_Dao extends ClassConexion{
+public class Regional_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_REGIONAL = "id_regional";
+    private static final String COL_NOMBRE_REGIONAL = "nombre_regional";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_REGIONAL = "{CALL INSERTAR_REGIONAL(?,?)}";
+    private static final String PROCEDURE_UPDATE_REGIONAL = "{CALL EDITAR_REGIONAL(?,?)}";
+    private static final String PROCEDURE_DELETE_REGIONAL = "{CALL ElIMINAR_REGIONAL(?,?)}";
 
-    public long id_regional;
-    public String nombre_regional;
-
-    public Regional_Dao(Regional_Bean Regional) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Regional_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_regional = Regional.getId_regional();
-            nombre_regional = Regional.getNombre_regional();
-    }
-    
-    public boolean insertar_regional() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_regional (?,?)}");
-            cst.setLong(1, id_regional);
-            cst.setString(2, nombre_regional);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_regional() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_regional (?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_regional);
-            cst.setString(2, nombre_regional);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_regional Id de la Regional
+     * @return Retorna Null si la Regional no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Regional.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Regional_Bean InsertarRegional(Long Id_regional) throws SQLException {
+        Regional_Bean regional = new Regional_Bean();//el objeto en donde se guardan los resultados de la consulta
+        regional.setId_regional(Id_regional);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_REGIONAL(?,?)}");
+        statement.setLong(PROCEDURE_INSERT_REGIONAL, Id_regional);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_REGIONAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return regional;
     }
 
-    public boolean eliminar_regional() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_regional (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_regional);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_regional Id de la Regional
+     * @return Retorna Null si la Regional no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Regional.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Regional_Bean UpdateRegional(Long Id_regional) throws SQLException {
+        Regional_Bean regional = new Regional_Bean();//el objeto en donde se guardan los resultados de la consulta
+        regional.setId_regional(Id_regional);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_REGIONAL(?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_REGIONAL, Id_regional);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_REGIONAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return regional;
     }
 
-    public Regional_Bean ver_regional() {
-        Regional_Bean rb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_regional (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_regional);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            rb = new Regional_Bean(id_regional, cst.getString(2));
-        } catch (SQLException e) {
-        }
-        return rb;
+    /**
+     * @param Id_regional Id de la Regional
+     * @return Retorna Null si la Regional no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Regional.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Regional_Bean DeleteRegional(long Id_regional) throws SQLException {
+        Regional_Bean regional = new Regional_Bean();//el objeto en donde se guardan los resultados de la consulta
+        regional.setId_regional(Id_regional);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_REGIONAL(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_REGIONAL, Id_regional);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_REGIONAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return regional;
     }
+
 }

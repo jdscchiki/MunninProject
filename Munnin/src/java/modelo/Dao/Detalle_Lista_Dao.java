@@ -10,89 +10,92 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Detalle_Lista_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
 /**
  *
  * @author Administrador
  */
-public class Detalle_Lista_Dao extends ClassConexion {
+ public class Detalle_Lista_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
-
-    public boolean encontrado = false;
-    public boolean listo = false;
-
-    public long id_detalle_lista;
-    public long id_lista_detalle_lista;
-    public long id_item_detalle_lista;
-
-    public Detalle_Lista_Dao(Detalle_Lista_Bean Detalle_Lista) {
-        super();
-        conn = this.obtenerConexion();
-        id_detalle_lista = Detalle_Lista.getId_detalle_lista();
-        id_lista_detalle_lista = Detalle_Lista.getId_detalle_lista();
-        id_item_detalle_lista = Detalle_Lista.getId_item_detalle_lista();
-    }
+    private static final String COL_ID_DETALLE_LISTA = "id_detalle_lista";
+    private static final String COL_ID_LISTA_DETALLE_LISTA = "id_lista_detalle_lista";
+    private static final String COL_ID_ITEM_DETALLE_LISTA = "id_item_detalle_lista";
     
-    public boolean insertar_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_detalle_lista (?,?,?)}");
-              
-            cst.setLong(1, id_detalle_lista);
-            cst.setLong(2, id_lista_detalle_lista);
-            cst.setLong(3, id_item_detalle_lista);
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+
+    private static final String PROCEDURE_INSERT_DETALLE_LISTA = "{CALL INSERTAR_DETALLE_LISTA(?,?)}";
+    private static final String PROCEDURE_UPDATE_DETALLE_LISTA = "{CALL EDITAR_DETALLE_LISTA(?,?)}";
+    private static final String PROCEDURE_DELETE_DETALLE_LISTA = "{CALL ElIMINAR_DETALLE_LISTA(?,?)}";
+
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Detalle_Lista_Dao() throws NamingException, SQLException {
+        super();
     }
 
-    public boolean editar_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_detalle_lista (?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-             cst.setLong(1, id_detalle_lista);
-            cst.setLong(2, id_lista_detalle_lista);
-            cst.setLong(3, id_item_detalle_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_detalle_lista Id del estado
+     * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Detalle_Lista_Bean InsertarDetalle(Long Id_detalle_lista) throws SQLException {
+        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        detalle.setId_detalle_lista(Id_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_DETALLE_LISTA(?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
+         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+       
+        return detalle;
     }
 
-    public boolean eliminar_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_detalle_lista (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_detalle_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_estado Id del Estado
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Detalle_Lista_Bean UpdateDetalle(Long Id_detalle_lista) throws SQLException {
+        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        detalle.setId_detalle_lista(Id_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_DETALLE_LISTA(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
+         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return detalle;
     }
 
-    public Detalle_Lista_Bean ver_detalle_lista() {
-        Detalle_Lista_Bean det = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_detalle_lista (?)}");
-              // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_detalle_lista);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            det = new Detalle_Lista_Bean(id_detalle_lista, cst.getLong(2), cst.getLong(3));
-        } catch (SQLException e) {
-        }
-        return det;
+    /**
+     * @param Id_area Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Detalle_Lista_Bean DeleteDetalle(long Id_detalle_lista) throws SQLException {
+        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        detalle.setId_detalle_lista(Id_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_DETALLE_LISTA(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
+         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return detalle;
     }
+
 }

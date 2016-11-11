@@ -5,96 +5,96 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Eval_Detalle_Lista_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Eval_Detalle_Lista_Dao extends ClassConexion {
+public class Eval_Detalle_Lista_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_EVAL_DETALLE_LISTA = "id_eval_detalle_lista";
+    private static final String COL_CALIFICACION_EVAL_DETALLE_LISTA = "calificacion_eval_detalle_lista";
+    private static final String COL_OBSERVACION_EVAL_DETALLE_LISTA = "observarcion_eval_detalle_lista";
+    private static final String COL_ID_EVAL_VERSION_GENERAL_EVAL_DETALLE_LISTA = "id_eval_version_general_eval_detalle_lista";
+    private static final String COL_ID_DETALLE_LISTA_EVAL_DETALLE_LISTA = "id_detalle_lista_eval_detalle_lista";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_EVAL_DETALLE = "{CALL INSERTAR_EVAL_DETALLE(?,?,?,?,?)}";
+    private static final String PROCEDURE_UPDATE_EVAL_DETALLE = "{CALL EDITAR_EVAL_DETALLE(?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_EVAL_DETALLE = "{CALL ElIMINAR_EVAL_DETALLE(?,?,?,?,?)}";
 
-    public long id_eval_detalle_lista;
-    public int calificacion_eval_detalle_lista;
-    public String observarcion_eval_detalle_lista;
-    public long id_eval_version_general_eval_detalle_lista;
-    public long id_detalle_lista_eval_detalle_lista;
-
-    public Eval_Detalle_Lista_Dao(Eval_Detalle_Lista_Bean Evalu_Deta_lista) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Eval_Detalle_Lista_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-        id_eval_detalle_lista = Evalu_Deta_lista.getId_eval_detalle_lista();
-        calificacion_eval_detalle_lista = Evalu_Deta_lista.getCalificacion_eval_detalle_lista();
-        observarcion_eval_detalle_lista = Evalu_Deta_lista.getObservarcion_eval_detalle_lista();
-        id_eval_version_general_eval_detalle_lista = Evalu_Deta_lista.getId_eval_version_general_eval_detalle_lista();
-        id_detalle_lista_eval_detalle_lista = Evalu_Deta_lista.getId_detalle_lista_eval_detalle_lista();
-
     }
 
-    public boolean insertar_eval_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_eval_detalle_lista (?,?,?,?,?)}");
-            cst.setLong(1, id_eval_detalle_lista);
-            cst.setInt(2, calificacion_eval_detalle_lista);
-            cst.setString(3, observarcion_eval_detalle_lista);
-            cst.setLong(4, id_eval_detalle_lista);
-            cst.setLong(5, id_detalle_lista_eval_detalle_lista);
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_eval_detalle_lista Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Eval_Detalle_Lista_Bean InsertarEvalDetalle(Long Id_eval_detalle_lista) throws SQLException {
+        Eval_Detalle_Lista_Bean evaldet = new Eval_Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evaldet.setId_eval_detalle_lista(Id_eval_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_EVAL_DETALLE(?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_EVAL_DETALLE, Id_eval_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_CALIFICACION_EVAL_DETALLE_LISTA);
+        statement.setString(3, COL_OBSERVACION_EVAL_DETALLE_LISTA);
+        statement.setString(4, COL_ID_EVAL_VERSION_GENERAL_EVAL_DETALLE_LISTA);
+        statement.setString(5, COL_ID_DETALLE_LISTA_EVAL_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return evaldet;
     }
 
-    public boolean editar_eval_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_eval_detalle_lista (?,?,?,?,?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_detalle_lista);
-            cst.setInt(2, calificacion_eval_detalle_lista);
-            cst.setString(3, observarcion_eval_detalle_lista);
-            cst.setLong(4, id_eval_detalle_lista);
-            cst.setLong(5, id_detalle_lista_eval_detalle_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_eval_detalle_lista Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Eval_Detalle_Lista_Bean UpdateEvalDetalle(Long Id_eval_detalle_lista) throws SQLException {
+        Eval_Detalle_Lista_Bean evaldet = new Eval_Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evaldet.setId_eval_detalle_lista(Id_eval_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_EVAL_DETALLE(?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_EVAL_DETALLE, Id_eval_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_CALIFICACION_EVAL_DETALLE_LISTA);
+        statement.setString(3, COL_OBSERVACION_EVAL_DETALLE_LISTA);
+        statement.setString(4, COL_ID_EVAL_VERSION_GENERAL_EVAL_DETALLE_LISTA);
+        statement.setString(5, COL_ID_DETALLE_LISTA_EVAL_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return evaldet;
     }
 
-    public boolean eliminar_eval_detalle_lista() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_eval_detalle_lista (?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_detalle_lista);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_eval_detalle_lista Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Eval_Detalle_Lista_Bean DeleteEvalDetalle(long Id_eval_detalle_lista) throws SQLException {
+        Eval_Detalle_Lista_Bean evaldet = new Eval_Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evaldet.setId_eval_detalle_lista(Id_eval_detalle_lista);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_EVAL_DETALLE(?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_EVAL_DETALLE, Id_eval_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_CALIFICACION_EVAL_DETALLE_LISTA);
+        statement.setString(3, COL_OBSERVACION_EVAL_DETALLE_LISTA);
+        statement.setString(4, COL_ID_EVAL_VERSION_GENERAL_EVAL_DETALLE_LISTA);
+        statement.setString(5, COL_ID_DETALLE_LISTA_EVAL_DETALLE_LISTA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return evaldet;
     }
 
-    public Eval_Detalle_Lista_Bean ver_eval_detalle_lista() {
-        Eval_Detalle_Lista_Bean edi = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_eval_detalle_lista(?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_detalle_lista);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.INTEGER);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(4, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(5, java.sql.Types.VARCHAR);
-           
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            edi = new Eval_Detalle_Lista_Bean(id_eval_detalle_lista, cst.getInt(2), cst.getString(3), cst.getLong(4), cst.getLong(5));
-        } catch (SQLException e) {
-        }
-        return edi;
-    }
 }

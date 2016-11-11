@@ -5,88 +5,100 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.CallableStatement;
+import javax.naming.NamingException;
 import modelo.Beans.Categoria_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
+import modelo.Beans.Categoria_Bean;
 
-public class Categoria_Dao extends ClassConexion {
+ //cosas a tener en cuenta:
+//  documentar los metodos, es facil con la herramienta javadoc
+//  traten de ser lo mas explicitos posibles en la descripcion de los metodos
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
+ * Area.
+ *
+ * @version 1.2
+ * @author Monica <JBadCode>
+ */
+public class Categoria_Dao extends ConexionBD{ 
 
-
-    
-   public Connection conn = null;
-   public Statement st = null;
-    public ResultSet rs = null;
-
-    public boolean encontrado = false;
-    public boolean listo = false;
-
-    public long id_categoria;
-    public String nombre_categoria;
-    public String id_centro_categoria;
-
-    public Categoria_Dao(Categoria_Bean Categoria) {
+    private static final String COL_ID_CATEGORIA = "id_categoria";
+    private static final String COL_NOMBRE_CATEGORIA = "nombre_categoria";
+    private static final String COL_ID_CENTRO_CATEGORIA = "id_centro_categoria";
+   
+    private static final String PROCEDURE_INSERT_CATEGORIA = "{CALL INSERTAR_CATEGORIA(?,?)}";
+    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_UPDATE_CATEGORIA = "{CALL EDITAR_CATEGORIA(?,?)}";
+    private static final String PROCEDURE_DELETE_CATEGORIA = "{CALL ElIMINAR_CATEGORIA(?,?)}";
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Categoria_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-
-        id_categoria = Categoria.getId_categoria();
-        nombre_categoria = Categoria.getNombre_categoria();
-        id_centro_categoria = Categoria.getId_centro_categoria();
-
     }
 
-    public boolean insertar_categoria() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_categoria (?,?,?)}");
-            cst.setLong(1, id_categoria);
-            cst.setString(2, nombre_categoria);
-            cst.setString(3, id_centro_categoria);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_categoria  Id de LA CATEGORIA
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Categoria_Bean InsertarCategoria(Long Id_categoria) throws SQLException {
+        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
+        categoria.setId_categoria(Id_categoria);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_CATEGORIA(?,?)}");
+        statement.setLong(PROCEDURE_INSERT_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(1, COL_NOMBRE_CATEGORIA);
+        statement.setString(2, COL_ID_CENTRO_CATEGORIA);
+        
+       
+        return categoria;
     }
 
-    public boolean editar_categoria() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_categoria (?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_categoria);
-            cst.setString(2, nombre_categoria);
-            cst.setString(3, id_centro_categoria);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_categoria   Id de la categoria
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Categoria_Bean UpdateAutor(Long Id_categoria) throws SQLException {
+        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
+        categoria.setId_categoria(Id_categoria);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_CATEGORIA(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_CATEGORIA);
+        statement.setString(3, COL_ID_CENTRO_CATEGORIA);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return categoria;
     }
 
-    public boolean eliminar_categoria() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_categoria (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_categoria);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param Id_categoria  _ Id de la categoria
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Categoria_Bean DeleteAutor(long Id_categoria) throws SQLException {
+        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
+        categoria.setId_categoria(Id_categoria);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_CATEGORIA(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_CATEGORIA);
+         statement.setString(3, COL_ID_CENTRO_CATEGORIA);
+       
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return categoria;
     }
+   
 
-    public Categoria_Bean ver_area() {
-        Categoria_Bean cb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_categoria (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_categoria);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            cb = new Categoria_Bean(id_categoria, cst.getString(2), cst.getString(3));
-        } catch (SQLException e) {
-        }
-        return cb;
-    }
 }

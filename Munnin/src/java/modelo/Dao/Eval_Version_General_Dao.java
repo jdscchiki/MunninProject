@@ -6,108 +6,104 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import javax.naming.NamingException;
 import modelo.Beans.Eval_Version_General_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Eval_Version_General_Dao extends ClassConexion {
+public class Eval_Version_General_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_EVAL_VERSION_GENERAL= "id_eval_version_general";
+    private static final String COL_ID_VERSION_EVAL_VERSION_GENERAL = "id_version_eval_version_general";
+    private static final String COL_ID_LISTA_EVAL_VERSION_GENERAL = "id_lista_eval_version_general";
+    private static final String COL_CALIFICACION_EVAL_VERSION_GENERAL = "calificacion_eval_version_general";
+    private static final String COL_OBSERVACION_EVAL_VERSION_GENERAL = "observaciones_eval_version_general";
+    private static final String COL_FECHA_EVAL_VERSION_GENERAL = "fecha_eval_version_general";
+    private static final String COL_ID_EVALUADOR_EVAL_VERSION_GENERAL = "id_evaluador_eval_version_general";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_EVAL_VERSION= "{CALL INSERTAR_EVAL_VERSION(?,?,?,?,?,?,?)}";
+    private static final String PROCEDURE_UPDATE_EVAL_VERSION = "{CALL EDITAR_EVAL_VERSION(?,?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_EVAL_VERSION = "{CALL ElIMINAR_EVAL_VERSION(?,?,?,?,?,?,?)}";
 
-    
-    public long id_eval_version_general;
-    public long id_version_eval_version_general;
-    public long id_lista_eval_version_general;
-    public int calificacion_eval_version_general;
-    public String observaciones_eval_version_general;
-    public Date fecha_eval_version_general;
-    public long id_evaluador_eval_version_general;
-
-    
-    public Eval_Version_General_Dao(Eval_Version_General_Bean Evalu_Ver_General) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Eval_Version_General_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_eval_version_general = Evalu_Ver_General.getId_eval_version_general();
-            id_version_eval_version_general = Evalu_Ver_General.getId_version_eval_version_general();
-            id_lista_eval_version_general = Evalu_Ver_General.getId_lista_eval_version_general();
-            calificacion_eval_version_general = Evalu_Ver_General.getCalificacion_eval_version_general();
-            observaciones_eval_version_general = Evalu_Ver_General.getObservaciones_eval_version_general();
-            fecha_eval_version_general = Evalu_Ver_General.getFecha_eval_version_general();
-            id_evaluador_eval_version_general = Evalu_Ver_General.getId_evaluador_eval_version_general();
-    
-    }
-    
-    public boolean insertar_eval_version_general() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_eval_version_general (?,?,?,?,?,?,?)}");
-            cst.setLong(1, id_eval_version_general);
-            cst.setLong(2, id_version_eval_version_general);
-            cst.setLong(3, id_lista_eval_version_general);
-            cst.setInt(4, calificacion_eval_version_general);
-            cst.setString(5, observaciones_eval_version_general);
-            cst.setDate(6, (java.sql.Date) fecha_eval_version_general);
-            cst.setLong(7, id_evaluador_eval_version_general);
-
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
     }
 
-    public boolean editar_eval_version_general() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_eval_version_general (?,?,?,?,?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_version_general);
-            cst.setLong(2, id_version_eval_version_general);
-            cst.setLong(3, id_lista_eval_version_general);
-            cst.setInt(4, calificacion_eval_version_general);
-            cst.setString(5, observaciones_eval_version_general);
-            cst.setDate(6, (java.sql.Date) fecha_eval_version_general);
-            cst.setLong(7, id_evaluador_eval_version_general); 
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     *
+     * @param Id_eval_version_general Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Eval_Version_General_Bean InsertarArea(Long Id_eval_version_general) throws SQLException {
+        Eval_Version_General_Bean evalver = new Eval_Version_General_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evalver.setId_eval_version_general(Id_eval_version_general);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_EVAL_VERSION(?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_EVAL_VERSION, Id_eval_version_general);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_VERSION_EVAL_VERSION_GENERAL);
+        statement.setString(3, COL_ID_LISTA_EVAL_VERSION_GENERAL);
+        statement.setString(4, COL_CALIFICACION_EVAL_VERSION_GENERAL);
+        statement.setString(5, COL_OBSERVACION_EVAL_VERSION_GENERAL);
+        statement.setString(6, COL_FECHA_EVAL_VERSION_GENERAL);
+        statement.setString(7, COL_ID_EVALUADOR_EVAL_VERSION_GENERAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+       
+        return evalver;
     }
 
-    public boolean eliminar_eval_version_general() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_eval_version_general (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_version_general);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
+    /**
+     * @param id_eval_version_general Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Eval_Version_General_Bean UpdateArea(Long Id_eval_version_general) throws SQLException {
+        Eval_Version_General_Bean evalver = new Eval_Version_General_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evalver.setId_eval_version_general(Id_eval_version_general);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_EVAL_VERSION(?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_EVAL_VERSION, Id_eval_version_general);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_VERSION_EVAL_VERSION_GENERAL);
+        statement.setString(3, COL_ID_LISTA_EVAL_VERSION_GENERAL);
+        statement.setString(4, COL_CALIFICACION_EVAL_VERSION_GENERAL);
+        statement.setString(5, COL_OBSERVACION_EVAL_VERSION_GENERAL);
+        statement.setString(6, COL_FECHA_EVAL_VERSION_GENERAL);
+        statement.setString(7, COL_ID_EVALUADOR_EVAL_VERSION_GENERAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return evalver;
     }
 
-    public Eval_Version_General_Bean ver_eval_version_general() {
-        Eval_Version_General_Bean evb = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_eval_version_general (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_eval_version_general);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.DOUBLE);
-            cst.registerOutParameter(3, java.sql.Types.DOUBLE);
-            cst.registerOutParameter(4, java.sql.Types.INTEGER);
-            cst.registerOutParameter(5, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(6, java.sql.Types.DATE);
-            cst.registerOutParameter(7, java.sql.Types.DOUBLE);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            evb = new Eval_Version_General_Bean(id_eval_version_general, cst.getLong(2), cst.getLong(3), cst.getInt(4), cst.getString(5),cst.getDate(6), cst.getLong(7));
-        } catch (SQLException e) {
-        }
-        return evb;
+    /**
+     * @param Id_eval_version_general Id del Area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Eval_Version_General_Bean DeleteArea(long Id_eval_version_general) throws SQLException {
+        Eval_Version_General_Bean evalver = new Eval_Version_General_Bean();//el objeto en donde se guardan los resultados de la consulta
+        evalver.setId_eval_version_general(Id_eval_version_general);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_EVAL_VERSION(?,?,?,?,?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_EVAL_VERSION, Id_eval_version_general);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_ID_VERSION_EVAL_VERSION_GENERAL);
+        statement.setString(3, COL_ID_LISTA_EVAL_VERSION_GENERAL);
+        statement.setString(4, COL_CALIFICACION_EVAL_VERSION_GENERAL);
+        statement.setString(5, COL_OBSERVACION_EVAL_VERSION_GENERAL);
+        statement.setString(6, COL_FECHA_EVAL_VERSION_GENERAL);
+        statement.setString(7, COL_ID_EVALUADOR_EVAL_VERSION_GENERAL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return evalver;
     }
+
 }

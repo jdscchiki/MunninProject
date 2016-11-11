@@ -5,84 +5,88 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.naming.NamingException;
 import modelo.Beans.Rol_Bean;
 import util.ClassConexion;
+import util.ConexionBD;
 
-public class Rol_Dao extends ClassConexion {
+public class Rol_Dao extends ConexionBD {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_ROL = "id_rol";
+    private static final String COL_NOMBRE_ROL = "nombre_rol";
+    private static final String COL_ID_DESCRIPCION_ROL = "id_descripcion_rol";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_ROL = "{CALL INSERTAR_ROL(?,?,?)}";
+    private static final String PROCEDURE_UPDATE_ROL = "{CALL EDITAR_ROL(?,?,?)}";
+    private static final String PROCEDURE_DELETE_ROL = "{CALL ElIMINAR_ROL(?,?,?)}";
 
-    public long id_rol;
-    public String nombre_rol;
-    public String descripcion_rol;
-
-    public Rol_Dao(Rol_Bean Rol) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Rol_Dao() throws NamingException, SQLException {
         super();
-        conn = this.obtenerConexion();
-        id_rol = Rol.getId_rol();
-        nombre_rol = Rol.getNombre_rol();
-        descripcion_rol = Rol.getDescripcion_rol();
-
     }
 
-    public boolean insertar_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_rol(?,?,?)}");
-            cst.setLong(1, id_rol);
-            cst.setString(2, nombre_rol);
-            cst.setString(3, descripcion_rol);
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
-    }
+    /**
+     *
+     * @param Id_rol Id del Rol
+     * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Rol.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Rol_Bean InsertarRol(Long Id_rol) throws SQLException {
+        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        rol.setId_rol(Id_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ROL(?,?,?)}");
+        statement.setLong(PROCEDURE_INSERT_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ROL);
+        statement.setString(3, COL_ID_DESCRIPCION_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
 
-    public boolean editar_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_rol (?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_rol);
-            cst.setString(2, nombre_rol);
-            cst.setString(3, descripcion_rol);;
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
-    }
-
-    public boolean eliminar_rol() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_rol (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_rol);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
-        }
-        return listo;
-    }
-
-    public Rol_Bean ver_rol() {
-        Rol_Bean rol = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_rol (?)}");
-             // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_rol);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            rol = new Rol_Bean(id_rol, cst.getString(2), cst.getString(3));
-        } catch (SQLException e) {
-        }
+       
         return rol;
     }
+
+    /**
+     * @param Id_rol Id del Rol
+     * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Rol.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public Rol_Bean UpdateRol(Long Id_rol) throws SQLException {
+        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        rol.setId_rol(Id_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ROL(?,?,?)}");
+        statement.setLong(PROCEDURE_UPDATE_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ROL);
+        statement.setString(3, COL_ID_DESCRIPCION_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+     
+        return rol;
+    }
+
+    /**
+     * @param Id_rol Id del Rol
+     * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Rol.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public  Rol_Bean DeleteRol(long Id_rol) throws SQLException {
+        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
+        rol.setId_rol(Id_rol);
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ROL(?,?,?)}");
+        statement.setLong(PROCEDURE_DELETE_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(2, COL_NOMBRE_ROL);
+        statement.setString(3, COL_ID_DESCRIPCION_ROL);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+      
+        return rol;
+    }
+
 }
