@@ -12,10 +12,9 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="<%=request.getContextPath()%>/inicio.jsp" class="btn">Inicio</a></li>
-                <li><a href="#" class="btn">Buscar</a></li>
-                <li><a href="#" class="btn">Manual</a></li>
-                <li><a href="#" class="btn">Contactenos</a></li>
+                <li><a href="<%=request.getContextPath()%>/roles/pedagogico/inicio.jsp" class="btn">Notificaciones</a></li>
+                <li><a href="#" class="btn">Listas de Chequeo</a></li>
+                <li><a href="#" class="btn">Pendientes</a></li>
             </ul>
             <jsp:include page="/contenido/navbar-right.jsp"></jsp:include>
         </div>

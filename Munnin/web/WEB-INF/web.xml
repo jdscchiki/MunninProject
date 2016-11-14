@@ -14,7 +14,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>RegistroFilter</filter-name>
-        <url-pattern>/registro-funcionario.jsp</url-pattern>
+        <url-pattern>/roles/coordinador/formularios/registro-funcionario.jsp</url-pattern>
     </filter-mapping>
     <session-config>
         <session-timeout>

@@ -134,6 +134,7 @@ public class SessionFilter implements Filter {
                 excepcionesUriEnd.add("/index.jsp");
                 excepcionesUriEnd.add("/ingreso");
                 excepcionesUriEnd.add("/error.jsp");
+                excepcionesUriEnd.add("/");
                 for (String UriEnd : excepcionesUriEnd) {
                     if (((HttpServletRequest) request).getRequestURI().endsWith(UriEnd)) {
                         ExcepcionUri = true;
