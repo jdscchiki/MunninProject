@@ -1,10 +1,10 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="<%=request.getContextPath()%>/roles/administrador/inicio.jsp">Administrador</a>
-    <a href="#">Coordinador</a>
-    <a href="#">E. Técnico</a>
-    <a href="#">E. Pedagógico</a>
-    <a href="#">Instructor</a>
+    <a href="<%=request.getContextPath()%>/roles/coordinador/inicio.jsp">Coordinador</a>
+    <a href="<%=request.getContextPath()%>/roles/tecnico/inicio.jsp">E. Técnico</a>
+    <a href="<%=request.getContextPath()%>/roles/pedagogico/inicio.jsp">E. Pedagógico</a>
+    <a href="<%=request.getContextPath()%>/roles/instructor/inicio.jsp">Instructor</a>
 </div>
 
 <!--left changing_role-->

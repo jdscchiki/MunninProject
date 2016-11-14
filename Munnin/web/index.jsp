@@ -6,13 +6,18 @@
     <head>
         <title>Munnin</title>
         <meta charset="UTF-8">
+        <%
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+        %>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/skin-indexConfig.css">
         <link rel="stylesheet" href="css/skin-index.css">
-        <script src="js/index_validator.js" type="text/javascript"></script>
-        <script src="js/mensajes.js" type="text/javascript"></script>
+        
     </head>
     <body>
         <div class="wrapper">
@@ -42,6 +47,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="js/prefixfree.min.js"></script>
+        <script src="js/index_validator.js" type="text/javascript"></script>
+        <script src="js/mensajes.js" type="text/javascript"></script>
         <% if (request.getAttribute("Mensaje") != null) { %>
         ${Mensaje}
         <% }%>
