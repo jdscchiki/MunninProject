@@ -3,10 +3,10 @@ package modelo.Dao;
 import java.sql.*;
 import java.sql.Statement;
 import javax.naming.NamingException;
+import modelo.Beans.Area_Bean;
 import modelo.Beans.Autor_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
-import modelo.Beans.Autor_Bean; 
 
 
   //cosas a tener en cuenta:
@@ -23,12 +23,16 @@ public class Autor_Dao extends ConexionBD {
 
     private static final String COL_ID_FUNCIONARIO_AUTOR = "id_funcionario_autor";
     private static final String COL_ID_VERSION_AUTOR = "id_version_autor";
-   
+
     private static final String PROCEDURE_INSERT_AUTOR = "{CALL INSERTAR_AUTOR(?,?)}";
-    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
     private static final String PROCEDURE_UPDATE_AUTOR = "{CALL EDITAR_AUTOR(?,?)}";
-    private static final String PROCEDURE_DELETE_AUTOR = "{CALL ElIMINAR_AUTOR(?,?)}";
-     private static final String PROCEDURE_SEE_AUTOR = "{CALL VER_AREA(?,?)}";
+    private static final String PROCEDURE_DELETE_AUTOR = "{CALL ElIMINAR_AUTOR(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_AUTOR_ID_VERSION_AUTOR_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX  = 1;
+    private static final int PROCEDURE_UPDATE__AUTOR_ID_VERSION_AUTOR_INDEX  = 2;
+    private static final int PROCEDURE_ELIMINAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -42,58 +46,68 @@ public class Autor_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_funcionario_autor Id del Area
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param autor
+     * @return Retorna Null si el Autor no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Autor.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Autor_Bean InsertarAutor(Long Id_funcionario_autor) throws SQLException {
-        Autor_Bean autor = new Autor_Bean();//el objeto en donde se guardan los resultados de la consulta
-        autor.setId_funcionario_autor(Id_funcionario_autor);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_AUTOR(?,?)}");
-        statement.setLong(PROCEDURE_INSERT_AUTOR, Id_funcionario_autor);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(1, COL_ID_VERSION_AUTOR);
-        
-       
-        return autor;
+    public boolean InsertarAutor(Autor_Bean autor) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_AUTOR);
+        statement.setLong(PROCEDURE_INSERTAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_INSERTAR_AUTOR_ID_VERSION_AUTOR_INDEX, autor.getId_version_autor());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_funcionario_autor  Id del Autor
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param autor
+     * @return Retorna Null si el Autor no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Autor.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Autor_Bean UpdateAutor(Long Id_funcionario_autor) throws SQLException {
-        Autor_Bean autor = new Autor_Bean();//el objeto en donde se guardan los resultados de la consulta
-        autor.setId_funcionario_autor(Id_funcionario_autor);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_AUTOR(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_AUTOR, Id_funcionario_autor);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_ID_VERSION_AUTOR);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return autor;
+    public boolean UpdateAutor(Autor_Bean autor) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_AUTOR);
+        statement.setLong(PROCEDURE_UPDATE_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_UPDATE__AUTOR_ID_VERSION_AUTOR_INDEX, autor.getId_version_autor());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_funcionario_autor _ Id del AUTOR
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param autor
+     * @return Retorna Null si el Autor no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Autor.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Autor_Bean DeleteAutor(long Id_funcionario_autor) throws SQLException {
-        Autor_Bean autor = new Autor_Bean();//el objeto en donde se guardan los resultados de la consulta
-        autor.setId_funcionario_autor(Id_funcionario_autor);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_AUTOR(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_AUTOR, Id_funcionario_autor);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_ID_VERSION_AUTOR);
-       
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return autor;
+    public boolean DeleteAutor(Autor_Bean autor) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_AUTOR);
+        statement.setLong(PROCEDURE_ELIMINAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

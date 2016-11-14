@@ -33,6 +33,16 @@ public class Centro_Dao extends ConexionBD{
     //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
     private static final String PROCEDURE_UPDATE_CENTRO = "{CALL EDITAR_CENTRO(?,?,?,?)}";
     private static final String PROCEDURE_DELETE_CENTRO = "{CALL ElIMINAR_CENTRO(?,?,?,?)}";
+ 
+    private static final int PROCEDURE_INSERTAR_CENTRO_ID_CENTRO_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_CENTRO_NOMBRE_CENTRO_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_CENTRO_ID_REGIONAL_CENTRO_INDEX = 3;
+    private static final int PROCEDURE_INSERTAR_CENTRO_ID_CIUDAD_CENTRO_INDEX = 4;
+    private static final int PROCEDURE_UPDATE_CENTRO_ID_CENTRO_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_CENTRO_NOMBRE_AREA_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_CENTRO_ID_REGIONAL_CENTRO_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_CENTRO_ID_CIUDAD_CENTRO_INDEX = 4;
+    private static final int PROCEDURE_ELIMINAR_CENTRO_ID_CENTRO_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -46,64 +56,72 @@ public class Centro_Dao extends ConexionBD{
 
     /**
      *
-     * @param Id_centro  Id del centro
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param centro
+     * @return Retorna Null si el Centro no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Centro.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Centro_Bean InsertarCentro(String Id_centro) throws SQLException {
-        Centro_Bean centro = new Centro_Bean();//el objeto en donde se guardan los resultados de la consulta
-        centro.setId_centro(Id_centro);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_CATEGORIA(?,?,?,?)}");
-        statement.setString(PROCEDURE_INSERT_CENTRO, Id_centro);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CENTRO);
-        statement.setString(3, COL_ID_REGIONAL_CENTRO);
-        statement.setString(4, COL_ID_CIUDAD_CENTRO);
-       
-       
-        return centro;
+    public boolean InsertarCentro(Centro_Bean centro) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_CENTRO);
+        statement.setString(PROCEDURE_INSERTAR_CENTRO_ID_CENTRO_INDEX, centro.getId_centro());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_CENTRO_NOMBRE_CENTRO_INDEX, centro.getNombre_centro());
+        statement.setString(PROCEDURE_INSERTAR_CENTRO_ID_REGIONAL_CENTRO_INDEX, centro.getId_regional_centro()); 
+         statement.setString(PROCEDURE_INSERTAR_CENTRO_ID_CIUDAD_CENTRO_INDEX, centro.getId_ciudad_centro()); 
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_centro   Id del centro
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param centro
+     * @return Retorna Null si el Centro no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Centro.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Centro_Bean UpdateCentro(String Id_centro) throws SQLException {
-        Centro_Bean centro = new Centro_Bean();//el objeto en donde se guardan los resultados de la consulta
-        centro.setId_centro(Id_centro);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_CATEGORIA(?,?,?,?)}");
-        statement.setString(PROCEDURE_UPDATE_CENTRO, Id_centro);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CENTRO);
-        statement.setString(3, COL_ID_REGIONAL_CENTRO);
-         statement.setString(4, COL_ID_CIUDAD_CENTRO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return centro;
+    public boolean UpdateCentro(Centro_Bean centro) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_CENTRO);
+        statement.setString(PROCEDURE_UPDATE_CENTRO_ID_CENTRO_INDEX, centro.getId_centro());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_CENTRO_NOMBRE_AREA_INDEX, centro.getNombre_centro());
+        statement.setString(PROCEDURE_UPDATE_CENTRO_ID_REGIONAL_CENTRO_INDEX, centro.getId_regional_centro());
+        statement.setString(PROCEDURE_UPDATE_CENTRO_ID_CIUDAD_CENTRO_INDEX, centro.getId_ciudad_centro());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_centro  _ Id del centro
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param centro
+     * @return Retorna Null si el Centro no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Centro.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Centro_Bean DeleteAutor(String Id_centro) throws SQLException {
-        Centro_Bean centro = new Centro_Bean();//el objeto en donde se guardan los resultados de la consulta
-        centro.setId_centro(Id_centro);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_CENTRO(?,?,?,?)}");
-        statement.setString(PROCEDURE_DELETE_CENTRO, Id_centro);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CENTRO);
-         statement.setString(3, COL_ID_REGIONAL_CENTRO);
-         statement.setString(4, COL_ID_CIUDAD_CENTRO);
-       
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return centro;
+    public boolean DeleteCentro(Centro_Bean centro) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_CENTRO);
+        statement.setString(PROCEDURE_ELIMINAR_CENTRO_ID_CENTRO_INDEX, centro.getId_centro());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
-   
+
 }

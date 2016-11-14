@@ -26,9 +26,17 @@ import util.ConexionBD;
     private static final String COL_ID_ITEM_DETALLE_LISTA = "id_item_detalle_lista";
     
 
-    private static final String PROCEDURE_INSERT_DETALLE_LISTA = "{CALL INSERTAR_DETALLE_LISTA(?,?)}";
-    private static final String PROCEDURE_UPDATE_DETALLE_LISTA = "{CALL EDITAR_DETALLE_LISTA(?,?)}";
-    private static final String PROCEDURE_DELETE_DETALLE_LISTA = "{CALL ElIMINAR_DETALLE_LISTA(?,?)}";
+    private static final String PROCEDURE_INSERT_DETALLE_LISTA = "{CALL INSERTAR_DETALLE_LISTA(?,?,?)}";
+    private static final String PROCEDURE_UPDATE_DETALLE_LISTA = "{CALL EDITAR_DETALLE_LISTA(?,?,?)}";
+    private static final String PROCEDURE_DELETE_DETALLE_LISTA = "{CALL ElIMINAR_DETALLE_LISTA(?)}";
+
+    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX = 3;
+    private static final int PROCEDURE_ELIMINAR_DETALLE_ID_DETALLE_LISTA_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -37,65 +45,75 @@ import util.ConexionBD;
      * @throws SQLException
      */
     public Detalle_Lista_Dao() throws NamingException, SQLException {
-        super();
+        super(); 
     }
 
     /**
      *
-     * @param Id_detalle_lista Id del estado
-     * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param detalle_lista
+     * @return Retorna Null si el Detalle_lista no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Detalle_lista.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Detalle_Lista_Bean InsertarDetalle(Long Id_detalle_lista) throws SQLException {
-        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
-        detalle.setId_detalle_lista(Id_detalle_lista);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_DETALLE_LISTA(?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
-         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-       
-        return detalle;
+    public boolean InsertarDetalleLista(Detalle_Lista_Bean detalle) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_DETALLE_LISTA);
+        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX, detalle.getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX, detalle.getId_lista_detalle_lista());
+        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX, detalle.getId_item_detalle_lista());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_estado Id del Estado
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param detalle_lista
+     * @return Retorna Null si el Detalle_lista no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Detalle_lista.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Detalle_Lista_Bean UpdateDetalle(Long Id_detalle_lista) throws SQLException {
-        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
-        detalle.setId_detalle_lista(Id_detalle_lista);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_DETALLE_LISTA(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
-         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return detalle;
+    public boolean UpdateArea(Detalle_Lista_Bean detalle) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_DETALLE_LISTA);
+        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX, detalle.getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX, detalle.getId_lista_detalle_lista());
+        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX, detalle.getId_item_detalle_lista());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_area Id del Area
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * @param detalle_lista
+     * @return Retorna Null si el Detalle_Lista no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Detalle_Lista_Bean DeleteDetalle(long Id_detalle_lista) throws SQLException {
-        Detalle_Lista_Bean detalle = new Detalle_Lista_Bean();//el objeto en donde se guardan los resultados de la consulta
-        detalle.setId_detalle_lista(Id_detalle_lista);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_DETALLE_LISTA(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_DETALLE_LISTA, Id_detalle_lista);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_ID_LISTA_DETALLE_LISTA);
-         statement.setString(3, COL_ID_ITEM_DETALLE_LISTA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return detalle;
+    public boolean DeleteArea(Detalle_Lista_Bean detalle) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_DETALLE_LISTA);
+        statement.setLong(PROCEDURE_ELIMINAR_DETALLE_ID_DETALLE_LISTA_INDEX,detalle .getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

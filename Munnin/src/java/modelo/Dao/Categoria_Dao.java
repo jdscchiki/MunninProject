@@ -26,11 +26,20 @@ public class Categoria_Dao extends ConexionBD{
     private static final String COL_ID_CATEGORIA = "id_categoria";
     private static final String COL_NOMBRE_CATEGORIA = "nombre_categoria";
     private static final String COL_ID_CENTRO_CATEGORIA = "id_centro_categoria";
-   
-    private static final String PROCEDURE_INSERT_CATEGORIA = "{CALL INSERTAR_CATEGORIA(?,?)}";
+
+    private static final String PROCEDURE_INSERT_CATEGORIA = "{CALL INSERTAR_CATEGORIA(?,?,?)}";
     //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
-    private static final String PROCEDURE_UPDATE_CATEGORIA = "{CALL EDITAR_CATEGORIA(?,?)}";
-    private static final String PROCEDURE_DELETE_CATEGORIA = "{CALL ElIMINAR_CATEGORIA(?,?)}";
+    private static final String PROCEDURE_UPDATE_CATEGORIA = "{CALL EDITAR_CATEGORIA(?,?,?)}";
+    private static final String PROCEDURE_DELETE_CATEGORIA = "{CALL ElIMINAR_CATEGORIA(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_CATEGORIA_ID_CATEGORIA_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_CATEGORIA_NOMBRE_CATEGORIA_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_CATEGORIA_ID_CATEGORIA_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_CATEGORIA_NOMBRE_CATEGORIA_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX = 3;
+    private static final int PROCEDURE_ELIMINAR_CATEGORIA_ID_CATEGORIA_INDEX = 1;
+
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -43,62 +52,70 @@ public class Categoria_Dao extends ConexionBD{
 
     /**
      *
-     * @param Id_categoria  Id de LA CATEGORIA
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param categoria
+     * @return Retorna Null si la Categoria no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la categoria.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Categoria_Bean InsertarCategoria(Long Id_categoria) throws SQLException {
-        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
-        categoria.setId_categoria(Id_categoria);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_CATEGORIA(?,?)}");
-        statement.setLong(PROCEDURE_INSERT_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(1, COL_NOMBRE_CATEGORIA);
-        statement.setString(2, COL_ID_CENTRO_CATEGORIA);
-        
-       
-        return categoria;
+    public boolean InsertarCategoria(Categoria_Bean categoria) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_CATEGORIA);
+        statement.setLong(PROCEDURE_INSERTAR_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_CATEGORIA_NOMBRE_CATEGORIA_INDEX, categoria.getNombre_categoria());
+        statement.setString(PROCEDURE_INSERTAR_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX, categoria.getId_centro_categoria());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_categoria   Id de la categoria
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param categoria
+     * @return Retorna Null si la categoria no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Categoria.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Categoria_Bean UpdateAutor(Long Id_categoria) throws SQLException {
-        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
-        categoria.setId_categoria(Id_categoria);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_CATEGORIA(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CATEGORIA);
-        statement.setString(3, COL_ID_CENTRO_CATEGORIA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return categoria;
+    public boolean UpdateCategoria(Categoria_Bean categoria) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_CATEGORIA);
+        statement.setLong(PROCEDURE_UPDATE_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_CATEGORIA_NOMBRE_CATEGORIA_INDEX, categoria.getNombre_categoria());
+        statement.setString(PROCEDURE_UPDATE_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX, categoria.getId_centro_categoria());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_categoria  _ Id de la categoria
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param categoria
+     * @return Retorna Null si  la Categoria no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Categoria.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Categoria_Bean DeleteAutor(long Id_categoria) throws SQLException {
-        Categoria_Bean categoria = new Categoria_Bean();//el objeto en donde se guardan los resultados de la consulta
-        categoria.setId_categoria(Id_categoria);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_CATEGORIA(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_CATEGORIA, Id_categoria);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CATEGORIA);
-         statement.setString(3, COL_ID_CENTRO_CATEGORIA);
-       
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return categoria;
+    public boolean DeleteCategoria(Categoria_Bean categoria) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_CATEGORIA);
+        statement.setLong(PROCEDURE_ELIMINAR_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
-   
 
 }

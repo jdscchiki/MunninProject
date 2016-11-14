@@ -24,13 +24,20 @@ import util.ConexionBD;
  */
 public class Ciudad_Dao extends ConexionBD{ 
 
-    private static final String COL_ID_CIUDAD = "id_centro";
-    private static final String COL_NOMBRE_CIUDAD = "nombre_centro";
+    private static final String COL_ID_CIUDAD = "id_ciudad";
+    private static final String COL_NOMBRE_CIUDAD = "nombre_ciudad";
    
    
     private static final String PROCEDURE_INSERT_CIUDAD = "{CALL INSERTAR_CIUDAD(?,?)}"; 
     private static final String PROCEDURE_UPDATE_CIUDAD = "{CALL EDITAR_CIUDAD(?,?)}";
     private static final String PROCEDURE_DELETE_CIUDAD = "{CALL ElIMINAR_CIUDAD(?,?)}";
+  
+    
+    private static final int PROCEDURE_INSERTAR_CIUDAD_ID_CIUDAD_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_CIUDAD_NOMBRE_CIUDAD_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_CIUDAD_ID_CIUDAD_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_CIUDAD_NOMBRE_CIUDAD_INDEX = 2;
+    private static final int PROCEDURE_ELIMINAR_CIUDAD_ID_CIUDAD_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -44,60 +51,68 @@ public class Ciudad_Dao extends ConexionBD{
 
     /**
      *
-     * @param Id_ciudad  Id de la ciudad
-     * @return Retorna Null si la ciudad no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param ciudad
+     * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Ciudad.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Ciudad_Bean InsertarCiudad(String Id_ciudad) throws SQLException {
-        Ciudad_Bean ciudad = new Ciudad_Bean();//el objeto en donde se guardan los resultados de la consulta
-        ciudad.setId_ciudad(Id_ciudad);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_CIUDAD(?,?)}");
-        statement.setString(PROCEDURE_INSERT_CIUDAD, Id_ciudad);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CIUDAD);
-        
-       
-        return ciudad;
+    public boolean InsertarCiudadl(Ciudad_Bean ciudad) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_CIUDAD);
+        statement.setString(PROCEDURE_INSERTAR_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_CIUDAD_NOMBRE_CIUDAD_INDEX, ciudad.getNombre_ciudad());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_ciudad   Id de la ciudad
-     * @return Retorna Null si la ciudad no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param ciudad
+     * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Ciudad.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Ciudad_Bean UpdateCentro(String Id_ciudad) throws SQLException {
-        Ciudad_Bean ciudad = new Ciudad_Bean();//el objeto en donde se guardan los resultados de la consulta
-        ciudad.setId_ciudad(Id_ciudad);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_CIUDAD(?,?)}");
-        statement.setString(PROCEDURE_UPDATE_CIUDAD, Id_ciudad);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CIUDAD);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return ciudad;
+    public boolean UpdateCiudad(Ciudad_Bean ciudad) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_CIUDAD);
+        statement.setString(PROCEDURE_UPDATE_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_CIUDAD_NOMBRE_CIUDAD_INDEX, ciudad.getNombre_ciudad());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_ciudad  _ Id de la ciudad
-     * @return Retorna Null si la ciudad no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param ciudad
+     * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
+     * contrario retorna los datos de la Ciudad
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Ciudad_Bean DeleteAutor(String Id_ciudad) throws SQLException {
-        Ciudad_Bean ciudad = new Ciudad_Bean();//el objeto en donde se guardan los resultados de la consulta
-        ciudad.setId_ciudad(Id_ciudad);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_CIUDAD(?,?)}");
-        statement.setString(PROCEDURE_DELETE_CIUDAD, Id_ciudad);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_CIUDAD);
-       
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return ciudad;
+    public boolean DeleteCiudad(Ciudad_Bean ciudad) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_CIUDAD);
+        statement.setString(PROCEDURE_ELIMINAR_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
-    
-   
 
 }

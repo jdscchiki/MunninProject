@@ -20,7 +20,14 @@ import util.ConexionBD;
 
     private static final String PROCEDURE_INSERT_ESTADO = "{CALL INSERTAR_ESTADO(?,?)}";
     private static final String PROCEDURE_UPDATE_ESTADO = "{CALL EDITAR_ESTADO(?,?)}";
-    private static final String PROCEDURE_DELETE_ESTADO = "{CALL ElIMINAR_ESTADO(?,?)}";
+    private static final String PROCEDURE_DELETE_ESTADO = "{CALL ElIMINAR_ESTADO(?)}";
+
+    
+    private static final int PROCEDURE_INSERTAR_ESTADO_ID_ESTADO_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_ESTADO_NOMBRE_ESTADO_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_ESTADO_ID_ESTADO_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_ESTADO_NOMBRE_ESTADO_INDEX = 2;
+    private static final int PROCEDURE_ELIMINAR_ESTADO_ID_ESTADO_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -34,57 +41,68 @@ import util.ConexionBD;
 
     /**
      *
-     * @param Id_estado Id del estado
+     * @param estado
      * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * contrario retorna los datos del Estado.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Estado_Bean InsertarEstado(Long Id_estado) throws SQLException {
-        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
-        estado.setId_estado(Id_estado);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ESTADO(?,?)}");
-        statement.setLong(PROCEDURE_INSERT_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ESTADO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-       
-        return estado;
+    public boolean InsertarEstado(Estado_Bean estado) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_ESTADO);
+        statement.setLong(PROCEDURE_INSERTAR_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_ESTADO_NOMBRE_ESTADO_INDEX, estado.getNombre_estado());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_estado Id del Estado
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param estado
+     * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Estado.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Estado_Bean Updateestado(Long Id_estado) throws SQLException {
-        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
-        estado.setId_estado(Id_estado);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ESTADO(?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ESTADO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return estado;
+    public boolean UpdateEstado(Estado_Bean estado) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_ESTADO);
+        statement.setLong(PROCEDURE_UPDATE_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_ESTADO_NOMBRE_ESTADO_INDEX, estado.getNombre_estado());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_area Id del Area
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @param estado
+     * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Estado.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Estado_Bean DeleteEstado(long Id_estado) throws SQLException {
-        Estado_Bean estado = new Estado_Bean();//el objeto en donde se guardan los resultados de la consulta
-        estado.setId_estado(Id_estado);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ESTADO(?,?)}");
-        statement.setLong(PROCEDURE_DELETE_ESTADO, Id_estado);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ESTADO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return estado;
+    public boolean DeleteEstado(Estado_Bean estado) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_ESTADO);
+        statement.setLong(PROCEDURE_ELIMINAR_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

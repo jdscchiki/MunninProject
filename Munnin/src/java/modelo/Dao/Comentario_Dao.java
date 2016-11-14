@@ -5,104 +5,123 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import javax.naming.NamingException;
 import util.ClassConexion;
 import modelo.Beans.Comentario_Bean;
-import util.ClassConexion;
+import util.ConexionBD;
 
 
 
 public class Comentario_Dao extends ClassConexion  {
 
-    public Connection conn = null;
-    public Statement st = null;
-    public ResultSet rs = null;
+    private static final String COL_ID_COMENTARIO = "id_comentario";
+    private static final String COL_VALORACION_COMENTARIO = "valoracion_comentario";
+    private static final String COL_PUNTUACION_COMENTARIO = "puntuacion_comentario";
+    private static final String COL_FECHA_COMENTARIO = "fecha_comentario";
+    private static final String COL_ID_PRODUCTO_COMENTARIO = "id_producto_comentario";
+    private static final String COL_ID_FUNCIONARIO_COMENTARIO= "id_funcionario_comentario";
 
-    public boolean encontrado = false;
-    public boolean listo = false;
+    private static final String PROCEDURE_INSERT_COMENTARIO = "{CALL INSERTAR_COMENTARIO(?,?,?,?,?,?)}";
+    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_UPDATE_COMENTARIO = "{CALL EDITAR_COMENTARIO(?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_COMENTARIO = "{CALL ElIMINAR_COMENTARIO(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_ID_COMENTARIO_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_VALORACION_COMENTARIO_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_PUNTUACION_COMENTARIO_INDEX = 3;
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_FECHA_COMENTARIO_INDEX = 4;
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_ID_PRODUCTO_COMENTARIO_INDEX = 5;
+    private static final int PROCEDURE_INSERTAR_COMENTARIO_ID_FUNCIONARIO_COMENTARIO_INDEX = 6;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_ID_COMENTARIO_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_VALORACION_COMENTARIO_INDEX= 2;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_PUNTUACION_COMENTARIO_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_FECHA_COMENTARIO_INDEX= 4;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_ID_PRODUCTO_COMENTARIO_INDEX = 5;
+    private static final int PROCEDURE_UPDATE_COMENTARIO_ID_FUNCIONARIO_COMENTARIO_INDEX = 6;
+    private static final int PROCEDURE_ELIMINAR_COMENTARIO_ID_COMENTARIO_INDEX = 1;
 
-    public long id_comentario;
-    public String valoracion_comentario;
-    public int puntuacion_comentario;
-    public Date fecha_comentario;
-    public long id_producto_comentario;
-    public long id_funcionario_comentario;
-
-    public Comentario_Dao(Comentario_Bean Comentario) {
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public Comentario_Dao() throws NamingException, SQLException {
         super();
-            conn = this.obtenerConexion();
-
-            id_comentario = Comentario.getId_comentario();
-            valoracion_comentario = Comentario.getValoracion_comentario();
-            puntuacion_comentario = Comentario.getPuntuacion_comentario();
-            fecha_comentario = Comentario.getFecha_comentario();
-            id_producto_comentario = Comentario.getId_producto_comentario();
-            id_funcionario_comentario = Comentario.getId_funcionario_comentario();
     }
 
-    public boolean insertar_comentario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call insertar_comentario (?,?,?,?,?,?)}");
-            cst.setLong(1, id_comentario);
-            cst.setString(2, valoracion_comentario);
-            cst.setInt(3, puntuacion_comentario);
-            cst.setDate(4, (java.sql.Date) fecha_comentario);
-            cst.setLong(5, id_producto_comentario);
-            cst.setLong(6, id_funcionario_comentario);            
-
-            cst.execute();
-        } catch (SQLException e) {
+    /**
+     *
+     * @param comentario
+     * @return Retorna Null si el Comentario no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Comentario.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public boolean InsertarComentario(Comentario_Bean comentario) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_COMENTARIO);
+        statement.setLong(PROCEDURE_INSERTAR_COMENTARIO_ID_COMENTARIO_INDEX, comentario.getId_comentario());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_COMENTARIO_VALORACION_COMENTARIO_INDEX, comentario.getValoracion_comentario());
+        statement.setInt(PROCEDURE_INSERTAR_COMENTARIO_PUNTUACION_COMENTARIO_INDEX, comentario.getPuntuacion_comentario()); 
+        statement.setDate(PROCEDURE_INSERTAR_COMENTARIO_FECHA_COMENTARIO_INDEX,(java.sql.Date) comentario.getFecha_comentario());
+        statement.setLong(PROCEDURE_INSERTAR_COMENTARIO_ID_PRODUCTO_COMENTARIO_INDEX, comentario.getId_producto_comentario()); 
+        statement.setLong(PROCEDURE_INSERTAR_COMENTARIO_ID_FUNCIONARIO_COMENTARIO_INDEX, comentario.getId_funcionario_comentario());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
         }
-        return listo;
+        return resultado;
     }
 
-    public boolean editar_comentario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call editar_comentario (?,?,?,?,?,?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_comentario);
-            cst.setString(2, valoracion_comentario);
-            cst.setInt(3, puntuacion_comentario);
-            cst.setDate(4, (java.sql.Date) fecha_comentario);
-            cst.setLong(5, id_producto_comentario);
-            cst.setLong(6, id_funcionario_comentario); 
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
+    /**
+     * @param area
+     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Area.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public boolean UpdateComentario(Comentario_Bean comentario) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_COMENTARIO);
+        statement.setLong(PROCEDURE_UPDATE_COMENTARIO_ID_COMENTARIO_INDEX, comentario.getId_comentario());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_COMENTARIO_VALORACION_COMENTARIO_INDEX, comentario.getValoracion_comentario());
+        statement.setInt(PROCEDURE_UPDATE_COMENTARIO_PUNTUACION_COMENTARIO_INDEX, comentario.getPuntuacion_comentario()); 
+        statement.setDate(PROCEDURE_UPDATE_COMENTARIO_FECHA_COMENTARIO_INDEX, comentario.getFecha_comentario());
+        statement.setLong(PROCEDURE_UPDATE_COMENTARIO_ID_PRODUCTO_COMENTARIO_INDEX, comentario.getId_producto_comentario()); 
+        statement.setLong(PROCEDURE_UPDATE_COMENTARIO_ID_FUNCIONARIO_COMENTARIO_INDEX, comentario.getId_funcionario_comentario());
+        if (statement.executeUpdate() == 1) {
+            this.getConxion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
         }
-        return listo;
+        return resultado;
     }
 
-    public boolean eliminar_comentario() {
-        try {
-            CallableStatement cst = conn.prepareCall("{call eliminar_comentario (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_comentario);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-        } catch (SQLException e) {
+    /**
+     * @param comentario
+     * @return Retorna Null si el Comentario no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Comentario.
+     * @version 1.0
+     * @throws java.sql.SQLException
+     */
+    public boolean DeleteComentario(Comentario_Bean comentario) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_COMENTARIO);
+        statement.setLong(PROCEDURE_ELIMINAR_COMENTARIO_ID_COMENTARIO_INDEX, comentario.getId_comentario());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
         }
-        return listo;
+        return resultado;
     }
 
-    public Comentario_Bean ver_comentario() {
-        Comentario_Bean cob = null;
-        try {
-            CallableStatement cst = conn.prepareCall("{call ver_comentario (?)}");
-            // Se envian parametros del procedimiento almacenado
-            cst.setLong(1, id_comentario);
-            // Definimos los tipos de los parametros de salida del procedimiento almacenado
-            cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-            cst.registerOutParameter(3, java.sql.Types.INTEGER);
-            cst.registerOutParameter(4, java.sql.Types.DATE);
-            cst.registerOutParameter(5, java.sql.Types.INTEGER);
-            cst.registerOutParameter(6, java.sql.Types.INTEGER);
-            // Ejecuta el procedimiento almacenado
-            cst.execute();
-            // Se obtienen la salida del procedimineto almacenado                
-            cob = new Comentario_Bean(id_comentario, cst.getString(2), cst.getInt(3), cst.getDate(4), cst.getLong(5),cst.getLong(6));
-        } catch (SQLException e) {
-        }
-        return cob;
-    }
 }

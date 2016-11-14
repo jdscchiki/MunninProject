@@ -19,7 +19,17 @@ public class Item_Dao extends ConexionBD {
 
     private static final String PROCEDURE_INSERT_ITEM = "{CALL INSERTAR_ITEM(?,?,?)}";
     private static final String PROCEDURE_UPDATE_ITEM = "{CALL EDITAR_ITEM(?,?,?)}";
-    private static final String PROCEDURE_DELETE_ITEM = "{CALL ElIMINAR_ITEM(?,?,?)}";
+    private static final String PROCEDURE_DELETE_ITEM = "{CALL ElIMINAR_ITEM(?)}";
+
+    private static final int PROCEDURE_INSERTAR_ITEM_ID_ITEM_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_ITEM_DESCRIPTOR_ITEM_INDEX = 2;    
+    private static final int PROCEDURE_INSERTAR_ITEM_ID_AUTOR_ITEM_INDEX = 3;
+    
+    private static final int PROCEDURE_UPDATE_ITEM_ID_ITEM_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_ITEM_DESCRIPTOR_ITEM_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_ITEM_ID_AUTOR_ITEM_INDEX = 3;
+    
+    private static final int PROCEDURE_ELIMINAR_ITEM_ID_ITEM_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -33,61 +43,70 @@ public class Item_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_item Id del Item
+     * @param item
      * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Item.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Item_Bean InsertarItem(Long Id_item) throws SQLException {
-        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
-        item.setId_item(Id_item);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ITEM(?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DESCRIPTOR_ITEM);
-        statement.setString(3, COL_ID_AUTOR_ITEM);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return item;
+    public boolean InsertarItem(Item_Bean item) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_ITEM);
+        statement.setLong(PROCEDURE_INSERTAR_ITEM_ID_ITEM_INDEX, item.getId_autor_item());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_ITEM_DESCRIPTOR_ITEM_INDEX, item.getDescriptor_item());
+        statement.setLong(PROCEDURE_INSERTAR_ITEM_ID_AUTOR_ITEM_INDEX, item.getId_autor_item());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_item Id del Item
+     * @param item
      * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Item.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Item_Bean UpdateItem(Long Id_item) throws SQLException {
-        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
-        item.setId_item(Id_item);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ITEM(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DESCRIPTOR_ITEM);
-        statement.setString(3, COL_ID_AUTOR_ITEM);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return item;
+    public boolean UpdateItem(Item_Bean item) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_ITEM);
+        statement.setLong(PROCEDURE_UPDATE_ITEM_ID_ITEM_INDEX, item.getId_item());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_ITEM_DESCRIPTOR_ITEM_INDEX, item.getDescriptor_item());
+        statement.setLong(PROCEDURE_UPDATE_ITEM_ID_AUTOR_ITEM_INDEX, item.getId_autor_item());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_item Id del Item
+     * @param item
      * @return Retorna Null si el Item no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Item.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Item_Bean DeleteItem(long Id_item) throws SQLException {
-        Item_Bean item = new Item_Bean();//el objeto en donde se guardan los resultados de la consulta
-        item.setId_item(Id_item);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ITEM(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_ITEM, Id_item);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DESCRIPTOR_ITEM);
-        statement.setString(3, COL_ID_AUTOR_ITEM);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return item;
+    public boolean DeleteItem(Item_Bean item) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_ITEM);
+        statement.setLong(PROCEDURE_ELIMINAR_ITEM_ID_ITEM_INDEX, item.getId_item());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }
