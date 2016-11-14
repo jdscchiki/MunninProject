@@ -25,8 +25,17 @@ public class Visita_Dao extends ConexionBD {
     private static final String PROCEDURE_INSERT_VISITA = "{CALL INSERTAR_VISITA(?,?,?)}";
     //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
     private static final String PROCEDURE_UPDATE_VISITA = "{CALL EDITAR_VISITA(?,?,?)}";
-    private static final String PROCEDURE_DELETE_VISITA = "{CALL ElIMINAR_VISITA(?,?,?)}";
-
+    private static final String PROCEDURE_DELETE_VISITA = "{CALL ElIMINAR_VISITA(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_VISITA_ID_FUNCIONARIO_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_VISITA_FECHA_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_VISITA_ID_PRODUCTO_VISITA_INDEX = 3;
+    
+    private static final int PROCEDURE_UPDATE_VISITA_ID_FUNCIONARIO_VISITA_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_VISITA_FECHA_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_VISITA_ID_PRODUCTO_VISITA_INDEX = 3;
+    
+    private static final int PROCEDURE_DELETE_VISITA_ID_FUNCIONARIO_VISITA_INDEX = 1;
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -39,61 +48,71 @@ public class Visita_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_area Id del Area
+     * @param visita
      * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Area_Bean InsertarArea(Long Id_area) throws SQLException {
-        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
-        area.setId_area(Id_area);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERT_AREA(?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_AREA);
-        statement.setString(3, COL_ID_CENTRO_AREA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return area;
+    public boolean InsertarVisita(Visita_Bean visita) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_VISITA);
+        statement.setLong(PROCEDURE_INSERTAR_VISITA_ID_FUNCIONARIO_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setDate(PROCEDURE_INSERTAR_VISITA_FECHA_INDEX, (java.sql.Date) visita.getFecha_visita());
+        statement.setLong(PROCEDURE_INSERTAR_VISITA_ID_PRODUCTO_VISITA_INDEX, visita.getId_producto_visita_visita());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_area Id del Area
+     * @param visita
      * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Area_Bean UpdateArea(Long Id_area) throws SQLException {
-        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
-        area.setId_area(Id_area);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL UPDATE_AREA(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_AREA);
-        statement.setString(3, COL_ID_CENTRO_AREA);
+    public boolean UpdateVisita(Visita_Bean visita) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_VISITA);
+        statement.setLong(PROCEDURE_UPDATE_VISITA_ID_FUNCIONARIO_VISITA_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setDate(PROCEDURE_UPDATE_VISITA_FECHA_INDEX, (java.sql.Date) visita.getFecha_visita());
+        statement.setLong(PROCEDURE_UPDATE_VISITA_ID_PRODUCTO_VISITA_INDEX, visita.getId_producto_visita_visita());
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return area;
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_area Id del Area
+     * @param visita
      * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Area_Bean DeleteArea(long Id_area) throws SQLException {
-        Area_Bean area = new Area_Bean();//el objeto en donde se guardan los resultados de la consulta
-        area.setId_area(Id_area);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL DELETE_AREA(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_AREA, Id_area);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_AREA);
-        statement.setString(3, COL_ID_CENTRO_AREA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return area;
+    public boolean DeleteArea(Visita_Bean visita) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_VISITA);
+        statement.setLong(PROCEDURE_DELETE_VISITA_ID_FUNCIONARIO_VISITA_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

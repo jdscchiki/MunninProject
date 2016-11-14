@@ -20,9 +20,24 @@ public class Producto_Dao extends ConexionBD {
 
     private static final String PROCEDURE_INSERT_PRODUCTO = "{CALL INSERTAR_PRODUCTO(?,?,?,?,?)}";
     private static final String PROCEDURE_UPDATE_PRODUCTO = "{CALL EDITAR_PRODUCTO(?,?,?,?,?)}";
-    private static final String PROCEDURE_DELETE_PRODUCTO = "{CALL ElIMINAR_PRODUCTO(?,?,?,?,?)}";
-
+    private static final String PROCEDURE_DELETE_PRODUCTO = "{CALL ElIMINAR_PRODUCTO(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_ID_PRODUCTO_AREA_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_NOMBRE_PRODUCTO_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_DESCRIPCION_PRODUCTO_INDEX = 3;
+    private static final int PROCEDURE_INSERTAR_PALABRAS_CLAVE_PRODUCTO_INDEX = 4;
+    private static final int PROCEDURE_INSERTAR_ID_TIPO_APRENDIZ_PRODUCTO_INDEX = 5;
+    
+    private static final int PROCEDURE_UPDATE_ID_PRODUCTO_AREA_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_NOMBRE_PRODUCTO_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_DESCRIPCION_PRODUCTO_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_PALABRAS_CLAVE_PRODUCTO_INDEX = 4;
+    private static final int PROCEDURE_UPDATE_ID_TIPO_APRENDIZ_PRODUCTO_INDEX = 5;
+    
+    private static final int PROCEDURE_DELETE_ID_PRODUCTO_AREA_INDEX = 1;
     /**
+     * 
+     * 
      * Este constructor permite establecer la conexion con la base de datos
      *
      * @throws NamingException
@@ -34,67 +49,74 @@ public class Producto_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_producto Id del Prodcuto
+     * @param producto
      * @return Retorna Null si el Prodcuto no se encuetra en la base de datos, de lo
      * contrario retorna los datos del producto.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Producto_Bean InsertarProdcuto(Long Id_producto) throws SQLException {
-        Producto_Bean producto = new Producto_Bean();//el objeto en donde se guardan los resultados de la consulta
-        producto.setId_producto(Id_producto);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_PRODUCTO(?,?,?,?,?))}");
-        statement.setLong(PROCEDURE_INSERT_PRODUCTO, Id_producto);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PRODUCTO);
-        statement.setString(3, COL_DESCRIPCION_PRODUCTO);
-        statement.setString(4, COL_PALABRAS_CLAVE_PRODUCTO);
-        statement.setString(5, COL_ID_TIPO_APRENDIZAJE_PRODUCTO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return producto;
+    public boolean InsertarProdcuto(Producto_Bean producto) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_PRODUCTO);
+        statement.setLong(PROCEDURE_INSERTAR_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_NOMBRE_PRODUCTO_INDEX, producto.getNombre_producto());
+        statement.setString(PROCEDURE_INSERTAR_DESCRIPCION_PRODUCTO_INDEX, producto.getDescripcion_producto());
+        statement.setString(PROCEDURE_INSERTAR_PALABRAS_CLAVE_PRODUCTO_INDEX, producto.getPalabras_clave_producto());
+        statement.setLong(PROCEDURE_INSERTAR_ID_TIPO_APRENDIZ_PRODUCTO_INDEX, producto.getId_tipo_objeto_aprendizaje_producto());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_prodcuto Id del Producto
+     * @param producto
      * @return Retorna Null si el Producto no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Producto.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Producto_Bean UpdateProducto(Long Id_producto) throws SQLException {
-        Producto_Bean producto = new Producto_Bean();//el objeto en donde se guardan los resultados de la consulta
-        producto.setId_producto(Id_producto);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_PRODUCTO(?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_PRODUCTO, Id_producto);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PRODUCTO);
-        statement.setString(3, COL_DESCRIPCION_PRODUCTO);
-        statement.setString(4, COL_PALABRAS_CLAVE_PRODUCTO);
-        statement.setString(5, COL_ID_TIPO_APRENDIZAJE_PRODUCTO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return producto;
+    public boolean UpdateProducto(Producto_Bean producto) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_PRODUCTO);
+        statement.setLong(PROCEDURE_UPDATE_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_NOMBRE_PRODUCTO_INDEX, producto.getNombre_producto());
+        statement.setString(PROCEDURE_UPDATE_DESCRIPCION_PRODUCTO_INDEX, producto.getDescripcion_producto());
+        statement.setString(PROCEDURE_UPDATE_PALABRAS_CLAVE_PRODUCTO_INDEX, producto.getPalabras_clave_producto());
+        statement.setLong(PROCEDURE_UPDATE_ID_TIPO_APRENDIZ_PRODUCTO_INDEX, producto.getId_tipo_objeto_aprendizaje_producto());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_ Id del Area
+     * @param producto
      * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Producto_Bean DeleteProducto(long Id_producto) throws SQLException {
-        Producto_Bean producto = new Producto_Bean();//el objeto en donde se guardan los resultados de la consulta
-        producto.setId_producto(Id_producto);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_PRODUCTO(?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_PRODUCTO, Id_producto);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PRODUCTO);
-        statement.setString(3, COL_DESCRIPCION_PRODUCTO);
-        statement.setString(4, COL_PALABRAS_CLAVE_PRODUCTO);
-        statement.setString(5, COL_ID_TIPO_APRENDIZAJE_PRODUCTO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return producto;
+    public boolean DeleteProducto(Producto_Bean producto) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_PRODUCTO(?)}");
+        statement.setLong(PROCEDURE_DELETE_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

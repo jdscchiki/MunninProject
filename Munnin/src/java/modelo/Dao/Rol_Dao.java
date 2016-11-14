@@ -14,11 +14,21 @@ public class Rol_Dao extends ConexionBD {
 
     private static final String COL_ID_ROL = "id_rol";
     private static final String COL_NOMBRE_ROL = "nombre_rol";
-    private static final String COL_ID_DESCRIPCION_ROL = "id_descripcion_rol";
+    private static final String COL_DESCRIPCION_ROL = "id_descripcion_rol";
 
     private static final String PROCEDURE_INSERT_ROL = "{CALL INSERTAR_ROL(?,?,?)}";
     private static final String PROCEDURE_UPDATE_ROL = "{CALL EDITAR_ROL(?,?,?)}";
-    private static final String PROCEDURE_DELETE_ROL = "{CALL ElIMINAR_ROL(?,?,?)}";
+    private static final String PROCEDURE_DELETE_ROL = "{CALL ElIMINAR_ROL(?)}";
+    
+    private static final int PROCEDURE_INSERTAR_ID_ROL_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_NOMBRE_ROL_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_DESCRIPCION_ROL_INDEX = 3;
+    
+    private static final int PROCEDURE_UPDATE_ID_ROL_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_NOMBRE_ROL_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_DESCRIPCION_ROL_INDEX = 3;
+    
+    private static final int PROCEDURE_DELETE_ID_ROL_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -32,61 +42,70 @@ public class Rol_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_rol Id del Rol
+     * @param rol
      * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Rol.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Rol_Bean InsertarRol(Long Id_rol) throws SQLException {
-        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
-        rol.setId_rol(Id_rol);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_ROL(?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ROL);
-        statement.setString(3, COL_ID_DESCRIPCION_ROL);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return rol;
+    public boolean InsertarRol(Rol_Bean rol) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_ROL);
+        statement.setLong(PROCEDURE_INSERTAR_ID_ROL_INDEX, rol.getId_rol());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_NOMBRE_ROL_INDEX, rol.getNombre_rol());
+        statement.setString(PROCEDURE_INSERTAR_DESCRIPCION_ROL_INDEX, rol.getDescripcion_rol());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_rol Id del Rol
+     * @param rol
      * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Rol.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Rol_Bean UpdateRol(Long Id_rol) throws SQLException {
-        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
-        rol.setId_rol(Id_rol);
+    public boolean UpdateRol(Rol_Bean rol) throws SQLException {
+        boolean resultado;
         CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_ROL(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ROL);
-        statement.setString(3, COL_ID_DESCRIPCION_ROL);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return rol;
+        statement.setLong(PROCEDURE_UPDATE_ID_ROL_INDEX, rol.getId_rol());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_NOMBRE_ROL_INDEX, rol.getNombre_rol());
+        statement.setString(PROCEDURE_UPDATE_DESCRIPCION_ROL_INDEX, rol.getDescripcion_rol());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_rol Id del Rol
+     * @param rol
      * @return Retorna Null si el Rol no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Rol.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Rol_Bean DeleteRol(long Id_rol) throws SQLException {
-        Rol_Bean rol = new Rol_Bean();//el objeto en donde se guardan los resultados de la consulta
-        rol.setId_rol(Id_rol);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_ROL(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_ROL, Id_rol);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_ROL);
-        statement.setString(3, COL_ID_DESCRIPCION_ROL);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return rol;
+    public boolean DeleteRol(Rol_Bean rol) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_ROL);
+        statement.setLong(PROCEDURE_DELETE_ID_ROL_INDEX, rol.getId_rol());//asigna los valores necesarios para ejecutar el QUERY        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

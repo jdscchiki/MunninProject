@@ -19,6 +19,16 @@ public class Programa_Dao extends ConexionBD {
     private static final String PROCEDURE_INSERT_PROGRAMA = "{CALL INSERTAR_PROGRAMA(?,?,?)}";
     private static final String PROCEDURE_UPDATE_PROGRAMA = "{CALL EDITAR_PROGRAMA(?,?,?)}";
     private static final String PROCEDURE_DELETE_PROGRAMA = "{CALL ElIMINAR_PROGRAMA(?,?,?)}";
+    
+    private static final int PROCEDURE_INSERTAR_ID_PROGRAMA_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_NOMBRE_PROGRAMA_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_ID_AREA_PROGRAMA_INDEX = 3;
+    
+    private static final int PROCEDURE_UPDATE_ID_PROGRAMA_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_NOMBRE_PROGRAMA_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_ID_AREA_PROGRAMA_INDEX = 3;
+    
+    private static final int PROCEDURE_DELETE_ID_PROGRAMA_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -32,61 +42,70 @@ public class Programa_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_programa Id del Programa
+     * @param programa
      * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Programa.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Programa_Bean InsertarPrograma(Long Id_programa) throws SQLException {
-        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
-        programa.setId_programa(Id_programa);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_PROGRAMA(?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PROGRAMA);
-        statement.setString(3, COL_ID_AREA_PROGRAMA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return programa;
+    public boolean InsertarPrograma(Programa_Bean programa) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_PROGRAMA);
+        statement.setLong(PROCEDURE_INSERTAR_ID_PROGRAMA_INDEX, programa.getId_programa());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_INSERTAR_NOMBRE_PROGRAMA_INDEX, programa.getNombre_programa());
+        statement.setLong(PROCEDURE_INSERTAR_ID_AREA_PROGRAMA_INDEX, programa.getId_area_programa());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_programa Id del Programa
+     * @param programa
      * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Programa.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Programa_Bean UpdatePrograma(Long Id_programa) throws SQLException {
-        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
-        programa.setId_programa(Id_programa);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_PROGRAMA(?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PROGRAMA);
-        statement.setString(3, COL_ID_AREA_PROGRAMA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return programa;
+    public boolean UpdatePrograma(Programa_Bean programa) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_PROGRAMA);
+        statement.setLong(PROCEDURE_UPDATE_ID_PROGRAMA_INDEX, programa.getId_programa());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setString(PROCEDURE_UPDATE_NOMBRE_PROGRAMA_INDEX, programa.getNombre_programa());
+        statement.setLong(PROCEDURE_UPDATE_ID_AREA_PROGRAMA_INDEX, programa.getId_area_programa());        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_programa Id del Programa
+     * @param programa
      * @return Retorna Null si el Programa no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Programa.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Programa_Bean DeletePrograma(long Id_programa) throws SQLException {
-        Programa_Bean programa = new Programa_Bean();//el objeto en donde se guardan los resultados de la consulta
-        programa.setId_programa(Id_programa);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_PROGRAMA(?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_PROGRAMA, Id_programa);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NOMBRE_PROGRAMA);
-        statement.setString(3, COL_ID_AREA_PROGRAMA);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return programa;
+    public boolean DeletePrograma(Programa_Bean programa) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_PROGRAMA);
+        statement.setLong(PROCEDURE_DELETE_ID_PROGRAMA_INDEX, programa.getId_programa());//asigna los valores necesarios para ejecutar el QUERY        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

@@ -26,10 +26,34 @@ public class Version_Dao extends ConexionBD {
     private static final String COL_ID_CENTRO_VERSION = "id_centro_version";
 
 
-    private static final String PROCEDURE_INSERT_VERSION = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
-    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_INSERT_VERSION = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";    
     private static final String PROCEDURE_UPDATE_VERSION = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String PROCEDURE_DELETE_VERSION = "{CALL ElIMINAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
+    
+    private static final int PROCEDURE_INSERTAR_VERSION_ID_VERSION_INDEX = 1;
+    private static final int PROCEDURE_INSERTAR_VERSION_NUMERO_VERSION_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_VERSION_URL_VERSION_INDEX = 3;
+    private static final int PROCEDURE_INSERTAR_VERSION_NOTIFICACION_VERSION_INDEX = 4;
+    private static final int PROCEDURE_INSERTAR_VERSION_FECHA_VERSION_INDEX = 5;
+    private static final int PROCEDURE_INSERTAR_VERSION_FECHAR_CADUCIDAD_VERSION_INDEX = 6;
+    private static final int PROCEDURE_INSERTAR_VERSION_FECHA_APROBACION_VERSION_INDEX = 7;
+    private static final int PROCEDURE_INSERTAR_VERSION_ID_ESTADO_VERSION_INDEX = 8;
+    private static final int PROCEDURE_INSERTAR_VERSION_ID_TIPO_ARCHIVO_VERSION_INDEX = 9;
+    private static final int PROCEDURE_INSERTAR_VERSION_ID_PRODUCTO_VERSION_INDEX = 10;
+    private static final int PROCEDURE_INSERTAR_VERSION_ID_CENTRO_VERSION_INDEX = 11;
+    
+    private static final int PROCEDURE_UPDATE_VERSION_ID_VERSION_INDEX = 1;
+    private static final int PROCEDURE_UPDATE_VERSION_NUMERO_VERSION_INDEX = 2;
+    private static final int PROCEDURE_UPDATE_VERSION_URL_VERSION_INDEX = 3;
+    private static final int PROCEDURE_UPDATE_VERSION_NOTIFICACION_VERSION_INDEX = 4;
+    private static final int PROCEDURE_UPDATE_VERSION_FECHA_VERSION_INDEX = 5;
+    private static final int PROCEDURE_UPDATE_VERSION_FECHAR_CADUCIDAD_VERSION_INDEX = 6;
+    private static final int PROCEDURE_UPDATE_VERSION_FECHA_APROBACION_VERSION_INDEX = 7;
+    private static final int PROCEDURE_UPDATE_VERSION_ID_ESTADO_VERSION_INDEX = 8;
+    private static final int PROCEDURE_UPDATE_VERSION_ID_TIPO_ARCHIVO_VERSION_INDEX = 9;
+    private static final int PROCEDURE_UPDATE_VERSION_ID_PRODUCTO_VERSION_INDEX = 10;
+    private static final int PROCEDURE_UPDATE_VERSION_ID_CENTRO_VERSION_INDEX = 11;  
+    
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -43,85 +67,86 @@ public class Version_Dao extends ConexionBD {
 
     /**
      *
-     * @param Id_version Id del Area
+     * @param version
      * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Area.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Version_Bean InsertarVersion(Long Id_version) throws SQLException {
-        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
-        version.setId_version(Id_version);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERTAR_AREA(?,?,?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NUMERO_VERSION);
-        statement.setString(3, COL_URL_VERSION);
-        statement.setString(4, COL_NOTIFICACION_VERSION);
-        statement.setString(5, COL_FECHA_VERSION);
-        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
-        statement.setString(7, COL_FECHA_APROVACION_VERSION);
-        statement.setString(8, COL_ID_ESTADO_VERSION);
-        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
-        statement.setString(10, COL_ID_PRODUCTO_VERSION);
-        statement.setString(11, COL_ID_CENTRO_VERSION);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-
-       
-        return version;
+    public boolean InsertarVersion(Version_Bean version) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_VERSION);
+        statement.setLong(PROCEDURE_INSERTAR_VERSION_ID_VERSION_INDEX, version.getId_version());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_INSERTAR_VERSION_NUMERO_VERSION_INDEX, version.getNumero_version());
+        statement.setString(PROCEDURE_INSERTAR_VERSION_URL_VERSION_INDEX, version.getUrl_version());
+        statement.setBoolean(PROCEDURE_INSERTAR_VERSION_NOTIFICACION_VERSION_INDEX, version.isNotificacion_version());
+        statement.setDate(PROCEDURE_INSERTAR_VERSION_FECHA_VERSION_INDEX, (java.sql.Date) version.getFecha_version());
+        statement.setDate(PROCEDURE_INSERTAR_VERSION_FECHAR_CADUCIDAD_VERSION_INDEX, (java.sql.Date) version.getFecha_caducidad_version());
+        statement.setDate(PROCEDURE_INSERTAR_VERSION_FECHA_APROBACION_VERSION_INDEX, (java.sql.Date) version.getFecha_aprovacion_version());
+        statement.setLong(PROCEDURE_INSERTAR_VERSION_ID_ESTADO_VERSION_INDEX, version.getId_estdo_version());
+        statement.setLong(PROCEDURE_INSERTAR_VERSION_ID_TIPO_ARCHIVO_VERSION_INDEX, version.getId_tipo_archivo_version());
+        statement.setLong(PROCEDURE_INSERTAR_VERSION_ID_PRODUCTO_VERSION_INDEX, version.getId_producto_version());
+        statement.setString(PROCEDURE_INSERTAR_VERSION_ID_CENTRO_VERSION_INDEX, version.getId_centro_version());               
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_version Id de la version
+     * @param version
      * @return Retorna Null si la version no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la version.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Version_Bean UpdateVersion(Long Id_version) throws SQLException {
-        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
-        version.setId_version(Id_version);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL EDITAR_AREA(?,?,?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NUMERO_VERSION);
-        statement.setString(3, COL_URL_VERSION);
-        statement.setString(4, COL_NOTIFICACION_VERSION);
-        statement.setString(5, COL_FECHA_VERSION);
-        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
-        statement.setString(7, COL_FECHA_APROVACION_VERSION);
-        statement.setString(8, COL_ID_ESTADO_VERSION);
-        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
-        statement.setString(10, COL_ID_PRODUCTO_VERSION);
-        statement.setString(11, COL_ID_CENTRO_VERSION);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return version;
+    public boolean UpdateVersion(Version_Bean version) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_VERSION);
+        statement.setLong(PROCEDURE_UPDATE_VERSION_ID_VERSION_INDEX, version.getId_version());//asigna los valores necesarios para ejecutar el QUERY
+        statement.setLong(PROCEDURE_UPDATE_VERSION_NUMERO_VERSION_INDEX, version.getNumero_version());
+        statement.setString(PROCEDURE_UPDATE_VERSION_URL_VERSION_INDEX, version.getUrl_version());
+        statement.setBoolean(PROCEDURE_UPDATE_VERSION_NOTIFICACION_VERSION_INDEX, version.isNotificacion_version());
+        statement.setDate(PROCEDURE_UPDATE_VERSION_FECHA_VERSION_INDEX, (java.sql.Date) version.getFecha_version());
+        statement.setDate(PROCEDURE_UPDATE_VERSION_FECHAR_CADUCIDAD_VERSION_INDEX, (java.sql.Date) version.getFecha_caducidad_version());
+        statement.setDate(PROCEDURE_UPDATE_VERSION_FECHA_APROBACION_VERSION_INDEX, (java.sql.Date) version.getFecha_aprovacion_version());
+        statement.setLong(PROCEDURE_UPDATE_VERSION_ID_ESTADO_VERSION_INDEX, version.getId_estdo_version());
+        statement.setLong(PROCEDURE_UPDATE_VERSION_ID_TIPO_ARCHIVO_VERSION_INDEX, version.getId_tipo_archivo_version());
+        statement.setLong(PROCEDURE_UPDATE_VERSION_ID_PRODUCTO_VERSION_INDEX, version.getId_producto_version());
+        statement.setString(PROCEDURE_UPDATE_VERSION_ID_CENTRO_VERSION_INDEX, version.getId_centro_version());  
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
     /**
-     * @param Id_version Id de la version
+     * @param version
      * @return Retorna Null si la version no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la version.
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Version_Bean DeleteVersion(long Id_version) throws SQLException {
-        Version_Bean version = new Version_Bean();//el objeto en donde se guardan los resultados de la consulta
-        version.setId_version(Id_version);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_VERSION, Id_version);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_NUMERO_VERSION);
-        statement.setString(3, COL_URL_VERSION);
-        statement.setString(4, COL_NOTIFICACION_VERSION);
-        statement.setString(5, COL_FECHA_VERSION);
-        statement.setString(6, COL_FECHA_CADUCIDAD_VERSION);
-        statement.setString(7, COL_FECHA_APROVACION_VERSION);
-        statement.setString(8, COL_ID_ESTADO_VERSION);
-        statement.setString(9, COL_ID_TIPO_ARCHIVO_VERSION);
-        statement.setString(10, COL_ID_PRODUCTO_VERSION);
-        statement.setString(11, COL_ID_CENTRO_VERSION);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return version;
+    public boolean DeleteVersion(Version_Bean version) throws SQLException {
+        boolean resultado;
+        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_VERSION);
+        statement.setLong(PROCEDURE_UPDATE_VERSION_ID_VERSION_INDEX, version.getId_version());//asigna los valores necesarios para ejecutar el QUERY
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 
 }

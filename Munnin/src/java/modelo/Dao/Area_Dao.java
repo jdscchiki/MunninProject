@@ -34,11 +34,13 @@ public class Area_Dao extends ConexionBD {
     private static final String PROCEDURE_DELETE_AREA = "{CALL ElIMINAR_AREA(?)}";
     
     private static final int PROCEDURE_INSERTAR_AREA_ID_AREA_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_AREA_NOMBRE_AREA_INDEX = 2;
+    private static final int PROCEDURE_INSERTAR_AREA_NOMBRE_AREA_INDEX = 2;    
     private static final int PROCEDURE_INSERTAR_AREA_ID_CENTRO_AREA_INDEX = 3;
+    
     private static final int PROCEDURE_UPDATE_AREA_ID_AREA_INDEX = 1;
     private static final int PROCEDURE_UPDATE_AREA_NOMBRE_AREA_INDEX = 2;
     private static final int PROCEDURE_UPDATE_AREA_ID_CENTRO_AREA_INDEX = 3;
+    
     private static final int PROCEDURE_ELIMINAR_AREA_ID_AREA_INDEX = 1;
 
     /**

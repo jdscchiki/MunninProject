@@ -22,10 +22,9 @@ public class Lista_Chequeo_Dao extends ConexionBD {
     private static final String COL_TIPO_LISTA = "tipo_lista";
     private static final String COL_ID_AUTOR_LISTA = "id_autor_lista";
 
-    private static final String PROCEDURE_INSERT_LISTA = "{CALL INSERTAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
-    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
+    private static final String PROCEDURE_INSERT_LISTA = "{CALL INSERTAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";    
     private static final String PROCEDURE_UPDATE_LISTA = "{CALL EDITAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
-    private static final String PROCEDURE_DELETE_LISTA = "{CALL ElIMINAR_LISTA_CHEQUEO(?,?,?,?,?,?)}";
+    private static final String PROCEDURE_DELETE_LISTA = "{CALL ElIMINAR_LISTA_CHEQUEO(?)}";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
