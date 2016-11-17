@@ -22,8 +22,6 @@ public class TipoDocumentoDAO extends ConexionBD {
     private static final String COL_ID = "id_tipo_documento";
     private static final String COL_NOMBRE = "nombre_tipo_documento";
 
-    private static final String PROCEDURE_VERTODOS = "{CALL VERTODOS_TIPO_DOCUMENTO()}";
-
     /**
      * Establece conexion con la base de datos
      *
@@ -42,8 +40,12 @@ public class TipoDocumentoDAO extends ConexionBD {
      * @throws SQLException Error al realizar la consulta, revisar el procedimiento almacenado
      */
     public ArrayList<TipoDocumento> verTodos() throws SQLException {
-        ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_VERTODOS);
+        ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();//el objeto en donde se guardan los resultados de la consulta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL VERTODOS_TIPO_DOCUMENTO()}";
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
             TipoDocumento td = new TipoDocumento();
