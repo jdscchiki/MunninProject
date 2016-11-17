@@ -192,4 +192,23 @@ CALL eliminar_estado(2);
 /*==============================================================*/
 
 CALL login("funcionario@misena.edu.co");
-CALL registrar_instructor_centro (1, "02", "fulanito@correo", "NN", "prueba", "apellido", "telefono", "9303");
+CALL REGISTRAR_FUNCIONARIO (1, '10000000', 'fulanito@correo', "NN", "prueba", "apellido", "telefono", "9303");
+
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS PruebaPaginacion()$$
+CREATE PROCEDURE PruebaPaginacion()
+BEGIN
+    declare i int;
+    set i = 0;
+    while i<100 do
+        CALL REGISTRAR_FUNCIONARIO (1, concat('', i), concat('fulanito',i,'@correo'), "NN", "prueba", "apellido", "telefono", "9303");
+        set i=i+1;
+    end while;
+END $$
+
+DELIMITER ;
+
+call ver_funcionarios_centro('9303', 1, 10)

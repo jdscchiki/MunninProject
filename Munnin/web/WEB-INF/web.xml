@@ -2,19 +2,27 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>RegistroFilter</filter-name>
-        <filter-class>controlador.filters.RegistroFilter</filter-class>
+        <filter-class>controlador.filters.roles.coordinador.RegistroFuncionariosFilter</filter-class>
     </filter>
     <filter>
         <filter-name>SessionFilter</filter-name>
         <filter-class>controlador.filters.SessionFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>ListaFuncionariosFilter</filter-name>
+        <filter-class>controlador.filters.roles.coordinador.ListaFuncionariosFilter</filter-class>
+    </filter>
     <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <filter-name>ListaFuncionariosFilter</filter-name>
+        <url-pattern>/roles/coordinador/funcionarios.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>RegistroFilter</filter-name>
         <url-pattern>/roles/coordinador/formularios/registro-funcionario.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <session-config>
         <session-timeout>

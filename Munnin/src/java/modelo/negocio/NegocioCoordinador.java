@@ -68,4 +68,25 @@ public class NegocioCoordinador {
         tipoDocumentoDAO.cerrarConexion();
         return tiposDoc;
     }
+    
+    public static int verPaginasFuncionarios(String idCentro, int cantXpag)  throws NamingException, SQLException {
+        int paginas;
+        int cantFuncionarios;
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        cantFuncionarios = funcionarioDAO.conteoFuncionariosCentro(idCentro);
+        funcionarioDAO.cerrarConexion();
+        paginas = cantFuncionarios / cantXpag;
+        if(cantFuncionarios % cantXpag > 0){
+            paginas ++;
+        }
+        return paginas;
+    }
+    
+    public static ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag)  throws NamingException, SQLException {
+        ArrayList<Funcionario> funcionarios;
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        funcionarios = funcionarioDAO.verFuncionariosCentro(idCentro, pagina, cantXpag);
+        funcionarioDAO.cerrarConexion();
+        return funcionarios;
+    }
 }

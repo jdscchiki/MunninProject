@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.filters;
+package controlador.filters.roles.coordinador;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -26,7 +26,7 @@ import modelo.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro 
  */
-public class RegistroFilter implements Filter {
+public class RegistroFuncionariosFilter implements Filter {
 
     private static final boolean debug = false;
 
@@ -35,7 +35,7 @@ public class RegistroFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public RegistroFilter() {
+    public RegistroFuncionariosFilter() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)

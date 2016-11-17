@@ -203,4 +203,25 @@ public class FuncionarioDAO extends ConexionBD {
         }
         return funcionarios;
     }
+    
+    public int conteoFuncionariosCentro(String idCentro) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?)}";
+        int indexCentro = 1;
+        
+        String resConteo = "conteo";//nombre de la columna del select
+        
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
 }
