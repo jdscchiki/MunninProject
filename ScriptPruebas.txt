@@ -198,7 +198,7 @@ CALL REGISTRAR_FUNCIONARIO (1, '10000000', 'fulanito@correo', "NN", "prueba", "a
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS PruebaPaginacion()$$
+DROP PROCEDURE IF EXISTS PruebaPaginacion$$
 CREATE PROCEDURE PruebaPaginacion()
 BEGIN
     declare i int;
