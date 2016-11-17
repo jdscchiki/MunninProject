@@ -2138,6 +2138,7 @@ BEGIN
     DECLARE _fin INT;
     SET _inicio = (_pagina - 1)*_funcionarioXpagina;
     SELECT 
+        id_funcionario ,
         id_tipo_documento_funcionario ,
         documento_funcionario,
         nombre_funcionario,
@@ -2547,7 +2548,7 @@ CREATE PROCEDURE conteo_funcionarios_centro (
         IN _id_centro VARCHAR(10)
     )
 BEGIN
-    SELECT COUNT(id_funcionario)
+    SELECT COUNT(id_funcionario) as conteo
     FROM  funcionario
     WHERE id_centro_funcionario = _id_centro;
 END $$
