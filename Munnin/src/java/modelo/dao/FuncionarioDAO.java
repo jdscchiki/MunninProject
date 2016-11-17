@@ -37,24 +37,6 @@ public class FuncionarioDAO extends ConexionBD {
     private static final String COL_TELEFONO = "telefono_funcionario";
     private static final String COL_ID_CENTRO = "id_centro_funcionario";
 
-    private static final String PROCEDURE_INGRESO = "{CALL LOGIN(?)}";
-    private static final int PROCEDURE_INGRESO_CORREO_INDEX = 1;
-
-    private static final String PROCEDURE_REGISTRO_FUNCIONARIO = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";//tal ves no funcione aun
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX = 1;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_DOCUMENTO_INDEX = 2;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_CORREO_INDEX = 3;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_CONTASENA_INDEX = 4;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_NOMBRE_INDEX = 5;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX = 6;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX = 7;
-    private static final int PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX = 8;
-
-    private static final String PROCEDURE_VER_ROLES_FUNCIONARIO = "{CALL VER_ROLES_FUNCIONARIO(?)}";
-    private static final int PROCEDURE_VER_ROLES_FUNCIONARIO_ID_INDEX = 1;
-    private static final String RPROCEDURE_VER_ROLES_FUNCIONARIO_ID_ROL = "id_rol_funci_rol";
-    private static final String RPROCEDURE_VER_ROLES_FUNCIONARIO_NORBRE_ROL = "nombre_rol";
-
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -76,9 +58,14 @@ public class FuncionarioDAO extends ConexionBD {
      */
     public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL LOGIN(?)}";
+        int indexCorreo = 1;
+        
         funcionario.setCorreo(correo);
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INGRESO);
-        statement.setString(PROCEDURE_INGRESO_CORREO_INDEX, correo);//asigna los valores necesarios para ejecutar el QUERY
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexCorreo, correo);//asigna los valores necesarios para ejecutar el QUERY
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         boolean encontrado = false;//una bandera
         while (rs.next()) {
@@ -111,18 +98,30 @@ public class FuncionarioDAO extends ConexionBD {
      * @throws SQLException existe un priblema en la consulta
      */
     public boolean registrar(Funcionario funcionario) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = getConexion().prepareCall(PROCEDURE_REGISTRO_FUNCIONARIO);
-        statement.setInt(PROCEDURE_REGISTRO_FUNCIONARIO_TIPODOC_INDEX, funcionario.getIdTipoDocumento());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_DOCUMENTO_INDEX, funcionario.getDocumento());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_CORREO_INDEX, funcionario.getCorreo());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_CONTASENA_INDEX, funcionario.getContrasena());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_NOMBRE_INDEX, funcionario.getNombre());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_APELLIDO_INDEX, funcionario.getApellido());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_TELEFONO_INDEX, funcionario.getTelefono());
-        statement.setString(PROCEDURE_REGISTRO_FUNCIONARIO_IDCENTRO_INDEX, funcionario.getIdCentro());
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";
+        int indexTipoDoc = 1;
+        int indexDoc = 2;
+        int indexCorreo = 3;
+        int indexContrasena = 4;
+        int indexNombre = 5;
+        int indexApellido = 6;
+        int indexTelefono = 7;
+        int indexIdCentro = 8;
+        
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexTipoDoc, funcionario.getIdTipoDocumento());
+        statement.setString(indexDoc, funcionario.getDocumento());
+        statement.setString(indexCorreo, funcionario.getCorreo());
+        statement.setString(indexContrasena, funcionario.getContrasena());
+        statement.setString(indexNombre, funcionario.getNombre());
+        statement.setString(indexApellido, funcionario.getApellido());
+        statement.setString(indexTelefono, funcionario.getTelefono());
+        statement.setString(indexIdCentro, funcionario.getIdCentro());
 
-        if (statement.executeUpdate() == 1) {
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
             resultado = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
@@ -141,18 +140,67 @@ public class FuncionarioDAO extends ConexionBD {
      * @throws SQLException existe un priblema en la consulta
      */
     public ArrayList<Rol> verRoles(int id) throws SQLException {
-        ArrayList<Rol> roles = new ArrayList<>();
-        CallableStatement statement = getConexion().prepareCall(PROCEDURE_VER_ROLES_FUNCIONARIO);
-        statement.setInt(PROCEDURE_VER_ROLES_FUNCIONARIO_ID_INDEX, id);
+        ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
+        int indexIdFunc = 1;
+        
+        String resId_rol = "id_rol_funci_rol";//nombre de la columna del select
+        String resNombre_rol = "nombre_rol";//nombre de la columna del select
+        
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunc, id);
+        
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        
         while (rs.next()) {
             //asigna los valores resultantes de la consulta
             Rol rol = new Rol();
-            rol.setId(rs.getInt(RPROCEDURE_VER_ROLES_FUNCIONARIO_ID_ROL));
-            rol.setNombre(rs.getString(RPROCEDURE_VER_ROLES_FUNCIONARIO_NORBRE_ROL));
+            rol.setId(rs.getInt(resId_rol));
+            rol.setNombre(rs.getString(resNombre_rol));
             roles.add(rol);
         }
+        
         return roles;
     }
-
+/**
+ * Consulta los funcionario pertenecientes a un centro en especifico
+ * 
+ * @param idCentro id del centro a consultar en la base de datos
+ * @param pagina pagina a realizar consulta(usado para consultas a centros grandes)
+ * @param cantXpag resultados por pagina al realizar consulta(usado para consultas a centros grandes)
+ * @return ArrayList de los funcionarios pertenecientes a un centro por intervalos
+ * @throws SQLException existe un priblema en la consulta
+ */
+    public ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws SQLException {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setCorreo(rs.getString(COL_CORREO));
+            funcionarios.add(funcionario);
+        }
+        return funcionarios;
+    }
 }
