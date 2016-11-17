@@ -34,7 +34,7 @@ public class Encriptado {
         }
     }
 
-    private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA512";
+    private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     // These constants may be changed without breaking existing hashes.
     private static final int SALT_BYTE_SIZE = 24;
@@ -194,4 +194,10 @@ public class Encriptado {
         return DatatypeConverter.printBase64Binary(array);
     }
 
+//    public static void main(String[] args) {
+//        try {
+//            System.out.println(createHash("admin"));
+//        } catch (Exception e) {
+//        }
+//    }
 }
