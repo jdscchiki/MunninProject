@@ -76,7 +76,7 @@ public class NegocioCoordinador {
         cantFuncionarios = funcionarioDAO.conteoFuncionariosCentro(idCentro);
         funcionarioDAO.cerrarConexion();
         paginas = cantFuncionarios / cantXpag;
-        if(cantFuncionarios % cantXpag > 0){
+        if(cantFuncionarios % cantXpag != 0){
             paginas ++;
         }
         return paginas;
