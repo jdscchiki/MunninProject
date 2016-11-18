@@ -24,15 +24,6 @@ public class Autor_Dao extends ConexionBD {
     private static final String COL_ID_FUNCIONARIO_AUTOR = "id_funcionario_autor";
     private static final String COL_ID_VERSION_AUTOR = "id_version_autor";
 
-    private static final String PROCEDURE_INSERT_AUTOR = "{CALL INSERTAR_AUTOR(?,?)}";
-    private static final String PROCEDURE_UPDATE_AUTOR = "{CALL EDITAR_AUTOR(?,?)}";
-    private static final String PROCEDURE_DELETE_AUTOR = "{CALL ElIMINAR_AUTOR(?)}";
-    
-    private static final int PROCEDURE_INSERTAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_AUTOR_ID_VERSION_AUTOR_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX  = 1;
-    private static final int PROCEDURE_UPDATE__AUTOR_ID_VERSION_AUTOR_INDEX  = 2;
-    private static final int PROCEDURE_ELIMINAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -53,10 +44,17 @@ public class Autor_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean InsertarAutor(Autor_Bean autor) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_AUTOR);
-        statement.setLong(PROCEDURE_INSERTAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setLong(PROCEDURE_INSERTAR_AUTOR_ID_VERSION_AUTOR_INDEX, autor.getId_version_autor());        
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        
+        String query ="{CALL INSERTAR_AUTOR(?,?)}";
+        int indexIdFuncionarioAutor =1;
+        int indexIdversionAutor =2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioAutor, autor.getId_funcionario_autor());
+        statement.setLong(indexIdversionAutor, autor.getId_version_autor());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -75,10 +73,17 @@ public class Autor_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean UpdateAutor(Autor_Bean autor) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_AUTOR);
-        statement.setLong(PROCEDURE_UPDATE_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setLong(PROCEDURE_UPDATE__AUTOR_ID_VERSION_AUTOR_INDEX, autor.getId_version_autor());
+       boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        
+        String query ="{CALL EDITAR_AUTOR(?,?)}";
+        int indexIdFuncionarioAutor =1;
+        int indexIdversionAutor =2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioAutor, autor.getId_funcionario_autor());
+        statement.setLong(indexIdversionAutor, autor.getId_version_autor());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -97,9 +102,15 @@ public class Autor_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean DeleteAutor(Autor_Bean autor) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_AUTOR);
-        statement.setLong(PROCEDURE_ELIMINAR_AUTOR_ID_FUNCIONARIO_AUTOR_INDEX, autor.getId_funcionario_autor());//asigna los valores necesarios para ejecutar el QUERY
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        
+        String query ="{CALL ELIMINAR_AUTOR(?)}";
+        int indexIdFuncionarioAutor =1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioAutor, autor.getId_funcionario_autor());     
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

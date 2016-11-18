@@ -10,6 +10,14 @@ import modelo.Beans.Producto_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * Producto.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
+
 public class Producto_Dao extends ConexionBD {
 
     private static final String COL_ID_PRODUCTO = "id_producto";
@@ -18,23 +26,6 @@ public class Producto_Dao extends ConexionBD {
     private static final String COL_PALABRAS_CLAVE_PRODUCTO = "palabras_clave_producto";
     private static final String COL_ID_TIPO_APRENDIZAJE_PRODUCTO = "id_tipo_aprendizaje_producto";
 
-    private static final String PROCEDURE_INSERT_PRODUCTO = "{CALL INSERTAR_PRODUCTO(?,?,?,?,?)}";
-    private static final String PROCEDURE_UPDATE_PRODUCTO = "{CALL EDITAR_PRODUCTO(?,?,?,?,?)}";
-    private static final String PROCEDURE_DELETE_PRODUCTO = "{CALL ElIMINAR_PRODUCTO(?)}";
-    
-    private static final int PROCEDURE_INSERTAR_ID_PRODUCTO_AREA_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_NOMBRE_PRODUCTO_INDEX = 2;
-    private static final int PROCEDURE_INSERTAR_DESCRIPCION_PRODUCTO_INDEX = 3;
-    private static final int PROCEDURE_INSERTAR_PALABRAS_CLAVE_PRODUCTO_INDEX = 4;
-    private static final int PROCEDURE_INSERTAR_ID_TIPO_APRENDIZ_PRODUCTO_INDEX = 5;
-    
-    private static final int PROCEDURE_UPDATE_ID_PRODUCTO_AREA_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_NOMBRE_PRODUCTO_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_DESCRIPCION_PRODUCTO_INDEX = 3;
-    private static final int PROCEDURE_UPDATE_PALABRAS_CLAVE_PRODUCTO_INDEX = 4;
-    private static final int PROCEDURE_UPDATE_ID_TIPO_APRENDIZ_PRODUCTO_INDEX = 5;
-    
-    private static final int PROCEDURE_DELETE_ID_PRODUCTO_AREA_INDEX = 1;
     /**
      * 
      * 
@@ -56,13 +47,22 @@ public class Producto_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean InsertarProdcuto(Producto_Bean producto) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_PRODUCTO);
-        statement.setLong(PROCEDURE_INSERTAR_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_NOMBRE_PRODUCTO_INDEX, producto.getNombre_producto());
-        statement.setString(PROCEDURE_INSERTAR_DESCRIPCION_PRODUCTO_INDEX, producto.getDescripcion_producto());
-        statement.setString(PROCEDURE_INSERTAR_PALABRAS_CLAVE_PRODUCTO_INDEX, producto.getPalabras_clave_producto());
-        statement.setLong(PROCEDURE_INSERTAR_ID_TIPO_APRENDIZ_PRODUCTO_INDEX, producto.getId_tipo_objeto_aprendizaje_producto());        
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL INSERTAR_PRODUCTO(?,?,?,?,?)}";
+        int indexIdProducto =1;
+        int indexNombreProducto = 2;
+        int indexDescripcionProducto =3;
+        int indexPalabrasClaveProducto=4;
+        int indexIdTipoObjetoAprendizajProducto =5;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdProducto, producto.getId_producto());
+        statement.setString(indexNombreProducto, producto.getNombre_producto());
+        statement.setString(indexDescripcionProducto, producto.getDescripcion_producto());
+        statement.setString(indexPalabrasClaveProducto, producto.getPalabras_clave_producto());
+        statement.setLong(indexIdTipoObjetoAprendizajProducto, producto.getId_tipo_objeto_aprendizaje_producto());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -81,13 +81,22 @@ public class Producto_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean UpdateProducto(Producto_Bean producto) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_PRODUCTO);
-        statement.setLong(PROCEDURE_UPDATE_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_NOMBRE_PRODUCTO_INDEX, producto.getNombre_producto());
-        statement.setString(PROCEDURE_UPDATE_DESCRIPCION_PRODUCTO_INDEX, producto.getDescripcion_producto());
-        statement.setString(PROCEDURE_UPDATE_PALABRAS_CLAVE_PRODUCTO_INDEX, producto.getPalabras_clave_producto());
-        statement.setLong(PROCEDURE_UPDATE_ID_TIPO_APRENDIZ_PRODUCTO_INDEX, producto.getId_tipo_objeto_aprendizaje_producto());
+         boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL EDITAR_PRODUCTO(?,?,?,?,?)}";
+        int indexIdProducto =1;
+        int indexNombreProducto = 2;
+        int indexDescripcionProducto =3;
+        int indexPalabrasClaveProducto=4;
+        int indexIdTipoObjetoAprendizajProducto =5;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdProducto, producto.getId_producto());
+        statement.setString(indexNombreProducto, producto.getNombre_producto());
+        statement.setString(indexDescripcionProducto, producto.getDescripcion_producto());
+        statement.setString(indexPalabrasClaveProducto, producto.getPalabras_clave_producto());
+        statement.setLong(indexIdTipoObjetoAprendizajProducto, producto.getId_tipo_objeto_aprendizaje_producto());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -106,9 +115,14 @@ public class Producto_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean DeleteProducto(Producto_Bean producto) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall("{CALL ELIMINAR_PRODUCTO(?)}");
-        statement.setLong(PROCEDURE_DELETE_ID_PRODUCTO_AREA_INDEX, producto.getId_producto());//asigna los valores necesarios para ejecutar el QUERY        
+         boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL ELIMINAR_PRODUCTO(?)}";
+        int indexIdProducto =1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdProducto, producto.getId_producto());;        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

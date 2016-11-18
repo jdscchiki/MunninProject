@@ -10,24 +10,18 @@ import modelo.Beans.Regional_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
-
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * Regional.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
 public class Regional_Dao extends ConexionBD {
 
     private static final String COL_ID_REGIONAL = "id_regional";
     private static final String COL_NOMBRE_REGIONAL = "nombre_regional";
-
-    private static final String PROCEDURE_INSERT_REGIONAL = "{CALL INSERTAR_REGIONAL(?,?)}";
-    private static final String PROCEDURE_UPDATE_REGIONAL = "{CALL EDITAR_REGIONAL(?,?)}";
-    private static final String PROCEDURE_DELETE_REGIONAL = "{CALL ElIMINAR_REGIONAL(?)}";
     
-    private static final int PROCEDURE_INSERTAR_ID_REGIONAL_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_NOMBRE_REGIONAL_INDEX = 2;
-    
-    private static final int PROCEDURE_UPDATE_ID_REGIONAL_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_NOMBRE_REGIONAL_INDEX = 2;
-    
-    private static final int PROCEDURE_DELETE_ID_REGIONAL_INDEX = 1;
-
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -43,14 +37,20 @@ public class Regional_Dao extends ConexionBD {
      * @param regional
      * @return Retorna Null si la Regional no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Regional.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarRegional(Regional_Bean regional) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_REGIONAL);
-        statement.setLong(PROCEDURE_INSERTAR_ID_REGIONAL_INDEX, regional.getId_regional());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_NOMBRE_REGIONAL_INDEX, regional.getNombre_regional());        
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL INGRESAR_REGIONAL(?,?)}";
+        int indexIdRegional =1;
+        int indexNombreRegional = 2;
+         
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdRegional, regional.getId_regional());
+        statement.setString(indexNombreRegional, regional.getNombre_regional());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -69,10 +69,16 @@ public class Regional_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean UpdateRegional(Regional_Bean regional) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_REGIONAL);
-        statement.setLong(PROCEDURE_UPDATE_ID_REGIONAL_INDEX, regional.getId_regional());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_NOMBRE_REGIONAL_INDEX, regional.getNombre_regional());        
+       boolean resultado;// esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_REGIONAL(?,?)}";
+        int indexIdRegional =1;
+        int indexNombreRegional = 2;
+         
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdRegional, regional.getId_regional());
+        statement.setString(indexNombreRegional, regional.getNombre_regional());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -91,9 +97,14 @@ public class Regional_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean DeleteRegional(Regional_Bean regional) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_REGIONAL);
-        statement.setLong(PROCEDURE_DELETE_ID_REGIONAL_INDEX, regional.getId_regional());//asigna los valores necesarios para ejecutar el QUERY        
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL ELIMINAR_REGIONAL(?,?)}";
+        int indexIdRegional =1;
+         
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdRegional, regional.getId_regional());      
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

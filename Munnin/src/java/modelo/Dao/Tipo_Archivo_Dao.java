@@ -10,24 +10,19 @@ import modelo.Beans.Tipo_Archivo_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * TipoArchivo.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
 
 public class Tipo_Archivo_Dao extends ConexionBD {
 
     private static final String COL_ID_TIPO_ARCHIVO= "id_tipo_archivo";
     private static final String COL_EXTENCION_TIPO_ARCHIVO = "extencion_tipo_archivo";
 
-    private static final String PROCEDURE_INSERT_TIPO_ARCHIVO = "{CALL INSERTAR_TIPO_ARCHIVO(?,?)}";
-    private static final String PROCEDURE_UPDATE_TIPO_ARCHIVO = "{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
-    private static final String PROCEDURE_DELETE_TIPO_ARCHIVO = "{CALL ElIMINAR_TIPO_ARCHIVO(?)}";
-    
-    private static final int PROCEDURE_INSERTAR_ID_TIPO_ARCHIVO_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_EXTENCION_TIPO_ARCHIVO_INDEX = 2;
-    
-    private static final int PROCEDURE_UPDATE_ID_TIPO_ARCHIVO_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_EXTENCION_TIPO_ARCHIVO_INDEX = 2;
-    
-    private static final int PROCEDURE_DELETE_ID_TIPO_ARCHIVO_INDEX = 1;
-    
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -42,16 +37,22 @@ public class Tipo_Archivo_Dao extends ConexionBD {
     /**
      *
      * @param tipoArchivo
-     * @return Retorna Null si el Tipo_Archivo no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Tipo_Archivo.
-     * @version 1.0
+     * @return Retorna Null si el TipoArchivo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del TipoArchivo.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarTipoArchivo(Tipo_Archivo_Bean tipoArchivo) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_TIPO_ARCHIVO);
-        statement.setLong(PROCEDURE_INSERTAR_ID_TIPO_ARCHIVO_INDEX, tipoArchivo.getId_tipo_archivo());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_EXTENCION_TIPO_ARCHIVO_INDEX, tipoArchivo.getExtencion_tipo_archivo());        
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query ="{CALL INSERTAR_TIPO_ARCHIVO(?,?)}";
+        int indexIdTipoArchivo = 1;
+        int indexExtencionTipoArchivo = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoArchivo, tipoArchivo.getId_tipo_archivo());
+        statement.setString(indexExtencionTipoArchivo, tipoArchivo.getExtencion_tipo_archivo());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -64,16 +65,22 @@ public class Tipo_Archivo_Dao extends ConexionBD {
 
     /**
      * @param tipoArchivo
-     * @return Retorna Null si el Tipo_Archivo no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Tipo_Archivo.
-     * @version 1.0
+     * @return Retorna Null si el TipoArchivo no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del TipoArchivo.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateTipoArchivo(Tipo_Archivo_Bean tipoArchivo) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_TIPO_ARCHIVO);
-        statement.setLong(PROCEDURE_UPDATE_ID_TIPO_ARCHIVO_INDEX, tipoArchivo.getId_tipo_archivo());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_EXTENCION_TIPO_ARCHIVO_INDEX, tipoArchivo.getExtencion_tipo_archivo());        
+       boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query ="{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
+        int indexIdTipoArchivo = 1;
+        int indexExtencionTipoArchivo = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoArchivo, tipoArchivo.getId_tipo_archivo());
+        statement.setString(indexExtencionTipoArchivo, tipoArchivo.getExtencion_tipo_archivo());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -92,9 +99,14 @@ public class Tipo_Archivo_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean DeleteArea(Tipo_Archivo_Bean tipoArchivo) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_TIPO_ARCHIVO);
-        statement.setLong(PROCEDURE_DELETE_ID_TIPO_ARCHIVO_INDEX, tipoArchivo.getId_tipo_archivo());//asigna los valores necesarios para ejecutar el QUERY                
+       boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query ="{CALL ELIMINAR_TIPO_ARCHIVO(?)}";
+        int indexIdTipoArchivo = 1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoArchivo, tipoArchivo.getId_tipo_archivo());     
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

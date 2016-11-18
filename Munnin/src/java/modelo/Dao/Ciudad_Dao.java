@@ -19,7 +19,7 @@ import util.ConexionBD;
  * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
  * Area.
  *
- * @version 1.2
+ * @version 1.3
  * @author Monica <JBadCode>
  */
 public class Ciudad_Dao extends ConexionBD{ 
@@ -27,18 +27,6 @@ public class Ciudad_Dao extends ConexionBD{
     private static final String COL_ID_CIUDAD = "id_ciudad";
     private static final String COL_NOMBRE_CIUDAD = "nombre_ciudad";
    
-   
-    private static final String PROCEDURE_INSERT_CIUDAD = "{CALL INSERTAR_CIUDAD(?,?)}"; 
-    private static final String PROCEDURE_UPDATE_CIUDAD = "{CALL EDITAR_CIUDAD(?,?)}";
-    private static final String PROCEDURE_DELETE_CIUDAD = "{CALL ElIMINAR_CIUDAD(?,?)}";
-  
-    
-    private static final int PROCEDURE_INSERTAR_CIUDAD_ID_CIUDAD_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_CIUDAD_NOMBRE_CIUDAD_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_CIUDAD_ID_CIUDAD_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_CIUDAD_NOMBRE_CIUDAD_INDEX = 2;
-    private static final int PROCEDURE_ELIMINAR_CIUDAD_ID_CIUDAD_INDEX = 1;
-
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -54,14 +42,20 @@ public class Ciudad_Dao extends ConexionBD{
      * @param ciudad
      * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Ciudad.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarCiudadl(Ciudad_Bean ciudad) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_CIUDAD);
-        statement.setString(PROCEDURE_INSERTAR_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_CIUDAD_NOMBRE_CIUDAD_INDEX, ciudad.getNombre_ciudad());        
+        boolean resultado;//  es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL INSERTAR_CIUDAD(?,?)}";
+        int indexIdCiudad =1;
+        int indexNombreCiudad =2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCiudad, ciudad.getId_ciudad());
+        statement.setString(indexNombreCiudad, ciudad.getNombre_ciudad());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -76,14 +70,20 @@ public class Ciudad_Dao extends ConexionBD{
      * @param ciudad
      * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Ciudad.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateCiudad(Ciudad_Bean ciudad) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_CIUDAD);
-        statement.setString(PROCEDURE_UPDATE_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_CIUDAD_NOMBRE_CIUDAD_INDEX, ciudad.getNombre_ciudad());
+        boolean resultado;//  es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL EDITAR_CIUDAD(?,?)}";
+        int indexIdCiudad =1;
+        int indexNombreCiudad =2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCiudad, ciudad.getId_ciudad());
+        statement.setString(indexNombreCiudad, ciudad.getNombre_ciudad());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -98,13 +98,20 @@ public class Ciudad_Dao extends ConexionBD{
      * @param ciudad
      * @return Retorna Null si la Ciudad no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Ciudad
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean DeleteCiudad(Ciudad_Bean ciudad) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_CIUDAD);
-        statement.setString(PROCEDURE_ELIMINAR_CIUDAD_ID_CIUDAD_INDEX, ciudad.getId_ciudad());//asigna los valores necesarios para ejecutar el QUERY
+        boolean resultado;//  es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL ELIMINAR_CIUDAD(?,?)}";
+        int indexIdCiudad =1;
+        int indexNombreCiudad =2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCiudad, ciudad.getId_ciudad());
+        statement.setString(indexNombreCiudad, ciudad.getNombre_ciudad());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

@@ -10,6 +10,14 @@ import modelo.Beans.Funcionario_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * Funcionario.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
+
 public class Funcionario_Dao extends ConexionBD {
 
     private static final String COL_ID_FUNCIONARIO = "id_funcionario";
@@ -22,9 +30,6 @@ public class Funcionario_Dao extends ConexionBD {
     private static final String COL_TELEFONO_FUNCIONARIO = "telefono_funcionario";
     private static final String COL_ID_CENTRO_FUNCIONARIO = "id_centro_funcionario";
 
-    private static final String PROCEDURE_INSERT_FUNCIONARIO = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
-    private static final String PROCEDURE_UPDATE_FUNCIONARIO = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
-    private static final String PROCEDURE_DELETE_FUNCIONARIO = "{CALL ElIMINAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -41,26 +46,44 @@ public class Funcionario_Dao extends ConexionBD {
      * @param Id_funcionario Id del Funcionario
      * @return Retorna Null si el Funcionario no se encuetra en la base de datos, de lo
      * contrario retorna los datos del funcionario.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
-    public Funcionario_Bean InsertarFuncionario(Long Id_funcionario) throws SQLException {
-        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
-        funcionario.setId_funcionario(Id_funcionario);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL INSERT_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_INSERT_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
-        statement.setString(3, COL_CORREO_FUNCIONARIO);
-        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
-        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
-        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
-        statement.setString(7, COL_CARGO_FUNCIONARIO);
-        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
-        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+   public boolean InsertFuncionario(Funcionario_Bean funcionario) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";
+        int indexTipoDoc = 1;
+        int indexDoc = 2;
+        int indexCorreo = 3;
+        int indexContrasena = 4;
+        int indexNombre = 5;
+        int indexApellido = 6;
+        int indexTelefono = 7;
+        int indexIdCentro = 8;
+        
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexTipoDoc, funcionario.getDocumento_funcionario());
+        statement.setString(indexDoc, funcionario.getDocumento_funcionario());
+        statement.setString(indexCorreo, funcionario.getCorreo_funcionario());
+        statement.setString(indexContrasena, funcionario.getContrasena_funcionario());
+        statement.setString(indexNombre, funcionario.getNombre_funcionario());
+        statement.setString(indexApellido, funcionario.getApellido_funcionario());
+        statement.setString(indexTelefono, funcionario.getTelefono_funcionario());
+        statement.setString(indexIdCentro, funcionario.getId_centro_funcionario());
 
-        return funcionario;
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
     }
+
 
     /**
      * @param Id_funcionario Id del funcionario
@@ -69,22 +92,39 @@ public class Funcionario_Dao extends ConexionBD {
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public Funcionario_Bean UpdateFuncionario(Long Id_funcionario) throws SQLException {
-        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
-        funcionario.setId_funcionario(Id_funcionario);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL UPDATE_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_UPDATE_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
-        statement.setString(3, COL_CORREO_FUNCIONARIO);
-        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
-        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
-        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
-        statement.setString(7, COL_CARGO_FUNCIONARIO);
-        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
-        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-     
-        return funcionario;
+    public Boolean UpdateFuncionario(Funcionario_Bean funcionario) throws SQLException {
+         boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";
+        int indexTipoDoc = 1;
+        int indexDoc = 2;
+        int indexCorreo = 3;
+        int indexContrasena = 4;
+        int indexNombre = 5;
+        int indexApellido = 6;
+        int indexTelefono = 7;
+        int indexIdCentro = 8;
+        
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexTipoDoc, funcionario.getDocumento_funcionario());
+        statement.setString(indexDoc, funcionario.getDocumento_funcionario());
+        statement.setString(indexCorreo, funcionario.getCorreo_funcionario());
+        statement.setString(indexContrasena, funcionario.getContrasena_funcionario());
+        statement.setString(indexNombre, funcionario.getNombre_funcionario());
+        statement.setString(indexApellido, funcionario.getApellido_funcionario());
+        statement.setString(indexTelefono, funcionario.getTelefono_funcionario());
+        statement.setString(indexIdCentro, funcionario.getId_centro_funcionario());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
     }
 
     /**
@@ -94,22 +134,26 @@ public class Funcionario_Dao extends ConexionBD {
      * @version 1.0
      * @throws java.sql.SQLException
      */
-    public  Funcionario_Bean DeleteArea(long Id_funcionario) throws SQLException {
-        Funcionario_Bean funcionario = new Funcionario_Bean();//el objeto en donde se guardan los resultados de la consulta
-        funcionario.setId_funcionario(Id_funcionario);
-        CallableStatement statement = this.getConexion().prepareCall("{CALL DELETE_AREA(?,?,?,?,?,?,?,?,?)}");
-        statement.setLong(PROCEDURE_DELETE_FUNCIONARIO, Id_funcionario);//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(2, COL_DOCUMENTO_FUNCIONARIO);
-        statement.setString(3, COL_CORREO_FUNCIONARIO);
-        statement.setString(4, COL_CONTRASEÑA_FUNCIONARIO);
-        statement.setString(5, COL_NOMBRE_FUNCIONARIO);
-        statement.setString(6, COL_APELLIDO_FUNCIONARIO);
-        statement.setString(7, COL_CARGO_FUNCIONARIO);
-        statement.setString(8,COL_TELEFONO_FUNCIONARIO);
-        statement.setString(9, COL_ID_CENTRO_FUNCIONARIO);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-      
-        return funcionario;
+    public Boolean DeleteArea(Funcionario_Bean funcionario) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_FUNCIONARIO(?)}";
+        int indexTipoDoc = 1;
+        int indexIdCentro = 8;
+        
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexTipoDoc, funcionario.getDocumento_funcionario());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
     }
 
 }

@@ -18,7 +18,7 @@ import modelo.Beans.Categoria_Bean;
  * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
  * Area.
  *
- * @version 1.2
+ * @version 1.3
  * @author Monica <JBadCode>
  */
 public class Categoria_Dao extends ConexionBD{ 
@@ -27,18 +27,6 @@ public class Categoria_Dao extends ConexionBD{
     private static final String COL_NOMBRE_CATEGORIA = "nombre_categoria";
     private static final String COL_ID_CENTRO_CATEGORIA = "id_centro_categoria";
 
-    private static final String PROCEDURE_INSERT_CATEGORIA = "{CALL INSERTAR_CATEGORIA(?,?,?)}";
-    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
-    private static final String PROCEDURE_UPDATE_CATEGORIA = "{CALL EDITAR_CATEGORIA(?,?,?)}";
-    private static final String PROCEDURE_DELETE_CATEGORIA = "{CALL ElIMINAR_CATEGORIA(?)}";
-    
-    private static final int PROCEDURE_INSERTAR_CATEGORIA_ID_CATEGORIA_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_CATEGORIA_NOMBRE_CATEGORIA_INDEX = 2;
-    private static final int PROCEDURE_INSERTAR_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX = 3;
-    private static final int PROCEDURE_UPDATE_CATEGORIA_ID_CATEGORIA_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_CATEGORIA_NOMBRE_CATEGORIA_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX = 3;
-    private static final int PROCEDURE_ELIMINAR_CATEGORIA_ID_CATEGORIA_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -55,15 +43,23 @@ public class Categoria_Dao extends ConexionBD{
      * @param categoria
      * @return Retorna Null si la Categoria no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la categoria.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarCategoria(Categoria_Bean categoria) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_CATEGORIA);
-        statement.setLong(PROCEDURE_INSERTAR_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_CATEGORIA_NOMBRE_CATEGORIA_INDEX, categoria.getNombre_categoria());
-        statement.setString(PROCEDURE_INSERTAR_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX, categoria.getId_centro_categoria());        
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en la base de datoos
+        String query ="{CALL INSERTAR_CATEGORIA(?,?,?)}";
+        int indexIdCategoria=1;
+        int indexNombreCategoria =2;
+        int indexIdCentroCategoria =3;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdCategoria, categoria.getId_categoria());
+        statement.setString(indexNombreCategoria, categoria.getNombre_categoria());
+        statement.setString(indexIdCentroCategoria, categoria.getId_centro_categoria());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -78,15 +74,23 @@ public class Categoria_Dao extends ConexionBD{
      * @param categoria
      * @return Retorna Null si la categoria no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Categoria.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateCategoria(Categoria_Bean categoria) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_CATEGORIA);
-        statement.setLong(PROCEDURE_UPDATE_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_CATEGORIA_NOMBRE_CATEGORIA_INDEX, categoria.getNombre_categoria());
-        statement.setString(PROCEDURE_UPDATE_CATEGORIA_ID_CENTRO_CATEGORIA_INDEX, categoria.getId_centro_categoria());
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en la base de datoos
+        String query ="{CALL EDITAR_CATEGORIA(?,?,?)}";
+        int indexIdCategoria=1;
+        int indexNombreCategoria =2;
+        int indexIdCentroCategoria =3;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdCategoria, categoria.getId_categoria());
+        statement.setString(indexNombreCategoria, categoria.getNombre_categoria());
+        statement.setString(indexIdCentroCategoria, categoria.getId_centro_categoria());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -101,13 +105,19 @@ public class Categoria_Dao extends ConexionBD{
      * @param categoria
      * @return Retorna Null si  la Categoria no se encuetra en la base de datos, de lo
      * contrario retorna los datos de la Categoria.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean DeleteCategoria(Categoria_Bean categoria) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_CATEGORIA);
-        statement.setLong(PROCEDURE_ELIMINAR_CATEGORIA_ID_CATEGORIA_INDEX, categoria.getId_categoria());//asigna los valores necesarios para ejecutar el QUERY
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en la base de datoos
+        String query ="{CALL ELIMINAR_CATEGORIA(?)}";
+        int indexIdCategoria=1;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdCategoria, categoria.getId_categoria());       
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

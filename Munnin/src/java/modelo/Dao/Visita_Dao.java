@@ -16,26 +16,20 @@ import modelo.Beans.Visita_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * Visita.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
+
 public class Visita_Dao extends ConexionBD {
 
     private static final String COL_FECHA_VISITA= "fecha_visita";
     private static final String COL_ID_PRODUCTO_VISITA_VISITA = "id_producto_visita_visita";
     private static final String COL_ID_FUNCIONARIO_VISITA = "id_funcionario_visita";
 
-    private static final String PROCEDURE_INSERT_VISITA = "{CALL INSERTAR_VISITA(?,?,?)}";
-    //private static final int PROCEDURE_INGR_CORREO_INDEX = 1;
-    private static final String PROCEDURE_UPDATE_VISITA = "{CALL EDITAR_VISITA(?,?,?)}";
-    private static final String PROCEDURE_DELETE_VISITA = "{CALL ElIMINAR_VISITA(?)}";
-    
-    private static final int PROCEDURE_INSERTAR_VISITA_ID_FUNCIONARIO_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_VISITA_FECHA_INDEX = 2;
-    private static final int PROCEDURE_INSERTAR_VISITA_ID_PRODUCTO_VISITA_INDEX = 3;
-    
-    private static final int PROCEDURE_UPDATE_VISITA_ID_FUNCIONARIO_VISITA_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_VISITA_FECHA_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_VISITA_ID_PRODUCTO_VISITA_INDEX = 3;
-    
-    private static final int PROCEDURE_DELETE_VISITA_ID_FUNCIONARIO_VISITA_INDEX = 1;
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
@@ -55,11 +49,19 @@ public class Visita_Dao extends ConexionBD {
      * @throws java.sql.SQLException
      */
     public boolean InsertarVisita(Visita_Bean visita) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_VISITA);
-        statement.setLong(PROCEDURE_INSERTAR_VISITA_ID_FUNCIONARIO_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setDate(PROCEDURE_INSERTAR_VISITA_FECHA_INDEX, (java.sql.Date) visita.getFecha_visita());
-        statement.setLong(PROCEDURE_INSERTAR_VISITA_ID_PRODUCTO_VISITA_INDEX, visita.getId_producto_visita_visita());
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query = "{CALL INSERTAR_VISITA(?,?,?)}";
+        int indexIdFuncionarioVisita = 1;
+        int indexFechaVisita = 2 ;
+        int indexProductoVisita = 3;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioVisita, visita.getId_funcionario_visita());
+        statement.setDate(indexFechaVisita, (java.sql.Date) visita.getFecha_visita());
+        statement.setLong(indexProductoVisita, visita.getId_producto_visita_visita());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -72,18 +74,25 @@ public class Visita_Dao extends ConexionBD {
 
     /**
      * @param visita
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
-     * @version 1.0
+     * @return Retorna Null si el visita no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Visita.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateVisita(Visita_Bean visita) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_VISITA);
-        statement.setLong(PROCEDURE_UPDATE_VISITA_ID_FUNCIONARIO_VISITA_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setDate(PROCEDURE_UPDATE_VISITA_FECHA_INDEX, (java.sql.Date) visita.getFecha_visita());
-        statement.setLong(PROCEDURE_UPDATE_VISITA_ID_PRODUCTO_VISITA_INDEX, visita.getId_producto_visita_visita());
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+         boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query = "{CALL EDITAR_VISITA(?,?,?)}";
+        int indexIdFuncionarioVisita = 1;
+        int indexFechaVisita = 2 ;
+        int indexProductoVisita = 3;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioVisita, visita.getId_funcionario_visita());
+        statement.setDate(indexFechaVisita, (java.sql.Date) visita.getFecha_visita());
+        statement.setLong(indexProductoVisita, visita.getId_producto_visita_visita());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -96,15 +105,21 @@ public class Visita_Dao extends ConexionBD {
 
     /**
      * @param visita
-     * @return Retorna Null si el Area no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
+     * @return Retorna Null si el Visita no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del Visita.
      * @version 1.0
      * @throws java.sql.SQLException
      */
     public boolean DeleteArea(Visita_Bean visita) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_VISITA);
-        statement.setLong(PROCEDURE_DELETE_VISITA_ID_FUNCIONARIO_VISITA_INDEX, visita.getId_funcionario_visita());//asigna los valores necesarios para ejecutar el QUERY
+         boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query = "{CALL ELIMINAR_VISITA(?)}";
+        int indexIdFuncionarioVisita = 1;
+        
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdFuncionarioVisita, visita.getId_funcionario_visita());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

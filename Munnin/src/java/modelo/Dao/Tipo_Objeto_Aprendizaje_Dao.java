@@ -10,23 +10,19 @@ import modelo.Beans.Tipo_Objeto_Aprendizaje_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * TipoObjetoAprendizaje.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
+
 public class Tipo_Objeto_Aprendizaje_Dao extends ConexionBD {
 
     private static final String COL_ID_TIPO_OBJETO_APRENDIZAJE = "id_tipo_objeto_aprendizaje";
     private static final String COL_NOMBRE_TIPO_OBJETO_APRENDIZAJE = "nombre_tipo_objeto_aprendizaje";
 
-    private static final String PROCEDURE_INSERT_TIPO_OBJETO = "{CALL INSERTAR_TIPO_OBJETO(?,?)}";
-    private static final String PROCEDURE_UPDATE_TIPO_OBJETO = "{CALL EDITAR_TIPO_OBJETO(?,?)}";
-    private static final String PROCEDURE_DELETE_TIPO_OBJETO = "{CALL ElIMINAR_TIPO_OBJETO(?,?)}";
-    
-    private static final int PROCEDURE_INSERTAR_TIPO_OBJETO_ID_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_TIPO_OBJETO__NOMBRE_INDEX = 2;
-    
-    private static final int PROCEDURE_UPDATE_TIPO_OBJETO_ID_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_TIPO_OBJETO__NOMBRE_INDEX = 2;
-    
-    private static final int PROCEDURE_DELETE_TIPO_OBJETO_ID_INDEX = 1;
-    private static final int PROCEDURE_DELETE_TIPO_OBJETO__NOMBRE_INDEX = 2;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -41,16 +37,22 @@ public class Tipo_Objeto_Aprendizaje_Dao extends ConexionBD {
     /**
      *
      * @param tipoObjeto
-     * @return Retorna Null si el Tipo_Objeto no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Tipo_Objeto.
-     * @version 1.0
+     * @return Retorna Null si el TipoObjeto no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del TipoObjeto.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarArea(Tipo_Objeto_Aprendizaje_Bean tipoObjeto) throws SQLException {
-        boolean resultado;        
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_TIPO_OBJETO);
-        statement.setLong(PROCEDURE_INSERTAR_TIPO_OBJETO_ID_INDEX, tipoObjeto.getId_tipo_objeto_aprendizaje());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_TIPO_OBJETO__NOMBRE_INDEX, tipoObjeto.getNombre_tipo_objeto_aprendizaje());        
+        boolean resultado; // esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL INSERTAR_TIPO_OBJETO_APRENDIZAJE(?,?)}";
+        int indexIdTipoObjeto = 1;
+        int indexNombreTipoObjeto = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoObjeto, tipoObjeto.getId_tipo_objeto_aprendizaje());
+        statement.setString(indexNombreTipoObjeto, tipoObjeto.getNombre_tipo_objeto_aprendizaje());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -63,16 +65,22 @@ public class Tipo_Objeto_Aprendizaje_Dao extends ConexionBD {
 
     /**
      * @param tipoObjeto
-     * @return Retorna Null si el Tipo_Objeto no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Tipo_Objeto.
-     * @version 1.0
+     * @return Retorna Null si el TipoObjeto no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del TipoObjeto.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateArea(Tipo_Objeto_Aprendizaje_Bean tipoObjeto) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_TIPO_OBJETO);
-        statement.setLong(PROCEDURE_UPDATE_TIPO_OBJETO_ID_INDEX, tipoObjeto.getId_tipo_objeto_aprendizaje());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_TIPO_OBJETO__NOMBRE_INDEX, tipoObjeto.getNombre_tipo_objeto_aprendizaje());  
+       boolean resultado; // esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_TIPO_OBJETO_APRENDIZAJE(?,?)}";
+        int indexIdTipoObjeto = 1;
+        int indexNombreTipoObjeto = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoObjeto, tipoObjeto.getId_tipo_objeto_aprendizaje());
+        statement.setString(indexNombreTipoObjeto, tipoObjeto.getNombre_tipo_objeto_aprendizaje());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -84,17 +92,21 @@ public class Tipo_Objeto_Aprendizaje_Dao extends ConexionBD {
     }
 
     /**
-     * @param Id_tipo_objeto_aprendizaje Id del Tipo_Objeto
-     * @return Retorna Null si el Tipo_Objeto no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Tipo_Objeto.
-     * @version 1.0
+     * @param Id_tipo_objeto_aprendizaje Id del TipoObjeto
+     * @return Retorna Null si el TipoObjeto no se encuetra en la base de datos, de lo
+     * contrario retorna los datos del TipoObjeto.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean DeleteArea(Tipo_Objeto_Aprendizaje_Bean tipoObjeto) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_TIPO_OBJETO);
-        statement.setLong(PROCEDURE_DELETE_TIPO_OBJETO_ID_INDEX, tipoObjeto.getId_tipo_objeto_aprendizaje());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_DELETE_TIPO_OBJETO__NOMBRE_INDEX, tipoObjeto.getNombre_tipo_objeto_aprendizaje());        
+        boolean resultado; // esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL ELIMINAR_TIPO_OBJETO_APRENDIZAJE(?,?)}";
+        int indexIdTipoObjeto = 1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdTipoObjeto, tipoObjeto.getId_tipo_objeto_aprendizaje());     
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -102,7 +114,6 @@ public class Tipo_Objeto_Aprendizaje_Dao extends ConexionBD {
             this.getConexion().rollback();
             resultado = false;
         }
-        
         return resultado;
     }
 

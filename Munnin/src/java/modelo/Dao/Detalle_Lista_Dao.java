@@ -16,8 +16,11 @@ import util.ClassConexion;
 import util.ConexionBD;
 
 /**
+ * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
+ * Detalle_lista.
  *
- * @author Administrador
+ * @version 1.3
+ * @author Monica <JBadCode>
  */
  public class Detalle_Lista_Dao extends ConexionBD {
 
@@ -25,18 +28,6 @@ import util.ConexionBD;
     private static final String COL_ID_LISTA_DETALLE_LISTA = "id_lista_detalle_lista";
     private static final String COL_ID_ITEM_DETALLE_LISTA = "id_item_detalle_lista";
     
-
-    private static final String PROCEDURE_INSERT_DETALLE_LISTA = "{CALL INSERTAR_DETALLE_LISTA(?,?,?)}";
-    private static final String PROCEDURE_UPDATE_DETALLE_LISTA = "{CALL EDITAR_DETALLE_LISTA(?,?,?)}";
-    private static final String PROCEDURE_DELETE_DETALLE_LISTA = "{CALL ElIMINAR_DETALLE_LISTA(?)}";
-
-    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX = 2;
-    private static final int PROCEDURE_INSERTAR_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX = 3;
-    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX = 3;
-    private static final int PROCEDURE_ELIMINAR_DETALLE_ID_DETALLE_LISTA_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -53,15 +44,22 @@ import util.ConexionBD;
      * @param detalle_lista
      * @return Retorna Null si el Detalle_lista no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Detalle_lista.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean InsertarDetalleLista(Detalle_Lista_Bean detalle) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_DETALLE_LISTA);
-        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX, detalle.getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX, detalle.getId_lista_detalle_lista());
-        statement.setLong(PROCEDURE_INSERTAR_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX, detalle.getId_item_detalle_lista());        
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL INSERTAR_DETALLE_LISTA(?,?,?)}";
+        int indexIdDetalleLista = 1;
+        int indexIdListaDetalleLista = 2;
+        int indexIdItemDetalleLista = 3;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdDetalleLista, detalle.getId_detalle_lista());
+        statement.setLong(indexIdListaDetalleLista, detalle.getId_lista_detalle_lista());
+        statement.setLong(indexIdItemDetalleLista, detalle.getId_item_detalle_lista());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -76,15 +74,22 @@ import util.ConexionBD;
      * @param detalle_lista
      * @return Retorna Null si el Detalle_lista no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Detalle_lista.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateArea(Detalle_Lista_Bean detalle) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_DETALLE_LISTA);
-        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_DETALLE_LISTA_INDEX, detalle.getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_LISTA_DETALLE_LISTA_INDEX, detalle.getId_lista_detalle_lista());
-        statement.setLong(PROCEDURE_UPDATE_DETALLE_LISTA_ID_ITEM_DETALLE_LISTA_INDEX, detalle.getId_item_detalle_lista());
+         boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL EDITAR_DETALLE_LISTA(?,?,?)}";
+        int indexIdDetalleLista = 1;
+        int indexIdListaDetalleLista = 2;
+        int indexIdItemDetalleLista = 3;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdDetalleLista, detalle.getId_detalle_lista());
+        statement.setLong(indexIdListaDetalleLista, detalle.getId_lista_detalle_lista());
+        statement.setLong(indexIdItemDetalleLista, detalle.getId_item_detalle_lista());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -98,14 +103,18 @@ import util.ConexionBD;
     /**
      * @param detalle_lista
      * @return Retorna Null si el Detalle_Lista no se encuetra en la base de datos, de lo
-     * contrario retorna los datos del Area.
-     * @version 1.0
+     * contrario retorna los datos del Detale_lista.
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean DeleteArea(Detalle_Lista_Bean detalle) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_DETALLE_LISTA);
-        statement.setLong(PROCEDURE_ELIMINAR_DETALLE_ID_DETALLE_LISTA_INDEX,detalle .getId_detalle_lista());//asigna los valores necesarios para ejecutar el QUERY
+        boolean resultado;// esta es la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query ="{CALL ELIMINAR_DETALLE_LISTA(?)}";
+        int indexIdDetalleLista = 1;
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdDetalleLista, detalle.getId_detalle_lista());      
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;

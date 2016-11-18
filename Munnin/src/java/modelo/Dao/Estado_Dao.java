@@ -11,23 +11,19 @@ import modelo.Beans.Estado_Bean;
 import util.ClassConexion;
 import util.ConexionBD;
 
+/**
+ * Esta clase realiza y procesa las consultas a bases de datos, de la tabla
+ * Estado.
+ *
+ * @version 1.3
+ * @author Monica <JBadCode>
+ */
 
  public class Estado_Dao extends ConexionBD {
 
     private static final String COL_ID_ESTADO = "id_estado";
     private static final String COL_NOMBRE_ESTADO = "nombre_estado";
     
-
-    private static final String PROCEDURE_INSERT_ESTADO = "{CALL INSERTAR_ESTADO(?,?)}";
-    private static final String PROCEDURE_UPDATE_ESTADO = "{CALL EDITAR_ESTADO(?,?)}";
-    private static final String PROCEDURE_DELETE_ESTADO = "{CALL ElIMINAR_ESTADO(?)}";
-
-    
-    private static final int PROCEDURE_INSERTAR_ESTADO_ID_ESTADO_INDEX = 1;
-    private static final int PROCEDURE_INSERTAR_ESTADO_NOMBRE_ESTADO_INDEX = 2;
-    private static final int PROCEDURE_UPDATE_ESTADO_ID_ESTADO_INDEX = 1;
-    private static final int PROCEDURE_UPDATE_ESTADO_NOMBRE_ESTADO_INDEX = 2;
-    private static final int PROCEDURE_ELIMINAR_ESTADO_ID_ESTADO_INDEX = 1;
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -48,10 +44,16 @@ import util.ConexionBD;
      * @throws java.sql.SQLException
      */
     public boolean InsertarEstado(Estado_Bean estado) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_INSERT_ESTADO);
-        statement.setLong(PROCEDURE_INSERTAR_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_INSERTAR_ESTADO_NOMBRE_ESTADO_INDEX, estado.getNombre_estado());        
+        boolean resultado;//esta el la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query="{CALL INSERTAR_ESTADO(?,?)}";
+        int indexIdEstado = 1;
+        int indexNombreEstado = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdEstado, estado.getId_estado());
+        statement.setString(indexNombreEstado, estado.getNombre_estado());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -66,14 +68,20 @@ import util.ConexionBD;
      * @param estado
      * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Estado.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean UpdateEstado(Estado_Bean estado) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_UPDATE_ESTADO);
-        statement.setLong(PROCEDURE_UPDATE_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
-        statement.setString(PROCEDURE_UPDATE_ESTADO_NOMBRE_ESTADO_INDEX, estado.getNombre_estado());
+        boolean resultado;//esta el la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query="{CALL EDITAR_ESTADO(?,?)}";
+        int indexIdEstado = 1;
+        int indexNombreEstado = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdEstado, estado.getId_estado());
+        statement.setString(indexNombreEstado, estado.getNombre_estado());        
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -88,13 +96,18 @@ import util.ConexionBD;
      * @param estado
      * @return Retorna Null si el Estado no se encuetra en la base de datos, de lo
      * contrario retorna los datos del Estado.
-     * @version 1.0
+     * @version 1.3
      * @throws java.sql.SQLException
      */
     public boolean DeleteEstado(Estado_Bean estado) throws SQLException {
-        boolean resultado;
-        CallableStatement statement = this.getConexion().prepareCall(PROCEDURE_DELETE_ESTADO);
-        statement.setLong(PROCEDURE_ELIMINAR_ESTADO_ID_ESTADO_INDEX, estado.getId_estado());//asigna los valores necesarios para ejecutar el QUERY
+         boolean resultado;//esta el la futura respuesta
+        
+        //datos en la consulta en base de datos
+        String query="{CALL ELIMINAR_ESTADO(?)}";
+        int indexIdEstado = 1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setLong(indexIdEstado, estado.getId_estado());      
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
