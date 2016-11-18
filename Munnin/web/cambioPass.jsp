@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Munnin</title>
+        <title>Munnin</title>
 	<jsp:include page="contenido/head.jsp" ></jsp:include>        
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">

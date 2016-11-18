@@ -2553,4 +2553,20 @@ BEGIN
     WHERE id_centro_funcionario = _id_centro;
 END $$
 
+/*==============================================================*/
+/* SP CAMBIO_CONTRASENA                               */
+/*==============================================================*/
+
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS cambioContrasena $$
+CREATE PROCEDURE cambioContrasena(
+ in id INT, 
+ in pass VARCHAR(255))
+BEGIN
+	UPDATE funcionario
+    SET contrasena_funcionario = pass
+    WHERE id_funcionario = id
+END $$
 DELIMITER ;
