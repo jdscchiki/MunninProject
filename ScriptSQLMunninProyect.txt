@@ -9,8 +9,8 @@
 /* LOGIN                                                        */
 /* VER_PRODUCTOS_APROVADOS                                      */
 /* ENVIAR_NUEVO_PRODUCTO                                        */
-/* VER_INSTRUCTORES_CENTRO                                      */
-/* REGISTRAR_INSTRUCTOR_CENTRO                                  */
+/* VER_FUNCIONARIOS_CENTRO                                      */
+/* REGISTRAR_FUNCIONARIO                                        */
 /* NUEVA_LISTA                                                  */
 /* NUEVO_ITEM                                                   */
 /* NUEVA_AREA                                                   */
@@ -26,6 +26,8 @@
 /* EDITAR_(nombre de la tabla)                                  */
 /* ELIMINAR_(nombre de la tabla)                                */
 /* VER_(nombre de la tabla)                                     */
+/* VERTODOS_TIPO_DOCUMENTO                                      */
+/* VER_ROLES_FUNCIONARIO                                        */
 /*==============================================================*/
 /*==============================================================*/
 
@@ -146,26 +148,39 @@ CREATE TABLE version (
     REFERENCES centro (id_centro))
 ENGINE = InnoDB;
 
+/*==============================================================*/
+/* Table: TIPO_DOCUMENTO                                        */
+/*==============================================================*/
 
+CREATE TABLE tipo_documento(
+    id_tipo_documento INT NOT NULL,
+    nombre_tipo_documento NVARCHAR(30) NOT NULL,
+    PRIMARY KEY (id_tipo_documento)
+)
+ENGINE = InnoDB;
 
 /*==============================================================*/
 /* Table: FUNCIONARIO                                           */
 /*==============================================================*/
 
 CREATE TABLE funcionario (
-  id_funcionario INT NOT NULL,
-  documento_funcionario NVARCHAR(8) NOT NULL,
-  correo_funcionario NVARCHAR(100) NOT NULL,
-  contrasena_funcionario NVARCHAR(255) NOT NULL,
-  nombre_funcionario NVARCHAR(70) NOT NULL,
-  apellido_funcionario NVARCHAR(70) NOT NULL,
-  cargo_funcionario NVARCHAR(45) NOT NULL,
-  telefono_funcionario NVARCHAR(10) NULL,
-  id_centro_funcionario NVARCHAR(10) NOT NULL,
-  PRIMARY KEY (id_funcionario),
-  UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
-  UNIQUE INDEX documento_funcionario_UNIQUE (documento_funcionario ASC),
-  FOREIGN KEY (id_centro_funcionario )
+    id_funcionario INT NOT NULL,
+    activo_funcionario BIT(1) NOT NULL,
+    id_tipo_documento_funcionario INT NOT NULL,
+    documento_funcionario NVARCHAR(12) NOT NULL,
+    correo_funcionario NVARCHAR(100) NOT NULL,
+    contrasena_funcionario NVARCHAR(255) NOT NULL,
+    nombre_funcionario NVARCHAR(70) NOT NULL,
+    apellido_funcionario NVARCHAR(70) NOT NULL,
+    telefono_funcionario NVARCHAR(10) NULL,
+    id_centro_funcionario NVARCHAR(10) NOT NULL,
+    PRIMARY KEY (id_funcionario),
+    UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
+    UNIQUE INDEX documento_funcionario_UNIQUE (id_tipo_documento_funcionario, documento_funcionario ),
+    CONSTRAINT documento_tipodoc_funcionario_unique UNIQUE (documento_funcionario, id_tipo_documento_funcionario),
+    FOREIGN KEY (id_tipo_documento_funcionario )
+    REFERENCES tipo_documento (id_tipo_documento),
+    FOREIGN KEY (id_centro_funcionario )
     REFERENCES centro (id_centro))
 ENGINE = InnoDB;
 
@@ -194,6 +209,7 @@ CREATE TABLE lista_chequeo (
   fecha_lista DATE NOT NULL,
   tipo_lista NVARCHAR(20) NOT NULL,
   id_autor_lista INT NOT NULL,
+  activo_lista BIT(1) NOT NULL,
   PRIMARY KEY (id_lista),
   FOREIGN KEY (id_autor_lista)
     REFERENCES funcionario (id_funcionario))
@@ -272,7 +288,6 @@ ENGINE = InnoDB;
 CREATE TABLE rol (
   id_rol INT NOT NULL,
   nombre_rol NVARCHAR(45) NOT NULL,
-  descripcion_rol NVARCHAR(100) NOT NULL,
   PRIMARY KEY (id_rol))
 ENGINE = InnoDB;
 
@@ -1101,27 +1116,31 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_funcionario $$
 CREATE PROCEDURE insertar_funcionario (
-	IN _id_funcionario INT  ,
-	IN _documento_funcionario VARCHAR(8) ,
-	IN _correo_funcionario VARCHAR(100) ,
-	IN _contrasena_funcionario VARCHAR(255) ,
-	IN _nombre_funcionario VARCHAR(70) ,
-	IN _apellido_funcionario VARCHAR(70) ,
-	IN _cargo_funcionario VARCHAR(45) ,
-	IN _telefono_funcionario VARCHAR(10) ,
-	IN _id_centro_funcionario VARCHAR(10) )
+    IN _id_funcionario INT  ,
+    IN _activo_funcionario BIT(1) ,
+    IN _id_tipo_documento_funcionario INT ,
+    IN _documento_funcionario VARCHAR(8) ,
+    IN _correo_funcionario VARCHAR(100) ,
+    IN _contrasena_funcionario VARCHAR(255) ,
+    IN _nombre_funcionario VARCHAR(70) ,
+    IN _apellido_funcionario VARCHAR(70) ,
+    IN _telefono_funcionario VARCHAR(10) ,
+    IN _id_centro_funcionario VARCHAR(10) 
+    )
 BEGIN
-	INSERT INTO funcionario
-	VALUES (
-		_id_funcionario ,
-		_documento_funcionario ,
-		_correo_funcionario ,
-		_contrasena_funcionario ,
-		_nombre_funcionario ,
-		_apellido_funcionario ,
-		_cargo_funcionario ,
-		_telefono_funcionario ,
-		_id_centro_funcionario );
+    INSERT INTO funcionario
+    VALUES (
+        _id_funcionario ,
+        _activo_funcionario ,
+        _id_tipo_documento_funcionario ,
+        _documento_funcionario ,
+        _correo_funcionario ,
+        _contrasena_funcionario ,
+        _nombre_funcionario ,
+        _apellido_funcionario ,
+        _telefono_funcionario ,
+        _id_centro_funcionario 
+    );
 END $$
 
 /*---editar funcionaro------------------------------------------*/
@@ -1129,24 +1148,27 @@ END $$
 DROP PROCEDURE IF EXISTS editar_funcionario $$
 CREATE PROCEDURE editar_funcionario (
 	IN _id_funcionario INT ,
-	IN _documento_funcionario VARCHAR(8) ,
+	IN _activo_funcionario BIT(1) ,
+        IN _id_tipo_documento_funcionario INT ,
+        IN _documento_funcionario VARCHAR(8) ,
 	IN _correo_funcionario VARCHAR(100) ,
 	IN _contrasena_funcionario VARCHAR(255) ,
 	IN _nombre_funcionario VARCHAR(70) ,
 	IN _apellido_funcionario VARCHAR(70) ,
-	IN _cargo_funcionario VARCHAR(45) ,
 	IN _telefono_funcionario VARCHAR(10) ,
 	IN _id_centro_funcionario VARCHAR(10) )
 BEGIN
 	UPDATE funcionario
-	SET documento_funcionario = _documento_funcionario ,
+	SET activo_funcionario = _activo_funcionario ,
+                id_tipo_documento_funcionario = _id_tipo_documento_funcionario ,
+                documento_funcionario = _documento_funcionario ,
 		correo_funcionario = _correo_funcionario ,
 		contrasena_funcionario = _contrasena_funcionario ,
 		nombre_funcionario = _nombre_funcionario ,
 		apellido_funcionario = _apellido_funcionario ,
-		cargo_funcionario = _cargo_funcionario ,
 		telefono_funcionario = _telefono_funcionario ,
-		id_centro_funcionario = _id_centro_funcionario 
+		id_centro_funcionario = _id_centro_funcionario ,
+                activo_funcionario = _activo_funcionario
 	WHERE id_funcionario = _id_funcionario ;
 END $$
 
@@ -1167,12 +1189,13 @@ CREATE PROCEDURE ver_funcionario (
 	IN _id_funcionario INT ) 
 BEGIN
 	SELECT id_funcionario ,
+        activo_funcionario,
+        id_tipo_documento_funcionario ,
 	documento_funcionario ,
 	correo_funcionario ,
 	contrasena_funcionario ,
 	nombre_funcionario ,
 	apellido_funcionario ,
-	cargo_funcionario ,
 	telefono_funcionario ,
 	id_centro_funcionario
 	FROM funcionario
@@ -1319,7 +1342,8 @@ CREATE PROCEDURE insertar_lista_chequeo (
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT )
+	IN _id_autor_lista INT ,
+        IN _activo_lista BIT(1) )
 BEGIN
 	INSERT INTO lista_chequeo
 	VALUES (
@@ -1328,7 +1352,8 @@ BEGIN
 		_descripcion_lista ,
 		_fecha_lista ,
 		_tipo_lista ,
-		_id_autor_lista );
+		_id_autor_lista ,
+                _activo_lista );
 END $$
 
 /*---editar lista_chequeo---------------------------------------*/
@@ -1340,14 +1365,16 @@ CREATE PROCEDURE editar_lista_chequeo (
 	IN _descripcion_lista VARCHAR(255) ,
 	IN _fecha_lista DATE ,
 	IN _tipo_lista VARCHAR(20) ,
-	IN _id_autor_lista INT )
+	IN _id_autor_lista INT ,
+        IN _activo_lista BIT(1) )
 BEGIN
 	UPDATE lista_chequeo
 	SET nombre_lista = _nombre_lista ,
 		descripcion_lista = _descripcion_lista ,
 		fecha_lista = _fecha_lista ,
 		tipo_lista = _tipo_lista ,
-		id_autor_lista = _id_autor_lista 
+		id_autor_lista = _id_autor_lista ,
+                activo_lista = _activo_lista
 	WHERE id_lista = _id_lista ;
 END $$
 
@@ -1372,7 +1399,8 @@ BEGIN
 	descripcion_lista ,
 	fecha_lista ,
 	tipo_lista ,
-	id_autor_lista 
+	id_autor_lista ,
+        activo_lista 
 	FROM lista_chequeo
 	WHERE id_lista = _id_lista ;
 END $$
@@ -1639,14 +1667,12 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_rol $$
 CREATE PROCEDURE insertar_rol (
 	IN _id_rol INT ,
-	IN _nombre_rol VARCHAR(45) ,
-	IN _descripcion_rol VARCHAR(100) )
+	IN _nombre_rol VARCHAR(45) )
 BEGIN
 	INSERT INTO rol
 	VALUES (
 		_id_rol ,
-		_nombre_rol ,
-		_descripcion_rol );
+		_nombre_rol );
 END $$
 
 /*---editar rol-------------------------------------------------*/
@@ -1654,12 +1680,10 @@ END $$
 DROP PROCEDURE IF EXISTS editar_rol $$
 CREATE PROCEDURE editar_rol (
 	IN _id_rol INT ,
-	IN _nombre_rol VARCHAR(45) ,
-	IN _descripcion_rol VARCHAR(100) )
+	IN _nombre_rol VARCHAR(45) )
 BEGIN
 	UPDATE rol
-	SET nombre_rol = _nombre_rol ,
-		descripcion_rol = _descripcion_rol 
+	SET nombre_rol = _nombre_rol 
 	WHERE id_rol = _id_rol ;
 END $$
 
@@ -1680,8 +1704,7 @@ CREATE PROCEDURE ver_rol (
 	IN _id_rol INT )
 BEGIN
 	SELECT id_rol ,
-	nombre_rol ,
-	descripcion_rol
+	nombre_rol 
 	FROM rol
 	WHERE id_rol = _id_rol ;
 END $$
@@ -1738,6 +1761,60 @@ BEGIN
 	extencion_tipo_archivo 
 	FROM tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP TIPO_DOCUMENTO                                            */
+/*==============================================================*/
+DELIMITER $$
+
+/*---insertar tipo_documento------------------------------------*/
+
+DROP PROCEDURE IF EXISTS insertar_tipo_documento $$
+CREATE PROCEDURE insertar_tipo_documento (
+	IN _id_tipo_documento INT , 
+	IN _nombre_tipo_documento VARCHAR(30) ) 
+BEGIN
+	INSERT INTO tipo_documento 
+	VALUES (
+		_id_tipo_documento , 
+		_nombre_tipo_documento );
+END $$
+
+/*---editar tipo_documento--------------------------------------*/
+
+DROP PROCEDURE IF EXISTS editar_tipo_documento $$
+CREATE PROCEDURE editar_tipo_documento (
+	IN _id_tipo_documento INT , 
+	IN _nombre_tipo_documento VARCHAR(30) ) 
+BEGIN
+	UPDATE tipo_documento 
+	SET nombre_tipo_documento = _nombre_tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+/*---eliminar tipo_documento------------------------------------*/
+
+DROP PROCEDURE IF EXISTS eliminar_tipo_documento $$
+CREATE PROCEDURE eliminar_tipo_documento (
+	IN _id_tipo_documento INT )
+BEGIN
+	DELETE FROM tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+/*---ver tipo_documento-----------------------------------------*/
+
+DROP PROCEDURE IF EXISTS ver_tipo_documento $$
+CREATE PROCEDURE ver_tipo_documento (
+	IN _id_tipo_documento INT ) 
+BEGIN
+	SELECT id_tipo_documento ,
+        nombre_tipo_documento
+	FROM tipo_documento
+	WHERE id_tipo_documento = _id_tipo_documento ;
 END $$
 
 DELIMITER ;
@@ -2045,43 +2122,49 @@ END $$
 DELIMITER ;
 
 /*==============================================================*/
-/* SP VER_INSTRUCTORES_CENTRO                                   */
+/* SP VER_FUNCIONARIOS_CENTRO                                   */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_instructores_centro $$
-CREATE PROCEDURE ver_instructores_centro (
-        IN _id_centro VARCHAR(10)
+DROP PROCEDURE IF EXISTS ver_funcionarios_centro $$
+CREATE PROCEDURE ver_funcionarios_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _funcionarioXpagina INT
     )
 BEGIN
+    DECLARE _inicio INT;
+    DECLARE _fin INT;
+    SET _inicio = (_pagina - 1)*_funcionarioXpagina;
     SELECT 
+        id_funcionario ,
+        id_tipo_documento_funcionario ,
         documento_funcionario,
         nombre_funcionario,
         apellido_funcionario,
-        correo_funcionario,
-        cargo_funcionario,
-        telefono_funcionario
+        correo_funcionario
     FROM funcionario
-    WHERE id_centro_funcionario = _id_centro;
+    WHERE id_centro_funcionario = _id_centro
+    LIMIT _inicio, _funcionarioXpagina ;
 END $$
 
 DELIMITER ;
 
 /*==============================================================*/
-/* SP REGISTRAR_INSTRUCTOR_CENTRO                               */
+/* SP REGISTRAR_FUNCIONARIO                                     */
 /*==============================================================*/
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS registrar_instructor_centro $$
-CREATE PROCEDURE registrar_instructor_centro (
-        IN _documento_funcionario VARCHAR(8) ,
+DROP PROCEDURE IF EXISTS registrar_funcionario $$
+CREATE PROCEDURE registrar_funcionario (
+        IN _id_tipo_documento_funcionario INT ,
+        IN _documento_funcionario VARCHAR(12) ,
         IN _correo_funcionario VARCHAR(100) ,
         IN _contrasena_funcionario VARCHAR(255) ,
         IN _nombre_funcionario VARCHAR(70) ,
         IN _apellido_funcionario VARCHAR(70) ,
-        IN _cargo_funcionario VARCHAR(45) ,
         IN _telefono_funcionario VARCHAR(10) ,
         IN _id_centro VARCHAR(10)
     )
@@ -2091,12 +2174,13 @@ BEGIN
     SET _id_funcionario = IFNULL(_id_funcionario, 1);
     CALL insertar_funcionario(
         _id_funcionario ,
+        1 ,
+        _id_tipo_documento_funcionario ,
         _documento_funcionario ,
         _correo_funcionario ,
         _contrasena_funcionario ,
         _nombre_funcionario ,
         _apellido_funcionario ,
-        _cargo_funcionario ,
         _telefono_funcionario ,
         _id_centro);
 END $$
@@ -2128,7 +2212,8 @@ BEGIN
         _descripcion_lista ,
         _fecha_lista ,
         _tipo_lista ,
-        _id_autor_lista);
+        _id_autor_lista ,
+        1);
 END $$
 
 DELIMITER ;
@@ -2397,20 +2482,75 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS login $$
 CREATE PROCEDURE login (
-        IN _correo_funcionario VARCHAR(100) ,
-        IN _contrasena_funcionario VARCHAR(255) 
+        IN _correo_funcionario VARCHAR(100)
     )
 BEGIN
-    SELECT id_funcionario, 
-        documento_funcionario,
-        correo_funcionario,
-        nombre_funcionario,
-        apellido_funcionario,
-        cargo_funcionario,
-        telefono_funcionario,
-        id_centro_funcionario
+    SELECT id_funcionario ,
+        activo_funcionario ,
+        id_tipo_documento_funcionario ,
+	documento_funcionario ,
+    	contrasena_funcionario ,
+	nombre_funcionario ,
+	apellido_funcionario ,
+	telefono_funcionario ,
+	id_centro_funcionario
     FROM funcionario
-    WHERE correo_funcionario = _correo_funcionario AND contrasena_funcionario = _contrasena_funcionario ;
+    WHERE correo_funcionario = _correo_funcionario ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VERTODOS_TIPO_DOCUMENTO                                   */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS vertodos_tipo_documento $$
+CREATE PROCEDURE vertodos_tipo_documento (
+    )
+BEGIN
+    SELECT id_tipo_documento ,
+        nombre_tipo_documento
+    FROM tipo_documento ;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_ROLES_FUNCIONARIO                                     */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_roles_funcionario $$
+CREATE PROCEDURE ver_roles_funcionario (
+        IN _id_funcionario INT
+    )
+BEGIN
+    SELECT fr.id_rol_funci_rol , r.nombre_rol
+    FROM  funcionario_rol fr
+    INNER JOIN rol r
+    ON id_rol_funci_rol = id_rol
+    WHERE id_funcionario_funci_rol = _id_funcionario;
+END $$
+
+DELIMITER ;
+
+/*==============================================================*/
+/* SP CONTEO_FUNCIONARIOS_CENTRO                                */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_funcionarios_centro $$
+CREATE PROCEDURE conteo_funcionarios_centro (
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    SELECT COUNT(id_funcionario) as conteo
+    FROM  funcionario
+    WHERE id_centro_funcionario = _id_centro;
 END $$
 
 DELIMITER ;
