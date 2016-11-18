@@ -10,3 +10,21 @@ function usuarioNoValido(){
     $("#div_mensaje").addClass("alert-danger");
     $("#mensaje").text("Usuario o Contraseña no son validos");
 }
+
+function contrasenaNoValido(){
+    $("#div_mensaje2").addClass("alert");
+    $("#div_mensaje2").addClass("alert-danger");
+    $("#mensaje2").text("Contraseña Incorrecta");
+}
+
+function contrasenaOK(){
+    $("#div_mensaje2").addClass("alert");
+    $("#div_mensaje2").addClass("alert-danger");
+    $("#mensaje2").text("Contraseña OK");
+}
+
+function contrasenaMal(){
+    $("#div_mensaje2").addClass("alert");
+    $("#div_mensaje2").addClass("alert-danger");
+    $("#mensaje2").text("Contraseñas No Coinciden");
+}

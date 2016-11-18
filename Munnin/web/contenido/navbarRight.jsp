@@ -4,7 +4,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
         <ul class="dropdown-menu ">
             <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
-            <li><a href="#">Cambiar contraseña</a></li>
+            <li><a href="cambioPass.jsp">Cambiar contraseña</a></li>
             <li><a href="#" onclick="openNav()"> Rol</a></li>
         </ul>
     </li>
