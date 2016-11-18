@@ -41,33 +41,30 @@ public class ServletPass extends HttpServlet {
             request.setAttribute("Mensaje2", "<script>contrasenaMal()</script>");
             request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
         }
-        HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
-        Funcionario funcionario2 = (Funcionario)sesion.getAttribute("usuario");
+        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+        Funcionario funcionario2 = (Funcionario) sesion.getAttribute("usuario");
         try {
             Funcionario funcionario = NegocioLogin.verificarFuncionario(funcionario2.getCorreo(), contrasena);
-            try {
-                if (funcionario == null) {
-                    request.setAttribute("Mensaje2", "<script>contrasenaNoValido()</script>");
+            if (funcionario == null) {
+                request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
+                request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
+            } else {
+                boolean resultado = NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva);
+
+                if (resultado) {
+                    request.setAttribute("Mensaje", "<script>contrasenaOK()</script>");
                     request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 } else {
-                    boolean resultado = NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva);
-                    if (resultado) {
-                        request.setAttribute("Mensaje2", "<script>contrasenaOK()</script>");
-                        request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-                    }
-                    else{
-                        request.setAttribute("Mensaje2", "<script>contrasenaNoValido()</script>");
-                        request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-                    }
+                    request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
+                    request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 }
-            } catch (Exception e) {
-                System.out.println("Error : " + e);
             }
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response); 
-        } catch (Exception e) {            
+
+            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
+        } catch (Exception e) {
             System.out.println("Error 2: " + e);
-       }
-        
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -110,4 +107,3 @@ public class ServletPass extends HttpServlet {
     }// </editor-fold>
 
 }
-
