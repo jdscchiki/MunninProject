@@ -34,7 +34,7 @@ public class Encriptado {
         }
     }
 
-    private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA512";
 
     // These constants may be changed without breaking existing hashes.
     private static final int SALT_BYTE_SIZE = 24;
