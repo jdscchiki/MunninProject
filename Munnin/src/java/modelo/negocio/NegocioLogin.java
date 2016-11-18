@@ -52,5 +52,12 @@ public class NegocioLogin {
         consulta.cerrarConexion();
         return funcionarioLog;
     }
-
+    
+    public static boolean cambioContrasena(int id, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {                
+        boolean resultado;
+        FuncionarioDAO consulta = new FuncionarioDAO();
+        resultado = consulta.cambioContra(id, Encriptado.createHash(contrasena));
+        consulta.cerrarConexion();
+        return resultado;
+    }
 }

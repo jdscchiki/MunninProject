@@ -249,4 +249,27 @@ public class FuncionarioDAO extends ConexionBD {
 
         return resultado;
     }
+    
+    public boolean cambioContra(int id, String correo) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+        
+        //datos de la consulta en base de datos
+        String query = "{CALL CAMBIOCONTRASENA(?,?)}";
+        int indexId = 1;
+        int indexContrasena = 2;
+        
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, id);
+        statement.setString(indexContrasena, correo);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
 }

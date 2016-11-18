@@ -211,4 +211,5 @@ END $$
 
 DELIMITER ;
 
+call Pruebapaginacion()
 call ver_funcionarios_centro('9303', 1, 10)
