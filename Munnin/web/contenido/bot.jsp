@@ -37,5 +37,11 @@
 <script src="<%=request.getContextPath()%>/js/add-forms.js" language="Javascript" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/js/rol.js" language="Javascript" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/js/menu.js" languaje="Javascript" type="text/javascript"></script>
+<% if (request.getAttribute("aditionalJS") != null) { %>
+${aditionalJS}
+<% }%>
+<% if (request.getAttribute("Mensaje") != null) { %>
+${Mensaje}
+<% }%>
 </body>
 </html>

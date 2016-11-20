@@ -12,6 +12,7 @@ import modelo.bean.Funcionario;
 import modelo.bean.Rol;
 import modelo.dao.FuncionarioDAO;
 import util.Encriptado;
+import util.PassGenerator;
 
 /**
  * Clase dedicada a Procesar los datos recividos en ServletLogin
@@ -54,10 +55,14 @@ public class NegocioLogin {
     }
     
     public static boolean cambioContrasena(int id, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {                
-        boolean resultado;
+        boolean resultado;        
         FuncionarioDAO consulta = new FuncionarioDAO();
         resultado = consulta.cambioContra(id, Encriptado.createHash(contrasena));
         consulta.cerrarConexion();
         return resultado;
+    }
+    public static boolean validarSeguridad(String contrasena){
+        boolean resultado;
+        return resultado= PassGenerator.isSecure(contrasena);               
     }
 }

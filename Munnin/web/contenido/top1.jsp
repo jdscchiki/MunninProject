@@ -8,6 +8,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/skin-start.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <% if (request.getAttribute("aditionalCSS") != null) { %>
+        ${aditionalCSS}
+        <% }%>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <!--navbar-->

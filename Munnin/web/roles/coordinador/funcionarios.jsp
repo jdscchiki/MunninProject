@@ -2,10 +2,15 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="modelo.bean.Funcionario"%>
 <%
-    request.setAttribute("title", "Munnin inicio");
+    request.setAttribute("title", "Munnin Funcionarios");
+    
+    String aditionalJS = "";
+    aditionalJS += "<script src='"+request.getContextPath()+"/js/TableTest.js' languaje='Javascript' type='text/javascript'></script>";
+
+    request.setAttribute("aditionalJS", aditionalJS);
 %>
 <jsp:include page="/contenido/top1.jsp"></jsp:include>
-<jsp:include page="/contenido/navbarCont.jsp"></jsp:include><%-- cambia dependiendo de la pagina--%>
+<jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include><%-- cambia dependiendo de la pagina--%>
 <jsp:include page="/contenido/top2.jsp"></jsp:include>
 
     <ul class="pagination">
@@ -31,7 +36,7 @@
         }
 
         if (pagina > 1) {//si la pagina no es la primera entonces habilita el boton anterior
-%>
+    %>
     <li><a href="<%=request.getContextPath()%>/roles/coordinador/funcionarios.jsp?pagina=<%=pagina - 1%>">anterior</a></li>
         <%
         } else {
@@ -41,7 +46,7 @@
             }
             for (int i = inicioPag; i <= finPag; i++) {//despliega los redireccionamientos a otras paginas
                 if (i == pagina) {//si la pagina en el paginador es la actual es marcada para que se vea diferente
-%>
+        %>
     <li class="active"><a href="<%=request.getContextPath()%>/roles/coordinador/funcionarios.jsp?pagina=<%=i%>"><%=i%></a></li>
         <%
         } else {
@@ -52,7 +57,7 @@
             }
 
             if (pagina < paginas) {//si la pagina no es la ultima entonces habilita el boton siguiente
-%>
+        %>
     <li><a href="<%=request.getContextPath()%>/roles/coordinador/funcionarios.jsp?pagina=<%=pagina + 1%>">siguiente</a></li>
         <%
         } else {
@@ -91,5 +96,5 @@
     <button type="submit" name="opcion" value="eliminar">Eliminar funcionario</button>
 </form>
 <a href="<%=request.getContextPath()%>/roles/coordinador/formularios/registro-funcionario.jsp" >Registro de funcionarios</a>
-<script src="<%=request.getContextPath()%>/js/TableTest.js" languaje="Javascript" type="text/javascript"></script>
+
 <jsp:include page="/contenido/bot.jsp"></jsp:include>
