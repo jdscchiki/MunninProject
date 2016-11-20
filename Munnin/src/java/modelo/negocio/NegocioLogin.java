@@ -45,28 +45,10 @@ public class NegocioLogin {
                 if (roles != null) {
                     funcionarioLog.setRoles(roles);
                 }
-                funcionarioLog.setContrasena(null); 
+                funcionarioLog.setContrasena(null);
             }
         }
         
-        consulta.cerrarConexion();
-        return funcionarioLog;
-    }
-    
-    public static Funcionario verificarContrasena(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {        
-        Funcionario funcionarioLog;
-        FuncionarioDAO consulta = new FuncionarioDAO();
-        funcionarioLog = consulta.buscarFuncionarioCorreo(correo);
-        if (funcionarioLog != null) {
-            if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
-                funcionarioLog = null;
-            } else {
-                ArrayList<Rol> roles = consulta.verRoles(funcionarioLog.getId());
-                if (roles != null) {
-                    funcionarioLog.setRoles(roles);
-                }
-            }
-        }        
         consulta.cerrarConexion();
         return funcionarioLog;
     }

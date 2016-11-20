@@ -22,7 +22,7 @@ import modelo.bean.Rol;
  * funcionario, rol y rol funcionario
  *
  * @version 1.2
- * @author Juan David Segura Castro 
+ * @author Juan David Segura Castro
  */
 public class FuncionarioDAO extends ConexionBD {
 
@@ -58,11 +58,11 @@ public class FuncionarioDAO extends ConexionBD {
      */
     public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
-        
+
         //datos de la consulta en base de datos
         String query = "{CALL LOGIN(?)}";
         int indexCorreo = 1;
-        
+
         funcionario.setCorreo(correo);
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexCorreo, correo);//asigna los valores necesarios para ejecutar el QUERY
@@ -99,7 +99,7 @@ public class FuncionarioDAO extends ConexionBD {
      */
     public boolean registrar(Funcionario funcionario) throws SQLException {
         boolean resultado;//esta es la futura respuesta
-        
+
         //datos de la consulta en base de datos
         String query = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";
         int indexTipoDoc = 1;
@@ -110,7 +110,7 @@ public class FuncionarioDAO extends ConexionBD {
         int indexApellido = 6;
         int indexTelefono = 7;
         int indexIdCentro = 8;
-        
+
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexTipoDoc, funcionario.getIdTipoDocumento());
         statement.setString(indexDoc, funcionario.getDocumento());
@@ -125,6 +125,124 @@ public class FuncionarioDAO extends ConexionBD {
             this.getConexion().commit();
             resultado = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Consulta los roles de un funcionario
+     *
+     * @param id id del funcionario
+     * @return ArrayList de los roles
+     * @throws SQLException existe un priblema en la consulta
+     */
+    public ArrayList<Rol> verRoles(int id) throws SQLException {
+        ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
+        int indexIdFunc = 1;
+
+        String resId_rol = "id_rol_funci_rol";//nombre de la columna del select
+        String resNombre_rol = "nombre_rol";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunc, id);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(resId_rol));
+            rol.setNombre(rs.getString(resNombre_rol));
+            roles.add(rol);
+        }
+
+        return roles;
+    }
+
+    /**
+     * Consulta los funcionario pertenecientes a un centro en especifico
+     *
+     * @param idCentro id del centro a consultar en la base de datos
+     * @param pagina pagina a realizar consulta(usado para consultas a centros
+     * grandes)
+     * @param cantXpag resultados por pagina al realizar consulta(usado para
+     * consultas a centros grandes)
+     * @return ArrayList de los funcionarios pertenecientes a un centro por
+     * intervalos
+     * @throws SQLException existe un priblema en la consulta
+     */
+    public ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws SQLException {
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setCorreo(rs.getString(COL_CORREO));
+            funcionarios.add(funcionario);
+        }
+        return funcionarios;
+    }
+
+    public int conteoFuncionariosCentro(String idCentro) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?)}";
+        int indexCentro = 1;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+
+    public boolean inhabilitarFuncionario(int idFuncionario) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL INHABILITAR_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idFuncionario);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
             resultado = false;
         }
@@ -153,98 +271,5 @@ public class FuncionarioDAO extends ConexionBD {
         }
 
         return resultado;
-    }
-
-    /**
-     * Consulta los roles de un funcionario
-     *
-     * @param id id del funcionario
-     * @return ArrayList de los roles
-     * @throws SQLException existe un priblema en la consulta
-     */
-    public ArrayList<Rol> verRoles(int id) throws SQLException {
-        ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
-        
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
-        int indexIdFunc = 1;
-        
-        String resId_rol = "id_rol_funci_rol";//nombre de la columna del select
-        String resNombre_rol = "nombre_rol";//nombre de la columna del select
-        
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexIdFunc, id);
-        
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Rol rol = new Rol();
-            rol.setId(rs.getInt(resId_rol));
-            rol.setNombre(rs.getString(resNombre_rol));
-            roles.add(rol);
-        }
-        
-        return roles;
-    }
-/**
- * Consulta los funcionario pertenecientes a un centro en especifico
- * 
- * @param idCentro id del centro a consultar en la base de datos
- * @param pagina pagina a realizar consulta(usado para consultas a centros grandes)
- * @param cantXpag resultados por pagina al realizar consulta(usado para consultas a centros grandes)
- * @return ArrayList de los funcionarios pertenecientes a un centro por intervalos
- * @throws SQLException existe un priblema en la consulta
- */
-    public ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws SQLException {
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
-        
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?)}";
-        int indexCentro = 1;
-        int indexPagina = 2;
-        int indexCantXPag = 3;
-        
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setInt(indexPagina, pagina);
-        statement.setInt(indexCantXPag, cantXpag);
-        
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Funcionario funcionario = new Funcionario();
-            funcionario.setId(rs.getInt(COL_ID));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
-            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
-            funcionario.setNombre(rs.getString(COL_NOMBRE));
-            funcionario.setApellido(rs.getString(COL_APELLIDO));
-            funcionario.setCorreo(rs.getString(COL_CORREO));
-            funcionarios.add(funcionario);
-        }
-        return funcionarios;
-    }
-    
-    public int conteoFuncionariosCentro(String idCentro) throws SQLException {
-        int conteo = 0;//esta es la futura respuesta
-        
-        //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?)}";
-        int indexCentro = 1;
-        
-        String resConteo = "conteo";//nombre de la columna del select
-        
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            conteo = rs.getInt(resConteo);
-        }
-        return conteo;
     }
 }

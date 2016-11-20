@@ -32,25 +32,23 @@ function validarPass(){
     pass2 = $("#passwordNew1").val();
     pass3 = $("#passwordNew2").val();
     if(pass1===""){
-        $("#div_mensaje2").addClass("alert");
-        $("#div_mensaje2").addClass("alert-danger");
-        $("#mensaje2").text("El campo Contraseña Actual esta vacio");
+        $("#div_mensaje").addClass("alert");
+        $("#div_mensaje").addClass("alert-danger");
+        $("#mensaje").text("El campo Contraseña Actual esta vacio");
         return false;
     }else if(pass2===""){
-        $("#div_mensaje2").addClass("alert");
-        $("#div_mensaje2").addClass("alert-danger");
-        $("#mensaje2").text("El campo Nueva Contraseña esta vacio");
+        $("#div_mensaje").addClass("alert");
+        $("#div_mensaje").addClass("alert-danger");
+        $("#mensaje").text("El campo Nueva Contraseña esta vacio");
         return false;
     }else if(pass3===""){
-        $("#div_mensaje2").addClass("alert");
-        $("#div_mensaje2").addClass("alert-danger");
-        $("#mensaje2").text("El campo Repite Contraseña esta vacio");
+        $("#div_mensaje").addClass("alert");
+        $("#div_mensaje").addClass("alert-danger");
+        $("#mensaje").text("El campo Repite Contraseña esta vacio");
         return false;
     }else{
-        $("#div_mensaje2").removeClass("alert");
-        $("#div_mensaje2").removeClass("alert-danger");
+        $("#div_mensaje").removeClass("alert");
+        $("#div_mensaje").removeClass("alert-danger");
         $("#mensaje2").text("");
     }
 }
-
-

@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador;
+package controlador.roles.coordinador;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelo.bean.Funcionario;
-import modelo.negocio.NegocioLogin;
+import modelo.negocio.NegocioCoordinador;
 
 /**
  *
- * @author Sergio
+ * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletPass", urlPatterns = {"/cambioContrasena"})
-public class ServletPass extends HttpServlet {
+@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/adminFuncionarios"})
+public class ServletAdminFuncionarios extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,35 +33,22 @@ public class ServletPass extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String contrasena = request.getParameter("passwordActual");
-        String contrasenaNueva = request.getParameter("passwordNew1");
-        String contrasenaNueva2 = request.getParameter("passwordNew2");
-        if (!contrasenaNueva.equals(contrasenaNueva2)) {
-            request.setAttribute("Mensaje2", "<script>contrasenaMal()</script>");
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-        }
-        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-        Funcionario funcionario2 = (Funcionario) sesion.getAttribute("usuario");
+        String idFuncionario = request.getParameter("selected");
+        int idFun;
+        String opcion = request.getParameter("opcion");
         try {
-            Funcionario funcionario = NegocioLogin.verificarFuncionario(funcionario2.getCorreo(), contrasena);
-            if (funcionario == null) {
-                request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-                request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-            } else {
-                boolean resultado = NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva);
-
-                if (resultado) {
-                    request.setAttribute("Mensaje", "<script>contrasenaOK()</script>");
-                    request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-                    request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
+            idFun = Integer.parseInt(idFuncionario);
+            try {
+                if (opcion.equals("eliminar")) {
+                    NegocioCoordinador.inhabilitarFuncionario(idFun);
                 }
+                response.sendRedirect(request.getContextPath() + "/roles/coordinador/funcionarios.jsp");
+            } catch (Exception ex) {
+                request.setAttribute("mensaje", ex);
+                request.getRequestDispatcher("/error.jsp").forward(request, response);
             }
-
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("Error 2: " + e);
+
         }
 
     }

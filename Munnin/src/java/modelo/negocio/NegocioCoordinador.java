@@ -21,7 +21,7 @@ import modelo.dao.FuncionarioDAO;
 /**
  * clase dedicada a la logica de negocio usada por el coordinador
  *
- * @author Juan David Segura Castro 
+ * @author Juan David Segura Castro
  *
  */
 public class NegocioCoordinador {
@@ -32,10 +32,12 @@ public class NegocioCoordinador {
      * @param funcionario Datos del funcionario a registrar
      * @param idCentro Id del centro en que va a ser registrado
      * @return True si la operacion fue completada
-     * @throws util.Encriptado.CannotPerformOperationException Error al realizar la encriptacion de la contraseña, verificar la version de java
+     * @throws util.Encriptado.CannotPerformOperationException Error al realizar
+     * la encriptacion de la contraseña, verificar la version de java
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD
-     * @throws java.io.UnsupportedEncodingException Problemas con los Correos de origen
+     * @throws java.io.UnsupportedEncodingException Problemas con los Correos de
+     * origen
      * @throws javax.mail.MessagingException Problemas con el Correo de destino
      */
     public static boolean registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
@@ -68,25 +70,34 @@ public class NegocioCoordinador {
         tipoDocumentoDAO.cerrarConexion();
         return tiposDoc;
     }
-    
-    public static int verPaginasFuncionarios(String idCentro, int cantXpag)  throws NamingException, SQLException {
+
+    public static int verPaginasFuncionarios(String idCentro, int cantXpag) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         cantFuncionarios = funcionarioDAO.conteoFuncionariosCentro(idCentro);
         funcionarioDAO.cerrarConexion();
         paginas = cantFuncionarios / cantXpag;
-        if(cantFuncionarios % cantXpag != 0){
-            paginas ++;
+        if (cantFuncionarios % cantXpag != 0) {
+            paginas++;
         }
         return paginas;
     }
-    
-    public static ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag)  throws NamingException, SQLException {
+
+    public static ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         funcionarios = funcionarioDAO.verFuncionariosCentro(idCentro, pagina, cantXpag);
         funcionarioDAO.cerrarConexion();
         return funcionarios;
+    }
+
+    public static boolean inhabilitarFuncionario(int idFuncionario) throws NamingException, SQLException {
+        boolean resultado;
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        resultado = funcionarioDAO.inhabilitarFuncionario(idFuncionario);
+        funcionarioDAO.cerrarConexion();
+        
+        return resultado;
     }
 }

@@ -12,19 +12,19 @@ function usuarioNoValido(){
 }
 
 function contrasenaNoValido(){
-    $("#div_mensaje2").addClass("alert");
-    $("#div_mensaje2").addClass("alert-danger");
-    $("#mensaje2").text("Contraseña Incorrecta");
+    $("#div_mensaje").addClass("alert");
+    $("#div_mensaje").addClass("alert-danger");
+    $("#mensaje").text("Contraseña Incorrecta");
 }
 
 function contrasenaOK(){
-    $("#div_mensaje2").addClass("alert");
-    $("#div_mensaje2").addClass("alert-danger");
-    $("#mensaje2").text("Contraseña OK");
+    $("#div_mensaje").addClass("alert");
+    $("#div_mensaje").addClass("alert-info");
+    $("#mensaje").text("Cambio contraseña completado");
 }
 
 function contrasenaMal(){
-    $("#div_mensaje2").addClass("alert");
-    $("#div_mensaje2").addClass("alert-danger");
-    $("#mensaje2").text("Contraseñas No Coinciden");
+    $("#div_mensaje").addClass("alert");
+    $("#div_mensaje").addClass("alert-danger");
+    $("#mensaje").text("Contraseñas No Coinciden");
 }
