@@ -36,22 +36,19 @@ public class ServletPass extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String contrasena = request.getParameter("passwordActual");
         String contrasenaNueva = request.getParameter("passwordNew1");
-        String contrasenaNueva2 = request.getParameter("passwordNew2");
-        if (!contrasenaNueva.equals(contrasenaNueva2)) {
-            request.setAttribute("Mensaje2", "<script>contrasenaMal()</script>");
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
-        }
         HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
         Funcionario funcionario2 = (Funcionario) sesion.getAttribute("usuario");
+        if(NegocioLogin.validarSeguridad(contrasena)){
+            request.setAttribute("Mensaje", "<script>contrasenaNoSegura()</script>");
+            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
+        }
         try {
             Funcionario funcionario = NegocioLogin.verificarFuncionario(funcionario2.getCorreo(), contrasena);
             if (funcionario == null) {
                 request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
                 request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
             } else {
-                boolean resultado = NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva);
-
-                if (resultado) {
+                if (NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva)) {
                     request.setAttribute("Mensaje", "<script>contrasenaOK()</script>");
                     request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 } else {
@@ -59,7 +56,6 @@ public class ServletPass extends HttpServlet {
                     request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 }
             }
-
             request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("Error 2: " + e);

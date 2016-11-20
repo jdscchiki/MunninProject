@@ -144,10 +144,7 @@ public class PassGenerator {
      * @see util.PassGenerator#evaluatePassword(java.lang.String)
      */
     public static boolean isSecure(String password) {
-        if (evaluatePassword(password) >= 3) {
-            return true;
-        }
-        return false;
+        return evaluatePassword(password) >= 3;
     }
 
     /**

@@ -23,8 +23,8 @@ function contrasenaOK(){
     $("#mensaje").text("Cambio contraseña completado");
 }
 
-function contrasenaMal(){
+function contrasenaNoSegura(){
     $("#div_mensaje").addClass("alert");
     $("#div_mensaje").addClass("alert-danger");
-    $("#mensaje").text("Contraseñas No Coinciden");
+    $("#mensaje").text("La contrasela no es Segura");
 }
