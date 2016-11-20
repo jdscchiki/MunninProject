@@ -26,5 +26,5 @@ function contrasenaOK(){
 function contrasenaNoSegura(){
     $("#div_mensaje").addClass("alert");
     $("#div_mensaje").addClass("alert-danger");
-    $("#mensaje").text("La contrasela no es Segura");
+    $("#mensaje").text("La contraseña no es Segura");
 }

@@ -3,7 +3,7 @@
     request.setAttribute("title", "Munnin coordinador");
 %>
 <jsp:include page="/contenido/top1.jsp"></jsp:include>
-<jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include><%-- cambia dependiendo de la pagina--%>
+<jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include>
 <jsp:include page="/contenido/top2.jsp"></jsp:include>
 <%-- todo el contnido aqui--%>
             <%@page import="modelo.bean.TipoDocumento"%>

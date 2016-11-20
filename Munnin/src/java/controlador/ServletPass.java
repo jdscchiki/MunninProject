@@ -40,20 +40,16 @@ public class ServletPass extends HttpServlet {
         Funcionario funcionario2 = (Funcionario) sesion.getAttribute("usuario");
         if(NegocioLogin.validarSeguridad(contrasena)){
             request.setAttribute("Mensaje", "<script>contrasenaNoSegura()</script>");
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
         }
         try {
             Funcionario funcionario = NegocioLogin.verificarFuncionario(funcionario2.getCorreo(), contrasena);
             if (funcionario == null) {
                 request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-                request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
             } else {
                 if (NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva)) {
                     request.setAttribute("Mensaje", "<script>contrasenaOK()</script>");
-                    request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 } else {
                     request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-                    request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
                 }
             }
             request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
