@@ -1,6 +1,7 @@
 <%-- esto se usa en el top para dar propiedades segun la pagina--%>
 <%
     request.setAttribute("title", "Munnin coordinador");
+    request.setAttribute("mainPage", 3);
 %>
 <jsp:include page="/contenido/top1.jsp"></jsp:include>
 <jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include>

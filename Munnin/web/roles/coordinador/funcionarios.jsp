@@ -3,6 +3,7 @@
 <%@page import="modelo.bean.Funcionario"%>
 <%
     request.setAttribute("title", "Munnin Funcionarios");
+    request.setAttribute("mainPage", 3);
     
     String aditionalJS = "";
     aditionalJS += "<script src='"+request.getContextPath()+"/js/TableTest.js' languaje='Javascript' type='text/javascript'></script>";
