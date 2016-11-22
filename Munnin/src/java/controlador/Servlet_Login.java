@@ -13,8 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Beans.Funcionario_Bean;
-import modelo.Dao.Funcionario_Dao;
+import modelo.Beans.FuncionarioBean;
+import modelo.Dao.FuncionarioDao;
 
 /**
  *
@@ -47,8 +47,8 @@ public class Servlet_Login extends HttpServlet {
         String telefono_funcionario = request.getParameter("textTelefono");
         String id_centro_funcionario = request.getParameter("textIdCentro");
         
-        Funcionario_Bean BFuncionario = new Funcionario_Bean(id_funcionario, documento_funcionario, correo_funcionario, contrasena_funcionario, nombre_funcionario, apellido_funcionario, cargo_funcionario, telefono_funcionario, id_centro_funcionario);
-        Funcionario_Dao DFuncionario = new Funcionario_Dao(BFuncionario);
+        FuncionarioBean BFuncionario = new FuncionarioBean(id_funcionario, documento_funcionario, correo_funcionario, contrasena_funcionario, nombre_funcionario, apellido_funcionario, cargo_funcionario, telefono_funcionario, id_centro_funcionario);
+        FuncionarioDao DFuncionario = new FuncionarioDao(BFuncionario);
         ResultSet rs;
         
 //        switch(opcion){
