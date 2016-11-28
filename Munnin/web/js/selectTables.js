@@ -3,6 +3,6 @@ function highlight(e) {
     e.target.parentNode.className = 'selected';
 }
 
-var table = document.getElementById('table'),
+var table = document.getElementById('point'),
     selected = table.getElementsByClassName('selected');
 table.onclick = highlight;

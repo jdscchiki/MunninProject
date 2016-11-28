@@ -22,14 +22,13 @@
 						<div class="bar3"></div>
 					</div>
 				</button>
-				<img class="navbar-brand" src="imagenes/LogoNavbar.png" alt="munnin-logo">
+				<img class="navbar-brand" src="imagenes/LogoNavbar.png" alt="munnin-logo" style="padding: 7px 7px;">
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="#vtn1" class="btn" data-toggle="modal">Material de Apoyo </a></li>
-					<li><a href="#vtn2" class="btn" data-toggle="modal">listas de chequeo </a></li>
-					<li><a href="#vtn3" class="btn" data-toggle="modal">buscar </a></li>
-					<li><a href="#vtn4" class="btn" data-toggle="modal">agregar usuario</a></li>
+					<li><a href="#vtn1" data-toggle="modal">Material de Apoyo </a></li>
+					<li><a href="#vtn2" data-toggle="modal">listas de chequeo </a></li>
+					<li><a href="#vtn4" data-toggle="modal">agregar usuario</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
@@ -41,7 +40,7 @@
 		               		<li><a href="#"><span class="fa fa-question-circle-o glyphicon"></span> Preguntas Frecuentes</a></li>		
 		              	</ul>
 		            </li>
-					<li><a href="#vtn" class="btn" data-toggle="modal"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
+					<li><a href="#vtn" data-toggle="modal"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>
 				</ul>
 			</div>
 		</div>
@@ -78,7 +77,8 @@
 					<p>¿Esta seguro de querer salir?</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
 				</div>
 			</div>
 		</div>
@@ -161,34 +161,43 @@
 		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
 		                            </div>
 					    		</div>
-					    		<table id="table" class="table table-hover">
-								    <tr>
-								        <td>col1 f1</td>
-								        <td>col2 f1</td>
-								        <td>col3 f1</td>
-								        <td>col4 f1</td>
-								        <td>col5 f1</td>
-								        <td>col6 f1</td>
-								        <td>col7 f1</td>
-								    </tr>
-								    <tr>
-								        <td>col1 f2</td>
-								        <td>col2 f2</td>
-								        <td>col3 f2</td>
-								        <td>col4 f2</td>
-								        <td>col5 f2</td>
-								        <td>col6 f2</td>
-								        <td>col7 f2</td>
-								    </tr>
-								    <tr>
-								        <td>col1 f3</td>
-								        <td>col2 f3</td>
-								        <td>col3 f3</td>
-								        <td>col4 f3</td>
-								        <td>col5 f3</td>
-								        <td>col6 f3</td>
-								        <td>col7 f3</td>
-								    </tr>
+					    		<table class="table table-hover">
+					    			<thead>
+								      	<tr>
+								        	<th>Firstname</th>
+								        	<th>Lastname</th>
+								        	<th>Email</th>
+								      	</tr>
+								    </thead>
+								    <tbody id="point">
+									    <tr>
+									        <td>col1 f1</td>
+									        <td>col2 f1</td>
+									        <td>col3 f1</td>
+									        <td>col4 f1</td>
+									        <td>col5 f1</td>
+									        <td>col6 f1</td>
+									        <td>col7 f1</td>
+									    </tr>
+									    <tr>
+									        <td>col1 f2</td>
+									        <td>col2 f2</td>
+									        <td>col3 f2</td>
+									        <td>col4 f2</td>
+									        <td>col5 f2</td>
+									        <td>col6 f2</td>
+									        <td>col7 f2</td>
+									    </tr>
+									    <tr>
+									        <td>col1 f3</td>
+									        <td>col2 f3</td>
+									        <td>col3 f3</td>
+									        <td>col4 f3</td>
+									        <td>col5 f3</td>
+									        <td>col6 f3</td>
+									        <td>col7 f3</td>
+									    </tr>
+									</tbody>
 								</table>
 		               		</div>
 		               	</div>
@@ -355,13 +364,14 @@
 	</div>
 	
 	
-
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/menu.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/selectTables.js" language="Javascript" type="text/javascript"></script>
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 </body>
 </html>
 

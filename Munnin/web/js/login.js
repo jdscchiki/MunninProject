@@ -7,15 +7,15 @@ $('.login').on('submit', function(e) {
     $state = $this.find('button > .state');
     $this.addClass('loading');
     $state.html('Verificando');
-    setTimeout(function() {
-        $this.addClass('ok');
-        $state.html('Bienvenido !');
-        /*--aqui se redirecciona--*/
-        location.href="muninn-new.jps";
-        setTimeout(function() {
-            $state.html('Log in');
-            $this.removeClass('ok loading');
-            working = false;
-        }, 1000);
-    }, 1000);
+    // setTimeout(function() {
+    //     $this.addClass('ok');
+    //     $state.html('Bienvenido !');
+    //     setTimeout(function() {
+    //         $state.html('Log in');
+    //         $this.removeClass('ok loading');
+    //         /*--aqui se redirecciona--*/
+    //         // location.href="munnin.jsp";
+    //         working = false;
+    //     }, 2000);
+    // }, 3000);
 });

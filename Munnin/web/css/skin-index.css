@@ -3,7 +3,7 @@ body {
 	background: url("../imagenes/prueba.jpg") 50% fixed;
 	background-size: cover;
 }
-
+/*-- animate login --*/
 @keyframes spinner {
 	0% {
 		transform: rotateZ(0deg);
@@ -142,7 +142,7 @@ body {
 .login:not(.loading) button:focus {
 	border-bottom-width: 4px;
 }
-
+/*-- /animation login --*/
 footer {
 	display: block;
 	padding-top: 50px;

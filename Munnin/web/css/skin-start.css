@@ -1,7 +1,7 @@
 body {
-      font-family: "Open Sans", sans-serif;  
-      position: relative;
-       background-color: #ececec; 
+    font-family: "Open Sans", sans-serif;  
+    position: relative;
+    background-color: #ececec; 
   }
 .filled {
     padding-top: 50px;
@@ -25,9 +25,6 @@ textarea {
 }
 .affix + .container-fluid {
     padding-top: 70px;
-}
-.navbar-right{
-    text-align: center;
 }
 /*--btn menu--*/
 .container {
@@ -178,7 +175,6 @@ td.table-text h6{
 td.table-text p{
     font-size:0.9em;
     line-height: 1.5em;
-    /*font-family: 'Muli-Regular';*/
     color:#999;
 }
 td i{
@@ -188,13 +184,11 @@ td span{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     background:#3BB2D0;
@@ -547,7 +541,6 @@ td {
 }
 
 .selected {
-    background-color: #E0E0E0;
-    color: #FFFFFF;
+    background-color: #CDCDCD;
 }
 /*--/tables--*/
