@@ -99,6 +99,7 @@ body {
 	margin: 10px 0 30px 0;
 	border-bottom: 1px solid #eee;
 	padding-bottom: 20px;
+	text-align: center;
 }
 .login button {
 	width: 100%;

@@ -54,43 +54,37 @@ textarea {
 /*--/menu--*/
 /*---left changing_role---*/
 .left{
-        float:left;
-        height:100vh;
-        padding-top: 50px;
-    }
+    float:left;
+    height:100vh;
+    padding-top: 50px;
+}
     
 .left {
-    background: #000000;
+    background: #238276;
     display: inline-block;
     white-space: nowrap;
     width: 50px;
     transition: width 1s ;
-}    
-
+}       
 .left:hover {
     width: 250px;
-}    
-    
-.item:hover {
-    background-color:#ccc;
 }
-
 .left .glyphicon {
-        margin:15px;
-        width:20px;
-        color:#fff;
-    }
-    
+    margin:15px;
+    width:20px;
+    color:#fff;
+} 
 .item {
-        height:50px;
-        overflow:hidden;
-        color:#fff;
-        cursor: pointer;
+    height:50px;
+    overflow:hidden;
+    color:#fff;
+    cursor: pointer;
 }
-.actived{
+div.left div.active{
     color:#FFFFFF;
-    background-color: #E1E1E1;
+    background-color: #2A9A8C;
 }
+div.left div:hover:not(.active){background-color: #ddd}
 .type{
     height: 47px;;
 }
@@ -142,6 +136,14 @@ a.dropdown-toggle.dropdown-at {
 }
 /*--/drop_menu--*/
 /*--content--*/
+div.contain div.col-md-12 {
+    padding: 20px 0;
+}
+.btnsDown {
+    clear: right;
+}
+
+
 .inbox-right {
     background-color: #fff;
     padding: 1.8em;
@@ -544,3 +546,85 @@ td {
     background-color: #CDCDCD;
 }
 /*--/tables--*/
+/*--pagination--*/
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+/*--/pagination--*/
+/**/
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 1.8em;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+    background-color: #FFFFFF;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+.topright {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.topright:hover {color: red;}

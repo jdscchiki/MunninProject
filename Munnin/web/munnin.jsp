@@ -11,7 +11,7 @@
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
 
-	<!--navbar-->
+<!--navbar-->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -26,7 +26,9 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="#vtn1" data-toggle="modal">Material de Apoyo </a></li>
+					<li><a href="javascript:void(0)" class="tablinks" id="defaultOpen" onclick="menuOpcion(event, 'option1')">Tablas</a></li>
+					<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option2')">UpLoad</a></li>
+			      	<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option3')">option3</a></li>
 					<li><a href="#vtn2" data-toggle="modal">listas de chequeo </a></li>
 					<li><a href="#vtn4" data-toggle="modal">agregar usuario</a></li>
 				</ul>
@@ -46,7 +48,7 @@
 		</div>
 	</nav>
 
-	<!--left changing_role-->
+<!--left changing_role-->
 	<div class="left">
 		<div class="item">
 			<span class="fa fa-eye glyphicon" style="font-size:18px"></span>Administrador
@@ -65,7 +67,7 @@
 		</div>    
 	</div>
 
-	<!--Log out-->
+<!--Log out-->
 	<div class="modal fade" id="vtn">
     	<div class="modal-dialog modal-sm">
 			<div class="modal-content">
@@ -78,150 +80,109 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick=" location.href='index.jsp'">Salir</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!--content start_page-->
+<!--content start_page-->
 	<div class="container-fluid filled">
-		<div class="inbox-mail">
-
-			<div class="col-md-12 tab-content tab-content-in">
-				<div class="tab-pane active text-style" id="tab3">
-					<div class="inbox-right">
-		            	<div class="mailbox-content">
-		               		<div class="mail-toolbar clearfix">
-					     		<div class="float-left">
-					       			<div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
-		                                <div class="btn-group">
-		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
-		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-		                                        <li><a href="#">Social</a></li>
-		                                        <li><a href="#">Forums</a></li>
-		                                        <li><a href="#">Updates</a></li>
-		                                       
-		                                        <li><a href="#">Spam</a></li>
-		                                        <li><a href="#">Trash</a></li>
-		                                       
-		                                        <li><a href="#">New</a></li>
-		                                    </ul>
-		                                </div>
-		                                <div class="btn-group">
-		                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
-		                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-		                                        <li><a href="#">Work</a></li>
-		                                        <li><a href="#">Family</a></li>
-		                                        <li><a href="#">Social</a></li>
-		                                       
-		                                        <li><a href="#">Primary</a></li>
-		                                        <li><a href="#">Promotions</a></li>
-		                                        <li><a href="#">Forums</a></li>
-		                                    </ul>
-		                                </div>
-		                            </div>
-					        	</div>
-					    		<div class="float-right">
-									<div class="dropdown">
-							            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
-							                <i class="fa fa-cog icon_8"></i>
-							                <i class="fa fa-chevron-down icon_8"></i>
-							            	<div class="ripple-wrapper"></div></a>
-							            <ul class="dropdown-menu float-right">
-							                <li>
-							                    <a href="#" title="">
-							                        <i class="fa fa-pencil-square-o icon_9"></i>
-							                        Edit
-							                    </a>
-							                </li>
-							                <li>
-							                    <a href="#" title="">
-							                        <i class="fa fa-calendar icon_9"></i>
-							                        Schedule
-							                    </a>
-							                </li>
-							                <li>
-							                    <a href="#" title="">
-							                        <i class="fa fa-download icon_9"></i>
-							                        Download
-							                    </a>
-							                </li>
-							               
-							                <li>
-							                    <a href="#" class="font-red" title="">
-							                        <i class="fa fa-times" icon_9=""></i>
-							                        Delete
-							                    </a>
-							                </li>
-							            </ul>
-					        		</div>
-		                            <div class="btn-group">
-		                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
-		                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
-		                            </div>
-					    		</div>
-					    		<table class="table table-hover">
-					    			<thead>
-								      	<tr>
-								        	<th>Firstname</th>
-								        	<th>Lastname</th>
-								        	<th>Email</th>
-								      	</tr>
-								    </thead>
-								    <tbody id="point">
-									    <tr>
-									        <td>col1 f1</td>
-									        <td>col2 f1</td>
-									        <td>col3 f1</td>
-									        <td>col4 f1</td>
-									        <td>col5 f1</td>
-									        <td>col6 f1</td>
-									        <td>col7 f1</td>
-									    </tr>
-									    <tr>
-									        <td>col1 f2</td>
-									        <td>col2 f2</td>
-									        <td>col3 f2</td>
-									        <td>col4 f2</td>
-									        <td>col5 f2</td>
-									        <td>col6 f2</td>
-									        <td>col7 f2</td>
-									    </tr>
-									    <tr>
-									        <td>col1 f3</td>
-									        <td>col2 f3</td>
-									        <td>col3 f3</td>
-									        <td>col4 f3</td>
-									        <td>col5 f3</td>
-									        <td>col6 f3</td>
-									        <td>col7 f3</td>
-									    </tr>
-									</tbody>
-								</table>
-		               		</div>
-		               	</div>
-		            </div>
-		 		</div>
-			</div>   
-		</div>
-	</div>
-	
-	
-	<!--Upload files-->
-	<div class="modal fade" id="vtn1">
-		<div class="modal-dialog">	
-			<div class="modal-content">
-				<div class="modal-header">	
-					<button tyle="button" class="close" data-dismiss="modal" aria-hiden="true">&times;</button>
-					<h3 class="modal-title">Material de apoyo </h3>
+		
+		<div class="contain">
+			<div class="col-md-12">
+			   	<div id="option1" class="tabcontent">
+				   	<div class="clearfix">
+					   	<div class="float-left">
+				   			<div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+				                <div class="btn-group">
+				                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
+				                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				                        <li><a href="#">Social</a></li>
+				                        <li><a href="#">Forums</a></li>
+				                        <li><a href="#">Updates</a></li>
+				                       
+				                        <li><a href="#">Spam</a></li>
+				                        <li><a href="#">Trash</a></li>
+				                       
+				                        <li><a href="#">New</a></li>
+				                    </ul>
+				                </div>
+				                <div class="btn-group">
+				                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
+				                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				                        <li><a href="#">Work</a></li>
+				                        <li><a href="#">Family</a></li>
+				                        <li><a href="#">Social</a></li>
+				                       
+				                        <li><a href="#">Primary</a></li>
+				                        <li><a href="#">Promotions</a></li>
+				                        <li><a href="#">Forums</a></li>
+				                    </ul>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="float-right">
+				            <ul class="pagination">
+								<li><a href="#" class="fa fa-chevron-circle-left"></a></li>
+								<li><a class="active" href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#" class="fa fa-chevron-circle-right"></a></li>
+							</ul>
+						</div>
+						<!-- <span onclick="this.parentElement.style.display='none'" class="topright">x</span> -->
+						<div style="clear: left;">
+							<table class="table table-hover">
+				    			<thead>
+							      	<tr>
+							        	<th>Firstname</th>
+							        	<th>Lastname</th>
+							        	<th>Email</th>
+							      	</tr>
+							    </thead>
+							    <tbody id="point">
+								    <tr>
+								        <td>col1 f1</td>
+								        <td>col2 f1</td>
+								        <td>col3 f1</td>
+								        <td>col4 f1</td>
+								        <td>col5 f1</td>
+								        <td>col6 f1</td>
+								        <td>col7 f1</td>
+								    </tr>
+								    <tr>
+								        <td>col1 f2</td>
+								        <td>col2 f2</td>
+								        <td>col3 f2</td>
+								        <td>col4 f2</td>
+								        <td>col5 f2</td>
+								        <td>col6 f2</td>
+								        <td>col7 f2</td>
+								    </tr>
+								    <tr>
+								        <td>col1 f3</td>
+								        <td>col2 f3</td>
+								        <td>col3 f3</td>
+								        <td>col4 f3</td>
+								        <td>col5 f3</td>
+								        <td>col6 f3</td>
+								        <td>col7 f3</td>
+								    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
-				<div class="modal-body" style="background:#F6FBFC">
-					<label for="#upload">Ingresa el archivo : </label><input id="upload" name="imagen" type="file" style="display:inline">
-					<br>
+
+				<div id="option2" class="tabcontent">
 					<form role="form">
+						<h3>Documento para revicion</h3><br>
+						<div class="form-group">
+							<label for="#upload"><h4>Adjuntar :</h4></label><input id="upload" name="imagen" type="file" class="form-control">
+						</div>
 					    <div class="form-group">
-							<label for="#sel1">Categoria : </label>
+							<label for="#sel1"><h4>Categoria :</h4></label>
 							<select class="form-control" id="sel1">
 								<option>Categoria </option>
 								<option>Programacion</option>
@@ -230,8 +191,9 @@
 								<option>Chupa el perro 2</option>
 								<option>Mi libro luna de pluton es todo un exito...</option>
 							</select>
-							<br>
-							<label for="#sel2">Tipo : </label>
+						</div>
+						<div class="form-group">
+							<label for="#sel2"><h4>Tipo :</h4></label>
 							<select class="form-control" id="sel2">
 								<option>Taller </option>
 								<option>Esto no es una guia</option>
@@ -240,19 +202,58 @@
 								<option>Otro </option>
 							</select>
 						</div>
-					</form>		
-					<h4>Comentarios : </h4>
-					<textarea name="" id="" cols="77" rows="10"></textarea>
+						<div class="form-group">
+							<h4>Comentarios : </h4>
+							<textarea class="form-control" rows="5" name="" maxlength="240"></textarea><br>
+							<div class="btn-group btnsDown">
+								<button type="button" class="btn btn-danger" onclick=" location.href='munnin.jsp'">Atras</button>
+								<button type="button" class="btn btn-success">Enviar</button>
+							</div>
+						</div>
+					</form>	
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">Enviar</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>	
+
+				<div id="option3" class="tabcontent">
+					<form action="">
+						<div class="form-group">
+							<label for="nombre">Nombres : </label>
+							<input type="text" class="form-control" id="nombre">
+						</div>
+						<label for="apellido">Apellidos : </label>
+						<input type="text" class="form-control" id="apellido">
+						<label for="documento">Documento :</label>
+						<select id="documento" class="form-control" style="width:120px">
+							<option value="">C.C. </option>
+							<option value="">C.E. </option>
+							<option value="">Pasaporte </option>	
+						</select>
+						<input type="text" class="form-control" id="documento">
+						<label for="correo">Correo : </label>
+						<input type="text" class="form-control" id="correo">
+						<label for="correo1">Confirme su correo  </label>
+						<input type="text" class="form-control" id="correo1">
+						<label for="contraseña">Contraseña :</label>
+						<input type="text" class="form-control" id="contraseña">
+						<label for="contraseña1">Confirme su contraseña :</label>
+						<input type="text" class="form-control" id="contraseña1">
+						<button type="button" class="btn btn-success">Añadir </button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+					</form>
 				</div>
+
+				<!--modelo de ventana guia-->
+				<div id="option" class="tabcontent">
+					<span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+					<h3>opcionTitle</h3>
+					<p>content.</p>
+				</div>
+
 			</div>
 		</div>
+
 	</div>
 
-	<!--check_list-->
+<!--check_list-->
 	<div class="modal fade" id="vtn2">
 		<div class="modal-dialog">	
 			<div class="modal-content">
@@ -281,7 +282,7 @@
 		</div>
 	</div>
 
-	<!--add user -->
+<!--add user -->
 	<div class="modal fade" id="vtn4">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -291,46 +292,17 @@
 				</div>
 				<div class="modal-body">
 					<div style="position:relative">
-					<form action="">
-						<label for="nombre">Nombres : </label>
-						<input type="text" class="form-control" id="nombre">
-						<label for="apellido">Apellidos : </label>
-						<input type="text" class="form-control" id="apellido">
-						<label for="documento">Documento :</label>
-						<select id="documento" class="form-control" style="width:120px">
-							<option value="">C.C. </option>
-							<option value="">C.E. </option>
-							<option value="">Pasaporte </option>	
-						</select>
-						<input type="text" class="form-control" id="documento">
-						<label for="correo">Correo : </label>
-						<input type="text" class="form-control" id="correo">
-						<label for="correo1">Confirme su correo  </label>
-						<input type="text" class="form-control" id="correo1">
-						<label for="contraseña">Contraseña :</label>
-						<input type="text" class="form-control" id="contraseña">
-						<label for="contraseña1">Confirme su contraseña :</label>
-						<input type="text" class="form-control" id="contraseña1">
-						<label for="rol">Seleccione rol :</label>
-						<select id="rol" class="form-control">
-							<option value="">Instructor </option>
-							<option value="">Jefe equipo tecnico</option>
-							<option value="">Jefe equipo pedagogico</option>
-							<option value="">Cordinador </option>
-							<option value="" disabled>Admin </option>
-						</select>
-					</form>
+					
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success">Añadir </button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<!--footer-->
+<!--footer-->
 	<div class="Restricted__footer">
 		<div class="Footer">
 			<div class="Footer__topMenu">
@@ -371,7 +343,7 @@
 	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/menu.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/selectTables.js" language="Javascript" type="text/javascript"></script>
-	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script src="js/showContent.js" language="Javascript" type="text/javascript"></script>
 </body>
 </html>
 

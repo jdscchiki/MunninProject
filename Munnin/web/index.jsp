@@ -7,13 +7,12 @@
 	<link rel="shortcut icon" type="image/x-icon" href="imagenes/logo.png">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/skin-index.css">
-	<!-- <link rel="stylesheet" href="css/skin-indexConfig.css"> -->
 </head>
 <body>
 	<div class="wrapper">
 		<form class="login" role="form" action="ingreso">
 			<img src="imagenes/logo-completo.png" alt="munnin_icono" class="full-logo">
-			<p class="title"> Ingreso </p>
+			<h1 class="title"> Inicia sesión en Munnin </h1>
 			<h4> Correo </h4>
 			<input type="text" id="email" maxlength="40" placeholder="Tu correo" name="textEmail" value="">
 			<i class="fa fa-user"><span class="glyphicon glyphicon-user"></span></i>
@@ -21,7 +20,6 @@
 			<input type="password" maxlength="16" id="pwd" placeholder="Tu contraseña" name="textPass">
 			<i class="fa fa-key"><span class="glyphicon glyphicon-lock"></span></i>
             <input id="pwd_encrypt" type="hidden" name="textPassEncrypt">
-			<a href="#"> ¡He olvidado mi contraseña! </a>
 			<button>
 				<i class="spinner"></i>
 				<span class="state" style="font-size: 25px;"> Ingresar </span>
