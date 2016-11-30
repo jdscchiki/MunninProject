@@ -30,7 +30,6 @@
 					<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option2')">UpLoad</a></li>
 			      	<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option3')">option3</a></li>
 					<li><a href="#vtn2" data-toggle="modal">listas de chequeo </a></li>
-					<li><a href="#vtn4" data-toggle="modal">agregar usuario</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
@@ -219,25 +218,41 @@
 							<label for="nombre">Nombres : </label>
 							<input type="text" class="form-control" id="nombre">
 						</div>
+						<div class="form-group">
 						<label for="apellido">Apellidos : </label>
 						<input type="text" class="form-control" id="apellido">
-						<label for="documento">Documento :</label>
-						<select id="documento" class="form-control" style="width:120px">
-							<option value="">C.C. </option>
-							<option value="">C.E. </option>
-							<option value="">Pasaporte </option>	
-						</select>
-						<input type="text" class="form-control" id="documento">
-						<label for="correo">Correo : </label>
-						<input type="text" class="form-control" id="correo">
-						<label for="correo1">Confirme su correo  </label>
-						<input type="text" class="form-control" id="correo1">
-						<label for="contraseña">Contraseña :</label>
-						<input type="text" class="form-control" id="contraseña">
-						<label for="contraseña1">Confirme su contraseña :</label>
-						<input type="text" class="form-control" id="contraseña1">
-						<button type="button" class="btn btn-success">Añadir </button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						</div>
+						<div class="form-group">
+							<label for="documento">Documento :</label>
+							<select id="documento" class="form-control" style="width:120px">
+								<option value="">C.C. </option>
+								<option value="">C.E. </option>
+								<option value="">Pasaporte </option>	
+							</select>
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="documento">
+						</div>
+						<div class="form-group">
+							<label for="correo">Correo : </label>
+							<input type="text" class="form-control" id="correo">
+						</div>
+						<div class="form-group">
+							<label for="correo1">Confirme su correo  </label>
+							<input type="text" class="form-control" id="correo1">
+						</div>
+						<div class="form-group">
+							<label for="contraseña">Contraseña :</label>
+							<input type="text" class="form-control" id="contraseña">
+						</div>
+						<div class="form-group">
+							<label for="contraseña1">Confirme su contraseña :</label>
+							<input type="text" class="form-control" id="contraseña1">
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-success">Añadir </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						</div>
 					</form>
 				</div>
 
@@ -281,26 +296,6 @@
 			</div>
 		</div>
 	</div>
-
-<!--add user -->
-	<div class="modal fade" id="vtn4">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button tyle="button" class="close" data-dismiss="modal" aria-hiden="true">&times;</button>
-					<h3 class="modal-title">Agregar Usuario</h3>
-				</div>
-				<div class="modal-body">
-					<div style="position:relative">
-					
-					</div>
-				</div>
-				<div class="modal-footer">
-					
-				</div>
-			</div>
-		</div>
-	</div>
 	
 <!--footer-->
 	<div class="Restricted__footer">
@@ -335,13 +330,9 @@
 		</div>
 	</div>
 	
-	
-	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
-	<script src="js/rol.js" language="Javascript" type="text/javascript"></script>
-	<script src="js/menu.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/selectTables.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/showContent.js" language="Javascript" type="text/javascript"></script>
 </body>

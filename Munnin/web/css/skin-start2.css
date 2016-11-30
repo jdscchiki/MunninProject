@@ -3,11 +3,8 @@ body {
     position: relative;
     background-color: #ececec; 
   }
-.filled {
-    padding-top: 50px;
-    height: 100vh;
-    overflow: scroll;
-    overflow-x: hidden;
+.navbar{
+    margin-bottom: 0px;
 }
 textarea {
     resize: none;
@@ -41,19 +38,17 @@ textarea {
 /*---left changing_role---*/
 .left{
     float:left;
-    height:100vh;
-    padding-top: 50px;
-}
-    
-.left {
+    margin-top: 100px;
+    position: fixed;
     background: #238276;
-    /*display: inline-block;*/
     white-space: nowrap;
     width: 50px;
     transition: width 1s ;
+    z-index: 1;
 }       
 .left:hover {
     width: 250px;
+    color: #00FF2A;
 }
 .left .glyphicon {
     margin:15px;
