@@ -16,7 +16,7 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="padding-top: 1px;padding-bottom: 0px;padding-left: 5px;padding-right: 5px;margin-right: 12px;">
-					<div class="container" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
+					<div class="containerBtn" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
 						<div class="bar1"></div>
 						<div class="bar2"></div>
 						<div class="bar3"></div>
@@ -85,11 +85,10 @@
 	</div>
 
 <!--content start_page-->
-	<div id="main" class="container-fluid filled" style="padding-top: 0px;margin-left: 50px">
-		
-		<div class="contain">
-			<div class="col-md-12">
-				<div class="panel"> 	
+	<div id="main" class="contain">
+		<div class="container-fluid">
+			<div class="col-md-12"> 
+				<div class="panelMunnin">	
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed auctor nisi, vitae cursus nunc. Integer cursus congue quam quis vestibulum. Suspendisse quis iaculis sem. Ut eu lacus nibh. Nullam fermentum varius tempor. In fringilla felis in elit placerat ultricies. Donec convallis vitae purus ut posuere. In consectetur pellentesque ipsum quis accumsan. Pellentesque lorem nulla, tincidunt vitae felis in, auctor feugiat dui. Phasellus lectus diam, posuere nec viverra fermentum, porttitor ut ipsum. Suspendisse sed finibus diam. Aenean ac fermentum magna.
 
 					Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla elementum dolor enim, vel bibendum lacus porta sed. Proin nec fermentum purus. Nunc vel ante eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras volutpat sem et neque volutpat feugiat. Quisque non tortor risus. Mauris tincidunt congue mi vitae varius. Integer id libero non ex vehicula ullamcorper. Mauris et velit eu libero feugiat mollis. Vestibulum augue tortor, consectetur nec purus viverra, interdum mattis nulla.

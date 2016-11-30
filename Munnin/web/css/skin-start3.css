@@ -11,7 +11,7 @@ textarea {
     resize: none;
 }
 /*--btn menu--*/
-.container {
+.containerBtn {
     display: inline-block;
     cursor: pointer;
 }
@@ -119,15 +119,17 @@ a.dropdown-toggle.dropdown-at {
 }
 /*--/drop_menu--*/
 /*--content--*/
-div.contain div.col-md-12 {
+#main{
+    margin-left: 50px;
     padding: 20px 0;
 }
 .btnsDown {
     clear: right;
 }
-.panel {
+.panelMunnin {
     background-color: #FFFFFF;
     padding: 1.8em;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
 }
 
 .inbox-right {
