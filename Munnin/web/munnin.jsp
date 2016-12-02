@@ -12,11 +12,11 @@
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
 
 <!--navbar-->
-	<nav class="navbar navbar-default navbar-fixed-top">
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="padding-top: 1px;padding-bottom: 0px;padding-left: 5px;padding-right: 5px;margin-right: 12px;">
-					<div class="container" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
+					<div class="containerBtn" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
 						<div class="bar1"></div>
 						<div class="bar2"></div>
 						<div class="bar3"></div>
@@ -26,10 +26,9 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="javascript:void(0)" class="tablinks" id="defaultOpen" onclick="menuOpcion(event, 'option1')">Tablas</a></li>
-					<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option2')">UpLoad</a></li>
-			      	<li><a href="javascript:void(0)" class="tablinks" onclick="menuOpcion(event, 'option3')">option3</a></li>
-					<li><a href="#vtn2" data-toggle="modal">listas de chequeo </a></li>
+					<li><a href="javascript:void(0)">opcion1</a></li>
+					<li><a href="javascript:void(0)">opcion2</a></li>
+			      	<li><a href="javascript:void(0)">opcion3</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
@@ -86,217 +85,58 @@
 	</div>
 
 <!--content start_page-->
-	<div class="container-fluid filled">
-		
-		<div class="contain">
-			<div class="col-md-12">
-			   	<div id="option1" class="tabcontent">
-				   	<div class="clearfix">
-					   	<div class="float-left">
-				   			<div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
-				                <div class="btn-group">
-				                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-folder"></i> <span class="caret"></span></a>
-				                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-				                        <li><a href="#">Social</a></li>
-				                        <li><a href="#">Forums</a></li>
-				                        <li><a href="#">Updates</a></li>
-				                       
-				                        <li><a href="#">Spam</a></li>
-				                        <li><a href="#">Trash</a></li>
-				                       
-				                        <li><a href="#">New</a></li>
-				                    </ul>
-				                </div>
-				                <div class="btn-group">
-				                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
-				                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-				                        <li><a href="#">Work</a></li>
-				                        <li><a href="#">Family</a></li>
-				                        <li><a href="#">Social</a></li>
-				                       
-				                        <li><a href="#">Primary</a></li>
-				                        <li><a href="#">Promotions</a></li>
-				                        <li><a href="#">Forums</a></li>
-				                    </ul>
-				                </div>
-				            </div>
-				        </div>
-				        <div class="float-right">
-				            <ul class="pagination">
-								<li><a href="#" class="fa fa-chevron-circle-left"></a></li>
-								<li><a class="active" href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#" class="fa fa-chevron-circle-right"></a></li>
-							</ul>
-						</div>
-						<!-- <span onclick="this.parentElement.style.display='none'" class="topright">x</span> -->
-						<div style="clear: left;">
-							<table class="table table-hover">
-				    			<thead>
-							      	<tr>
-							        	<th>Firstname</th>
-							        	<th>Lastname</th>
-							        	<th>Email</th>
-							      	</tr>
-							    </thead>
-							    <tbody id="point">
-								    <tr>
-								        <td>col1 f1</td>
-								        <td>col2 f1</td>
-								        <td>col3 f1</td>
-								        <td>col4 f1</td>
-								        <td>col5 f1</td>
-								        <td>col6 f1</td>
-								        <td>col7 f1</td>
-								    </tr>
-								    <tr>
-								        <td>col1 f2</td>
-								        <td>col2 f2</td>
-								        <td>col3 f2</td>
-								        <td>col4 f2</td>
-								        <td>col5 f2</td>
-								        <td>col6 f2</td>
-								        <td>col7 f2</td>
-								    </tr>
-								    <tr>
-								        <td>col1 f3</td>
-								        <td>col2 f3</td>
-								        <td>col3 f3</td>
-								        <td>col4 f3</td>
-								        <td>col5 f3</td>
-								        <td>col6 f3</td>
-								        <td>col7 f3</td>
-								    </tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+	<div id="main" class="contain">
+		<div class="container-fluid">
+			<div class="col-md-12"> 
+				<div class="panelMunnin">
+<!-- contenido aqui -->	
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed auctor nisi, vitae cursus nunc. Integer cursus congue quam quis vestibulum. Suspendisse quis iaculis sem. Ut eu lacus nibh. Nullam fermentum varius tempor. In fringilla felis in elit placerat ultricies. Donec convallis vitae purus ut posuere. In consectetur pellentesque ipsum quis accumsan. Pellentesque lorem nulla, tincidunt vitae felis in, auctor feugiat dui. Phasellus lectus diam, posuere nec viverra fermentum, porttitor ut ipsum. Suspendisse sed finibus diam. Aenean ac fermentum magna.
 
-				<div id="option2" class="tabcontent">
-					<form role="form">
-						<h3>Documento para revicion</h3><br>
-						<div class="form-group">
-							<label for="#upload"><h4>Adjuntar :</h4></label><input id="upload" name="imagen" type="file" class="form-control">
-						</div>
-					    <div class="form-group">
-							<label for="#sel1"><h4>Categoria :</h4></label>
-							<select class="form-control" id="sel1">
-								<option>Categoria </option>
-								<option>Programacion</option>
-								<option>Dibujo Artistico</option>
-								<option>Libro claramente no plagiado</option>
-								<option>Chupa el perro 2</option>
-								<option>Mi libro luna de pluton es todo un exito...</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="#sel2"><h4>Tipo :</h4></label>
-							<select class="form-control" id="sel2">
-								<option>Taller </option>
-								<option>Esto no es una guia</option>
-								<option>Lectura </option>
-								<option>Evaluacion </option>
-								<option>Otro </option>
-							</select>
-						</div>
-						<div class="form-group">
-							<h4>Comentarios : </h4>
-							<textarea class="form-control" rows="5" name="" maxlength="240"></textarea><br>
-							<div class="btn-group btnsDown">
-								<button type="button" class="btn btn-danger" onclick=" location.href='munnin.jsp'">Atras</button>
-								<button type="button" class="btn btn-success">Enviar</button>
-							</div>
-						</div>
-					</form>	
-				</div>
+					Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla elementum dolor enim, vel bibendum lacus porta sed. Proin nec fermentum purus. Nunc vel ante eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Cras volutpat sem et neque volutpat feugiat. Quisque non tortor risus. Mauris tincidunt congue mi vitae varius. Integer id libero non ex vehicula ullamcorper. Mauris et velit eu libero feugiat mollis. Vestibulum augue tortor, consectetur nec purus viverra, interdum mattis nulla.
 
-				<div id="option3" class="tabcontent">
-					<form action="">
-						<div class="form-group">
-							<label for="nombre">Nombres : </label>
-							<input type="text" class="form-control" id="nombre">
-						</div>
-						<div class="form-group">
-						<label for="apellido">Apellidos : </label>
-						<input type="text" class="form-control" id="apellido">
-						</div>
-						<div class="form-group">
-							<label for="documento">Documento :</label>
-							<select id="documento" class="form-control" style="width:120px">
-								<option value="">C.C. </option>
-								<option value="">C.E. </option>
-								<option value="">Pasaporte </option>	
-							</select>
-						</div>
-						<div class="form-group">
-							<input type="text" class="form-control" id="documento">
-						</div>
-						<div class="form-group">
-							<label for="correo">Correo : </label>
-							<input type="text" class="form-control" id="correo">
-						</div>
-						<div class="form-group">
-							<label for="correo1">Confirme su correo  </label>
-							<input type="text" class="form-control" id="correo1">
-						</div>
-						<div class="form-group">
-							<label for="contraseña">Contraseña :</label>
-							<input type="text" class="form-control" id="contraseña">
-						</div>
-						<div class="form-group">
-							<label for="contraseña1">Confirme su contraseña :</label>
-							<input type="text" class="form-control" id="contraseña1">
-						</div>
-						<div class="btn-group">
-							<button type="button" class="btn btn-success">Añadir </button>
-							<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-						</div>
-					</form>
-				</div>
+					Maecenas laoreet fermentum justo id finibus. Curabitur volutpat iaculis orci sed finibus. Ut vestibulum consequat vestibulum. Sed vel est leo. Etiam semper est eros, id lacinia leo porta nec. Suspendisse quis vehicula nulla, nec semper erat. Sed lacinia diam in nisl tincidunt, ac tristique tortor ultricies. Sed cursus ante a ipsum vestibulum ullamcorper accumsan ut elit. Donec ultricies tellus a enim rhoncus malesuada. Donec ut pharetra nunc.
 
-				<!--modelo de ventana guia-->
-				<div id="option" class="tabcontent">
-					<span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-					<h3>opcionTitle</h3>
-					<p>content.</p>
-				</div>
+					In hac habitasse platea dictumst. Duis rhoncus consequat orci et pharetra. Mauris purus augue, ultricies vel tellus aliquam, luctus porta urna. Donec aliquet est nec nunc ullamcorper, ac dignissim odio vestibulum. Maecenas molestie odio libero. Integer vitae est ac ligula vehicula efficitur in nec urna. Maecenas bibendum pharetra tortor, nec lacinia ex tristique in. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas ultricies lacus id efficitur consequat. Morbi massa tellus, posuere et bibendum at, gravida aliquet odio. Cras sed dapibus elit. Proin cursus nisi sed leo lobortis condimentum. Fusce id mattis quam. Donec sit amet scelerisque sapien. Vestibulum eu accumsan nibh. Phasellus tincidunt tincidunt magna, id pharetra ante.
 
-			</div>
-		</div>
+					Donec at ipsum id velit dictum sodales. Phasellus eleifend tellus mauris, accumsan vehicula enim euismod ac. Integer viverra enim non cursus sollicitudin. Nunc accumsan, magna sit amet lacinia scelerisque, leo magna ultrices nisi, ut gravida erat nisi et tellus. Pellentesque euismod porta libero, sit amet efficitur tellus. Sed leo arcu, vulputate ut eleifend ut, laoreet vitae diam. Cras ut facilisis sem. Fusce condimentum posuere purus in auctor. Quisque auctor augue nulla, eget aliquam eros pulvinar ac. Pellentesque lacinia, nunc sed blandit condimentum, eros ligula accumsan neque, vitae convallis ligula arcu a augue. Curabitur mollis sollicitudin porttitor. Nam facilisis eleifend velit, vitae pulvinar urna sodales eu.
 
-	</div>
+					Sed eget odio eu enim consequat interdum sed non tellus. Pellentesque eget velit vehicula, gravida est non, ultrices nibh. Nam sed leo dictum, imperdiet turpis nec, malesuada enim. Phasellus dapibus nibh id imperdiet pellentesque. Quisque at egestas nulla. Praesent vitae mattis elit. Cras mattis, dui nec efficitur convallis, turpis felis tempor quam, a elementum turpis magna et magna. Vestibulum ultrices eros nulla, non rutrum tellus suscipit eget. Nulla laoreet nibh non nisl consectetur egestas. Curabitur ut dictum quam. Aenean ultricies sit amet orci id consequat. Proin lobortis velit a odio maximus, ut malesuada metus congue.
 
-<!--check_list-->
-	<div class="modal fade" id="vtn2">
-		<div class="modal-dialog">	
-			<div class="modal-content">
-				<div class="modal-header">
-					<button tyle="button" class="close" data-dismiss="modal" aria-hiden="true">&times;</button>
-					<h3 class="modal-title">Lista de chequeo equipo X </h3>
+					Duis faucibus faucibus gravida. Donec eu sapien ut urna sollicitudin vehicula. Morbi eu nisi massa. Integer ac fermentum dui. Fusce velit sem, laoreet a ex eu, laoreet elementum nunc. Morbi bibendum egestas odio quis imperdiet. Pellentesque nisl nisl, maximus sit amet ante id, pretium sagittis velit. Cras tellus nibh, pulvinar at nunc ac, commodo commodo velit.
+
+					Nullam tristique dui tortor, vitae molestie mauris rutrum at. Maecenas vestibulum facilisis mauris, quis ornare tortor bibendum vel. Sed tristique ipsum sed turpis accumsan, id ornare metus condimentum. Nunc volutpat mollis purus id lacinia. Suspendisse ac odio laoreet, vestibulum turpis at, euismod quam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus ante nibh, accumsan in efficitur tincidunt, eleifend sit amet nisi. Praesent dignissim mauris nec posuere posuere. Ut convallis tristique lorem, ut gravida quam pulvinar vel.
+
+					Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse sed leo purus. Aenean gravida quis turpis in venenatis. Maecenas nec neque sodales, porttitor leo lobortis, vestibulum risus. Aenean tincidunt porta lorem, a placerat urna. Donec tincidunt vel metus sed luctus. Pellentesque ante dolor, finibus quis magna sed, bibendum molestie mauris.
+
+					Vivamus egestas, tortor a vulputate tempor, eros sem scelerisque magna, vel fermentum ex mi non ex. Morbi porta a sapien iaculis accumsan. Nulla a diam nisl. Donec a ultrices mauris, at maximus mauris. Nulla tincidunt turpis ex, vel condimentum leo euismod id. Curabitur nulla est, consequat et aliquet at, lacinia eget eros. Etiam augue dui, venenatis et sem a, egestas dictum diam.
+
+					Phasellus tincidunt posuere mauris, eget ornare massa malesuada quis. Morbi porttitor rhoncus elit eget fringilla. Cras vestibulum auctor dictum. Fusce tincidunt velit massa, nec ornare magna vehicula non. Phasellus non dapibus dolor, eget volutpat magna. Suspendisse non imperdiet nisi. Nam et nisi pharetra, ornare libero at, pulvinar est. Pellentesque lacinia finibus mi eu rhoncus.
+
+					Proin aliquam ligula a nulla lobortis ultrices. Nunc accumsan pellentesque orci, vitae tincidunt orci scelerisque sit amet. Mauris sit amet enim non dolor sodales fermentum. Maecenas et eros non sem ullamcorper vulputate a quis augue. Maecenas vel urna vel erat efficitur sollicitudin vitae ac tellus. Phasellus ultricies dictum neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In egestas diam a libero maximus, quis molestie lacus tristique. Maecenas placerat dolor lacinia eros ultricies, in fermentum purus eleifend. Nulla pharetra sodales orci sit amet dictum. Pellentesque aliquet blandit justo, laoreet vestibulum quam sodales in. Vestibulum elementum metus vitae eros venenatis, non interdum augue feugiat. Mauris molestie diam volutpat auctor rutrum. In egestas odio in mauris tempor ultrices.
+
+					Etiam vulputate nunc ac lorem vulputate, vel auctor quam imperdiet. Quisque gravida at nisi sed faucibus. Sed ultricies suscipit nulla, id dictum quam cursus a. Aenean venenatis nibh in pharetra elementum. Quisque ullamcorper risus vitae ornare gravida. Vivamus tempor, tortor ac rhoncus pellentesque, purus turpis iaculis est, luctus aliquam ligula dolor nec nisl. Curabitur tempus neque quam, et aliquam urna cursus ac. Fusce efficitur, eros vitae condimentum rhoncus, odio justo viverra nulla, quis interdum urna lectus ac odio. In iaculis pellentesque rutrum. Proin suscipit, mi nec venenatis viverra, enim ipsum interdum nunc, vitae sollicitudin dolor dolor nec tellus. Aenean porttitor nunc non varius hendrerit.
+
+					Sed malesuada tristique felis, hendrerit mollis nisi varius id. Curabitur nec odio libero. Vivamus elementum, dolor at congue ultrices, neque orci venenatis sem, quis bibendum libero metus sit amet arcu. Vestibulum interdum ac erat sollicitudin tempus. Fusce hendrerit lacinia iaculis. Nam et tincidunt erat. Aenean dapibus nibh hendrerit quam lobortis posuere. Phasellus imperdiet felis at fringilla luctus. Praesent ipsum libero, posuere ac magna quis, aliquam pulvinar elit.
+
+					Maecenas vitae nulla urna. Suspendisse vel feugiat lorem, id facilisis lacus. Vestibulum tempus lorem id cursus convallis. Phasellus vel augue accumsan enim fringilla vehicula. Ut ullamcorper dui in erat ultrices rutrum. Nulla quis scelerisque metus. Nam volutpat risus at ultricies luctus. Praesent dignissim massa non neque fermentum, nec pellentesque quam mollis. Donec sit amet tortor sed risus posuere rutrum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum pharetra purus, quis volutpat orci blandit eget.
+
+					Quisque blandit congue elit, at molestie purus eleifend ac. In hac habitasse platea dictumst. Donec justo odio, cursus vitae nunc cursus, dapibus congue lacus. Mauris interdum hendrerit tempus. Maecenas scelerisque augue in ex convallis, vel faucibus arcu hendrerit. Aenean dictum, ex at volutpat scelerisque, metus neque lacinia quam, ut venenatis erat risus quis ex. Etiam eget gravida dui. Aliquam pharetra consectetur lorem nec bibendum. Maecenas consectetur enim nunc, sodales eleifend sem condimentum et. Fusce vitae ex sapien.
+
+					Integer sit amet ex sed purus convallis aliquam. Vestibulum ut ullamcorper ex. Fusce rhoncus aliquet dui, non accumsan ex semper ac. Donec quis nisi quis ante accumsan interdum. Donec pulvinar tellus turpis, eu mollis eros tincidunt non. Maecenas quis rhoncus lorem. Sed bibendum, ligula a lobortis consequat, mauris lectus pharetra ex, et consequat ligula tellus nec justo. Nunc pulvinar semper maximus. Sed et nisl lacus. Nulla orci ex, rutrum fringilla est id, hendrerit malesuada lacus. Integer a purus ac ante mattis sagittis. Sed sit amet tristique magna, eget pretium justo.
+
+					In laoreet erat non nulla gravida, sed ultricies elit aliquam. Nunc fermentum, eros sed laoreet euismod, dui massa blandit nunc, at gravida enim metus ut nunc. Vestibulum vel leo erat. Aenean nulla orci, dictum ac fermentum ut, semper non purus. Donec commodo orci a nisl posuere, non aliquet metus eleifend. Quisque id nisi ac ipsum suscipit lobortis non vel tortor. Aenean tempor at dolor ut dapibus. Proin ligula nisi, malesuada fringilla eros id, ullamcorper vestibulum eros. Suspendisse aliquet eleifend ipsum, feugiat consectetur mauris efficitur in. Donec semper erat ex, non luctus erat consectetur at. Pellentesque libero nulla, vulputate sed consequat sed, ornare eget urna. Aliquam sit amet magna sed purus pulvinar viverra. Cras id sem diam. Ut lobortis nisl mauris, ac molestie arcu luctus sodales. Mauris hendrerit elementum tortor, a finibus urna condimentum a.
+
+					Morbi diam lacus, iaculis sit amet viverra quis, tincidunt nec arcu. Nam faucibus quis massa non pharetra. Curabitur eu dictum augue. Etiam imperdiet, nisl eget imperdiet posuere, lectus urna porttitor sapien, quis fermentum ex justo suscipit nunc. Maecenas interdum velit tellus, sit amet pellentesque nulla consectetur non. Nulla facilisi. Donec vehicula dolor quis faucibus feugiat. Phasellus imperdiet arcu eu metus aliquet, sed faucibus purus porttitor. Duis imperdiet est eu dictum bibendum.
+
+					Nam vulputate diam risus, a porta augue tempus pellentesque. Maecenas vitae velit magna. Praesent sodales vel ex ut imperdiet. Vestibulum sed nulla vitae massa viverra sollicitudin at eu ante. Nulla et porttitor mauris, nec ultricies quam. Curabitur a viverra sapien, aliquet dapibus quam. Nunc vitae leo vel leo dignissim porttitor non nec eros. Nunc accumsan magna eget lectus vestibulum hendrerit. Vestibulum lacinia arcu ut diam feugiat, vitae fringilla enim scelerisque. Pellentesque hendrerit lorem quam, eu vehicula diam lobortis vitae. Praesent id sodales nisi. Nunc sit amet tempor sem, vel dapibus orci. Sed non erat vel augue pellentesque gravida ut ac felis. Maecenas mauris nibh, tincidunt a maximus et, mollis sit amet justo. Sed quis risus arcu.</p>	
 				</div>
-				<div class="modal-body">
-					<form method="POST">
-						<label for="nombreLista">nombre de la lista:</label>
-						<input type="text" class="form-control" id="nombreLista">
-					    <div id="dynamicInput">
-					        <input type="checkbox"><label for="item"> Item 1</label>
-					        <textarea class="form-control" cols="77" rows="3"></textarea><br>
-					    </div>
-					    <input type="button" class="btn btn-default" value="Agregar Item" onClick="addInput('dynamicInput');">
-					    <a href="#" title="Ayuda al Usuario" data-toggle="popover" data-content="El boton 'guardar' permitira que el usuario pueda guardar la lista de chequeo actual para usarla posteriormente, y el boton 'agregar' añadira la lista de chequeo sin guardarla.">¿Primera vez?</a>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success">Guardar</button>
-					<button type="button" class="btn btn-primary">Agregar</button>
-		            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-		        </div>
 			</div>
 		</div>
 	</div>
-	
+
+
+
+
 <!--footer-->
 	<div class="Restricted__footer">
 		<div class="Footer">
@@ -330,11 +170,12 @@
 		</div>
 	</div>
 	
+	
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="js/add-forms.js" language="Javascript" type="text/javascript"></script>
 	<script src="js/selectTables.js" language="Javascript" type="text/javascript"></script>
-	<script src="js/showContent.js" language="Javascript" type="text/javascript"></script>
 </body>
 </html>
 
