@@ -1,5 +1,6 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<title>Munnin</title>
 	<meta charset="UTF-8">
@@ -128,14 +129,148 @@
 
 					Morbi diam lacus, iaculis sit amet viverra quis, tincidunt nec arcu. Nam faucibus quis massa non pharetra. Curabitur eu dictum augue. Etiam imperdiet, nisl eget imperdiet posuere, lectus urna porttitor sapien, quis fermentum ex justo suscipit nunc. Maecenas interdum velit tellus, sit amet pellentesque nulla consectetur non. Nulla facilisi. Donec vehicula dolor quis faucibus feugiat. Phasellus imperdiet arcu eu metus aliquet, sed faucibus purus porttitor. Duis imperdiet est eu dictum bibendum.
 
-					Nam vulputate diam risus, a porta augue tempus pellentesque. Maecenas vitae velit magna. Praesent sodales vel ex ut imperdiet. Vestibulum sed nulla vitae massa viverra sollicitudin at eu ante. Nulla et porttitor mauris, nec ultricies quam. Curabitur a viverra sapien, aliquet dapibus quam. Nunc vitae leo vel leo dignissim porttitor non nec eros. Nunc accumsan magna eget lectus vestibulum hendrerit. Vestibulum lacinia arcu ut diam feugiat, vitae fringilla enim scelerisque. Pellentesque hendrerit lorem quam, eu vehicula diam lobortis vitae. Praesent id sodales nisi. Nunc sit amet tempor sem, vel dapibus orci. Sed non erat vel augue pellentesque gravida ut ac felis. Maecenas mauris nibh, tincidunt a maximus et, mollis sit amet justo. Sed quis risus arcu.</p>	
+					Nam vulputate diam risus, a porta augue tempus pellentesque. Maecenas vitae velit magna. Praesent sodales vel ex ut imperdiet. Vestibulum sed nulla vitae massa viverra sollicitudin at eu ante. Nulla et porttitor mauris, nec ultricies quam. Curabitur a viverra sapien, aliquet dapibus quam. Nunc vitae leo vel leo dignissim porttitor non nec eros. Nunc accumsan magna eget lectus vestibulum hendrerit. Vestibulum lacinia arcu ut diam feugiat, vitae fringilla enim scelerisque. Pellentesque hendrerit lorem quam, eu vehicula diam lobortis vitae. Praesent id sodales nisi. Nunc sit amet tempor sem, vel dapibus orci. Sed non erat vel augue pellentesque gravida ut ac felis. Maecenas mauris nibh, tincidunt a maximus et, mollis sit amet justo. Sed quis risus arcu.</p>
+
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vtn1">--1--</button>
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vtn2">--2--</button>
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#vtn3">--3--</button>
+
 				</div>
 			</div>
 		</div>
 	</div>
 
+<!--check_list-->
+	<div class="modal fade" id="vtn1">
+		<div class="modal-dialog">	
+			<div class="modal-content">
+				<div class="modal-header">
+					<button tyle="button" class="close" data-dismiss="modal" aria-hiden="true">&times;</button>
+					<h3 class="modal-title">Lista de chequeo equipo X </h3>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<label for="nombreLista">nombre de la lista:</label>
+						<input type="text" class="form-control" id="nombreLista">
+					    <div id="dynamicInput">
+					        <input type="checkbox"><label for="item"> Item 1</label>
+					        <textarea class="form-control" cols="77" rows="3"></textarea><br>
+					    </div>
+					    <input type="button" class="btn btn-default" value="Agregar Item" onClick="addInput('dynamicInput');">
+					    <a href="#" title="Ayuda al Usuario" data-toggle="popover" data-content="El boton 'guardar' permitira que el usuario pueda guardar la lista de chequeo actual para usarla posteriormente, y el boton 'agregar' añadira la lista de chequeo sin guardarla.">¿Primera vez?</a>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Agregar</button>
+		            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+		        </div>
+			</div>
+		</div>
+	</div>
 
+<!--formulario_ingreso-->
+	<div class="modal fade" id="vtn2">
+    	<div class="modal-dialog">
+      		<div class="modal-content">
+        		<div class="modal-header">
+          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+          			<h4 class="modal-title">Formulario de ingreso</h4>
+        		</div>
+        			<form action="">
+	        	<div class="modal-body">
+						<div class="form-group">
+							<label for="nombre">Nombres : </label>
+							<input type="text" class="form-control" id="nombre">
+						</div>
+						<div class="form-group">
+						<label for="apellido">Apellidos : </label>
+						<input type="text" class="form-control" id="apellido">
+						</div>
+						<div class="form-group">
+							<label for="documento">Documento :</label>
+							<select id="documento" class="form-control" style="width:120px">
+								<option value="">C.C. </option>
+								<option value="">C.E. </option>
+								<option value="">Pasaporte </option>	
+							</select>
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="documento">
+						</div>
+						<div class="form-group">
+							<label for="correo">Correo : </label>
+							<input type="text" class="form-control" id="correo">
+						</div>
+						<div class="form-group">
+							<label for="correo1">Confirme su correo  </label>
+							<input type="text" class="form-control" id="correo1">
+						</div>
+						<div class="form-group">
+							<label for="contraseña">Contraseña :</label>
+							<input type="text" class="form-control" id="contraseña">
+						</div>
+						<div class="form-group">
+							<label for="contraseña1">Confirme su contraseña :</label>
+							<input type="text" class="form-control" id="contraseña1">
+						</div>
+	        	</div>
+	        	<div class="modal-footer">
+	          		<button type="submit" class="btn btn-success">Añadir </button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+	        		
+	        	</div>
+	        		</form>
+      		</div>
+    	</div>
+  	</div>
 
+<!--Add algo no me acuerdo como se llama-->
+	<div class="modal fade" id="vtn3">
+		<div class="modal-dialog">	
+			<div class="modal-content">
+				<div class="modal-header">
+					<button tyle="button" class="close" data-dismiss="modal" aria-hiden="true">&times;</button>
+					<h3 class="modal-title">Añadir Documento</h3>
+				</div>
+				<form action="">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="#upload"><h4>Adjuntar :</h4></label><input id="upload" name="imagen" type="file" class="form-control">
+					</div>
+				    <div class="form-group">
+						<label for="#sel1"><h4>Categoria :</h4></label>
+						<select class="form-control" id="sel1">
+							<option>Categoria </option>
+							<option>Programacion</option>
+							<option>Dibujo Artistico</option>
+							<option>Libro claramente no plagiado</option>
+							<option>Chupa el perro 2</option>
+							<option>Mi libro luna de pluton es todo un exito...</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="#sel2"><h4>Tipo :</h4></label>
+						<select class="form-control" id="sel2">
+							<option>Taller </option>
+							<option>Esto no es una guia</option>
+							<option>Lectura </option>
+							<option>Evaluacion </option>
+							<option>Otro </option>
+						</select>
+					</div>
+					<div class="form-group">
+						<h4>Comentarios : </h4>
+						<textarea class="form-control" rows="5" name="" maxlength="240"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" onclick=" location.href='munnin.jsp'">Atras</button>
+					<button type="button" class="btn btn-success">Enviar</button>
+		        </div>
+		        </form>
+			</div>
+		</div>
+	</div>
 
 <!--footer-->
 	<div class="Restricted__footer">
@@ -169,8 +304,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
