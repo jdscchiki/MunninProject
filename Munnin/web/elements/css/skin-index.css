@@ -1,8 +1,9 @@
 body {
 	height: 100vh;
+	background: url("../imagenes/prueba.jpg") 50% fixed;
 	background-size: cover;
 }
-
+/*-- animate login --*/
 @keyframes spinner {
 	0% {
 		transform: rotateZ(0deg);
@@ -23,7 +24,8 @@ body {
 	width: 100%;
 	min-height: 100%;
 	padding: 20px;
-	background: rgba(35,131,118,0.85);
+	/*background: rgba(35,131,118,0.85);*/
+	background: rgba(7, 107, 93, 0.59);
 }
 
 .login {
@@ -97,6 +99,7 @@ body {
 	margin: 10px 0 30px 0;
 	border-bottom: 1px solid #eee;
 	padding-bottom: 20px;
+	text-align: center;
 }
 .login button {
 	width: 100%;
@@ -140,7 +143,7 @@ body {
 .login:not(.loading) button:focus {
 	border-bottom-width: 4px;
 }
-
+/*-- /animation login --*/
 footer {
 	display: block;
 	padding-top: 50px;
@@ -155,6 +158,6 @@ footer a, footer a:link {
 	text-decoration: none;
 }
 .full-logo {
-		width: 270px;
-		height: 95px;
+	width: 100%;
+	height: 95px;
 }

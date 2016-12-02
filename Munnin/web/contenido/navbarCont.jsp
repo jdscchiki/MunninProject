@@ -27,7 +27,7 @@
         }
     }
 %>
-<li class="<%=inicio%>"><a href="<%=request.getContextPath()%>/inicio.jsp" class="btn">Inicio</a></li>
+<li class="<%=inicio%>"><a href="inicio.jsp" class="btn">Inicio</a></li>
 <li class="<%=buscar%>"><a href="#" class="btn">Buscar</a></li>
 <li class="<%=manual%>"><a href="#" class="btn">Manual</a></li>
 <li class="<%=contactenos%>"><a href="#" class="btn">Contactenos</a></li>

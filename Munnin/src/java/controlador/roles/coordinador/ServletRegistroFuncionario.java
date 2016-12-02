@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
 import modelo.negocio.NegocioCoordinador;
 
@@ -40,7 +41,8 @@ public class ServletRegistroFuncionario extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String telefono = request.getParameter("telefono");
-        String idCentro = request.getParameter("idCentro");
+        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+        String idCentro = ((Funcionario)sesion.getAttribute("usuario")).getIdCentro();
         try {//conversion de datos
             idTipoDoc = Integer.parseInt(tipoDoc);
             Funcionario nuevoFuncionario = new Funcionario();
@@ -51,8 +53,8 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setApellido(apellido);
             nuevoFuncionario.setTelefono(telefono);
             if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
-                //debe mandar un mensaje con js, diciendo que el registro ha sido existoso
-                response.sendRedirect(request.getContextPath()+"/roles/coordinador/formularios/registro-funcionario.jsp");
+                request.setAttribute("Mensaje", "<script>registroCompletado()</script>");
+                request.getRequestDispatcher("roles/coordinador/formularios/registro-funcionario.jsp").forward(request, response);
             } else {
                 //debe mandar un mensaje con js, diciendo que el registro no se ha podido realizar
                 response.sendRedirect(request.getContextPath()+"/roles/coordinador/formularios/registro-funcionario.jsp");

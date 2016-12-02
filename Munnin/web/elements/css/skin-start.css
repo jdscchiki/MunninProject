@@ -1,161 +1,77 @@
 body {
-      font-family: "Open Sans", sans-serif;  
-      position: relative;
-       background-color: #ececec; 
+    font-family: "Open Sans", sans-serif;  
+    position: relative;
+    background-color: #ececec; 
   }
-.filled {
-    padding-top: 50px;
-    height: 100vh;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-.full-logo {
-    width: 270px;
-    height: 95px;
+.navbar{
+    margin-bottom: 0px;
+    margin-left: 50px;  
 }
 textarea {
     resize: none;
 }
-.modal-body{
-    background:#F6FBFC;
-}
-.affix {
-    top: 0;
-    width: 100%;
-}
-.affix + .container-fluid {
-    padding-top: 70px;
-}
-.navbar-right{
-    text-align: center;
-}
-/*--search--*/
-input.search[type=text] {
-    margin-top: 5px;
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    font-size: 16px;
-    background-color: white;	
-    background-image: url('../imagenes/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    padding: 8px 20px 8px 40px;
-    color: #BCBCBC;
-}
-input.search[type=text]:focus {
-    width: 100%;
-}
-/*--/search--*/
 /*--btn menu--*/
-.container {
+.containerBtn {
     display: inline-block;
     cursor: pointer;
 }
 
 .bar1, .bar2, .bar3 {
-    width: 20px;
-    height: 1px;
+    width: 35px;
+    height: 5px;
     background-color: #333;
     margin: 6px 0;
     transition: 0.4s;
 }
 
 .change .bar1 {
-    -webkit-transform: rotate(-45deg) translate(-4px, 4px) ;
-    transform: rotate(-45deg) translate(-4px, 4px) ;
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+    transform: rotate(-45deg) translate(-9px, 6px) ;
 }
 
 .change .bar2 {opacity: 0;}
 
 .change .bar3 {
-    -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
-    transform: rotate(45deg) translate(-6px, -6px) ;
-}
-
-#navbar-button{
-    padding-right: 0px;
-    padding-left: 0px;
-    width: 20px; 
-    height: 22px;
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+    transform: rotate(45deg) translate(-8px, -8px) ;
 }
 /*--/menu--*/
-/*--rol--*/
-.sidenav {  
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-}
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
-}
-.sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
-}
-.sidenav .closebtn {
-    padding-top: 60px;
-    position: absolute;
-    top: 0;
-    right: 5px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-/*--/rol--*/
 /*---left changing_role---*/
 .left{
-        float:left;
-        height:100vh;
-        padding-top: 50px;
-    }
-    
-.left {
-    background: #000000;
-    display: inline-block;
+    float:left;
+    height: 100vh;
+    top: 0;
+    position: fixed;
+    background: #238276;
     white-space: nowrap;
     width: 50px;
     transition: width 1s ;
-}    
-
+    z-index: 1;
+}       
 .left:hover {
-        width: 250px;
-    }    
-    
-.item:hover {
-        background-color:#ccc;
-        }
-        
-.left .glyphicon {
-        margin:15px;
-        width:20px;
-        color:#fff;
-    }
-    
-.item {
-        height:50px;
-        overflow:hidden;
-        color:#fff;
+    width: 250px;
+    color: #00FF2A;
 }
+.left .glyphicon {
+    margin:15px;
+    width:20px;
+    color:#fff;
+} 
+.item {
+    height:50px;
+    overflow:hidden;
+    color:#fff;
+    cursor: pointer;
+}
+div.left div.active{
+    color:#FFFFFF;
+    background-color: #2A9A8C;
+}
+div.left div:hover:not(.active){background-color: #ddd}
 .type{
     height: 47px;;
 }
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 1024px) {
     .left {
         display: none;
     }
@@ -203,6 +119,19 @@ a.dropdown-toggle.dropdown-at {
 }
 /*--/drop_menu--*/
 /*--content--*/
+#main{
+    margin-left: 50px;
+    padding: 20px 0;
+}
+.btnsDown {
+    clear: right;
+}
+.panelMunnin {
+    background-color: #FFFFFF;
+    padding: 1.8em;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+}
+
 .inbox-right {
     background-color: #fff;
     padding: 1.8em;
@@ -236,7 +165,6 @@ td.table-text h6{
 td.table-text p{
     font-size:0.9em;
     line-height: 1.5em;
-    /*font-family: 'Muli-Regular';*/
     color:#999;
 }
 td i{
@@ -246,13 +174,11 @@ td span{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     color:#fff;
     font-size: 0.8em;
     padding: 4px 7px;
-    /*font-family: 'Muli-Regular';*/
 }
 td span.fam{
     background:#3BB2D0;
@@ -581,18 +507,96 @@ tr.table-row {
 }
 
 /*--/responsive--*/
-/* Scrollbar styles */
-::-webkit-scrollbar {
-width: 10px;
-height: 12px;
+/*-- Tables --*/
+td {
+    border: 1px #DDD solid; 
+    padding: 5px; 
+    cursor: pointer;
 }
 
-::-webkit-scrollbar-thumb {
-background: #050602;  
-border-radius: 10px;
+.selected {
+    background-color: #CDCDCD;
+}
+/*--/tables--*/
+/*--pagination--*/
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
 }
 
-::-webkit-scrollbar-thumb:hover {
-background: #C3C3C3;  
-width: 14px;
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
 }
+
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+/*--/pagination--*/
+/**/
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 1.8em;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+    background-color: #FFFFFF;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+.topright {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.topright:hover {color: red;}

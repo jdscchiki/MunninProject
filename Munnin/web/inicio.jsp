@@ -5,9 +5,7 @@
 <%
     request.setAttribute("title", "Munnin inicio");
 %>
-<jsp:include page="/contenido/top1.jsp"></jsp:include>
-<jsp:include page="/contenido/navbarCont.jsp"></jsp:include><%-- cambia dependiendo de la pagina--%>
-<jsp:include page="/contenido/top2.jsp"></jsp:include>
+<jsp:include page="/elements/content/top.jsp" />
 <%-- todo el contnido aqui--%>
 
-<jsp:include page="/contenido/bot.jsp"></jsp:include>
+<jsp:include page="/elements/content/bot.jsp" />

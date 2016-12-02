@@ -28,3 +28,9 @@ function contrasenaNoSegura(){
     $("#div_mensaje").addClass("alert-danger");
     $("#mensaje").text("La contraseña no es Segura");
 }
+
+function registroCompletado(){
+    $("#div_mensaje").addClass("alert");
+    $("#div_mensaje").addClass("alert-success");
+    $("#mensaje").text("Registro completado exitosamente");
+}

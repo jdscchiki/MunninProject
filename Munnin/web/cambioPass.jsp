@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" session="false"%>
 <%
     request.setAttribute("title", "Cambio Contraseña");
     
