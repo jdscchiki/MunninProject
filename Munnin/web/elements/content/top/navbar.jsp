@@ -8,22 +8,19 @@
                     <div class="bar3"></div>
                 </div>
             </button>
-            <img class="navbar-brand" src="${pageContext.request.contextPath}/elements/img/LogoNavbar.png" alt="munnin-logo" style="padding: 7px 7px;">
+            <img class="navbar-brand" src="${URIMunnin}/elements/img/LogoNavbar.png" alt="munnin-logo" style="padding: 7px 7px;">
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="">opcion1</a></li>
-                <li><a href="">opcion2</a></li>
-                <li><a href="">opcion3</a></li>
+                <jsp:include page="/elements/content/top/navbarCont.jsp" />
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
+                <li><a data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
                     <ul class="dropdown-menu ">
-                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-credit-card"></span> Calendario</a></li>
-                        <li><a href="#"><span class="fa fa-question-circle-o glyphicon"></span> Preguntas Frecuentes</a></li>		
+                        <li><a ><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+                        <li><a ><i class="fa fa-shield" aria-hidden="true"></i> Cambio de contraseña</a></li>
                     </ul>
                 </li>
                 <li><a href="#vtn" data-toggle="modal"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>

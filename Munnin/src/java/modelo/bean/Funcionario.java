@@ -115,6 +115,51 @@ public class Funcionario implements java.io.Serializable {
         this.roles = roles;
     }
 
+    public boolean isAdministrador(){
+        for(Rol rol: roles){
+            if(rol.getId()== 5 ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isCoordinador(){
+        for(Rol rol: roles){
+            if(rol.getId()== 1 ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTecnico(){
+        for(Rol rol: roles){
+            if(rol.getId()== 2 ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isPedagogico(){
+        for(Rol rol: roles){
+            if(rol.getId()== 3 ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isInstructor(){
+        for(Rol rol: roles){
+            if(rol.getId()== 4 ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public Funcionario() {
 
     }

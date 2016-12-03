@@ -4,7 +4,8 @@
 <%@ page language="java" session="false"%>
 <%-- esto se usa en el top para dar propiedades segun la pagina--%>
 <%
-    request.setAttribute("title", "Munnin coordinador");
+    request.setAttribute("title", "Munnin Coordinador");
+    request.setAttribute("navbar", 3);
     request.setAttribute("mainPage", 3);
     
     String aditionalJS = "";
@@ -12,9 +13,7 @@
     
     request.setAttribute("aditionalJS", aditionalJS);
 %>
-<jsp:include page="/contenido/top1.jsp"></jsp:include>
-<jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include>
-<jsp:include page="/contenido/top2.jsp"></jsp:include>
+<jsp:include page="/elements/content/top.jsp" />
 <%-- todo el contnido aqui--%>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
@@ -89,4 +88,5 @@
         </div>
     </div>
 </div>
-<jsp:include page="/contenido/bot.jsp"></jsp:include>
+
+<jsp:include page="/elements/content/bot.jsp" />

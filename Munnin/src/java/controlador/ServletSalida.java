@@ -34,7 +34,7 @@ public class ServletSalida extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = (HttpSession) request.getSession();
         sesion.invalidate();
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

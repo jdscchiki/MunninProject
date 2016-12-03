@@ -45,33 +45,24 @@ public class ServletLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String correo = request.getParameter("textCorreo");
-        String contrasena = request.getParameter("textContr");
         try {
+            String correo = request.getParameter("textCorreo");
+            String contrasena = request.getParameter("textContr");
             Funcionario funcionario = NegocioLogin.verificarFuncionario(correo, contrasena);
-            try {
-                if (funcionario == null) {
-                    request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                } else {
-                    HttpSession sesion = (HttpSession) request.getSession();
-                    sesion.setAttribute("usuario", funcionario);
-                    response.sendRedirect(request.getContextPath() + "/inicio.jsp");
-                }
-            } catch (Exception e) {
-                System.out.println("Error : " + e);
+            if (funcionario == null) {
+                request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                return;
+            } else {
+                HttpSession sesion = (HttpSession) request.getSession();
+                sesion.setAttribute("usuario", funcionario);
+                response.sendRedirect(request.getContextPath() + "/home/inicio.jsp");
+                return;
             }
-        } catch (NamingException ex) {
+        } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        } catch (Encriptado.CannotPerformOperationException | Encriptado.InvalidHashException ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher(request.getContextPath() + "/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

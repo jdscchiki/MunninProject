@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -17,29 +16,28 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-public class SessionFilter implements Filter {
-
+public class EasyLink implements Filter {
+    
     private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
-    public SessionFilter() {
-    }
-
+    
+    public EasyLink() {
+    }    
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("SessionFilter:DoBeforeProcessing");
+            log("EasyLink:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -62,12 +60,12 @@ public class SessionFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }
-
+    }    
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("SessionFilter:DoAfterProcessing");
+            log("EasyLink:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -101,67 +99,23 @@ public class SessionFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
         if (debug) {
-            log("SessionFilter:doFilter()");
+            log("EasyLink:doFilter()");
         }
-
+        
         doBeforeProcessing(request, response);
-
+        
         Throwable problem = null;
         try {
-//            //todo el codigo para revisar 
-//            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
-            boolean isComp = false;
-            ArrayList<String> componenetes = new ArrayList<>();
-            componenetes.add(".js");
-            componenetes.add(".css");
-            componenetes.add(".png");
-            for (String componenete : componenetes) {
-                if (((HttpServletRequest) request).getRequestURI().endsWith(componenete)) {
-                    isComp = true;
-                    break;
-                }
-            }
-            //quitar de los comentarios el siguiente codigo si algun elemento no carga, y añadirlo al ArrayList de componentes
-            //System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
-
-            //si es un componente, no es necesario el filtro
-            if (!isComp) {
-                boolean ExcepcionUri = false;
-                //las execepciones del filtro de inicio de sesion
-                ArrayList<String> excepcionesUriEnd = new ArrayList<>();
-                excepcionesUriEnd.add("/index.jsp");
-                excepcionesUriEnd.add("/ingreso");
-                excepcionesUriEnd.add("/error.jsp");
-                excepcionesUriEnd.add("/");
-                for (String UriEnd : excepcionesUriEnd) {
-                    if (((HttpServletRequest) request).getRequestURI().endsWith(UriEnd)) {
-                        ExcepcionUri = true;
-                        break;
-                    }
-                }
-
-                //acede al contexto de la aplicacion, es decir, al nombre de la aplicacion
-                String contextPath = ((HttpServletRequest) request).getContextPath();
-
-                //accede a la sesion almacenada
-                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-
-                //valida que no exista una sesion de usuario activa
-                if (sesion.getAttribute("usuario") == null) {
-                    if (!ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/index.jsp");
-                        return;
-                    }
-                } else //revisa que no venga del login para evitar otro ingreso a la aplicacion
-                if (ExcepcionUri) {
-                    ((HttpServletResponse) response).sendRedirect(contextPath + "/home/inicio.jsp");
-                    return;
-                }
-            }
+            request.setAttribute("URIMunnin", ((HttpServletRequest) request).getContextPath()+"/");
+            request.setAttribute("URIHome", ((HttpServletRequest) request).getContextPath()+"/home/");
+            request.setAttribute("URICoordinator", ((HttpServletRequest) request).getContextPath()+"/home/role/coordinator/");
+            request.setAttribute("URIInstructor", ((HttpServletRequest) request).getContextPath()+"/home/role/instructor/");
+            request.setAttribute("URIAdministrator", ((HttpServletRequest) request).getContextPath()+"/home/role/administrator/");
+            request.setAttribute("URITechnical", ((HttpServletRequest) request).getContextPath()+"/home/role/technical/");
+            request.setAttribute("URIPedagogical", ((HttpServletRequest) request).getContextPath()+"/home/role/pedagogical/");
             chain.doFilter(request, response);
-
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
@@ -169,7 +123,7 @@ public class SessionFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-
+        
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -187,8 +141,6 @@ public class SessionFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     *
-     * @return Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -206,17 +158,17 @@ public class SessionFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {
+    public void destroy() {        
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {
-                log("SessionFilter:Initializing filter");
+            if (debug) {                
+                log("EasyLink:Initializing filter");
             }
         }
     }
@@ -227,27 +179,27 @@ public class SessionFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("SessionFilter()");
+            return ("EasyLink()");
         }
-        StringBuffer sb = new StringBuffer("SessionFilter(");
+        StringBuffer sb = new StringBuffer("EasyLink(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-
+    
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
+        String stackTrace = getStackTrace(t);        
+        
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
+                PrintWriter pw = new PrintWriter(ps);                
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -264,7 +216,7 @@ public class SessionFilter implements Filter {
             }
         }
     }
-
+    
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -278,9 +230,9 @@ public class SessionFilter implements Filter {
         }
         return stackTrace;
     }
-
+    
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
+        filterConfig.getServletContext().log(msg);        
     }
-
+    
 }

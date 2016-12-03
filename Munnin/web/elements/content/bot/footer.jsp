@@ -24,7 +24,7 @@
         </div>
         <div class="Footer__bottomMenu">
             <div class="Footer__copyrightText">
-                <p>Â© 2016 Munnin.</p>
+                <p>© 2016 Munnin.</p>
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@
     </head>
     <body>
         <div class="wrapper">
-            <form class="login" role="form" method="post" action="ingreso" onsubmit="return validar()">
+            <form class="login" role="form" method="post" action="${URIMunnin}ingreso" onsubmit="return validar()">
                 <!--la imagen es muy grande, toca ajustarla-->
                 <img src="elements/img/logo-completo.png" alt="munnin_icono" class="full-logo">
                 <h2 class="title"> Inicia sesión en Munnin </h2>

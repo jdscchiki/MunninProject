@@ -3,17 +3,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java" session="false"%>
 <%
-    request.setAttribute("title", "Munnin Funcionarios");
+    request.setAttribute("title", "Munnin Coordinador");
+    request.setAttribute("navbar", 3);
     request.setAttribute("mainPage", 3);
-
+    
     String aditionalJS = "";
-    aditionalJS += "<script src='" + request.getContextPath() + "/js/TableTest.js' languaje='Javascript' type='text/javascript'></script>";
-
+    aditionalJS += "<script src='" + request.getContextPath() + "/elements/js/TableTest.js' languaje='Javascript' type='text/javascript'></script>";
     request.setAttribute("aditionalJS", aditionalJS);
 %>
-<jsp:include page="/contenido/top1.jsp"></jsp:include>
-<jsp:include page="/roles/coordinador/contenido/navbarCont.jsp"></jsp:include><%-- cambia dependiendo de la pagina--%>
-<jsp:include page="/contenido/top2.jsp"></jsp:include>
+<jsp:include page="/elements/content/top.jsp" />
     <div class="row">
         <div class="col-lg-10">
             <ul class="pagination">
@@ -38,37 +36,23 @@
                     }
                 }
 
-                if (pagina > 1) {//si la pagina no es la primera entonces habilita el boton anterior
+            //si la pagina no es la primera entonces habilita el boton anterior
             %>
-            <li><a href="roles/coordinador/funcionarios.jsp?pagina=<%=pagina - 1%>">anterior</a></li>
+            <li class=${(pagina > 1) ? "":"disabled"}><a ${(pagina > 1) ? "href='"+URICoordinator+"funcionarios.jsp?pagina="+(pagina - 1)+"'":""}>anterior</a></li>
                 <%
-                } else {
-                %>
-            <li class="disabled"><a>anterior</a></li>
-                <%
-                }
                 for (int i = inicioPag; i <= finPag; i++) {//despliega los redireccionamientos a otras paginas
                     if (i == pagina) {//si la pagina en el paginador es la actual es marcada para que se vea diferente
                 %>
-            <li class="active"><a href="roles/coordinador/funcionarios.jsp?pagina=<%=i%>"><%=i%></a></li>
+            <li class="active"><a href="${URICoordinator}funcionarios.jsp?pagina=<%=i%>"><%=i%></a></li>
                 <%
                     } else {
                 %>
-            <li><a href="roles/coordinador/funcionarios.jsp?pagina=<%=i%>"><%=i%></a></li>
+            <li><a href="${URICoordinator}funcionarios.jsp?pagina=<%=i%>"><%=i%></a></li>
                 <%
                     }
                 }
-
-                    if (pagina < paginas) {//si la pagina no es la ultima entonces habilita el boton siguiente
                 %>
-            <li><a href="roles/coordinador/funcionarios.jsp?pagina=<%=pagina + 1%>">siguiente</a></li>
-                <%
-                } else {
-                %>
-            <li class="disabled"><a>siguiente</a></li>
-                <%
-                    }
-                %>
+            <li <%= (pagina<paginas)? "": "class='disabled'"%> ><a <%= (pagina<paginas)? "href='"+request.getAttribute("URICoordinator")+"funcionarios.jsp?pagina="+(pagina + 1)+"'" : ""%> >siguiente</a></li>
         </ul>
         <div class="table-responsive">
             <table class="table table-condensed">
@@ -96,11 +80,11 @@
         </div>
     </div>
     <div class="col-lg-2">
-        <form action="<%=request.getContextPath()%>/adminFuncionarios" method="POST">
+        <form action="${URIMunnin}/adminFuncionarios" method="POST">
             <input type="hidden" name="selected" id="selected" value="-1">
             <button type="submit" name="opcion" value="eliminar" class="btn btn-primary btn-block">Eliminar funcionario</button>
         </form>
-        <a href="roles/coordinador/formularios/registro-funcionario.jsp" class="btn btn-primary btn-block" role="button">Registro de funcionarios</a>
+        <a href="${URICoordinator}formularios/registro-funcionario.jsp" class="btn btn-primary btn-block" role="button">Registro de funcionarios</a>
     </div>
 </div>
 <div id="div_mensaje" class="">
@@ -108,4 +92,4 @@
     </p>
 </div>
 
-<jsp:include page="/contenido/bot.jsp"></jsp:include>
+<jsp:include page="/elements/content/bot.jsp" />
