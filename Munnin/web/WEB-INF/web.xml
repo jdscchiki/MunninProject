@@ -26,15 +26,15 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>ListaFuncionariosFilter</filter-name>
-        <url-pattern>/home/role/coordinator/funcionarios.jsp</url-pattern>
+        <url-pattern>/home/role/coordinator/functionary.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>RegistroFilter</filter-name>
-        <url-pattern>/home/role/coordinator/formularios/registro-funcionario.jsp</url-pattern>
+        <url-pattern>/home/role/coordinator/functionary.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ServletRegistroFuncionario</servlet-name>
-        <servlet-class>controlador.roles.coordinador.ServletRegistroFuncionario</servlet-class>
+        <servlet-class>controlador.role.coordinator.ServletRegistroFuncionario</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletRegistroFuncionario</servlet-name>

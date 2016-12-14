@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.roles.coordinador;
+package controlador.role.coordinator;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelo.bean.Funcionario;
 import modelo.negocio.NegocioCoordinador;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/registro"})
-public class ServletRegistroFuncionario extends HttpServlet {
+@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/adminFuncionarios"})
+public class ServletAdminFuncionarios extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,38 +33,29 @@ public class ServletRegistroFuncionario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String tipoDoc = request.getParameter("tipoDoc");
-        int idTipoDoc;
-        String documento = request.getParameter("documento");
-        String correo = request.getParameter("correo");
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String telefono = request.getParameter("telefono");
-        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-        String idCentro = ((Funcionario)sesion.getAttribute("usuario")).getIdCentro();
-        try {//conversion de datos
-            idTipoDoc = Integer.parseInt(tipoDoc);
-            Funcionario nuevoFuncionario = new Funcionario();
-            nuevoFuncionario.setIdTipoDocumento(idTipoDoc);
-            nuevoFuncionario.setDocumento(documento);
-            nuevoFuncionario.setCorreo(correo);
-            nuevoFuncionario.setNombre(nombre);
-            nuevoFuncionario.setApellido(apellido);
-            nuevoFuncionario.setTelefono(telefono);
-            if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
-                request.setAttribute("Mensaje", "<script>registroCompletado()</script>");
-                request.getRequestDispatcher("roles/coordinador/formularios/registro-funcionario.jsp").forward(request, response);
+        try {
+            String idFuncionario = request.getParameter("id");
+            int idFun;
+            String opcion = request.getParameter("operation");
+
+            idFun = Integer.parseInt(idFuncionario);
+            if (idFun <= 0) {
+                request.setAttribute("message", 3);
             } else {
-                //debe mandar un mensaje con js, diciendo que el registro no se ha podido realizar
-                response.sendRedirect(request.getContextPath()+"/roles/coordinador/formularios/registro-funcionario.jsp");
+                if (opcion.equals("remove")) {
+                    NegocioCoordinador.inhabilitarFuncionario(idFun);
+                    request.setAttribute("message", 1);
+
+                } else {
+                    request.setAttribute("message", 2);
+                }
             }
-        } catch (NumberFormatException e) {
-            //debe mandar un mensaje con js, diciendo que ha ocurrido un error al seleccionar un tipo de documento
-            request.getRequestDispatcher(request.getContextPath()+"/roles/coordinador/formularios/registro-funcionario.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        } 
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
+            return;
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }
 
     }
 

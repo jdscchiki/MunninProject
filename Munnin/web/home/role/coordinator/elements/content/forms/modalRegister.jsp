@@ -1,26 +1,14 @@
 <%@page import="modelo.bean.TipoDocumento"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page language="java" session="false"%>
-<%-- esto se usa en el top para dar propiedades segun la pagina--%>
-<%
-    request.setAttribute("title", "Munnin Coordinador");
-    request.setAttribute("navbar", 3);
-    request.setAttribute("mainPage", 3);
-    
-    String aditionalJS = "";
-    aditionalJS += "<script src='"+request.getContextPath()+"/js/mensajes.js' type='text/javascript'></script>";
-    
-    request.setAttribute("aditionalJS", aditionalJS);
-%>
-<jsp:include page="/elements/content/top.jsp" />
-<%-- todo el contnido aqui--%>
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">Registro de funcionarios</div>
-            <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="<%=request.getContextPath()%>/registro">
+<form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URIMunnin}registro">
+    <div id="registerFunctionary" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Registro de funcionarios</h4>
+                </div>
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="tipoDoc" class="control-label col-lg-3">Tipo de documento:</label>
                         <div class="col-lg-4">
@@ -31,7 +19,6 @@
                                         ArrayList<TipoDocumento> tiposDoc = (ArrayList<TipoDocumento>) request.getAttribute("tiposDoc");
                                         if (!tiposDoc.isEmpty()) {
                                             for (int i = 0; i < tiposDoc.size(); i++) {
-
                                 %>
                                 <option value="<%=tiposDoc.get(i).getId()%>"> <%=tiposDoc.get(i).getNombre()%> </option>
                                 <%
@@ -78,15 +65,18 @@
                         </p>
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-3 col-lg-8">
-                            <button type="submit" class="btn btn-success">Registrar Funcionario</button>
-                            <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
+                        <div id="formRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
+                            
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Registrar Funcionario</button>
+                    <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
+
         </div>
     </div>
-</div>
-
-<jsp:include page="/elements/content/bot.jsp" />
+</form>

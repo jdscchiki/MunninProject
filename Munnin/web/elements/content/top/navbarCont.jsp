@@ -40,9 +40,9 @@
     <%--
         menu coordinador
     --%>
-<li ${mainPage==1 ? "class='active'":""}><a href="${URICoordinator}inicio.jsp" class="btn">Notificaciones</a></li>
+<li ${mainPage==1 ? "class='active'":""}><a href="${URICoordinator}intro.jsp" class="btn">Notificaciones</a></li>
 <li ${mainPage==2 ? "class='active'":""}><a  class="btn">Reportes</a></li>
-<li ${mainPage==3 ? "class='active'":""}><a href="${URICoordinator}funcionarios.jsp" class="btn">Funcionarios</a></li>
+<li ${mainPage==3 ? "class='active'":""}><a href="${URICoordinator}functionary.jsp" class="btn">Funcionarios</a></li>
 <li ${mainPage==4 ? "class='active'":""}><a  class="btn">Categorias</a></li>
 <li ${mainPage==5 ? "class='active'":""}><a  class="btn">Areas</a></li>
     <%

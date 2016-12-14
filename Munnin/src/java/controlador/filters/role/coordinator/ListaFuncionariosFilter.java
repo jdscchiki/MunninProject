@@ -114,13 +114,13 @@ public class ListaFuncionariosFilter implements Filter {
                 int cantXpag = 10;//resultados por pagina
 
                 int pagina = 1;//pagina a cargar
-                if(request.getParameter("pagina")!= null){
-                    pagina = Integer.parseInt(request.getParameter("pagina"));
-                }
+                
                 HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
                 Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
-                request.setAttribute("contTabla", NegocioCoordinador.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
-                request.setAttribute("cantPaginas", NegocioCoordinador.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+                request.setAttribute("page", pagina);
+                request.setAttribute("ContentTable", NegocioCoordinador.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
+                request.setAttribute("pagesTable", NegocioCoordinador.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+                
             }catch(Exception ex){
                 request.setAttribute("mensaje", ex);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
