@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletSalida", urlPatterns = {"/salida"})
+@WebServlet(name = "ServletSalida", urlPatterns = {"/exit"})
 public class ServletSalida extends HttpServlet {
 
     /**

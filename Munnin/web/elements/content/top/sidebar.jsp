@@ -24,7 +24,7 @@
         }
         if (funcionario.isCoordinador()) {
     %>
-    <a href="${URICoordinator}inicio.jsp" >
+    <a href="${URICoordinator}intro.jsp" >
         <div class="item ${navbar==3?"active":""}">
             <span class="fa fa-file-o glyphicon" style="font-size:18px"></span>Coordinador
         </div>

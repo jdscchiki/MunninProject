@@ -12,13 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.negocio.NegocioCoordinador;
+import modelo.Business.Coordinator;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/adminFuncionarios"})
+@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/home/role/coordinator/adminFuncionarios"})
 public class ServletAdminFuncionarios extends HttpServlet {
 
     /**
@@ -43,7 +43,7 @@ public class ServletAdminFuncionarios extends HttpServlet {
                 request.setAttribute("message", 3);
             } else {
                 if (opcion.equals("remove")) {
-                    NegocioCoordinador.inhabilitarFuncionario(idFun);
+                    Coordinator.inhabilitarFuncionario(idFun);
                     request.setAttribute("message", 1);
 
                 } else {

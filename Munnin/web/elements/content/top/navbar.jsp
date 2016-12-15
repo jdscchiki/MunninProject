@@ -20,7 +20,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> Usuario</a>
                     <ul class="dropdown-menu ">
                         <li><a ><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
-                        <li><a ><i class="fa fa-shield" aria-hidden="true"></i> Cambio de contraseña</a></li>
+                        <li><a data-toggle="modal" data-target="#changePassword"><i class="fa fa-shield" aria-hidden="true"> </i>Cambio de contraseña</a></li>
                     </ul>
                 </li>
                 <li><a href="#vtn" data-toggle="modal"><span class="glyphicon glyphicon-log-in"></span> Salir</a></li>

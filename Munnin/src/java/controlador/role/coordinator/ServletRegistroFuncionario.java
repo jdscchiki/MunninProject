@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
-import modelo.negocio.NegocioCoordinador;
+import modelo.Business.Coordinator;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/registro"})
+@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/home/role/coordinator/register"})
 public class ServletRegistroFuncionario extends HttpServlet {
 
     /**
@@ -54,7 +54,7 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setApellido(apellido);
             nuevoFuncionario.setTelefono(telefono);
             
-            if (NegocioCoordinador.registarFuncionario(nuevoFuncionario, idCentro)) {
+            if (Coordinator.registarFuncionario(nuevoFuncionario, idCentro)) {
                 request.setAttribute("message", 4);
                 request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
             } else {

@@ -32,14 +32,6 @@
         <filter-name>RegistroFilter</filter-name>
         <url-pattern>/home/role/coordinator/functionary.jsp</url-pattern>
     </filter-mapping>
-    <servlet>
-        <servlet-name>ServletRegistroFuncionario</servlet-name>
-        <servlet-class>controlador.role.coordinator.ServletRegistroFuncionario</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ServletRegistroFuncionario</servlet-name>
-        <url-pattern>/registro</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

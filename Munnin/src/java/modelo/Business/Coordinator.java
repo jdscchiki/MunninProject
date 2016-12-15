@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo.negocio;
+package modelo.Business;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
@@ -19,12 +19,12 @@ import util.Mail;
 import modelo.dao.FuncionarioDAO;
 
 /**
- * clase dedicada a la logica de negocio usada por el coordinador
+ * clase dedicada a la logica de negocio usada por el rol de coordinador
  *
  * @author Juan David Segura Castro
  *
  */
-public class NegocioCoordinador {
+public class Coordinator {
 
     /**
      * registro de funcionarios con la logica de un admin

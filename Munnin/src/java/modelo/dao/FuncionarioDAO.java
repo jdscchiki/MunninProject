@@ -250,7 +250,7 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
     
-    public boolean cambioContra(int id, String correo) throws SQLException {
+    public boolean cambioContra(int id, String password) throws SQLException {
         boolean resultado;//esta es la futura respuesta
         
         //datos de la consulta en base de datos
@@ -260,7 +260,7 @@ public class FuncionarioDAO extends ConexionBD {
         
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, id);
-        statement.setString(indexContrasena, correo);
+        statement.setString(indexContrasena, password);
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();

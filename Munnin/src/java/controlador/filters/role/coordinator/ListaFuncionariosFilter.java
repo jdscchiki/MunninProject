@@ -18,7 +18,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
-import modelo.negocio.NegocioCoordinador;
+import modelo.Business.Coordinator;
 
 /**
  *
@@ -118,8 +118,8 @@ public class ListaFuncionariosFilter implements Filter {
                 HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
                 Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
                 request.setAttribute("page", pagina);
-                request.setAttribute("ContentTable", NegocioCoordinador.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
-                request.setAttribute("pagesTable", NegocioCoordinador.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+                request.setAttribute("ContentTable", Coordinator.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
+                request.setAttribute("pagesTable", Coordinator.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
                 
             }catch(Exception ex){
                 request.setAttribute("mensaje", ex);

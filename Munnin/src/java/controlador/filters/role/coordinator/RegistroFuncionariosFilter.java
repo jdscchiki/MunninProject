@@ -19,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import modelo.negocio.NegocioCoordinador;
+import modelo.Business.Coordinator;
 import modelo.bean.TipoDocumento;
 
 /**
@@ -113,7 +113,7 @@ public class RegistroFuncionariosFilter implements Filter {
         Throwable problem = null;
         try {
             try {
-                ArrayList<TipoDocumento> tiposDoc = NegocioCoordinador.verTiposDocumentos();
+                ArrayList<TipoDocumento> tiposDoc = Coordinator.verTiposDocumentos();
                 request.setAttribute("tiposDoc", tiposDoc);
             } catch (NamingException e) {
                 //redireccion

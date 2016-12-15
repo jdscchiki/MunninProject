@@ -43,7 +43,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: contextPath + "adminFuncionarios",
+            url: contextPath + "home/role/coordinator/adminFuncionarios",
             data: $.param(data),
             success: function (response) {
                 $("#div_message").html(response);

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
-import modelo.negocio.NegocioCoordinador;
+import modelo.Business.Coordinator;
 
 /**
  *
@@ -42,8 +42,8 @@ public class ServletPager extends HttpServlet {
             Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
             
             request.setAttribute("page", page);
-            request.setAttribute("ContentTable", NegocioCoordinador.verFuncionariosCentro(funcionario.getIdCentro(), page, cantXpag));
-            request.setAttribute("pagesTable", NegocioCoordinador.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+            request.setAttribute("ContentTable", Coordinator.verFuncionariosCentro(funcionario.getIdCentro(), page, cantXpag));
+            request.setAttribute("pagesTable", Coordinator.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
             request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/fullPager.jsp").forward(request, response);
             
         }catch(Exception ex){

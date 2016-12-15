@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
-import modelo.negocio.NegocioLogin;
-import util.Encriptado;
+import modelo.Business.General;
 
 /**
  *
@@ -48,7 +47,7 @@ public class ServletLogin extends HttpServlet {
         try {
             String correo = request.getParameter("textCorreo");
             String contrasena = request.getParameter("textContr");
-            Funcionario funcionario = NegocioLogin.verificarFuncionario(correo, contrasena);
+            Funcionario funcionario = General.verifyFunctionary(correo, contrasena);
             if (funcionario == null) {
                 request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);

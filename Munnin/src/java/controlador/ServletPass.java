@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
-import modelo.negocio.NegocioLogin;
+import modelo.Business.General;
 
 /**
  *
  * @author Sergio
  */
-@WebServlet(name = "ServletPass", urlPatterns = {"/cambioContrasena"})
+@WebServlet(name = "ServletPass", urlPatterns = {"/home/cambioContrasena"})
 public class ServletPass extends HttpServlet {
 
     /**
@@ -34,25 +34,17 @@ public class ServletPass extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String contrasena = request.getParameter("passwordActual");
-        String contrasenaNueva = request.getParameter("passwordNew1");
-        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-        Funcionario funcionario2 = (Funcionario) sesion.getAttribute("usuario");
-        if(NegocioLogin.validarSeguridad(contrasena)){
-            request.setAttribute("Mensaje", "<script>contrasenaNoSegura()</script>");
-        }
         try {
-            Funcionario funcionario = NegocioLogin.verificarFuncionario(funcionario2.getCorreo(), contrasena);
-            if (funcionario == null) {
-                request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-            } else {
-                if (NegocioLogin.cambioContrasena(funcionario2.getId(), contrasenaNueva)) {
-                    request.setAttribute("Mensaje", "<script>contrasenaOK()</script>");
-                } else {
-                    request.setAttribute("Mensaje", "<script>contrasenaNoValido()</script>");
-                }
-            }
-            request.getRequestDispatcher("cambioPass.jsp").forward(request, response);
+            String password = request.getParameter("passwordCurrent");
+            String newPassword = request.getParameter("passwordNew");
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+            
+            boolean[] result = General.changePassword(funcionario.getCorreo(), password, newPassword);
+            
+            request.setAttribute("message", result);
+            
+            request.getRequestDispatcher("/elements/content/messages.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("Error 2: " + e);
         }
