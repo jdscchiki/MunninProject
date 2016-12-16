@@ -56,7 +56,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @version 1.0
      * @throws java.sql.SQLException existe un priblema en la consulta
      */
-    public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
+    public Funcionario selectFunctionaryMail(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos
@@ -97,7 +97,7 @@ public class FuncionarioDAO extends ConexionBD {
      * de datos, false en caso contrario
      * @throws SQLException existe un priblema en la consulta
      */
-    public boolean registrar(Funcionario funcionario) throws SQLException {
+    public boolean registerFunctionary(Funcionario funcionario) throws SQLException {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -132,6 +132,63 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
 
+    public boolean existFunctionaryMail(String mail) throws SQLException{
+        boolean result = false;
+        
+        String query = "{CALL VER_FUNCIONARIO_CORREO(?)}";
+        int indexMail = 1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexMail, mail);
+        ResultSet rs = statement.executeQuery();
+        
+        while (rs.next()) {
+            result = true;
+        }
+        
+        return result;
+    }
+    
+    public boolean isActiveFunctionary(String correo, int documentType, String document) throws SQLException{
+        boolean result = false;
+        
+        String query = "{CALL VER_FUNCIONARIO_ACTIVO(?,?,?)}";
+        int indexCorreo = 1;
+        int indexDocumentType = 2;
+        int indexDocument = 3;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexCorreo, correo);
+        statement.setInt(indexDocumentType, documentType);
+        statement.setString(indexDocument, document);
+        ResultSet rs = statement.executeQuery();
+        
+        while (rs.next()) {
+            result = true;
+        }
+        
+        return result;
+    }
+    
+    public boolean existFunctionaryDocument(String document, int documentType) throws SQLException{
+        boolean result = false;
+        
+        String query = "{CALL VER_FUNCIONARIO_DOCUMENTO(?,?)}";
+        int indexDocument = 1;
+        int indexDocumentType = 2;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexDocument, document);
+        statement.setInt(indexDocumentType, documentType);
+        ResultSet rs = statement.executeQuery();
+        
+        while (rs.next()) {
+            result = true;
+        }
+        
+        return result;
+    }
+    
     /**
      * Consulta los roles de un funcionario
      *
@@ -139,7 +196,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @return ArrayList de los roles
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Rol> verRoles(int id) throws SQLException {
+    public ArrayList<Rol> selectRole(int id) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -178,7 +235,7 @@ public class FuncionarioDAO extends ConexionBD {
      * intervalos
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws SQLException {
+    public ArrayList<Funcionario> selectFunctionaryCenter(String idCentro, int pagina, int cantXpag) throws SQLException {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -208,7 +265,7 @@ public class FuncionarioDAO extends ConexionBD {
         return funcionarios;
     }
 
-    public int conteoFuncionariosCentro(String idCentro) throws SQLException {
+    public int countFunctionaryCenter(String idCentro) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -250,7 +307,7 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
     
-    public boolean cambioContra(int id, String password) throws SQLException {
+    public boolean changePassword(int id, String password) throws SQLException {
         boolean resultado;//esta es la futura respuesta
         
         //datos de la consulta en base de datos

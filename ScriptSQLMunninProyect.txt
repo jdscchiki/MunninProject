@@ -178,7 +178,6 @@ CREATE TABLE funcionario (
     PRIMARY KEY (id_funcionario),
     UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
     UNIQUE INDEX documento_funcionario_UNIQUE (id_tipo_documento_funcionario, documento_funcionario ),
-    CONSTRAINT documento_tipodoc_funcionario_unique UNIQUE (documento_funcionario, id_tipo_documento_funcionario),
     FOREIGN KEY (id_tipo_documento_funcionario )
     REFERENCES tipo_documento (id_tipo_documento),
     FOREIGN KEY (id_centro_funcionario )
@@ -1120,7 +1119,7 @@ CREATE PROCEDURE insertar_funcionario (
     IN _id_funcionario INT  ,
     IN _activo_funcionario BIT(1) ,
     IN _id_tipo_documento_funcionario INT ,
-    IN _documento_funcionario VARCHAR(8) ,
+    IN _documento_funcionario VARCHAR(12) ,
     IN _correo_funcionario VARCHAR(100) ,
     IN _contrasena_funcionario VARCHAR(255) ,
     IN _nombre_funcionario VARCHAR(70) ,
@@ -2588,5 +2587,60 @@ BEGIN
 	UPDATE funcionario
     SET contrasena_funcionario = pass
     WHERE id_funcionario = id;
+END $$
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_FUNCIONARIO_CORREO                                    */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_funcionario_correo $$
+CREATE PROCEDURE ver_funcionario_correo(
+ in _correo VARCHAR(100))
+BEGIN
+    SELECT id_funcionario
+    FROM funcionario
+    WHERE correo_funcionario = _correo;
+END $$
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_FUNCIONARIO_DOCUMENTO                                 */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_funcionario_documento $$
+CREATE PROCEDURE ver_funcionario_documento(
+    in _documento VARCHAR(12) ,
+    in _id_tipo_documento INT)
+BEGIN
+    SELECT id_funcionario
+    FROM funcionario
+    WHERE documento_funcionario = _documento AND id_tipo_documento_funcionario = _id_tipo_documento;
+END $$
+DELIMITER ;
+
+/*==============================================================*/
+/* SP VER_FUNCIONARIO_ACTIVO                                    */
+/*==============================================================*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_funcionario_activo $$
+CREATE PROCEDURE ver_funcionario_activo(
+    in _correo VARCHAR(100) ,
+    in _id_tipo_documento INT ,
+    in _documento VARCHAR(12))
+BEGIN
+    SELECT *
+    FROM funcionario
+    WHERE activo_funcionario = 1 AND(
+    correo_funcionario = _correo
+    OR (id_tipo_documento_funcionario = _id_tipo_documento 
+        AND documento_funcionario = _documento)
+    );
 END $$
 DELIMITER ;

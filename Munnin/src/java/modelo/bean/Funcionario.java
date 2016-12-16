@@ -21,7 +21,6 @@ public class Funcionario implements java.io.Serializable {
     private String contrasena;
     private String nombre;
     private String apellido;
-    private String cargo;
     private String telefono;
     private String idCentro;
 

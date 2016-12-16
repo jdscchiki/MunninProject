@@ -45,7 +45,7 @@ public class ServletRegistroFuncionario extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
             idTipoDoc = Integer.parseInt(tipoDoc);
-            
+
             Funcionario nuevoFuncionario = new Funcionario();
             nuevoFuncionario.setIdTipoDocumento(idTipoDoc);
             nuevoFuncionario.setDocumento(documento);
@@ -53,16 +53,11 @@ public class ServletRegistroFuncionario extends HttpServlet {
             nuevoFuncionario.setNombre(nombre);
             nuevoFuncionario.setApellido(apellido);
             nuevoFuncionario.setTelefono(telefono);
-            
-            if (Coordinator.registarFuncionario(nuevoFuncionario, idCentro)) {
-                request.setAttribute("message", 4);
-                request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
-            } else {
-                request.setAttribute("message", 2);
-                request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
-            }
+
+            request.setAttribute("message", (Coordinator.registarFuncionario(nuevoFuncionario, idCentro) + 4));
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-            request.setAttribute("message", 5);
+            request.setAttribute("message", 10);
             request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

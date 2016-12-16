@@ -41,12 +41,12 @@ public class General {
     public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
         Funcionario funcionarioLog;
         FuncionarioDAO consulta = new FuncionarioDAO();
-        funcionarioLog = consulta.buscarFuncionarioCorreo(correo);
+        funcionarioLog = consulta.selectFunctionaryMail(correo);
         if (funcionarioLog != null) {
             if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;
             } else {
-                ArrayList<Rol> roles = consulta.verRoles(funcionarioLog.getId());
+                ArrayList<Rol> roles = consulta.selectRole(funcionarioLog.getId());
                 if (roles != null) {
                     funcionarioLog.setRoles(roles);
                 }
@@ -75,7 +75,7 @@ public class General {
             if (PassGenerator.isSecure(newPassword)) {
                 result[2]=true;
                 FuncionarioDAO consulta = new FuncionarioDAO();
-                if (consulta.cambioContra(funcionario.getId(), Encriptado.createHash(newPassword))) {
+                if (consulta.changePassword(funcionario.getId(), Encriptado.createHash(newPassword))) {
                     result[0] = true;
                 }
                 consulta.cerrarConexion();
