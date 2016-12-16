@@ -10,9 +10,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="tipoDoc" class="control-label col-lg-3">Tipo de documento:</label>
+                        <label for="formRegisterFunctionaryTipoDoc" class="control-label col-lg-3">Tipo de documento:</label>
                         <div class="col-lg-4">
-                            <select id="tipoDoc" class="form-control" name="tipoDoc">
+                            <select id="formRegisterFunctionaryTipoDoc" class="form-control" name="tipoDoc">
                                 <!-- Las opciones se actualizan con una consulta al servidor-->
                                 <%
                                     if (request.getAttribute("tiposDoc") != null) {
@@ -31,47 +31,43 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="documento" class="control-label col-lg-3">Documento :</label>
+                        <label for="formRegisterFunctionaryDocumento" class="control-label col-lg-3">Documento :</label>
                         <div class="col-lg-4">
-                            <input type="text" class="form-control" id="documento" name="documento" placeholder="Documento" maxlength="12">
+                            <input type="text" class="form-control" id="formRegisterFunctionaryDocumento" name="documento" placeholder="Documento" maxlength="12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="correo" class="control-label col-lg-3">Correo : </label>
+                        <label for="formRegisterFunctionaryCorreo" class="control-label col-lg-3">Correo : </label>
                         <div class="col-lg-6">
-                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo electronico" maxlength="100">
+                            <input type="email" class="form-control" id="formRegisterFunctionaryCorreo" name="correo" placeholder="Correo electronico" maxlength="100">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="nombre" class="control-label col-lg-3">Nombres : </label>
+                        <label for="formRegisterFunctionaryNombre" class="control-label col-lg-3">Nombres : </label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombres"maxlength="70">
+                            <input type="text" class="form-control" id="formRegisterFunctionaryNombre" name="nombre" placeholder="Nombres"maxlength="70">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="apellido" class="control-label col-lg-3">Apellidos : </label>
+                        <label for="formRegisterFunctionaryApellido" class="control-label col-lg-3">Apellidos : </label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellidos" maxlength="70">
+                            <input type="text" class="form-control" id="formRegisterFunctionaryApellido" name="apellido" placeholder="Apellidos" maxlength="70">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="telefono" class="control-label col-lg-3">Telefono:</label>
+                        <label for="formRegisterFunctionaryTelefono" class="control-label col-lg-3">Telefono:</label>
                         <div class="col-lg-4">
-                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Telefono" maxlength="10">
+                            <input type="text" class="form-control" id="formRegisterFunctionaryTelefono" name="telefono" placeholder="Telefono" maxlength="10">
                         </div>
                     </div>
-                    <div id="div_mensaje" class="">
-                        <p id="mensaje">
-                        </p>
-                    </div>
                     <div class="form-group">
-                        <div id="formRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
+                        <div id="divRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
                             
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Registrar Funcionario</button>
+                    <button type="submit" class="btn btn-success">Registrar</button>
                     <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>

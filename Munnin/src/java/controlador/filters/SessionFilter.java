@@ -19,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import modelo.bean.Funcionario;
 
 /**
  *
@@ -110,8 +111,14 @@ public class SessionFilter implements Filter {
 
         Throwable problem = null;
         try {
-//            //todo el codigo para revisar 
-//            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
+            //cache control
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+            httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0
+            httpResponse.setDateHeader("Expires", 0); // Proxies.
+            
+            //todo el codigo para verificar sessiones
+            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
             boolean isComp = false;
             ArrayList<String> componenetes = new ArrayList<>();
             componenetes.add(".js");
@@ -154,10 +161,12 @@ public class SessionFilter implements Filter {
                         ((HttpServletResponse) response).sendRedirect(contextPath + "/index.jsp");
                         return;
                     }
-                } else //revisa que no venga del login para evitar otro ingreso a la aplicacion
-                if (ExcepcionUri) {
-                    ((HttpServletResponse) response).sendRedirect(contextPath + "/home/inicio.jsp");
-                    return;
+                } else {//revisa que no venga del login para evitar otro ingreso a la aplicacion
+                    request.setAttribute("nombreUsuario", ((Funcionario) sesion.getAttribute("usuario")).getNombre());
+                    if (ExcepcionUri) {
+                        ((HttpServletResponse) response).sendRedirect(contextPath + "/home/inicio.jsp");
+                        return;
+                    }
                 }
             }
             chain.doFilter(request, response);
