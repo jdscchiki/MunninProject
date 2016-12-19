@@ -131,7 +131,7 @@ public class SessionFilter implements Filter {
                 }
             }
             //quitar de los comentarios el siguiente codigo si algun elemento no carga, y añadirlo al ArrayList de componentes
-            //System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
+//            System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
 
             //si es un componente, no es necesario el filtro
             if (!isComp) {

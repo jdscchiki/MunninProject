@@ -19,7 +19,7 @@ import modelo.Business.General;
  *
  * @author Sergio
  */
-@WebServlet(name = "ServletPass", urlPatterns = {"/home/cambioContrasena"})
+@WebServlet(name = "ServletPass", urlPatterns = {"/home/change-password"})
 public class ServletPass extends HttpServlet {
 
     /**

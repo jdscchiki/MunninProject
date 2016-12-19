@@ -1,4 +1,4 @@
-<form id="formChangeRole" class="form-horizontal" role="form" method="POST" action="${URICoordinator}">
+<form id="formChangeRole" class="form-horizontal" role="form" method="POST" action="${URICoordinator}assign-roles">
     <div id="changeRole" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

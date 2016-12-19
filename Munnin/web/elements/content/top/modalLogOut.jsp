@@ -10,7 +10,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <a type="button" class="btn btn-primary" data-dismiss="modal" onclick=" location.href = '${URIMunnin}/exit'">Salir</a>
+                <a type="button" class="btn btn-primary" href = "${URIMunnin}exit" >Salir</a>
             </div>
         </div>
     </div>

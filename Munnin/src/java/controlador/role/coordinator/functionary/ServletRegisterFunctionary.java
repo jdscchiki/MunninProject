@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.role.coordinator;
+package controlador.role.coordinator.functionary;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -19,8 +19,8 @@ import modelo.Business.Coordinator;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/home/role/coordinator/register"})
-public class ServletRegistroFuncionario extends HttpServlet {
+@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/home/role/coordinator/register-functionary"})
+public class ServletRegisterFunctionary extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

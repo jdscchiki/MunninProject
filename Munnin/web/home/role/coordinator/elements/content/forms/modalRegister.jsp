@@ -1,6 +1,6 @@
 <%@page import="modelo.bean.TipoDocumento"%>
 <%@page import="java.util.ArrayList"%>
-<form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register">
+<form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-functionary">
     <div id="registerFunctionary" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -23,6 +23,7 @@ function validar(){
         $("#div_mensaje").removeClass("alert");
         $("#div_mensaje").removeClass("alert-danger");
         $("#mensaje").text("");
+        return true;
     }
 }
 

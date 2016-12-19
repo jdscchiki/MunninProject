@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.role.coordinator;
+package controlador.role.coordinator.functionary;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import modelo.Business.Coordinator;
  * @author Juan David Segura Castro
  */
 @WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/home/role/coordinator/adminFuncionarios"})
-public class ServletAdminFuncionarios extends HttpServlet {
+public class ServletManageFunctionary extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

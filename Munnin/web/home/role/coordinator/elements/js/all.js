@@ -104,7 +104,7 @@ $(document).ready(function () {
 
     $("#registerFunctionary").on('hidden.bs.modal', function () {
         $('#formRegisterFunctionary').trigger("reset");
-        $("#formRegisterFunctionary_message").html("");
+        $("#divRegisterFunctionary_message").html("");
     });
 });
 

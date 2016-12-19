@@ -1,4 +1,4 @@
-<form id="formChangePassword" class="form-horizontal" action="${URIHome}cambioContrasena" method="POST">
+<form id="formChangePassword" class="form-horizontal" action="${URIHome}change-password" method="POST">
     <div id="changePassword" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
