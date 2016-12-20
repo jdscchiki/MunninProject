@@ -17,8 +17,9 @@
         </div>
     </div>
     <div class="col-lg-2">
-        <button type="button" class="btn btn-primary btn-block" id="remove" class="btn btn-primary btn-block">Eliminar funcionario</button>
-        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#registerFunctionary">Registro de funcionarios</button>
+        <button type="button" class="btn btn-primary btn-block" id="remove" class="btn btn-primary btn-block">Eliminar</button>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#registerFunctionary">Registro</button>
+        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#assignRole">Asignar roles</button>
     </div>
 </div>
 <div id="div_message">
@@ -27,4 +28,5 @@
     var contextPath = ${URIMunnin};
 </script>
 <jsp:include page="/home/role/coordinator/elements/content/forms/modalRegister.jsp" />
+<jsp:include page="/home/role/coordinator/elements/content/forms/modalRoles.jsp" />
 <jsp:include page="/elements/content/bot.jsp" />

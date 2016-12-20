@@ -1,0 +1,146 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package modelo.dao;
+
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import modelo.bean.TipoArchivo;
+import util.ConexionBD;
+
+/**
+ *
+ * @author Juan David Segura
+ */
+public class TipoArchivoDAO extends ConexionBD {
+
+    private static final String COL_ID= "id_tipo_archivo";
+    private static final String COL_EXTENCION = "extencion_tipo_archivo";
+
+    /**
+     * Este constructor permite establecer la conexion con la base de datos
+     *
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD
+     */
+    public TipoArchivoDAO() throws NamingException, SQLException {
+        super();
+    }
+
+    /**
+     * Metodo para insertar un tipo de archivo en la base de datos
+     *
+     * @deprecated
+     * @param tipoArchivo Datos del tipo de archivo insertado
+     * @return True si la insercion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean Insert(TipoArchivo tipoArchivo) throws SQLException {
+        boolean resultado;
+
+        String query ="{CALL INSERTAR_TIPO_ARCHIVO(?,?)}";
+        int indexId = 1;
+        int indexExtencion = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, tipoArchivo.getId());
+        statement.setString(indexExtencion, tipoArchivo.getExtension());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para actualizar un tipo de archivo en la base de datos
+     *
+     * @deprecated
+     * @param tipoArchivo Datos del tipo de archivo a ser modificado
+     * @return True si la modificacion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean update(TipoArchivo tipoArchivo) throws SQLException {
+        boolean resultado;
+
+        String query ="{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
+        int indexId = 1;
+        int indexExtencion = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, tipoArchivo.getId());
+        statement.setString(indexExtencion, tipoArchivo.getExtension());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para borrar una tipo de archivo en la base de datos
+     *
+     * @deprecated
+     * @param tipoArchivo Datos de la tipo de archivo
+     * @return True si fue borrada exitosamente
+     * @throws SQLException
+     */
+    public boolean delete(TipoArchivo tipoArchivo) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL ELIMINAR_TIPO_ARCHIVO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, tipoArchivo.getId());
+
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para ver los datos de una tipo de archivo
+     *
+     * @param tipoArchivo Objeto de tipo TipoArchivo que en el atributo id tiene el
+     * valor del id a ser consultado
+     * @return los valores almacenados en la tabla Tipo_Archivo de la base de datos
+     * @throws SQLException
+     */
+    public TipoArchivo select(TipoArchivo tipoArchivo) throws SQLException {
+
+        String query = "{CALL VER_TIPO_ARCHIVO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, tipoArchivo.getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            tipoArchivo.setId(rs.getInt(COL_ID));
+            tipoArchivo.setExtension(rs.getString(COL_EXTENCION));
+        }
+        if (!encontrado) {
+            tipoArchivo = null;
+        }
+
+        return tipoArchivo;
+    }
+}

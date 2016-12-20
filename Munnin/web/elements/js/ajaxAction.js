@@ -8,12 +8,16 @@ $(document).ready(function () {
                 url: $form.attr("action"),
                 data: $form.serialize(),
                 success: function (response) {
-                    $("#formPassword_message").html(response);
-                    refreshTable(currentPage);
+                    $("#divPassword_message").html(response);
                 }
             });
         }
 
+    });
+
+    $("#changePassword").on('hidden.bs.modal', function () {
+        $('#formChangePassword').trigger("reset");
+        $("#divPassword_message").html("");
     });
 });
 
@@ -22,31 +26,32 @@ function validarPass() {
     pass1 = $("#passwordCurrent").val();
     pass2 = $("#passwordNew").val();
     pass3 = $("#passwordNewC").val();
-    var divMensaje = $("#formPassword_message");
+    var divMensaje = $("#divPassword_message");
+    var alertDiv1 = '<div class="alert alert-warning alert-dismissible">';
+    var alertDiv2 = '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+    var alertDiv3 = '<p id="textPassword_message"></p>';
+    var alertDiv4 = '</div>';
+    var alertDiv = alertDiv1 + alertDiv2 + alertDiv3 + alertDiv4;
+    
+    
     if (pass1 === "") {
-        divMensaje.addClass("alert");
-        divMensaje.addClass("alert-danger");
-        divMensaje.text("El campo Contraseña Actual esta vacio");
+        divMensaje.html(alertDiv);
+        $("#textPassword_message").text("El campo Contraseña Actual esta vacio");
         return false;
     } else if (pass2 === "") {
-        divMensaje.addClass("alert");
-        divMensaje.addClass("alert-danger");
-        divMensaje.text("El campo Nueva Contraseña esta vacio");
+        divMensaje.html(alertDiv);
+        $("#textPassword_message").text("El campo Nueva Contraseña esta vacio");
         return false;
     } else if (pass3 === "") {
-        divMensaje.addClass("alert");
-        divMensaje.addClass("alert-danger");
-        divMensaje.text("El campo Repite Contraseña esta vacio");
+        divMensaje.html(alertDiv);
+        $("#textPassword_message").text("El campo Repite Contraseña esta vacio");
         return false;
     } else if (pass2 !== pass3) {
-        divMensaje.addClass("alert");
-        divMensaje.addClass("alert-danger");
-        divMensaje.text("Las contraseñas no coinciden");
+        divMensaje.html(alertDiv);
+        $("#textPassword_message").text("Las contraseñas no coinciden");
         return false;
     } else {
-        divMensaje.removeClass("alert");
-        divMensaje.removeClass("alert-danger");
-        divMensaje.text("");
+        divMensaje.html("");
         return true;
     }
 }

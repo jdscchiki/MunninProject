@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import modelo.bean.Funcionario;
+import modelo.bean.Rol;
 import modelo.bean.TipoDocumento;
 import modelo.dao.TipoDocumentoDAO;
 import util.Encriptado;
@@ -31,13 +32,10 @@ public class Coordinator {
      *
      * @param funcionario Datos del funcionario a registerFunctionary
      * @param idCentro Id del centro en que va a ser registrado
-     * @return un entero entre 0 y 5.
-     *  0 fallo.
-     *  1 completado.
-     *  2 existe un usuario activo con los datos ingresados.
-     *  3 existe un usuario no-activo con el mismo correo.
-     *  4 existe un usuario no-activo con el mismo documento.
-       5 el correo no pudo ser enviado.
+     * @return un entero entre 0 y 5. 0 fallo. 1 completado. 2 existe un usuario
+     * activo con los datos ingresados. 3 existe un usuario no-activo con el
+     * mismo correo. 4 existe un usuario no-activo con el mismo documento. 5 el
+     * correo no pudo ser enviado.
      * @throws util.Encriptado.CannotPerformOperationException Error al realizar
      * la encriptacion de la contraseña, verificar la version de java
      * @throws NamingException Error en el constructor ConexionBD
@@ -62,7 +60,7 @@ public class Coordinator {
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        
+
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getIdTipoDocumento(), funcionario.getDocumento())) {
             resultado = 2;
         } else {
@@ -75,14 +73,14 @@ public class Coordinator {
                     funcionario.setContrasena(null);
                     if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
                         resultado = 1;
-                    }else{
+                    } else {
                         resultado = 5;
                     }
                 }
             }
         }
         funcionarioDAO.cerrarConexion();
-        
+
         return resultado;
     }
 
@@ -91,7 +89,8 @@ public class Coordinator {
      *
      * @return ArrayList de tipos de documento
      * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD o en el query de
+     * la consulta
      */
     public static ArrayList<TipoDocumento> verTiposDocumentos() throws NamingException, SQLException {
         ArrayList<TipoDocumento> tiposDoc;
@@ -101,6 +100,22 @@ public class Coordinator {
         return tiposDoc;
     }
 
+    public static ArrayList<Rol> verRoles() throws NamingException, SQLException {
+        ArrayList<Rol> roles = null;
+        return roles;
+    }
+    
+    /**
+     * Consulta la cantidad de paginas necesarias para mostrar todos los
+     * funcionarios
+     *
+     * @param idCentro Id del centro al cual se va a realizar la consulta
+     * @param cantXpag Cantidad de funcionarios por pagina
+     * @return la cantidad de paginas
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD o en el query de
+     * la consulta
+     */
     public static int verPaginasFuncionarios(String idCentro, int cantXpag) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
@@ -114,6 +129,18 @@ public class Coordinator {
         return paginas;
     }
 
+    /**
+     * Consulta los funcionarios de un centro en especifico, en una pagina
+     * especifica
+     *
+     * @param idCentro Id del centro a consultar
+     * @param pagina El numero de la pagina a consultar
+     * @param cantXpag La cantidad de funcionarios por pagina
+     * @return
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD o en el query de
+     * la consulta
+     */
     public static ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -122,6 +149,15 @@ public class Coordinator {
         return funcionarios;
     }
 
+    /**
+     * Inhabilita la cuenta de un funcionario
+     *
+     * @param idFuncionario Id del funcionario a inhabilitar
+     * @return True, si el funcionario fue inhabilitado correctamente
+     * @throws NamingException Error en el constructor ConexionBD
+     * @throws SQLException Error en el constructor ConexionBD o en el query de
+     * la consulta
+     */
     public static boolean inhabilitarFuncionario(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();

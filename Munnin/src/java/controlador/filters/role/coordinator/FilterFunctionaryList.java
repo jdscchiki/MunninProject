@@ -24,7 +24,7 @@ import modelo.Business.Coordinator;
  *
  * @author Juan David Segura Castro
  */
-public class ListaFuncionariosFilter implements Filter {
+public class FilterFunctionaryList implements Filter {
     
     private static final boolean debug = false;
 
@@ -33,7 +33,7 @@ public class ListaFuncionariosFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public ListaFuncionariosFilter() {
+    public FilterFunctionaryList() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)

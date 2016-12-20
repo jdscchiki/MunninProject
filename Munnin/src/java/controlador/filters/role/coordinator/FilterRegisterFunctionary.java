@@ -3,29 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.filters;
+package controlador.filters.role.coordinator;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.naming.NamingException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelo.bean.Funcionario;
+
+import modelo.Business.Coordinator;
+import modelo.bean.TipoDocumento;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura Castro 
  */
-public class SessionFilter implements Filter {
+public class FilterRegisterFunctionary implements Filter {
 
     private static final boolean debug = false;
 
@@ -34,13 +35,13 @@ public class SessionFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public SessionFilter() {
+    public FilterRegisterFunctionary() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("SessionFilter:DoBeforeProcessing");
+            log("RegistroFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -68,7 +69,7 @@ public class SessionFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("SessionFilter:DoAfterProcessing");
+            log("RegistroFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -104,73 +105,23 @@ public class SessionFilter implements Filter {
             throws IOException, ServletException {
 
         if (debug) {
-            log("SessionFilter:doFilter()");
+            log("RegistroFilter:doFilter()");
         }
 
         doBeforeProcessing(request, response);
 
         Throwable problem = null;
         try {
-            //cache control
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-            httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0
-            httpResponse.setDateHeader("Expires", 0); // Proxies.
-            
-            //todo el codigo para verificar sessiones
-            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
-            boolean isComp = false;
-            ArrayList<String> componenetes = new ArrayList<>();
-            componenetes.add(".js");
-            componenetes.add(".css");
-            componenetes.add(".png");
-            for (String componenete : componenetes) {
-                if (((HttpServletRequest) request).getRequestURI().endsWith(componenete)) {
-                    isComp = true;
-                    break;
-                }
+            try {
+                ArrayList<TipoDocumento> tiposDoc = Coordinator.verTiposDocumentos();
+                request.setAttribute("tiposDoc", tiposDoc);
+            } catch (NamingException e) {
+                //redireccion
+            } catch (SQLException e) {
+                //redireccion
             }
-            //quitar de los comentarios el siguiente codigo si algun elemento no carga, y añadirlo al ArrayList de componentes
-//            System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
 
-            //si es un componente, no es necesario el filtro
-            if (!isComp) {
-                boolean ExcepcionUri = false;
-                //las execepciones del filtro de inicio de sesion
-                ArrayList<String> excepcionesUriEnd = new ArrayList<>();
-                excepcionesUriEnd.add("/index.jsp");
-                excepcionesUriEnd.add("/login");
-                excepcionesUriEnd.add("/error.jsp");
-                excepcionesUriEnd.add("/");
-                for (String UriEnd : excepcionesUriEnd) {
-                    if (((HttpServletRequest) request).getRequestURI().endsWith(UriEnd)) {
-                        ExcepcionUri = true;
-                        break;
-                    }
-                }
-
-                //acede al contexto de la aplicacion, es decir, al nombre de la aplicacion
-                String contextPath = ((HttpServletRequest) request).getContextPath();
-
-                //accede a la sesion almacenada
-                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-
-                //valida que no exista una sesion de usuario activa
-                if (sesion.getAttribute("usuario") == null) {
-                    if (!ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/index.jsp");
-                        return;
-                    }
-                } else {//revisa que no venga del login para evitar otro ingreso a la aplicacion
-                    request.setAttribute("nombreUsuario", ((Funcionario) sesion.getAttribute("usuario")).getNombre());
-                    if (ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/home/inicio.jsp");
-                        return;
-                    }
-                }
-            }
             chain.doFilter(request, response);
-
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
@@ -196,7 +147,6 @@ public class SessionFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     *
      * @return Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
@@ -225,7 +175,7 @@ public class SessionFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {
-                log("SessionFilter:Initializing filter");
+                log("RegistroFilter:Initializing filter");
             }
         }
     }
@@ -236,9 +186,9 @@ public class SessionFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("SessionFilter()");
+            return ("RegistroFilter()");
         }
-        StringBuffer sb = new StringBuffer("SessionFilter(");
+        StringBuffer sb = new StringBuffer("RegistroFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

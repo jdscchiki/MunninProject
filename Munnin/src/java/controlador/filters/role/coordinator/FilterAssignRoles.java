@@ -9,39 +9,35 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import javax.naming.NamingException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import modelo.Business.Coordinator;
-import modelo.bean.TipoDocumento;
+import javax.servlet.annotation.WebFilter;
 
 /**
  *
- * @author Juan David Segura Castro 
+ * @author Juan David Segura
  */
-public class RegistroFuncionariosFilter implements Filter {
-
+@WebFilter(filterName = "FilterAssignRoles", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
+public class FilterAssignRoles implements Filter {
+    
     private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
-    public RegistroFuncionariosFilter() {
-    }
-
+    
+    public FilterAssignRoles() {
+    }    
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RegistroFilter:DoBeforeProcessing");
+            log("FilterAssignRoles:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -64,12 +60,12 @@ public class RegistroFuncionariosFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }
-
+    }    
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RegistroFilter:DoAfterProcessing");
+            log("FilterAssignRoles:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -103,24 +99,17 @@ public class RegistroFuncionariosFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
         if (debug) {
-            log("RegistroFilter:doFilter()");
+            log("FilterAssignRoles:doFilter()");
         }
-
+        
         doBeforeProcessing(request, response);
-
+        
         Throwable problem = null;
         try {
-            try {
-                ArrayList<TipoDocumento> tiposDoc = Coordinator.verTiposDocumentos();
-                request.setAttribute("tiposDoc", tiposDoc);
-            } catch (NamingException e) {
-                //redireccion
-            } catch (SQLException e) {
-                //redireccion
-            }
-
+            
+            
             chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -129,7 +118,7 @@ public class RegistroFuncionariosFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-
+        
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -147,7 +136,6 @@ public class RegistroFuncionariosFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -165,17 +153,17 @@ public class RegistroFuncionariosFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {
+    public void destroy() {        
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {
-                log("RegistroFilter:Initializing filter");
+            if (debug) {                
+                log("FilterAssignRoles:Initializing filter");
             }
         }
     }
@@ -186,27 +174,27 @@ public class RegistroFuncionariosFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("RegistroFilter()");
+            return ("FilterAssignRoles()");
         }
-        StringBuffer sb = new StringBuffer("RegistroFilter(");
+        StringBuffer sb = new StringBuffer("FilterAssignRoles(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-
+    
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
+        String stackTrace = getStackTrace(t);        
+        
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
+                PrintWriter pw = new PrintWriter(ps);                
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -223,7 +211,7 @@ public class RegistroFuncionariosFilter implements Filter {
             }
         }
     }
-
+    
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -237,9 +225,9 @@ public class RegistroFuncionariosFilter implements Filter {
         }
         return stackTrace;
     }
-
+    
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
+        filterConfig.getServletContext().log(msg);        
     }
-
+    
 }

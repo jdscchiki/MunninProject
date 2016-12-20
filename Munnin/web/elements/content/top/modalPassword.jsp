@@ -26,7 +26,7 @@
                             <input id="passwordNewC" type="password" name="passwordNewC" class="form-control" placeholder="Repite nueva contraseña"  maxlength="16" />
                         </div>
                     </div>
-                    <div id="formPassword_message">
+                    <div id="divPassword_message">
                     </div>
                 </div>
                 <div class="modal-footer">

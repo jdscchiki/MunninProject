@@ -44,7 +44,7 @@ public class ServletPass extends HttpServlet {
             
             request.setAttribute("message", result);
             
-            request.getRequestDispatcher("/elements/content/messages.jsp").forward(request, response);
+            request.getRequestDispatcher("/elements/content/messagesPassword.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("Error 2: " + e);
         }

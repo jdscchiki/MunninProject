@@ -48,6 +48,159 @@ public class FuncionarioDAO extends ConexionBD {
     }
 
     /**
+     * Metodo para insertar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario insertado
+     * @return True si la insercion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean Insert(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?)}";
+        int indexId = 1;
+        int indexActivo = 2;
+        int indexIdTipoDocumento = 3;
+        int indexDocumento = 4;
+        int indexCorreo = 5;
+        int indexContrasena = 6;
+        int indexNombre = 7;
+        int indexApellido = 8;
+        int indexTelefono = 9;
+        int indexIdCentro = 10;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        statement.setBoolean(indexActivo, funcionario.isActivo());
+        statement.setInt(indexIdTipoDocumento, funcionario.getIdTipoDocumento());
+        statement.setString(indexDocumento, funcionario.getDocumento());
+        statement.setString(indexCorreo, funcionario.getCorreo());
+        statement.setString(indexContrasena, funcionario.getContrasena());
+        statement.setString(indexNombre, funcionario.getNombre());
+        statement.setString(indexApellido, funcionario.getApellido());
+        statement.setString(indexTelefono, funcionario.getTelefono());
+        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para actualizar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario a ser modificado
+     * @return True si la modificacion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean update(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?)}";
+        int indexId = 1;
+        int indexActivo = 2;
+        int indexIdTipoDocumento = 3;
+        int indexDocumento = 4;
+        int indexCorreo = 5;
+        int indexContrasena = 6;
+        int indexNombre = 7;
+        int indexApellido = 8;
+        int indexTelefono = 9;
+        int indexIdCentro = 10;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        statement.setBoolean(indexActivo, funcionario.isActivo());
+        statement.setInt(indexIdTipoDocumento, funcionario.getIdTipoDocumento());
+        statement.setString(indexDocumento, funcionario.getDocumento());
+        statement.setString(indexCorreo, funcionario.getCorreo());
+        statement.setString(indexContrasena, funcionario.getContrasena());
+        statement.setString(indexNombre, funcionario.getNombre());
+        statement.setString(indexApellido, funcionario.getApellido());
+        statement.setString(indexTelefono, funcionario.getTelefono());
+        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para borrar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario
+     * @return True si fue borrada exitosamente
+     * @throws SQLException
+     */
+    public boolean delete(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL ELIMINAR_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para ver los datos de un funcionario
+     *
+     * @param funcionario Objeto de tipo Funcionario que en el atributo id tiene
+     * el valor del id a ser consultado
+     * @return los valores almacenados en la tabla funcionario de la base de
+     * datos
+     * @throws SQLException
+     */
+    public Funcionario select(Funcionario funcionario) throws SQLException {
+
+        String query = "{CALL VER_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
+            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setContrasena(rs.getString(COL_CONTRASENA));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setTelefono(rs.getString(COL_TELEFONO));
+            funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
+        }
+        if (!encontrado) {
+            funcionario = null;
+        }
+
+        return funcionario;
+    }
+
+    /**
      * Consulta los datos del funcionario
      *
      * @param correo Correo del usuario
@@ -132,63 +285,63 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
 
-    public boolean existFunctionaryMail(String mail) throws SQLException{
+    public boolean existFunctionaryMail(String mail) throws SQLException {
         boolean result = false;
-        
+
         String query = "{CALL VER_FUNCIONARIO_CORREO(?)}";
         int indexMail = 1;
-        
+
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexMail, mail);
         ResultSet rs = statement.executeQuery();
-        
+
         while (rs.next()) {
             result = true;
         }
-        
+
         return result;
     }
-    
-    public boolean isActiveFunctionary(String correo, int documentType, String document) throws SQLException{
+
+    public boolean isActiveFunctionary(String correo, int documentType, String document) throws SQLException {
         boolean result = false;
-        
+
         String query = "{CALL VER_FUNCIONARIO_ACTIVO(?,?,?)}";
         int indexCorreo = 1;
         int indexDocumentType = 2;
         int indexDocument = 3;
-        
+
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexCorreo, correo);
         statement.setInt(indexDocumentType, documentType);
         statement.setString(indexDocument, document);
         ResultSet rs = statement.executeQuery();
-        
+
         while (rs.next()) {
             result = true;
         }
-        
+
         return result;
     }
-    
-    public boolean existFunctionaryDocument(String document, int documentType) throws SQLException{
+
+    public boolean existFunctionaryDocument(String document, int documentType) throws SQLException {
         boolean result = false;
-        
+
         String query = "{CALL VER_FUNCIONARIO_DOCUMENTO(?,?)}";
         int indexDocument = 1;
         int indexDocumentType = 2;
-        
+
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexDocument, document);
         statement.setInt(indexDocumentType, documentType);
         ResultSet rs = statement.executeQuery();
-        
+
         while (rs.next()) {
             result = true;
         }
-        
+
         return result;
     }
-    
+
     /**
      * Consulta los roles de un funcionario
      *
@@ -306,15 +459,15 @@ public class FuncionarioDAO extends ConexionBD {
 
         return resultado;
     }
-    
+
     public boolean changePassword(int id, String password) throws SQLException {
         boolean resultado;//esta es la futura respuesta
-        
+
         //datos de la consulta en base de datos
         String query = "{CALL CAMBIOCONTRASENA(?,?)}";
         int indexId = 1;
         int indexContrasena = 2;
-        
+
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, id);
         statement.setString(indexContrasena, password);
