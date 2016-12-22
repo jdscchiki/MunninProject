@@ -356,10 +356,9 @@ ENGINE = InnoDB;
 -- Table item_lista
 -- -----------------------------------------------------
 CREATE TABLE item_lista (
-  id_item_lista INT(11) NOT NULL AUTO_INCREMENT,
   id_lista_item_lista INT(11) NOT NULL,
   id_item_item_lista INT(11) NOT NULL,
-  PRIMARY KEY (id_item_lista),
+  PRIMARY KEY (id_lista_item_lista, id_item_item_lista),
   INDEX id_lista_item_lista (id_lista_item_lista ASC),
   INDEX id_item_item_lista (id_item_item_lista ASC),
   CONSTRAINT item_lista_ibfk_1
@@ -379,16 +378,16 @@ CREATE TABLE evaluacion_item (
   calificacion_evaluacion_item BIT(1) NULL DEFAULT NULL,
   observacion_evaluacion_item VARCHAR(100) NULL DEFAULT NULL,
   id_evaluacion_lista_evaluacion_item INT(11) NOT NULL,
-  id_item_lista_evaluacion_item INT(11) NOT NULL,
+  id_item_evaluacion_item INT(11) NOT NULL,
   PRIMARY KEY (id_evaluacion_item),
   INDEX id_evaluacion_lista_evaluacion_item (id_evaluacion_lista_evaluacion_item ASC),
-  INDEX id_item_lista_evaluacion_item (id_item_lista_evaluacion_item ASC),
+  INDEX id_item_evaluacion_item (id_item_evaluacion_item ASC),
   CONSTRAINT evaluacion_item_ibfk_1
     FOREIGN KEY (id_evaluacion_lista_evaluacion_item)
     REFERENCES evaluacion_lista (id_evaluacion_lista),
   CONSTRAINT evaluacion_item_ibfk_2
-    FOREIGN KEY (id_item_lista_evaluacion_item)
-    REFERENCES item_lista (id_item_lista))
+    FOREIGN KEY (id_item_evaluacion_item)
+    REFERENCES item (id_item))
 ENGINE = InnoDB;
 
 
@@ -950,41 +949,31 @@ BEGIN
 		_id_item_item_lista );
 END $$
 
--- editar item_lista
-
-DROP PROCEDURE IF EXISTS editar_item_lista $$
-CREATE PROCEDURE editar_item_lista (
-	IN _id_item_lista INT ,
-	IN _id_lista_item_lista INT ,
-	IN _id_item_item_lista INT )
-BEGIN
-	UPDATE item_lista
-	SET id_lista_item_lista = _id_lista_item_lista ,
-		id_item_item_lista = _id_item_item_lista
-	WHERE id_item_lista = _id_item_lista ;
-END $$
-
 -- eliminar item_lista
 
 DROP PROCEDURE IF EXISTS eliminar_item_lista $$
 CREATE PROCEDURE eliminar_item_lista (
-	IN _id_item_lista INT )
+	IN _id_lista_item_lista INT ,
+	IN _id_item_item_lista INT )
 BEGIN
 	DELETE FROM item_lista
-	WHERE id_item_lista = _id_item_lista;
+	WHERE id_lista_item_lista = _id_lista_item_lista AND
+            id_item_item_lista = _id_item_item_lista;
 END $$
 
 -- ver item_lista
 
 DROP PROCEDURE IF EXISTS ver_item_lista $$
 CREATE PROCEDURE ver_item_lista (
-	IN _id_item_lista INT )
+	IN _id_lista_item_lista INT ,
+	IN _id_item_item_lista INT )
 BEGIN
-	SELECT id_item_lista ,
-	id_lista_item_lista ,
-	id_item_item_lista
+	SELECT 
+            id_lista_item_lista ,
+            id_item_item_lista
 	FROM item_lista
-	WHERE id_item_lista = _id_item_lista ;
+	WHERE id_lista_item_lista = _id_lista_item_lista AND
+            id_item_item_lista = _id_item_item_lista;
 END $$
 
 DELIMITER ;
@@ -1056,18 +1045,18 @@ CREATE PROCEDURE insertar_evaluacion_item (
 	IN _calificacion_evaluacion_item BIT(1) ,
 	IN _observacion_evaluacion_item VARCHAR(100) ,
 	IN _id_evaluacion_lista_evaluacion_item INT ,
-	IN _id_item_lista_evaluacion_item INT )
+	IN _id_item_evaluacion_item INT )
 BEGIN
 	INSERT INTO evaluacion_item(
 		calificacion_evaluacion_item ,
 		observacion_evaluacion_item ,
 		id_evaluacion_lista_evaluacion_item ,
-		id_item_lista_evaluacion_item )
+		id_item_evaluacion_item )
 	VALUES (
 		_calificacion_evaluacion_item ,
 		_observacion_evaluacion_item ,
 		_id_evaluacion_lista_evaluacion_item ,
-		_id_item_lista_evaluacion_item );
+		_id_item_evaluacion_item );
 END $$
 
 -- editar evaluacion_item
@@ -1078,13 +1067,13 @@ CREATE PROCEDURE editar_evaluacion_item (
 	IN _calificacion_evaluacion_item BIT(1) ,
 	IN _observacion_evaluacion_item VARCHAR(100) ,
 	IN _id_evaluacion_lista_evaluacion_item INT ,
-	IN _id_item_lista_evaluacion_item INT )
+	IN _id_item_evaluacion_item INT )
 BEGIN
 	UPDATE evaluacion_item
 	SET calificacion_evaluacion_item = _calificacion_evaluacion_item ,
 		observacion_evaluacion_item = _observacion_evaluacion_item ,
 		id_evaluacion_lista_evaluacion_item = _id_evaluacion_lista_evaluacion_item ,
-		id_item_lista_evaluacion_item = _id_item_lista_evaluacion_item 
+		id_item_evaluacion_item = _id_item_evaluacion_item 
 	WHERE id_evaluacion_item = _id_evaluacion_item ;
 END $$
 
@@ -1108,7 +1097,7 @@ BEGIN
 	calificacion_evaluacion_item ,
 	observacion_evaluacion_item ,
 	id_evaluacion_lista_evaluacion_item ,
-	id_item_lista_evaluacion_item
+	id_item_evaluacion_item 
 	FROM evaluacion_item
 	WHERE id_evaluacion_item = _id_evaluacion_item ;
 END $$
