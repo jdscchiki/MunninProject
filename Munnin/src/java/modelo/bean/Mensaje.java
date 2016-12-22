@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -12,6 +14,15 @@ package modelo.bean;
 public class Mensaje {
     private int id;
     private String texto;
+    private ArrayList<Notificacion> notificaciones;
+
+    public ArrayList<Notificacion> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
 
     public int getId() {
         return id;

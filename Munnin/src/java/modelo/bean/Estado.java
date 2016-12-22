@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -13,6 +15,15 @@ public class Estado {
 
     private int id;
     private String nombre;
+    private ArrayList<Version> versiones;
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
 
     public int getId() {
         return id;

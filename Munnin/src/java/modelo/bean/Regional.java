@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -12,6 +14,15 @@ package modelo.bean;
 public class Regional {
     private String id;
     private String nombre;
+    private ArrayList<Centro> centros;
+
+    public ArrayList<Centro> getCentros() {
+        return centros;
+    }
+
+    public void setCentros(ArrayList<Centro> centros) {
+        this.centros = centros;
+    }
 
     public String getId() {
         return id;

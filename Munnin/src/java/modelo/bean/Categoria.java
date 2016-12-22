@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -15,6 +17,15 @@ public class Categoria {
     private String nombre;
     private boolean activo;
     private Centro centro;
+    private ArrayList<Producto> productos;
+
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
 
     public int getId() {
         return id;

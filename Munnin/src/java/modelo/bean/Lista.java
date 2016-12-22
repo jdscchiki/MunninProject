@@ -5,6 +5,7 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -18,6 +19,24 @@ public class Lista {
     private Date fecha;
     private TipoLista tipoLista;
     private int idAutor;
+    private ArrayList<Item> items;
+    private ArrayList<EvaluacionLista> evaluacionListas;
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    public ArrayList<EvaluacionLista> getEvaluacionListas() {
+        return evaluacionListas;
+    }
+
+    public void setEvaluacionListas(ArrayList<EvaluacionLista> evaluacionListas) {
+        this.evaluacionListas = evaluacionListas;
+    }
 
     public int getId() {
         return id;

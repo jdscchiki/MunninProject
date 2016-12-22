@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -15,6 +17,51 @@ public class Producto {
     private String descripcion;
     private String palabrasClave;
     private TipoObjetoAprendizaje tipoObjetoAprendizaje;
+    private ArrayList<Categoria> categorias;
+    private ArrayList<Programa> programas;
+    private ArrayList<Version> versiones;
+    private ArrayList<Comentario> comentarios;
+    private ArrayList<Visita> visitas;
+
+    public ArrayList<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(ArrayList<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public ArrayList<Programa> getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(ArrayList<Programa> programas) {
+        this.programas = programas;
+    }
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
+
+    public ArrayList<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(ArrayList<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public ArrayList<Visita> getVisitas() {
+        return visitas;
+    }
+
+    public void setVisitas(ArrayList<Visita> visitas) {
+        this.visitas = visitas;
+    }
 
     public int getId() {
         return id;

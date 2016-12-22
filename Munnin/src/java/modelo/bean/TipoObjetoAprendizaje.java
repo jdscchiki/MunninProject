@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -12,6 +14,15 @@ package modelo.bean;
 public class TipoObjetoAprendizaje {
     private int id;
     private String nombre;
+    private ArrayList<Producto> productos;
+
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
 
     public int getId() {
         return id;

@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -12,6 +14,15 @@ package modelo.bean;
 public class TipoLista {
     private int id;
     private String nombre;
+    private ArrayList<Lista> listas;
+
+    public ArrayList<Lista> getListas() {
+        return listas;
+    }
+
+    public void setListas(ArrayList<Lista> listas) {
+        this.listas = listas;
+    }
 
     public int getId() {
         return id;

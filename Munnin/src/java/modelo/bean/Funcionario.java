@@ -23,8 +23,71 @@ public class Funcionario implements java.io.Serializable {
     private String telefono;
     private String idCentro;
     private TipoDocumento tipoDocumento;
-
     private ArrayList<Rol> roles;
+    private ArrayList<Notificacion> notificaciones;
+    private ArrayList<Version> versiones;
+    private ArrayList<EvaluacionLista> evaluacionListas;
+    private ArrayList<Lista> listas;
+    private ArrayList<Item> items;
+    private ArrayList<Comentario> comentarios;
+    private ArrayList<Visita> visitas;
+
+    public ArrayList<Notificacion> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
+
+    public ArrayList<EvaluacionLista> getEvaluacionListas() {
+        return evaluacionListas;
+    }
+
+    public void setEvaluacionListas(ArrayList<EvaluacionLista> evaluacionListas) {
+        this.evaluacionListas = evaluacionListas;
+    }
+
+    public ArrayList<Lista> getListas() {
+        return listas;
+    }
+
+    public void setListas(ArrayList<Lista> listas) {
+        this.listas = listas;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    public ArrayList<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(ArrayList<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public ArrayList<Visita> getVisitas() {
+        return visitas;
+    }
+
+    public void setVisitas(ArrayList<Visita> visitas) {
+        this.visitas = visitas;
+    }
+
 
     public int getId() {
         return id;

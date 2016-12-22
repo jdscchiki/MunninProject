@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -12,6 +14,15 @@ package modelo.bean;
 public class TipoArchivo {
     private int id;
     private String extension;
+    private ArrayList<Version> versiones;
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
 
     public int getId() {
         return id;

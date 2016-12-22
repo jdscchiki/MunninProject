@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -15,6 +17,15 @@ public class Area {
     private String nombre;
     private boolean activo;
     private Centro centro;
+    private ArrayList<Programa> programas;
+
+    public ArrayList<Programa> getProgramas() {
+        return programas;
+    }
+
+    public void setProgramas(ArrayList<Programa> programas) {
+        this.programas = programas;
+    }
 
     public int getId() {
         return id;

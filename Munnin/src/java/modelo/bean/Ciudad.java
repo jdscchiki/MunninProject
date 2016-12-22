@@ -13,6 +13,15 @@ public class Ciudad {
 
     private String id;
     private String nombre;
+    private Centro centro;
+
+    public Centro getCentro() {
+        return centro;
+    }
+
+    public void setCentro(Centro centro) {
+        this.centro = centro;
+    }
 
     public Ciudad() {
     }

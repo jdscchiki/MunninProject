@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -13,6 +15,24 @@ public class Item {
     private int id;
     private String descriptor;
     private Funcionario autor;
+    private ArrayList<Lista> listas;
+    private ArrayList<EvaluacionItem> evaluacionItems;
+
+    public ArrayList<Lista> getListas() {
+        return listas;
+    }
+
+    public void setListas(ArrayList<Lista> listas) {
+        this.listas = listas;
+    }
+
+    public ArrayList<EvaluacionItem> getEvaluacionItems() {
+        return evaluacionItems;
+    }
+
+    public void setEvaluacionItems(ArrayList<EvaluacionItem> evaluacionItems) {
+        this.evaluacionItems = evaluacionItems;
+    }
 
     public int getId() {
         return id;
