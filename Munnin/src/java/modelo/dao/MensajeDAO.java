@@ -9,17 +9,17 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import modelo.bean.Estado;
+import modelo.bean.Mensaje;
 import util.ConexionBD;
 
 /**
  *
  * @author Juan David Segura
  */
-public class EstadoDAO extends ConexionBD {
+public class MensajeDAO extends ConexionBD {
 
-    private static final String COL_ID = "id_estado";
-    private static final String COL_NOMBRE = "nombre_estado";
+    private static final String COL_ID = "id_mensaje";
+    private static final String COL_TEXTO = "texto_mensaje";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -27,26 +27,26 @@ public class EstadoDAO extends ConexionBD {
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD
      */
-    public EstadoDAO() throws NamingException, SQLException {
+    public MensajeDAO() throws NamingException, SQLException {
         super();
     }
 
     /**
-     * Metodo para insertar un estado en la base de datos
+     * Metodo para insertar un mensaje en la base de datos
      *
      * @deprecated
-     * @param estado Datos del estado insertado
+     * @param mensaje Datos del mensaje insertado
      * @return True si la insercion fue completada exitosamente
      * @throws SQLException
      */
-    public boolean Insert(Estado estado) throws SQLException {
+    public boolean Insert(Mensaje mensaje) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_ESTADO(?)}";
-        int indexNombre = 2;
+        String query = "{CALL INSERTAR_MENSAJE(?)}";
+        int indexTexto = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setString(indexNombre, estado.getNombre());
+        statement.setString(indexTexto, mensaje.getTexto());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -58,23 +58,24 @@ public class EstadoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para actualizar un estado en la base de datos
+     * Metodo para actualizar un mensaje en la base de datos
      *
      * @deprecated
-     * @param estado Datos del estado a ser modificado
+     * @param mensaje Datos del mensaje a ser modificado
      * @return True si la modificacion fue completada exitosamente
      * @throws SQLException
      */
-    public boolean update(Estado estado) throws SQLException {
+    public boolean update(Mensaje mensaje) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_ESTADO(?,?)}";
+        String query = "{CALL EDITAR_MENSAJE(?,?)}";
         int indexId = 1;
-        int indexNombre = 2;
+        int indexTexto = 2;
 
-        CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, estado.getId());
-        statement.setString(indexNombre, estado.getNombre());
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, mensaje.getId());
+        statement.setString(indexTexto, mensaje.getTexto());
+
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -86,21 +87,21 @@ public class EstadoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para borrar un estado en la base de datos
+     * Metodo para borrar un mensaje en la base de datos
      *
      * @deprecated
-     * @param estado Datos del estado
+     * @param mensaje Datos del mensaje
      * @return True si fue borrada exitosamente
      * @throws SQLException
      */
-    public boolean delete(Estado estado) throws SQLException {
+    public boolean delete(Mensaje mensaje) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL ELIMINAR_ESTADO(?)}";
+        String query = "{CALL ELIMINAR_MENSAJE(?)}";
         int indexId = 1;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexId, estado.getId());
+        statement.setInt(indexId, mensaje.getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -113,32 +114,32 @@ public class EstadoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para ver los datos de un estado
+     * Metodo para ver los datos de un mensaje
      *
-     * @param estado Objeto de tipo Estado que en el atributo id tiene el valor
-     * del id a ser consultado
-     * @return los valores almacenados en la tabla estado de la base de datos
+     * @param mensaje Objeto de tipo Mensaje que en el atributo id tiene el
+     * valor del id a ser consultado
+     * @return los valores almacenados en la tabla mensaje de la base de datos
      * @throws SQLException
      */
-    public Estado select(Estado estado) throws SQLException {
+    public Mensaje select(Mensaje mensaje) throws SQLException {
 
-        String query = "{CALL VER_ESTADO(?)}";
+        String query = "{CALL VER_MENSAJE(?)}";
         int indexId = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, estado.getId());
+        statement.setInt(indexId, mensaje.getId());
         ResultSet rs = statement.executeQuery();
 
         boolean encontrado = false;
         while (rs.next()) {
             encontrado = true;
-            estado.setId(rs.getInt(COL_ID));
-            estado.setNombre(rs.getString(COL_NOMBRE));
+            mensaje.setId(rs.getInt(COL_ID));
+            mensaje.setTexto(rs.getString(COL_TEXTO));
         }
         if (!encontrado) {
-            estado = null;
+            mensaje = null;
         }
 
-        return estado;
+        return mensaje;
     }
 }

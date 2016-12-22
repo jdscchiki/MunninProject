@@ -11,12 +11,12 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class ListaChequeo {
+public class Lista {
     private int id;
     private String nombre;
     private String descripcion;
     private Date fecha;
-    private String tipo;
+    private TipoLista tipoLista;
     private int idAutor;
 
     public int getId() {
@@ -51,12 +51,12 @@ public class ListaChequeo {
         this.fecha = fecha;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoLista getTipoLista() {
+        return tipoLista;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoLista(TipoLista tipoLista) {
+        this.tipoLista = tipoLista;
     }
 
     public int getIdAutor() {
@@ -67,6 +67,6 @@ public class ListaChequeo {
         this.idAutor = idAutor;
     }
 
-    public ListaChequeo() {
+    public Lista() {
     }
 }

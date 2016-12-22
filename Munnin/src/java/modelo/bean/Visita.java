@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public class Visita {
     private Date fecha;
-    private int idProducto;
-    private int idFuncionario;
+    private Producto producto;
+    private Funcionario funcionario;
 
     public Date getFecha() {
         return fecha;
@@ -24,20 +24,20 @@ public class Visita {
         this.fecha = fecha;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public int getIdFuncionario() {
-        return idFuncionario;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setIdFuncionario(int idFuncionario) {
-        this.idFuncionario = idFuncionario;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
     public Visita() {

@@ -41,7 +41,7 @@ public class General {
     public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
         Funcionario funcionarioLog;
         FuncionarioDAO consulta = new FuncionarioDAO();
-        funcionarioLog = consulta.selectFunctionaryMail(correo);
+        funcionarioLog = consulta.selectFunctionaryByMail(correo);
         if (funcionarioLog != null) {
             if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;

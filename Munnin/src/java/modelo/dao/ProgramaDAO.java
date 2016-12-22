@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import modelo.bean.Area;
 import modelo.bean.Programa;
 import util.ConexionBD;
 
@@ -43,15 +44,13 @@ public class ProgramaDAO extends ConexionBD {
     public boolean Insert(Programa programa) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_PROGRAMA(?,?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
-        int indexIdArea = 3;
+        String query = "{CALL INSERTAR_PROGRAMA(?,?)}";
+        int indexNombre = 1;
+        int indexIdArea = 2;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, programa.getId());
         statement.setString(indexNombre, programa.getNombre());
-        statement.setInt(indexIdArea, programa.getIdArea());
+        statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -81,7 +80,7 @@ public class ProgramaDAO extends ConexionBD {
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, programa.getId());
         statement.setString(indexNombre, programa.getNombre());
-        statement.setInt(indexIdArea, programa.getIdArea());
+        statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -141,7 +140,9 @@ public class ProgramaDAO extends ConexionBD {
             encontrado = true;
             programa.setId(rs.getInt(COL_ID));
             programa.setNombre(rs.getString(COL_NOMBRE));
-            programa.setIdArea(rs.getInt(COL_ID_AREA));
+            Area area = new Area();
+            area.setId(rs.getInt(COL_ID_AREA));
+            programa.setArea(area);
         }
         if (!encontrado) {
             programa = null;

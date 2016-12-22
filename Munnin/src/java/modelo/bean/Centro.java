@@ -13,11 +13,8 @@ public class Centro {
 
     private String id;
     private String nombre;
-    private String idRegional;
-    private String idCiudad;
-
-    public Centro() {
-    }
+    private Regional regional;
+    private Ciudad ciudad;
 
     public String getId() {
         return id;
@@ -35,20 +32,22 @@ public class Centro {
         this.nombre = nombre;
     }
 
-    public String getIdRegional() {
-        return idRegional;
+    public Regional getRegional() {
+        return regional;
     }
 
-    public void setIdRegional(String idRegional) {
-        this.idRegional = idRegional;
+    public void setRegional(Regional regional) {
+        this.regional = regional;
     }
 
-    public String getIdCiudad() {
-        return idCiudad;
+    public Ciudad getCiudad() {
+        return ciudad;
     }
 
-    public void setIdCiudad(String idCiudad) {
-        this.idCiudad = idCiudad;
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
     }
 
+    public Centro() {
+    }
 }

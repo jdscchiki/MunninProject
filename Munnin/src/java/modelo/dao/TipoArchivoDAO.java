@@ -18,8 +18,8 @@ import util.ConexionBD;
  */
 public class TipoArchivoDAO extends ConexionBD {
 
-    private static final String COL_ID= "id_tipo_archivo";
-    private static final String COL_EXTENCION = "extencion_tipo_archivo";
+    private static final String COL_ID = "id_tipo_archivo";
+    private static final String COL_EXTENSION = "extension_tipo_archivo";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -42,12 +42,10 @@ public class TipoArchivoDAO extends ConexionBD {
     public boolean Insert(TipoArchivo tipoArchivo) throws SQLException {
         boolean resultado;
 
-        String query ="{CALL INSERTAR_TIPO_ARCHIVO(?,?)}";
-        int indexId = 1;
-        int indexExtencion = 2;
+        String query = "{CALL INSERTAR_TIPO_ARCHIVO(?)}";
+        int indexExtencion = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, tipoArchivo.getId());
         statement.setString(indexExtencion, tipoArchivo.getExtension());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -70,7 +68,7 @@ public class TipoArchivoDAO extends ConexionBD {
     public boolean update(TipoArchivo tipoArchivo) throws SQLException {
         boolean resultado;
 
-        String query ="{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
+        String query = "{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
         int indexId = 1;
         int indexExtencion = 2;
 
@@ -117,9 +115,10 @@ public class TipoArchivoDAO extends ConexionBD {
     /**
      * Metodo para ver los datos de una tipo de archivo
      *
-     * @param tipoArchivo Objeto de tipo TipoArchivo que en el atributo id tiene el
-     * valor del id a ser consultado
-     * @return los valores almacenados en la tabla Tipo_Archivo de la base de datos
+     * @param tipoArchivo Objeto de tipo TipoArchivo que en el atributo id tiene
+     * el valor del id a ser consultado
+     * @return los valores almacenados en la tabla Tipo_Archivo de la base de
+     * datos
      * @throws SQLException
      */
     public TipoArchivo select(TipoArchivo tipoArchivo) throws SQLException {
@@ -135,7 +134,7 @@ public class TipoArchivoDAO extends ConexionBD {
         while (rs.next()) {
             encontrado = true;
             tipoArchivo.setId(rs.getInt(COL_ID));
-            tipoArchivo.setExtension(rs.getString(COL_EXTENCION));
+            tipoArchivo.setExtension(rs.getString(COL_EXTENSION));
         }
         if (!encontrado) {
             tipoArchivo = null;

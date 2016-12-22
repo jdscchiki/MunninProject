@@ -9,10 +9,9 @@ package modelo.bean;
  *
  * @author Juan David Segura
  */
-public class Programa {
+public class Mensaje {
     private int id;
-    private String nombre;
-    private Area area;
+    private String texto;
 
     public int getId() {
         return id;
@@ -22,22 +21,14 @@ public class Programa {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
-
-    public Programa() {
+    public Mensaje() {
     }
 }

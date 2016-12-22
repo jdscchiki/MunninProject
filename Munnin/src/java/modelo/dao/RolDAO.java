@@ -17,7 +17,7 @@ import util.ConexionBD;
  * @author Juan David Segura
  */
 public class RolDAO extends ConexionBD {
-    
+
     private static final String COL_ID = "id_rol";
     private static final String COL_NOMBRE = "nombre_rol";
 
@@ -42,12 +42,10 @@ public class RolDAO extends ConexionBD {
     public boolean Insert(Rol rol) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_ROL(?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
+        String query = "{CALL INSERTAR_ROL(?)}";
+        int indexNombre = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, rol.getId());
         statement.setString(indexNombre, rol.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -117,8 +115,8 @@ public class RolDAO extends ConexionBD {
     /**
      * Metodo para ver los datos de un rol
      *
-     * @param rol Objeto de tipo Rol que en el atributo id tiene el
-     * valor del id a ser consultado
+     * @param rol Objeto de tipo Rol que en el atributo id tiene el valor del id
+     * a ser consultado
      * @return los valores almacenados en la tabla rol de la base de datos
      * @throws SQLException
      */

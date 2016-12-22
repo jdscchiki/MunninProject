@@ -15,7 +15,7 @@ import modelo.bean.TipoDocumento;
 
 /**
  *
- * @author Juan David Segura Castro 
+ * @author Juan David Segura Castro
  */
 public class TipoDocumentoDAO extends ConexionBD {
 
@@ -31,7 +31,7 @@ public class TipoDocumentoDAO extends ConexionBD {
     public TipoDocumentoDAO() throws NamingException, SQLException {
         super();
     }
-    
+
     /**
      * Metodo para insertar un tipo de documento en la base de datos
      *
@@ -43,12 +43,10 @@ public class TipoDocumentoDAO extends ConexionBD {
     public boolean Insert(TipoDocumento tipoDocumento) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_TIPO_DOCUMENTO(?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
+        String query = "{CALL INSERTAR_TIPO_DOCUMENTO(?)}";
+        int indexNombre = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, tipoDocumento.getId());
         statement.setString(indexNombre, tipoDocumento.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -118,9 +116,10 @@ public class TipoDocumentoDAO extends ConexionBD {
     /**
      * Metodo para ver los datos de una tipo de documento
      *
-     * @param tipoDocumento Objeto de tipo TipoDocumento que en el atributo id tiene el
-     * valor del id a ser consultado
-     * @return los valores almacenados en la tabla tipo_documento de la base de datos
+     * @param tipoDocumento Objeto de tipo TipoDocumento que en el atributo id
+     * tiene el valor del id a ser consultado
+     * @return los valores almacenados en la tabla tipo_documento de la base de
+     * datos
      * @throws SQLException
      */
     public TipoDocumento select(TipoDocumento tipoDocumento) throws SQLException {
@@ -150,14 +149,15 @@ public class TipoDocumentoDAO extends ConexionBD {
      * el aplicativo
      *
      * @return ArrayList de objetos TipoDocumento
-     * @throws SQLException Error al realizar la consulta, revisar el procedimiento almacenado
+     * @throws SQLException Error al realizar la consulta, revisar el
+     * procedimiento almacenado
      */
     public ArrayList<TipoDocumento> verTodos() throws SQLException {
         ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();//el objeto en donde se guardan los resultados de la consulta
-        
+
         //datos de la consulta en base de datos
-        String query = "{CALL VERTODOS_TIPO_DOCUMENTO()}";
-        
+        String query = "{CALL VER_TODOS_TIPO_DOCUMENTO()}";
+
         CallableStatement statement = this.getConexion().prepareCall(query);
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {

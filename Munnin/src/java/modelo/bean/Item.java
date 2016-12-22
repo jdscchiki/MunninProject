@@ -12,7 +12,7 @@ package modelo.bean;
 public class Item {
     private int id;
     private String descriptor;
-    private int idAutor;
+    private Funcionario autor;
 
     public int getId() {
         return id;
@@ -30,12 +30,12 @@ public class Item {
         this.descriptor = descriptor;
     }
 
-    public int getIdAutor() {
-        return idAutor;
+    public Funcionario getAutor() {
+        return autor;
     }
 
-    public void setIdAutor(int idAutor) {
-        this.idAutor = idAutor;
+    public void setAutor(Funcionario autor) {
+        this.autor = autor;
     }
 
     public Item() {

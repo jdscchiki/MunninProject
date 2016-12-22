@@ -15,7 +15,6 @@ public class Funcionario implements java.io.Serializable {
 
     private int id;
     private boolean activo;
-    private int idTipoDocumento;
     private String documento;
     private String correo;
     private String contrasena;
@@ -23,6 +22,7 @@ public class Funcionario implements java.io.Serializable {
     private String apellido;
     private String telefono;
     private String idCentro;
+    private TipoDocumento tipoDocumento;
 
     private ArrayList<Rol> roles;
 
@@ -40,14 +40,6 @@ public class Funcionario implements java.io.Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public int getIdTipoDocumento() {
-        return idTipoDocumento;
-    }
-
-    public void setIdTipoDocumento(int idTipoDocumento) {
-        this.idTipoDocumento = idTipoDocumento;
     }
 
     public String getDocumento() {
@@ -106,6 +98,14 @@ public class Funcionario implements java.io.Serializable {
         this.idCentro = idCentro;
     }
 
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
     public ArrayList<Rol> getRoles() {
         return roles;
     }
@@ -114,51 +114,51 @@ public class Funcionario implements java.io.Serializable {
         this.roles = roles;
     }
 
-    public boolean isAdministrador(){
-        for(Rol rol: roles){
-            if(rol.getId()== 5 ){
+    public boolean isAdministrador() {
+        for (Rol rol : roles) {
+            if (rol.getId() == 5) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean isCoordinador(){
-        for(Rol rol: roles){
-            if(rol.getId()== 1 ){
+
+    public boolean isCoordinador() {
+        for (Rol rol : roles) {
+            if (rol.getId() == 1) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean isTecnico(){
-        for(Rol rol: roles){
-            if(rol.getId()== 2 ){
+
+    public boolean isTecnico() {
+        for (Rol rol : roles) {
+            if (rol.getId() == 2) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean isPedagogico(){
-        for(Rol rol: roles){
-            if(rol.getId()== 3 ){
+
+    public boolean isPedagogico() {
+        for (Rol rol : roles) {
+            if (rol.getId() == 3) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean isInstructor(){
-        for(Rol rol: roles){
-            if(rol.getId()== 4 ){
+
+    public boolean isInstructor() {
+        for (Rol rol : roles) {
+            if (rol.getId() == 4) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public Funcionario() {
 
     }

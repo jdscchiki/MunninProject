@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import util.ConexionBD;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
+import modelo.bean.TipoDocumento;
 
 //cosas a tener en cuenta:
 //  documentar los metodos, es facil con la herramienta javadoc
@@ -58,22 +59,20 @@ public class FuncionarioDAO extends ConexionBD {
     public boolean Insert(Funcionario funcionario) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?)}";
-        int indexId = 1;
-        int indexActivo = 2;
-        int indexIdTipoDocumento = 3;
-        int indexDocumento = 4;
-        int indexCorreo = 5;
-        int indexContrasena = 6;
-        int indexNombre = 7;
-        int indexApellido = 8;
-        int indexTelefono = 9;
-        int indexIdCentro = 10;
+        String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
+        int indexActivo = 1;
+        int indexIdTipoDocumento = 2;
+        int indexDocumento = 3;
+        int indexCorreo = 4;
+        int indexContrasena = 5;
+        int indexNombre = 6;
+        int indexApellido = 7;
+        int indexTelefono = 8;
+        int indexIdCentro = 9;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, funcionario.getId());
         statement.setBoolean(indexActivo, funcionario.isActivo());
-        statement.setInt(indexIdTipoDocumento, funcionario.getIdTipoDocumento());
+        statement.setInt(indexIdTipoDocumento, funcionario.getTipoDocumento().getId());
         statement.setString(indexDocumento, funcionario.getDocumento());
         statement.setString(indexCorreo, funcionario.getCorreo());
         statement.setString(indexContrasena, funcionario.getContrasena());
@@ -117,7 +116,7 @@ public class FuncionarioDAO extends ConexionBD {
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, funcionario.getId());
         statement.setBoolean(indexActivo, funcionario.isActivo());
-        statement.setInt(indexIdTipoDocumento, funcionario.getIdTipoDocumento());
+        statement.setInt(indexIdTipoDocumento, funcionario.getTipoDocumento().getId());
         statement.setString(indexDocumento, funcionario.getDocumento());
         statement.setString(indexCorreo, funcionario.getCorreo());
         statement.setString(indexContrasena, funcionario.getContrasena());
@@ -185,7 +184,9 @@ public class FuncionarioDAO extends ConexionBD {
             encontrado = true;
             funcionario.setId(rs.getInt(COL_ID));
             funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
             funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
             funcionario.setContrasena(rs.getString(COL_CONTRASENA));
             funcionario.setNombre(rs.getString(COL_NOMBRE));
@@ -209,7 +210,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @version 1.0
      * @throws java.sql.SQLException existe un priblema en la consulta
      */
-    public Funcionario selectFunctionaryMail(String correo) throws SQLException {
+    public Funcionario selectFunctionaryByMail(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos
@@ -226,7 +227,9 @@ public class FuncionarioDAO extends ConexionBD {
             //asigna los valores resultantes de la consulta
             funcionario.setId(rs.getInt(COL_ID));
             funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
             funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
             funcionario.setContrasena(rs.getString(COL_CONTRASENA));
             funcionario.setNombre(rs.getString(COL_NOMBRE));
@@ -265,7 +268,7 @@ public class FuncionarioDAO extends ConexionBD {
         int indexIdCentro = 8;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexTipoDoc, funcionario.getIdTipoDocumento());
+        statement.setInt(indexTipoDoc, funcionario.getTipoDocumento().getId());
         statement.setString(indexDoc, funcionario.getDocumento());
         statement.setString(indexCorreo, funcionario.getCorreo());
         statement.setString(indexContrasena, funcionario.getContrasena());
@@ -408,7 +411,9 @@ public class FuncionarioDAO extends ConexionBD {
             //asigna los valores resultantes de la consulta
             Funcionario funcionario = new Funcionario();
             funcionario.setId(rs.getInt(COL_ID));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
             funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
             funcionario.setNombre(rs.getString(COL_NOMBRE));
             funcionario.setApellido(rs.getString(COL_APELLIDO));
@@ -464,7 +469,7 @@ public class FuncionarioDAO extends ConexionBD {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CAMBIOCONTRASENA(?,?)}";
+        String query = "{CALL CAMBIO_CONTRASENA(?,?)}";
         int indexId = 1;
         int indexContrasena = 2;
 

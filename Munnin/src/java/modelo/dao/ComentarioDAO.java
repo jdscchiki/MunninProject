@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import modelo.bean.Comentario;
+import modelo.bean.Funcionario;
+import modelo.bean.Producto;
 import util.ConexionBD;
 
 /**
@@ -47,21 +49,19 @@ public class ComentarioDAO extends ConexionBD {
     public boolean Insert(Comentario comentario) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_COMENTARIO(?,?,?,?,?,?)}";
-        int indexId = 1;
-        int indexValoracion = 2;
-        int indexPuntuacion = 3;
-        int indexFecha = 4;
-        int indexIdProducto = 5;
-        int indexIdFuncionario = 6;
+        String query = "{CALL INSERTAR_COMENTARIO(?,?,?,?,?)}";
+        int indexValoracion = 1;
+        int indexPuntuacion = 2;
+        int indexFecha = 3;
+        int indexIdProducto = 4;
+        int indexIdFuncionario = 5;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, comentario.getId());
         statement.setString(indexValoracion, comentario.getValoracion());
         statement.setInt(indexPuntuacion, comentario.getPuntuacion());
         statement.setDate(indexFecha, (Date) comentario.getFecha());
-        statement.setInt(indexIdProducto, comentario.getIdProducto());
-        statement.setInt(indexIdFuncionario, comentario.getIdFuncionario());
+        statement.setInt(indexIdProducto, comentario.getProducto().getId());
+        statement.setInt(indexIdFuncionario, comentario.getFuncionario().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -96,8 +96,8 @@ public class ComentarioDAO extends ConexionBD {
         statement.setString(indexValoracion, comentario.getValoracion());
         statement.setInt(indexPuntuacion, comentario.getPuntuacion());
         statement.setDate(indexFecha, (Date) comentario.getFecha());
-        statement.setInt(indexIdProducto, comentario.getIdProducto());
-        statement.setInt(indexIdFuncionario, comentario.getIdFuncionario());
+        statement.setInt(indexIdProducto, comentario.getProducto().getId());
+        statement.setInt(indexIdFuncionario, comentario.getFuncionario().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -161,8 +161,12 @@ public class ComentarioDAO extends ConexionBD {
             comentario.setValoracion(rs.getString(COL_VALORACION));
             comentario.setPuntuacion(rs.getInt(COL_PUNTUACION));
             comentario.setFecha(rs.getDate(COL_FECHA));
-            comentario.setIdProducto(rs.getInt(COL_ID_PRODUCTO));
-            comentario.setIdFuncionario(rs.getInt(COL_ID_FUNCIONARIO));
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            comentario.setProducto(producto);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_FUNCIONARIO));
+            comentario.setFuncionario(funcionario);
         }
         if (!encontrado) {
             comentario = null;

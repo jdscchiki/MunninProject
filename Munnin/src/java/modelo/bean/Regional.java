@@ -10,14 +10,14 @@ package modelo.bean;
  * @author Juan David Segura
  */
 public class Regional {
-    private int id;
+    private String id;
     private String nombre;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -9,20 +9,21 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import modelo.bean.ListaChequeo;
+import modelo.bean.Lista;
+import modelo.bean.TipoLista;
 import util.ConexionBD;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ListaChequeoDAO extends ConexionBD {
+public class ListaDAO extends ConexionBD {
 
     private static final String COL_ID = "id_lista";
     private static final String COL_NOMBRE = "nombre_lista";
     private static final String COL_DESCRIPCION = "descripcion_lista";
     private static final String COL_FECHA = "fecha_lista";
-    private static final String COL_TIPO = "tipo_lista";
+    private static final String COL_ID_TIPO_LISTA = "id_tipo_lista_lista";
     private static final String COL_ID_AUTOR = "id_autor_lista";
 
     /**
@@ -31,36 +32,34 @@ public class ListaChequeoDAO extends ConexionBD {
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD
      */
-    public ListaChequeoDAO() throws NamingException, SQLException {
+    public ListaDAO() throws NamingException, SQLException {
         super();
     }
 
     /**
-     * Metodo para insertar una lista de chequeo en la base de datos
+     * Metodo para insertar una lista en la base de datos
      *
      * @deprecated
-     * @param listaChequeo Datos de la lista de chequeo insertada
+     * @param lista Datos de la lista insertada
      * @return True si la insercion fue completada exitosamente
      * @throws SQLException
      */
-    public boolean Insert(ListaChequeo listaChequeo) throws SQLException {
+    public boolean Insert(Lista lista) throws SQLException {
         boolean resultado;
 
         String query = "{CALL INSERTAR_LISTA(?,?,?,?,?,?)}";
-        int indexId = 1;
-        int indexNombre = 2 ;
-        int indexDescripcion = 3;
-        int indexFecha = 4;
-        int indexTipo = 5;
-        int indexIdAutor = 6;
+        int indexNombre = 1;
+        int indexDescripcion = 2;
+        int indexFecha = 3;
+        int indexTipo = 4;
+        int indexIdAutor = 5;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, listaChequeo.getId());
-        statement.setString(indexNombre, listaChequeo.getNombre());
-        statement.setString(indexDescripcion, listaChequeo.getDescripcion());
-        statement.setDate(indexFecha, (java.sql.Date) listaChequeo.getFecha());
-        statement.setString(indexTipo, listaChequeo.getTipo());
-        statement.setInt(indexIdAutor, listaChequeo.getIdAutor());
+        statement.setString(indexNombre, lista.getNombre());
+        statement.setString(indexDescripcion, lista.getDescripcion());
+        statement.setDate(indexFecha, (java.sql.Date) lista.getFecha());
+        statement.setInt(indexTipo, lista.getTipoLista().getId());
+        statement.setInt(indexIdAutor, lista.getIdAutor());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -72,31 +71,31 @@ public class ListaChequeoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para actualizar una lista de chequeo en la base de datos
+     * Metodo para actualizar una lista en la base de datos
      *
      * @deprecated
-     * @param listaChequeo Datos de la lista de chequeo a ser modificada
+     * @param lista Datos de la lista a ser modificada
      * @return True si la modificacion fue completada exitosamente
      * @throws SQLException
      */
-    public boolean update(ListaChequeo listaChequeo) throws SQLException {
+    public boolean update(Lista lista) throws SQLException {
         boolean resultado;
 
         String query = "{CALL EDITAR_LISTA(?,?,?,?,?,?)}";
         int indexId = 1;
-        int indexNombre = 2 ;
+        int indexNombre = 2;
         int indexDescripcion = 3;
         int indexFecha = 4;
         int indexTipo = 5;
         int indexIdAutor = 6;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, listaChequeo.getId());
-        statement.setString(indexNombre, listaChequeo.getNombre());
-        statement.setString(indexDescripcion, listaChequeo.getDescripcion());
-        statement.setDate(indexFecha, (java.sql.Date) listaChequeo.getFecha());
-        statement.setString(indexTipo, listaChequeo.getTipo());
-        statement.setInt(indexIdAutor, listaChequeo.getIdAutor());
+        statement.setInt(indexId, lista.getId());
+        statement.setString(indexNombre, lista.getNombre());
+        statement.setString(indexDescripcion, lista.getDescripcion());
+        statement.setDate(indexFecha, (java.sql.Date) lista.getFecha());
+        statement.setInt(indexTipo, lista.getTipoLista().getId());
+        statement.setInt(indexIdAutor, lista.getIdAutor());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -108,21 +107,21 @@ public class ListaChequeoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para borrar una lista de chequeo en la base de datos
+     * Metodo para borrar una lista en la base de datos
      *
      * @deprecated
-     * @param listaChequeo Datos de la lista de chequeo
+     * @param lista Datos de la lista
      * @return True si fue borrada exitosamente
      * @throws SQLException
      */
-    public boolean delete(ListaChequeo listaChequeo) throws SQLException {
+    public boolean delete(Lista lista) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL ELIMINAR_LISTA_CHEQUEO(?)}";
+        String query = "{CALL ELIMINAR_LISTA(?)}";
         int indexId = 1;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexId, listaChequeo.getId());
+        statement.setInt(indexId, lista.getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -135,36 +134,38 @@ public class ListaChequeoDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para ver los datos de una lista de chequeo
+     * Metodo para ver los datos de una lista
      *
-     * @param listaChequeo Objeto de tipo ListaChequeo que en el atributo id tiene el
-     * valor del id a ser consultado
-     * @return los valores almacenados en la tabla lista_chequeo de la base de datos
+     * @param lista Objeto de tipo Lista que en el atributo id tiene el valor
+     * del id a ser consultado
+     * @return los valores almacenados en la tabla lista de la base de datos
      * @throws SQLException
      */
-    public ListaChequeo select(ListaChequeo listaChequeo) throws SQLException {
+    public Lista select(Lista lista) throws SQLException {
 
-        String query = "{CALL VER_LISTA_CHEQUEO(?)}";
+        String query = "{CALL VER_LISTA(?)}";
         int indexId = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, listaChequeo.getId());
+        statement.setInt(indexId, lista.getId());
         ResultSet rs = statement.executeQuery();
 
         boolean encontrado = false;
         while (rs.next()) {
             encontrado = true;
-            listaChequeo.setId(rs.getInt(COL_ID));
-            listaChequeo.setNombre(rs.getString(COL_NOMBRE));
-            listaChequeo.setDescripcion(rs.getString(COL_DESCRIPCION));
-            listaChequeo.setFecha(rs.getDate(COL_FECHA));
-            listaChequeo.setTipo(rs.getString(COL_TIPO));
-            listaChequeo.setIdAutor(rs.getInt(COL_ID_AUTOR));
+            lista.setId(rs.getInt(COL_ID));
+            lista.setNombre(rs.getString(COL_NOMBRE));
+            lista.setDescripcion(rs.getString(COL_DESCRIPCION));
+            lista.setFecha(rs.getDate(COL_FECHA));
+            TipoLista tipoLista = new TipoLista();
+            tipoLista.setId(rs.getInt(COL_ID_TIPO_LISTA));
+            lista.setTipoLista(tipoLista);
+            lista.setIdAutor(rs.getInt(COL_ID_AUTOR));
         }
         if (!encontrado) {
-            listaChequeo = null;
+            lista = null;
         }
 
-        return listaChequeo;
+        return lista;
     }
 }

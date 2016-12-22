@@ -9,12 +9,12 @@ package modelo.bean;
  *
  * @author Juan David Segura
  */
-public class EvaluacionDetalleLista {
+public class EvaluacionItem {
     private int id;
     private int calificacion;
     private String observarcion;
-    private int idEvaluacion;
-    private int idDetalleLista;
+    private EvaluacionLista evaluacionLista;
+    private Item item;
 
     public int getId() {
         return id;
@@ -40,22 +40,22 @@ public class EvaluacionDetalleLista {
         this.observarcion = observarcion;
     }
 
-    public int getIdEvaluacion() {
-        return idEvaluacion;
+    public EvaluacionLista getEvaluacionLista() {
+        return evaluacionLista;
     }
 
-    public void setIdEvaluacion(int idEvaluacion) {
-        this.idEvaluacion = idEvaluacion;
+    public void setEvaluacionLista(EvaluacionLista evaluacionLista) {
+        this.evaluacionLista = evaluacionLista;
     }
 
-    public int getIdDetalleLista() {
-        return idDetalleLista;
+    public Item getItem() {
+        return item;
     }
 
-    public void setIdDetalleLista(int idDetalleLista) {
-        this.idDetalleLista = idDetalleLista;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
-    public EvaluacionDetalleLista() {
+    public EvaluacionItem() {
     }
 }

@@ -9,6 +9,10 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import modelo.bean.Centro;
+import modelo.bean.Estado;
+import modelo.bean.Producto;
+import modelo.bean.TipoArchivo;
 import modelo.bean.Version;
 import util.ConexionBD;
 
@@ -51,31 +55,29 @@ public class VersionDAO extends ConexionBD {
     public boolean Insert(Version version) throws SQLException {
         boolean resultado;
 
-        String query ="{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
-        int indexId =1;
-        int indexNumero =2;
-        int indexUrl =3;
-        int indexNotificacion =4;
-        int indexFecha =5;
-        int indexFechaCaducidad =6;
-        int indexfechaAprovacion =7;
-        int indexIdEstado =8;
-        int indexIdTipoArchivo =9;
-        int indexIdProducto =10;
-        int indexIdCentro =11;
-        
+        String query = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?)}";
+        int indexNumero = 1;
+        int indexUrl = 2;
+        int indexNotificacion = 3;
+        int indexFecha = 4;
+        int indexFechaCaducidad = 5;
+        int indexfechaAprovacion = 6;
+        int indexIdEstado = 7;
+        int indexIdTipoArchivo = 8;
+        int indexIdProducto = 9;
+        int indexIdCentro = 10;
+
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, version.getId());
         statement.setInt(indexNumero, version.getNumero());
         statement.setString(indexUrl, version.getUrl());
         statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
         statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
-        statement.setInt(indexIdEstado, version.getIdEstdo());
-        statement.setInt(indexIdTipoArchivo, version.getIdTipoArchivo());
-        statement.setInt(indexIdProducto, version.getIdProducto());
-        statement.setString(indexIdCentro, version.getIdCentro());
+        statement.setInt(indexIdEstado, version.getEstado().getId());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -97,19 +99,19 @@ public class VersionDAO extends ConexionBD {
     public boolean update(Version version) throws SQLException {
         boolean resultado;
 
-        String query ="{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
-        int indexId =1;
-        int indexNumero =2;
-        int indexUrl =3;
-        int indexNotificacion =4;
-        int indexFecha =5;
-        int indexFechaCaducidad =6;
-        int indexfechaAprovacion =7;
-        int indexIdEstado =8;
-        int indexIdTipoArchivo =9;
-        int indexIdProducto =10;
-        int indexIdCentro =11;
-        
+        String query = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
+        int indexId = 1;
+        int indexNumero = 2;
+        int indexUrl = 3;
+        int indexNotificacion = 4;
+        int indexFecha = 5;
+        int indexFechaCaducidad = 6;
+        int indexfechaAprovacion = 7;
+        int indexIdEstado = 8;
+        int indexIdTipoArchivo = 9;
+        int indexIdProducto = 10;
+        int indexIdCentro = 11;
+
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, version.getId());
         statement.setInt(indexNumero, version.getNumero());
@@ -118,10 +120,10 @@ public class VersionDAO extends ConexionBD {
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
         statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
-        statement.setInt(indexIdEstado, version.getIdEstdo());
-        statement.setInt(indexIdTipoArchivo, version.getIdTipoArchivo());
-        statement.setInt(indexIdProducto, version.getIdProducto());
-        statement.setString(indexIdCentro, version.getIdCentro());
+        statement.setInt(indexIdEstado, version.getEstado().getId());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -186,10 +188,18 @@ public class VersionDAO extends ConexionBD {
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
-            version.setIdEstdo(rs.getInt(COL_ID_ESTADO));
-            version.setIdTipoArchivo(rs.getInt(COL_ID_TIPO_ARCHIVO));
-            version.setIdProducto(rs.getInt(COL_ID_PRODUCTO));
-            version.setIdCentro(rs.getString(COL_ID_CENTRO));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID_ESTADO));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
+            version.setTipoArchivo(tipoArchivo);
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            version.setCentro(centro);
         }
         if (!encontrado) {
             version = null;

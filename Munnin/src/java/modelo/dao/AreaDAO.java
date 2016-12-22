@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import modelo.bean.Area;
+import modelo.bean.Centro;
 import util.ConexionBD;
 
 /**
@@ -20,6 +21,7 @@ public class AreaDAO extends ConexionBD {
 
     private static final String COL_ID = "id_area";
     private static final String COL_NOMBRE = "nombre_area";
+    private static final String COL_ACTIVO = "activo_area";
     private static final String COL_ID_CENTRO = "id_centro_area";
 
     /**
@@ -44,14 +46,14 @@ public class AreaDAO extends ConexionBD {
         boolean resultado;
 
         String query = "{CALL INSERTAR_AREA(?,?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
+        int indexNombre = 1;
+        int indexActivo = 2;
         int indexIdCentro = 3;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexId, area.getId());
         statement.setString(indexNombre, area.getNombre());
-        statement.setString(indexIdCentro, area.getIdCentro());
+        statement.setBoolean(indexActivo, area.isActivo());
+        statement.setString(indexIdCentro, area.getCentro().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -74,15 +76,17 @@ public class AreaDAO extends ConexionBD {
     public boolean update(Area area) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_AREA(?,?,?)}";
+        String query = "{CALL EDITAR_AREA(?,?,?,?)}";
         int indexId = 1;
         int indexNombre = 2;
-        int indexIdCentro = 3;
+        int indexActivo = 3;
+        int indexIdCentro = 4;
 
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, area.getId());
         statement.setString(indexNombre, area.getNombre());
-        statement.setString(indexIdCentro, area.getIdCentro());
+        statement.setBoolean(indexActivo, area.isActivo());
+        statement.setString(indexIdCentro, area.getCentro().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -143,7 +147,10 @@ public class AreaDAO extends ConexionBD {
             encontrado = true;
             area.setId(rs.getInt(COL_ID));
             area.setNombre(rs.getString(COL_NOMBRE));
-            area.setIdCentro(rs.getString(COL_ID_CENTRO));
+            area.setActivo(rs.getBoolean(COL_ACTIVO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            area.setCentro(centro);
         }
         if (!encontrado) {
             area = null;

@@ -47,7 +47,7 @@ public class RegionalDAO extends ConexionBD {
         int indexNombre = 2;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, regional.getId());
+        statement.setString(indexId, regional.getId());
         statement.setString(indexNombre, regional.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -75,7 +75,7 @@ public class RegionalDAO extends ConexionBD {
         int indexNombre = 2;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, regional.getId());
+        statement.setString(indexId, regional.getId());
         statement.setString(indexNombre, regional.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -102,7 +102,7 @@ public class RegionalDAO extends ConexionBD {
         int indexId = 1;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexId, regional.getId());
+        statement.setString(indexId, regional.getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -128,13 +128,13 @@ public class RegionalDAO extends ConexionBD {
         int indexId = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, regional.getId());
+        statement.setString(indexId, regional.getId());
         ResultSet rs = statement.executeQuery();
 
         boolean encontrado = false;
         while (rs.next()) {
             encontrado = true;
-            regional.setId(rs.getInt(COL_ID));
+            regional.setId(rs.getString(COL_ID));
             regional.setNombre(rs.getString(COL_NOMBRE));
         }
         if (!encontrado) {

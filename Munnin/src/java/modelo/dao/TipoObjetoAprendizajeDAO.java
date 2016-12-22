@@ -35,19 +35,18 @@ public class TipoObjetoAprendizajeDAO extends ConexionBD {
      * Metodo para insertar un tipo de objeto de aprendizaje en la base de datos
      *
      * @deprecated
-     * @param tipoObjetoAprendizaje Datos del tipo de objeto de aprendizaje insertado
+     * @param tipoObjetoAprendizaje Datos del tipo de objeto de aprendizaje
+     * insertado
      * @return True si la insercion fue completada exitosamente
      * @throws SQLException
      */
     public boolean Insert(TipoObjetoAprendizaje tipoObjetoAprendizaje) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_TIPO_OBJETO_APRENDIZAJE(?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
+        String query = "{CALL INSERTAR_TIPO_OBJETO_APRENDIZAJE(?)}";
+        int indexNombre = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, tipoObjetoAprendizaje.getId());
         statement.setString(indexNombre, tipoObjetoAprendizaje.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -60,10 +59,12 @@ public class TipoObjetoAprendizajeDAO extends ConexionBD {
     }
 
     /**
-     * Metodo para actualizar un tipo de objeto de aprendizaje en la base de datos
+     * Metodo para actualizar un tipo de objeto de aprendizaje en la base de
+     * datos
      *
      * @deprecated
-     * @param tipoObjetoAprendizaje Datos del tipo de objeto de aprendizaje a ser modificado
+     * @param tipoObjetoAprendizaje Datos del tipo de objeto de aprendizaje a
+     * ser modificado
      * @return True si la modificacion fue completada exitosamente
      * @throws SQLException
      */
@@ -117,9 +118,10 @@ public class TipoObjetoAprendizajeDAO extends ConexionBD {
     /**
      * Metodo para ver los datos de un tipo de objeto de aprendizaje
      *
-     * @param tipoObjetoAprendizaje Objeto de tipo TipoObjetoAprendizaje que en el atributo id tiene el
-     * valor del id a ser consultado
-     * @return los valores almacenados en la tabla tipo_objeto_aprendizaje de la base de datos
+     * @param tipoObjetoAprendizaje Objeto de tipo TipoObjetoAprendizaje que en
+     * el atributo id tiene el valor del id a ser consultado
+     * @return los valores almacenados en la tabla tipo_objeto_aprendizaje de la
+     * base de datos
      * @throws SQLException
      */
     public TipoObjetoAprendizaje select(TipoObjetoAprendizaje tipoObjetoAprendizaje) throws SQLException {

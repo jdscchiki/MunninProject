@@ -11,14 +11,14 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class EvaluacionVersionGeneral {
+public class EvaluacionLista {
     private int id;
-    private int idVersion;
-    private int idLista;
     private int calificacion;
     private String observaciones;
     private Date fecha;
-    private int idEvaluador;
+    private Version version;
+    private Lista lista;
+    private Funcionario evaluador;
 
     public int getId() {
         return id;
@@ -26,22 +26,6 @@ public class EvaluacionVersionGeneral {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getIdVersion() {
-        return idVersion;
-    }
-
-    public void setIdVersion(int idVersion) {
-        this.idVersion = idVersion;
-    }
-
-    public int getIdLista() {
-        return idLista;
-    }
-
-    public void setIdLista(int idLista) {
-        this.idLista = idLista;
     }
 
     public int getCalificacion() {
@@ -68,14 +52,30 @@ public class EvaluacionVersionGeneral {
         this.fecha = fecha;
     }
 
-    public int getIdEvaluador() {
-        return idEvaluador;
+    public Version getVersion() {
+        return version;
     }
 
-    public void setIdEvaluador(int idEvaluador) {
-        this.idEvaluador = idEvaluador;
+    public void setVersion(Version version) {
+        this.version = version;
     }
 
-    public EvaluacionVersionGeneral() {
+    public Lista getLista() {
+        return lista;
+    }
+
+    public void setLista(Lista lista) {
+        this.lista = lista;
+    }
+
+    public Funcionario getEvaluador() {
+        return evaluador;
+    }
+
+    public void setEvaluador(Funcionario evaluador) {
+        this.evaluador = evaluador;
+    }
+
+    public EvaluacionLista() {
     }
 }

@@ -61,12 +61,12 @@ public class Coordinator {
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
-        if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getIdTipoDocumento(), funcionario.getDocumento())) {
+        if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
         } else {
             if (funcionarioDAO.existFunctionaryMail(funcionario.getCorreo())) {
                 resultado = 3;
-            } else if (funcionarioDAO.existFunctionaryDocument(funcionario.getDocumento(), funcionario.getIdTipoDocumento())) {
+            } else if (funcionarioDAO.existFunctionaryDocument(funcionario.getDocumento(), funcionario.getTipoDocumento().getId())) {
                 resultado = 4;
             } else {
                 if (funcionarioDAO.registerFunctionary(funcionario)) {

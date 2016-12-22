@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import modelo.bean.Producto;
+import modelo.bean.TipoObjetoAprendizaje;
 import util.ConexionBD;
 
 /**
@@ -45,19 +46,17 @@ public class ProductoDAO extends ConexionBD {
     public boolean Insert(Producto producto) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_PRODUCTO(?,?,?,?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
-        int indexDescripcion = 3;
-        int indexPalabrasClave = 4;
-        int indexIdTipoObjetoAprendizaj = 5;
+        String query = "{CALL INSERTAR_PRODUCTO(?,?,?,?)}";
+        int indexNombre = 1;
+        int indexDescripcion = 2;
+        int indexPalabrasClave = 3;
+        int indexIdTipoObjetoAprendizaj = 4;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, producto.getId());
         statement.setString(indexNombre, producto.getNombre());
         statement.setString(indexDescripcion, producto.getDescripcion());
         statement.setString(indexPalabrasClave, producto.getPalabrasClave());
-        statement.setInt(indexIdTipoObjetoAprendizaj, producto.getIdTipoObjetoAprendizaje());
+        statement.setInt(indexIdTipoObjetoAprendizaj, producto.getTipoObjetoAprendizaje().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -91,7 +90,7 @@ public class ProductoDAO extends ConexionBD {
         statement.setString(indexNombre, producto.getNombre());
         statement.setString(indexDescripcion, producto.getDescripcion());
         statement.setString(indexPalabrasClave, producto.getPalabrasClave());
-        statement.setInt(indexIdTipoObjetoAprendizaj, producto.getIdTipoObjetoAprendizaje());
+        statement.setInt(indexIdTipoObjetoAprendizaj, producto.getTipoObjetoAprendizaje().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -153,7 +152,9 @@ public class ProductoDAO extends ConexionBD {
             producto.setNombre(rs.getString(COL_NOMBRE));
             producto.setDescripcion(rs.getString(COL_DESCRIPCION));
             producto.setPalabrasClave(rs.getString(COL_PALABRAS_CLAVE));
-            producto.setIdTipoObjetoAprendizaje(rs.getInt(COL_ID_TIPO_APRENDIZAJE));
+            TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
+            tipoObjetoAprendizaje.setId(rs.getInt(COL_ID_TIPO_APRENDIZAJE));
+            producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
         }
         if (!encontrado) {
             producto = null;

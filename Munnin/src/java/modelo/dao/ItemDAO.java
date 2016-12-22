@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import modelo.bean.Funcionario;
 import modelo.bean.Item;
 import util.ConexionBD;
 
@@ -43,15 +44,13 @@ public class ItemDAO extends ConexionBD {
     public boolean Insert(Item item) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_ITEM(?,?,?)}";
-        int indexId = 1;
-        int indexDescriptor = 2;
-        int indexIdAutor = 3;
+        String query = "{CALL INSERTAR_ITEM(?,?)}";
+        int indexDescriptor = 1;
+        int indexIdAutor = 2;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, item.getId());
         statement.setString(indexDescriptor, item.getDescriptor());
-        statement.setInt(indexIdAutor, item.getIdAutor());
+        statement.setInt(indexIdAutor, item.getAutor().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -81,7 +80,7 @@ public class ItemDAO extends ConexionBD {
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, item.getId());
         statement.setString(indexDescriptor, item.getDescriptor());
-        statement.setInt(indexIdAutor, item.getIdAutor());
+        statement.setInt(indexIdAutor, item.getAutor().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -141,7 +140,9 @@ public class ItemDAO extends ConexionBD {
             encontrado = true;
             Item.setId(rs.getInt(COL_ID));
             Item.setDescriptor(rs.getString(COL_DESCRIPTOR));
-            Item.setIdAutor(rs.getInt(COL_ID_AUTOR));
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_AUTOR));
+            Item.setAutor(funcionario);
         }
         if (!encontrado) {
             Item = null;

@@ -9,10 +9,9 @@ package modelo.bean;
  *
  * @author Juan David Segura
  */
-public class DetalleLista {
+public class TipoLista {
     private int id;
-    private int idLista;
-    private int idItem;
+    private String nombre;
 
     public int getId() {
         return id;
@@ -22,22 +21,14 @@ public class DetalleLista {
         this.id = id;
     }
 
-    public int getIdLista() {
-        return idLista;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setIdLista(int idLista) {
-        this.idLista = idLista;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public int getIdItem() {
-        return idItem;
-    }
-
-    public void setIdItem(int idItem) {
-        this.idItem = idItem;
-    }
-
-    public DetalleLista() {
+    public TipoLista() {
     }
 }

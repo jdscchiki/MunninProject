@@ -19,10 +19,10 @@ public class Version {
     private Date fecha;
     private Date fechaCaducidad;
     private Date fechaAprovacion;
-    private int idEstdo;
-    private int idTipoArchivo;
-    private int idProducto;
-    private String idCentro;
+    private Estado estado;
+    private TipoArchivo tipoArchivo;
+    private Producto producto;
+    private Centro centro;
 
     public int getId() {
         return id;
@@ -80,36 +80,36 @@ public class Version {
         this.fechaAprovacion = fechaAprovacion;
     }
 
-    public int getIdEstdo() {
-        return idEstdo;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setIdEstdo(int idEstdo) {
-        this.idEstdo = idEstdo;
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
-    public int getIdTipoArchivo() {
-        return idTipoArchivo;
+    public TipoArchivo getTipoArchivo() {
+        return tipoArchivo;
     }
 
-    public void setIdTipoArchivo(int idTipoArchivo) {
-        this.idTipoArchivo = idTipoArchivo;
+    public void setTipoArchivo(TipoArchivo tipoArchivo) {
+        this.tipoArchivo = tipoArchivo;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public String getIdCentro() {
-        return idCentro;
+    public Centro getCentro() {
+        return centro;
     }
 
-    public void setIdCentro(String idCentro) {
-        this.idCentro = idCentro;
+    public void setCentro(Centro centro) {
+        this.centro = centro;
     }
 
     public Version() {

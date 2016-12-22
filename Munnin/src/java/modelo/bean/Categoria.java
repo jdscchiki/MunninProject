@@ -13,10 +13,8 @@ public class Categoria {
 
     private int id;
     private String nombre;
-    private String idCentro;
-
-    public Categoria() {
-    }
+    private boolean activo;
+    private Centro centro;
 
     public int getId() {
         return id;
@@ -34,12 +32,22 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public String getIdCentro() {
-        return idCentro;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setIdCentro(String idCentro) {
-        this.idCentro = idCentro;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
+    public Centro getCentro() {
+        return centro;
+    }
+
+    public void setCentro(Centro centro) {
+        this.centro = centro;
+    }
+
+    public Categoria() {
+    }
 }

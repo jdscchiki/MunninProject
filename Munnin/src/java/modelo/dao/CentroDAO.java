@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import modelo.bean.Centro;
+import modelo.bean.Ciudad;
+import modelo.bean.Regional;
 import util.ConexionBD;
 
 /**
@@ -53,8 +55,8 @@ public class CentroDAO extends ConexionBD {
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexId, centro.getId());
         statement.setString(indexNombre, centro.getNombre());
-        statement.setString(indexIdRegional, centro.getIdRegional());
-        statement.setString(indexIdCiudad, centro.getIdCiudad());
+        statement.setString(indexIdRegional, centro.getRegional().getId());
+        statement.setString(indexIdCiudad, centro.getCiudad().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -86,8 +88,8 @@ public class CentroDAO extends ConexionBD {
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexId, centro.getId());
         statement.setString(indexNombre, centro.getNombre());
-        statement.setString(indexIdRegional, centro.getIdRegional());
-        statement.setString(indexIdCiudad, centro.getIdCiudad());
+        statement.setString(indexIdRegional, centro.getRegional().getId());
+        statement.setString(indexIdCiudad, centro.getCiudad().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -148,8 +150,12 @@ public class CentroDAO extends ConexionBD {
             encontrado = true;
             centro.setId(rs.getString(COL_ID));
             centro.setNombre(rs.getString(COL_NOMBRE));
-            centro.setIdRegional(rs.getString(COL_ID_REGIONAL));
-            centro.setIdCiudad(rs.getString(COL_ID_CIUDAD));
+            Regional regional = new Regional();
+            regional.setId(rs.getString(COL_ID_REGIONAL));
+            centro.setRegional(regional);
+            Ciudad ciudad = new Ciudad();
+            ciudad.setId(rs.getString(COL_ID_CIUDAD));
+            centro.setCiudad(ciudad);
         }
         if (!encontrado) {
             centro = null;

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
 import modelo.Business.Coordinator;
+import modelo.bean.TipoDocumento;
 
 /**
  *
@@ -47,7 +48,9 @@ public class ServletRegisterFunctionary extends HttpServlet {
             idTipoDoc = Integer.parseInt(tipoDoc);
 
             Funcionario nuevoFuncionario = new Funcionario();
-            nuevoFuncionario.setIdTipoDocumento(idTipoDoc);
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(idTipoDoc);
+            nuevoFuncionario.setTipoDocumento(tipoDocumento);
             nuevoFuncionario.setDocumento(documento);
             nuevoFuncionario.setCorreo(correo);
             nuevoFuncionario.setNombre(nombre);

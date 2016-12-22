@@ -14,7 +14,7 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private String palabrasClave;
-    private int idTipoObjetoAprendizaje;
+    private TipoObjetoAprendizaje tipoObjetoAprendizaje;
 
     public int getId() {
         return id;
@@ -48,12 +48,12 @@ public class Producto {
         this.palabrasClave = palabrasClave;
     }
 
-    public int getIdTipoObjetoAprendizaje() {
-        return idTipoObjetoAprendizaje;
+    public TipoObjetoAprendizaje getTipoObjetoAprendizaje() {
+        return tipoObjetoAprendizaje;
     }
 
-    public void setIdTipoObjetoAprendizaje(int idTipoObjetoAprendizaje) {
-        this.idTipoObjetoAprendizaje = idTipoObjetoAprendizaje;
+    public void setTipoObjetoAprendizaje(TipoObjetoAprendizaje tipoObjetoAprendizaje) {
+        this.tipoObjetoAprendizaje = tipoObjetoAprendizaje;
     }
 
     public Producto() {

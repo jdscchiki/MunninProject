@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import modelo.bean.Categoria;
+import modelo.bean.Centro;
 import util.ConexionBD;
 
 /**
@@ -20,6 +21,7 @@ public class CategoriaDAO extends ConexionBD {
 
     private static final String COL_ID = "id_categoria";
     private static final String COL_NOMBRE = "nombre_categoria";
+    private static final String COL_ACTIVO = "activo_categoria";
     private static final String COL_ID_CENTRO = "id_centro_categoria";
 
     /**
@@ -44,14 +46,14 @@ public class CategoriaDAO extends ConexionBD {
         boolean resultado;
 
         String query = "{CALL INSERTAR_CATEGORIA(?,?,?)}";
-        int indexId = 1;
-        int indexNombre = 2;
+        int indexNombre = 1;
+        int indexActivo = 2;
         int indexIdCentro = 3;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, categoria.getId());
         statement.setString(indexNombre, categoria.getNombre());
-        statement.setString(indexIdCentro, categoria.getIdCentro());
+        statement.setBoolean(indexActivo, categoria.isActivo());
+        statement.setString(indexIdCentro, categoria.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -73,15 +75,17 @@ public class CategoriaDAO extends ConexionBD {
     public boolean update(Categoria categoria) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_CATEGORIA(?,?,?)}";
+        String query = "{CALL EDITAR_CATEGORIA(?,?,?,?)}";
         int indexId = 1;
         int indexNombre = 2;
-        int indexIdCentro = 3;
+        int indexActivo = 3;
+        int indexIdCentro = 4;
 
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, categoria.getId());
         statement.setString(indexNombre, categoria.getNombre());
-        statement.setString(indexIdCentro, categoria.getIdCentro());
+        statement.setBoolean(indexActivo, categoria.isActivo());
+        statement.setString(indexIdCentro, categoria.getCentro().getId());
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -142,7 +146,10 @@ public class CategoriaDAO extends ConexionBD {
             encontrado = true;
             categoria.setId(rs.getInt(COL_ID));
             categoria.setNombre(rs.getString(COL_NOMBRE));
-            categoria.setIdCentro(rs.getString(COL_ID_CENTRO));
+            categoria.setActivo(rs.getBoolean(COL_ACTIVO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            categoria.setCentro(centro);
         }
         if (!encontrado) {
             categoria = null;
