@@ -3,22 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.role.coordinator.functionary;
+package controlador.home.role.coordinator.functionary;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelo.bean.Funcionario;
+import modelo.Business.Coordinator;
+import modelo.bean.TipoDocumento;
 
 /**
  *
- * @author Juan David Segura
+ * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletAssignRoles", urlPatterns = {"/home/role/coordinator/assign-roles"})
-public class ServletAssignRoles extends HttpServlet {
+@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/home/role/coordinator/register-functionary"})
+public class ServletRegisterFunctionary extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,12 +35,38 @@ public class ServletAssignRoles extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            
-        }catch(Exception e){
-            request.setAttribute("mensaje", e);
+        try {//conversion de datos
+            String tipoDoc = request.getParameter("tipoDoc");
+            int idTipoDoc;
+            String documento = request.getParameter("documento");
+            String correo = request.getParameter("correo");
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String telefono = request.getParameter("telefono");
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            idTipoDoc = Integer.parseInt(tipoDoc);
+
+            Funcionario nuevoFuncionario = new Funcionario();
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(idTipoDoc);
+            nuevoFuncionario.setTipoDocumento(tipoDocumento);
+            nuevoFuncionario.setDocumento(documento);
+            nuevoFuncionario.setCorreo(correo);
+            nuevoFuncionario.setNombre(nombre);
+            nuevoFuncionario.setApellido(apellido);
+            nuevoFuncionario.setTelefono(telefono);
+
+            request.setAttribute("message", (Coordinator.registarFuncionario(nuevoFuncionario, idCentro) + 4));
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", 10);
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

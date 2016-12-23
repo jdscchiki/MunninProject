@@ -49,16 +49,14 @@ public class ServletLogin extends HttpServlet {
             if (funcionario == null) {
                 request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
-                return;
             } else {
                 HttpSession sesion = (HttpSession) request.getSession();
                 sesion.setAttribute("usuario", funcionario);
-                response.sendRedirect(request.getContextPath() + "/home/inicio.jsp");
-                return;
+                response.sendRedirect(request.getContextPath()+"/home/inicio.jsp");
             }
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
-            request.getRequestDispatcher(request.getContextPath() + "/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

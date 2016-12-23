@@ -46,7 +46,7 @@ public class General {
             if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;
             } else {
-                ArrayList<Rol> roles = consulta.selectRole(funcionarioLog.getId());
+                ArrayList<Rol> roles = consulta.selectRoles(funcionarioLog.getId());
                 if (roles != null) {
                     funcionarioLog.setRoles(roles);
                 }

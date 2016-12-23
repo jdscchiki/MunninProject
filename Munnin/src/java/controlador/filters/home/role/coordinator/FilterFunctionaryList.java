@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlador.filters.role.coordinator;
+package controlador.filters.home.role.coordinator;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,14 +15,16 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import modelo.bean.Funcionario;
+import modelo.Business.Coordinator;
 
 /**
  *
- * @author Juan David Segura
+ * @author Juan David Segura Castro
  */
-@WebFilter(filterName = "FilterAssignRoles", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
-public class FilterAssignRoles implements Filter {
+public class FilterFunctionaryList implements Filter {
     
     private static final boolean debug = false;
 
@@ -31,13 +33,13 @@ public class FilterAssignRoles implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public FilterAssignRoles() {
+    public FilterFunctionaryList() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("FilterAssignRoles:DoBeforeProcessing");
+            log("ListaFuncionariosFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -65,7 +67,7 @@ public class FilterAssignRoles implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("FilterAssignRoles:DoAfterProcessing");
+            log("ListaFuncionariosFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -101,14 +103,28 @@ public class FilterAssignRoles implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("FilterAssignRoles:doFilter()");
+            log("ListaFuncionariosFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
         
         Throwable problem = null;
         try {
-            
+            try{
+                int cantXpag = 10;//resultados por pagina
+
+                int pagina = 1;//pagina a cargar
+                
+                HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
+                Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
+                request.setAttribute("page", pagina);
+                request.setAttribute("ContentTable", Coordinator.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
+                request.setAttribute("pagesTable", Coordinator.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+                
+            }catch(Exception ex){
+                request.setAttribute("mensaje", ex);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
             
             chain.doFilter(request, response);
         } catch (Throwable t) {
@@ -163,7 +179,7 @@ public class FilterAssignRoles implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("FilterAssignRoles:Initializing filter");
+                log("ListaFuncionariosFilter:Initializing filter");
             }
         }
     }
@@ -174,9 +190,9 @@ public class FilterAssignRoles implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("FilterAssignRoles()");
+            return ("ListaFuncionariosFilter()");
         }
-        StringBuffer sb = new StringBuffer("FilterAssignRoles(");
+        StringBuffer sb = new StringBuffer("ListaFuncionariosFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

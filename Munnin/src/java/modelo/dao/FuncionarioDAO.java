@@ -214,7 +214,7 @@ public class FuncionarioDAO extends ConexionBD {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos
-        String query = "{CALL LOGIN(?)}";
+        String query = "{CALL INGRESO(?)}";
         int indexCorreo = 1;
 
         funcionario.setCorreo(correo);
@@ -352,15 +352,15 @@ public class FuncionarioDAO extends ConexionBD {
      * @return ArrayList de los roles
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Rol> selectRole(int id) throws SQLException {
+    public ArrayList<Rol> selectRoles(int id) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
         int indexIdFunc = 1;
 
-        String resId_rol = "id_rol_funci_rol";//nombre de la columna del select
-        String resNombre_rol = "nombre_rol";//nombre de la columna del select
+        String resIdRol = "id_rol_funcionario_rol";//nombre de la columna del select
+        String resNombreRol = "nombre_rol";//nombre de la columna del select
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
@@ -371,8 +371,8 @@ public class FuncionarioDAO extends ConexionBD {
         while (rs.next()) {
             //asigna los valores resultantes de la consulta
             Rol rol = new Rol();
-            rol.setId(rs.getInt(resId_rol));
-            rol.setNombre(rs.getString(resNombre_rol));
+            rol.setId(rs.getInt(resIdRol));
+            rol.setNombre(rs.getString(resNombreRol));
             roles.add(rol);
         }
 

@@ -2,15 +2,15 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>RegistroFilter</filter-name>
-        <filter-class>controlador.filters.role.coordinator.FilterRegisterFunctionary</filter-class>
+        <filter-class>controlador.filters.home.role.coordinator.FilterRegisterFunctionary</filter-class>
     </filter>
     <filter>
         <filter-name>SessionFilter</filter-name>
-        <filter-class>controlador.filters.SessionFilter</filter-class>
+        <filter-class>controlador.filters.home.SessionFilter</filter-class>
     </filter>
     <filter>
         <filter-name>ListaFuncionariosFilter</filter-name>
-        <filter-class>controlador.filters.role.coordinator.FilterFunctionaryList</filter-class>
+        <filter-class>controlador.filters.home.role.coordinator.FilterFunctionaryList</filter-class>
     </filter>
     <filter>
         <filter-name>EasyLink</filter-name>
@@ -22,7 +22,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/home/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>ListaFuncionariosFilter</filter-name>
