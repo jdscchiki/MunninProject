@@ -2399,11 +2399,11 @@ CREATE PROCEDURE ver_roles_funcionario (
         IN _id_funcionario INT
     )
 BEGIN
-    SELECT fr.id_rol_funci_rol , r.nombre_rol
+    SELECT fr.id_rol_funcionario_rol , r.nombre_rol
     FROM  funcionario_rol fr
     INNER JOIN rol r
-    ON id_rol_funci_rol = id_rol
-    WHERE id_funcionario_funci_rol = _id_funcionario;
+    ON id_rol_funcionario_rol = id_rol
+    WHERE id_funcionario_funcionario_rol = _id_funcionario;
 END $$
 
 DELIMITER ;
