@@ -1,6 +1,5 @@
 <%--
 
-    
 --%>
 <%
     boolean[] caseMessage = (boolean[]) request.getAttribute("message");

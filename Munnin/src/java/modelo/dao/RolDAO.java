@@ -8,6 +8,7 @@ package modelo.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import modelo.bean.Rol;
 import util.ConexionBD;
@@ -18,6 +19,12 @@ import util.ConexionBD;
  */
 public class RolDAO extends ConexionBD {
 
+    public static final int ID_ADMINISTRADOR = 1;
+    public static final int ID_COORDINADOR = 2;
+    public static final int ID_E_TECNICO = 3;
+    public static final int ID_E_PEDAGOGICO = 4;
+    public static final int ID_INSTRUCTOR = 5;
+    
     private static final String COL_ID = "id_rol";
     private static final String COL_NOMBRE = "nombre_rol";
 
@@ -140,5 +147,23 @@ public class RolDAO extends ConexionBD {
         }
 
         return rol;
+    }
+    
+    public ArrayList<Rol> selectAllRoles() throws SQLException{
+        ArrayList<Rol> roles = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_ROL()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(COL_ID));
+            rol.setNombre(rs.getString(COL_NOMBRE));
+            roles.add(rol);
+        }
+        
+        return roles;
     }
 }

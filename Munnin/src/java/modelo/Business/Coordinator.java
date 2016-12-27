@@ -18,6 +18,7 @@ import util.Encriptado;
 import util.PassGenerator;
 import util.Mail;
 import modelo.dao.FuncionarioDAO;
+import modelo.dao.RolDAO;
 
 /**
  * clase dedicada a la logica de negocio usada por el rol de coordinador
@@ -44,7 +45,7 @@ public class Coordinator {
      * origen
      * @throws javax.mail.MessagingException Problemas con el Correo de destino
      */
-    public static int registarFuncionario(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int registerFunctionary(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -79,6 +80,7 @@ public class Coordinator {
                 }
             }
         }
+
         funcionarioDAO.cerrarConexion();
 
         return resultado;
@@ -96,15 +98,28 @@ public class Coordinator {
         ArrayList<TipoDocumento> tiposDoc;
         TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
         tiposDoc = tipoDocumentoDAO.verTodos();
+
         tipoDocumentoDAO.cerrarConexion();
+
         return tiposDoc;
     }
 
     public static ArrayList<Rol> verRoles() throws NamingException, SQLException {
-        ArrayList<Rol> roles = null;
+        ArrayList<Rol> roles;
+
+        RolDAO rolDAO = new RolDAO();
+        roles = rolDAO.selectAllRoles();
+        for (int i = 0; i < roles.size(); i++) {
+            if (roles.get(i).getId() == RolDAO.ID_ADMINISTRADOR) {
+                roles.remove(i);
+            }
+        }
+
+        rolDAO.cerrarConexion();
+
         return roles;
     }
-    
+
     /**
      * Consulta la cantidad de paginas necesarias para mostrar todos los
      * funcionarios
@@ -121,11 +136,14 @@ public class Coordinator {
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         cantFuncionarios = funcionarioDAO.countFunctionaryCenter(idCentro);
+
         funcionarioDAO.cerrarConexion();
+
         paginas = cantFuncionarios / cantXpag;
         if (cantFuncionarios % cantXpag != 0) {
             paginas++;
         }
+
         return paginas;
     }
 
@@ -145,7 +163,9 @@ public class Coordinator {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         funcionarios = funcionarioDAO.selectFunctionaryCenter(idCentro, pagina, cantXpag);
+
         funcionarioDAO.cerrarConexion();
+
         return funcionarios;
     }
 
@@ -162,8 +182,111 @@ public class Coordinator {
         boolean resultado;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         resultado = funcionarioDAO.inhabilitarFuncionario(idFuncionario);
+
         funcionarioDAO.cerrarConexion();
 
         return resultado;
+    }
+
+    public static Funcionario fullInfoFuncionario(int idFuncionario) throws NamingException, SQLException {
+        Funcionario resultado = new Funcionario();
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        resultado.setId(idFuncionario);
+        resultado = funcionarioDAO.select(resultado);
+        resultado.setRoles(funcionarioDAO.selectRolesFunctionary(resultado.getId()));
+        resultado.setContrasena(null);
+
+        funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+/**
+ * Metodo para asignar roles a los funcionarios
+ * @param idFuncionario id del funcionario al cual se le cambiara el rol
+ * @param strIdNewRoles ArrayList de Strings con los id de los roles 
+ * @return un valor entero que cambia dependiendo de la operacion: 
+ * 0 ha ocurrido un error, 1 operacion exitosa, 2 error en el ingreso de datos,
+ * 3 no se ha podido agregar algun rol al funcionario, 4 no se ha podido eliminar algun rol del funcionario
+ * @throws NamingException
+ * @throws SQLException 
+ */
+    public static int AssignRoles(int idFuncionario, ArrayList<String> strIdNewRoles) throws NamingException, SQLException {
+        int resultado = 0;
+        //transforma las id de los roles de string a int
+        ArrayList<Integer> intIdNewRoles = new ArrayList<>();
+        for (String idRole : strIdNewRoles) {
+            try {
+                intIdNewRoles.add(Integer.parseInt(idRole));
+            } catch (Exception e) {
+                return 2;//finaliza con error, inconsistencia en los datos ingresados
+            }
+        }
+        //consulta los roles disponibles
+        ArrayList<Rol> newRoles = verifyRol(intIdNewRoles);//valida los nuevos roles(sean roles validos para asignar)
+        ArrayList<Rol> availableRoles = verRoles();//roles disponibles
+        ArrayList<Rol> currentRoles = fullInfoFuncionario(idFuncionario).getRoles();//roles del funcionario actualmente
+        ArrayList<Rol> deleteRoles = new ArrayList<>();//roles eliminados del funcionario 
+        ArrayList<Rol> addRoles = new ArrayList<>();//nuevos roles del funcionario
+        
+        for (Rol availableRole : availableRoles) {//compara los roles que ya posee el funcionario y los nuevos roles con los roles disponibles para cambiar
+            boolean isCurrentRole = false;
+            boolean isNewRole = false;
+            
+            for (Rol currentRole : currentRoles) {
+                if(currentRole.getId()== availableRole.getId()){
+                    isCurrentRole = true;
+                    break;
+                }
+            }
+            for (Rol newRole : newRoles) {
+                if(availableRole.getId() == newRole.getId()){
+                    isNewRole = true;
+                    break;
+                }
+            }
+            
+            if(isCurrentRole != isNewRole){//si son iguales significa que no hay ningun cambio
+                if(isNewRole){//se agrega el rol al funcionario
+                    addRoles.add(availableRole);
+                }else{//se quita el rol al funcionario
+                    deleteRoles.add(availableRole);
+                }
+            }
+        }
+        //se realizan la operaciones en la base de datos
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        for (Rol addRole : addRoles) {
+            if(!funcionarioDAO.addFunctionaryRole(idFuncionario, addRole.getId())){
+                resultado = 3;
+            }
+        }
+        for (Rol deleteRole : deleteRoles) {
+            if(!funcionarioDAO.deleteFunctionaryRole(idFuncionario, deleteRole.getId())){
+                resultado = 4;
+            }
+        }
+        if(resultado == 0){//si resultado no cambia en ningun momento la operacion fue exitosa
+            resultado = 1;//operacion exitosa
+        }
+        funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    private static ArrayList<Rol> verifyRol(ArrayList<Integer> intIdRoles) throws NamingException, SQLException{
+        ArrayList<Rol> answer = new ArrayList<>();
+        
+        ArrayList<Rol> availableRoles = verRoles();
+        
+        classify:
+        for (Rol availableRole : availableRoles) {
+            for (Integer intIdRole : intIdRoles) {
+                if(availableRole.getId()==intIdRole){
+                    answer.add(availableRole);
+                    continue classify;
+                }
+            }
+        }
+        return answer;
     }
 }

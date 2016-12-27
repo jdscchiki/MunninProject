@@ -56,12 +56,36 @@ public class ServletRegisterFunctionary extends HttpServlet {
             nuevoFuncionario.setNombre(nombre);
             nuevoFuncionario.setApellido(apellido);
             nuevoFuncionario.setTelefono(telefono);
-
-            request.setAttribute("message", (Coordinator.registarFuncionario(nuevoFuncionario, idCentro) + 4));
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
+            switch(Coordinator.registerFunctionary(nuevoFuncionario, idCentro)){
+                case 0:
+                    request.setAttribute("caseMessage", 0);
+                    request.setAttribute("message", "no ha podido realizarse el registro");
+                    break;
+                case 1:
+                    request.setAttribute("caseMessage", 1);
+                    request.setAttribute("message", "el registro se ha completado exitosamente");
+                    break;
+                case 2:
+                    request.setAttribute("caseMessage", 0);
+                    request.setAttribute("message", "Actualmente existe un funcionario activo con los datos ingresados");
+                    break;
+                case 3:
+                    request.setAttribute("caseMessage", 3);
+                    request.setAttribute("message", "Actualmente existe un funcionario inactivo con el correo ingresado");
+                    break;
+                case 4:
+                    request.setAttribute("caseMessage", 3);
+                    request.setAttribute("message", "Actualmente existe un funcionario inactivo con el documento ingresado");
+                    break;
+                case 5:
+                    request.setAttribute("caseMessage", 3);
+                    request.setAttribute("message", "No ha podido ser enviado el correo con la contraseña del nuevo funcionario");
+                    break;
+            }
+            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-            request.setAttribute("message", 10);
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
+            request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
+            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

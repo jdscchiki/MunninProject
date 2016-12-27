@@ -1,51 +1,46 @@
 var selected = "-1";
 var currentPage = "1";
-function refreshTable(page) {
-    var data = {
-        page: page
-    };
-    $.ajax({
-        type: "POST",
-        url: contextPath + "home/role/coordinator/pagerFunctionary",
-        data: $.param(data),
-        success: function (response) {
-            $("#fulltable").html(response);
-            currentPage = page;
-        }
-    });
-    selected = "-1";
-}
-;
 
-function ajaxElementLoadedEvent() {
+$(document).ready(function () {
+    function refreshTable(page) {
+        var data = {
+            page: page
+        };
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/pagerFunctionary",
+            data: $.param(data),
+            success: function (response) {
+                $("#fulltable").html(response);
+                currentPage = page;
+            }
+        });
+        selected = "-1";
+    }
+    ;
 
-    $("#point tr").click(function () {
+    $(document).on("click", "#point tr", function () {
         $("#point tr.selected").removeClass("selected");
         $(this).toggleClass("selected");
         selected = $(this).data("id");
     });
 
-    $(".pagination a").click(function (event) {
+    $(document).on("click", ".pagination a", function (event) {
         event.preventDefault();
         var page = $(this).data("page");
         refreshTable(page);
     });
-}
-;
 
-$(document).ready(function () {
-    ajaxElementLoadedEvent();
-
-    $("#remove").on("click", function (event) {
+    $(document).on("click", "#remove", function (event) {
         event.preventDefault();
         var data = {
             id: selected,
-            operation: "remove"
+            operation: "Remove"
         };
 
         $.ajax({
             type: "POST",
-            url: contextPath + "home/role/coordinator/adminFuncionarios",
+            url: contextPath + "home/role/coordinator/admin-functionary",
             data: $.param(data),
             success: function (response) {
                 $("#div_message").html(response);
@@ -54,7 +49,56 @@ $(document).ready(function () {
         });
     });
 
-    $("#formRegisterFunctionary").submit(function (event) {
+    $(document).on("click", "#ChangeRoles", function (event) {
+        event.preventDefault();
+        var data = {
+            id: selected,
+            operation: "ChangeRoles"
+        };
+
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/admin-functionary",
+            data: $.param(data),
+            success: function (response) {
+                $("#div_message").html(response);
+                $("#assignRole").modal();
+            }
+        });
+    });
+    
+    $(document).on("click", "#ShowDisabled", function (event) {
+        event.preventDefault();
+        var data = {
+            id: selected,
+            operation: "ChangeRoles"
+        };
+
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/show-disabled-functionary",
+            data: $.param(data),
+            success: function (response) {
+                $("#div_message").html(response);
+                $("#assignRole").modal();
+            }
+        });
+    });
+
+    $(document).on("submit", "#formAssignRole", function (event) {
+        event.preventDefault();
+        var form = $(this);
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/assign-roles",
+            data: form.serialize(),
+            success: function (response) {
+                $("#formAssignRole_message").html(response);
+            }
+        });
+    });
+
+    $(document).on("submit", "#formRegisterFunctionary", function (event) {
         event.preventDefault();
         var tipoDoc = $("#formRegisterFunctionaryTipoDoc").val();
         var documento = $("#formRegisterFunctionaryDocumento").val();
@@ -85,9 +129,9 @@ $(document).ready(function () {
             divMensaje.html(alertDiv);
             $("#textRegisterFunctionary_message").text("El campo apellido esta vacio");
         } else {
-            
+
             divMensaje.html("");
-            
+
             var $form = $(this);
 
             $.ajax({
@@ -102,13 +146,15 @@ $(document).ready(function () {
         }
     });
 
-    $("#registerFunctionary").on('hidden.bs.modal', function () {
+    $(document).on('hidden.bs.modal', "#registerFunctionary", function () {
         $('#formRegisterFunctionary').trigger("reset");
         $("#divRegisterFunctionary_message").html("");
     });
-});
 
-$(document).ajaxComplete(function () {
-    ajaxElementLoadedEvent();
+    $(document).on('hidden.bs.modal', "#assignRole", function () {
+        $("#div_message").html("");
+    });
+    
+    $('[data-toggle="tooltip"]').tooltip();
+    
 });
-

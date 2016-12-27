@@ -6,19 +6,21 @@
 package controlador.home.role.coordinator.functionary;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Business.Coordinator;
+import modelo.bean.Funcionario;
+import modelo.bean.Rol;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/home/role/coordinator/adminFuncionarios"})
+@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/home/role/coordinator/admin-functionary"})
 public class ServletManageFunctionary extends HttpServlet {
 
     /**
@@ -40,18 +42,32 @@ public class ServletManageFunctionary extends HttpServlet {
 
             idFun = Integer.parseInt(idFuncionario);
             if (idFun <= 0) {
-                request.setAttribute("message", 3);
+                request.setAttribute("caseMessage", 3);
+                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los funcionarios");
             } else {
-                if (opcion.equals("remove")) {
-                    Coordinator.inhabilitarFuncionario(idFun);
-                    request.setAttribute("message", 1);
-
-                } else {
-                    request.setAttribute("message", 2);
+                switch (opcion) {
+                    case "Remove":
+                        if(Coordinator.inhabilitarFuncionario(idFun)){
+                            request.setAttribute("caseMessage", 1);
+                            request.setAttribute("message", "El funcionario fue inhabilitado exitosamente");
+                        }else{
+                            request.setAttribute("caseMessage", 0);
+                            request.setAttribute("message", "El funcionario no ha podido ser inhabilitado");
+                        }   break;
+                    case "ChangeRoles":
+                        Funcionario funcionarioResult = Coordinator.fullInfoFuncionario(idFun);
+                        request.setAttribute("funcionario", funcionarioResult);
+                        ArrayList<Rol> roles = Coordinator.verRoles();
+                        request.setAttribute("roles", roles);
+                        request.getRequestDispatcher("/home/role/coordinator/elements/content/forms/modalRoles.jsp").forward(request, response);
+                        return;
+                    default:
+                        request.setAttribute("caseMessage", 0);
+                        request.setAttribute("message", "no ha podido ser completada la accion");
+                        break;
                 }
             }
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/messages.jsp").forward(request, response);
-            return;
+            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

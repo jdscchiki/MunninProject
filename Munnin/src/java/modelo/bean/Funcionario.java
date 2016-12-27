@@ -179,7 +179,7 @@ public class Funcionario implements java.io.Serializable {
 
     public boolean isAdministrador() {
         for (Rol rol : roles) {
-            if (rol.getId() == 5) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_ADMINISTRADOR) {
                 return true;
             }
         }
@@ -188,7 +188,7 @@ public class Funcionario implements java.io.Serializable {
 
     public boolean isCoordinador() {
         for (Rol rol : roles) {
-            if (rol.getId() == 1) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_COORDINADOR) {
                 return true;
             }
         }
@@ -197,7 +197,7 @@ public class Funcionario implements java.io.Serializable {
 
     public boolean isTecnico() {
         for (Rol rol : roles) {
-            if (rol.getId() == 2) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_E_TECNICO) {
                 return true;
             }
         }
@@ -206,7 +206,7 @@ public class Funcionario implements java.io.Serializable {
 
     public boolean isPedagogico() {
         for (Rol rol : roles) {
-            if (rol.getId() == 3) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_E_PEDAGOGICO) {
                 return true;
             }
         }
@@ -215,7 +215,7 @@ public class Funcionario implements java.io.Serializable {
 
     public boolean isInstructor() {
         for (Rol rol : roles) {
-            if (rol.getId() == 4) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_INSTRUCTOR) {
                 return true;
             }
         }

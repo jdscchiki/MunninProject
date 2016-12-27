@@ -6,21 +6,18 @@
 package controlador.home.role.coordinator.functionary;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Business.Coordinator;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletAssignRoles", urlPatterns = {"/home/role/coordinator/assign-roles"})
-public class ServletAssignRoles extends HttpServlet {
+@WebServlet(name = "ServletShowDisabled", urlPatterns = {"/home/role/coordinator/show-disabled-functionary"})
+public class ServletShowDisabled extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,38 +31,7 @@ public class ServletAssignRoles extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            ArrayList<String> idRoles = new ArrayList<> (Arrays.asList(request.getParameterValues("role")));
-            String idFuncionario = request.getParameter("id");
-            int idFun = Integer.parseInt(idFuncionario);
-            
-            switch(Coordinator.AssignRoles(idFun, idRoles)){
-                case 0:
-                    request.setAttribute("caseMessage", 0);
-                    request.setAttribute("message", "no ha podido realizarse la operacion");
-                    break;
-                case 1:
-                    request.setAttribute("caseMessage", 1);
-                    request.setAttribute("message", "se han cambiado los roles correctamente");
-                    break;
-                case 2:
-                    request.setAttribute("caseMessage", 0);
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-                case 3:
-                    request.setAttribute("caseMessage", 3);
-                    request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
-                    break;
-                case 4:
-                    request.setAttribute("caseMessage", 3);
-                    request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
-                    break;
-            }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
-        }catch(Exception e){
-            request.setAttribute("mensaje", e);
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

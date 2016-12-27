@@ -15,6 +15,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import modelo.bean.Funcionario;
@@ -24,6 +25,7 @@ import modelo.Business.Coordinator;
  *
  * @author Juan David Segura Castro
  */
+@WebFilter(filterName = "FilterFunctionaryList", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
 public class FilterFunctionaryList implements Filter {
     
     private static final boolean debug = false;

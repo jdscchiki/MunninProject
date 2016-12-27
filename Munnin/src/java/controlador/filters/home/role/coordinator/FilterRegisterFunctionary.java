@@ -18,6 +18,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
 import modelo.Business.Coordinator;
 import modelo.bean.TipoDocumento;
@@ -26,6 +27,7 @@ import modelo.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro 
  */
+@WebFilter(filterName = "FilterRegisterFunctionary", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
 public class FilterRegisterFunctionary implements Filter {
 
     private static final boolean debug = false;

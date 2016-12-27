@@ -22,6 +22,7 @@
 -- VER_FUNCIONARIO_CORREO
 -- VER_FUNCIONARIO_DOCUMENTO
 -- VER_FUNCIONARIO_ACTIVO
+-- VER_TODOS_ROL
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
@@ -2515,3 +2516,19 @@ BEGIN
     );
 END $$
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_ROL
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_todos_rol $$
+CREATE PROCEDURE ver_todos_rol()
+BEGIN
+    SELECT  id_rol ,
+            nombre_rol
+    FROM rol;
+END $$
+DELIMITER ;
+

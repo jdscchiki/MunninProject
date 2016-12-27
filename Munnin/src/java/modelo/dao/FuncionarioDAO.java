@@ -352,7 +352,7 @@ public class FuncionarioDAO extends ConexionBD {
      * @return ArrayList de los roles
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Rol> selectRoles(int id) throws SQLException {
+    public ArrayList<Rol> selectRolesFunctionary(int id) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -476,6 +476,52 @@ public class FuncionarioDAO extends ConexionBD {
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, id);
         statement.setString(indexContrasena, password);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public boolean addFunctionaryRole(int idFuncionario, int idRol) throws SQLException{
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL INSERTAR_FUNCIONARIO_ROL(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdRol = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFuncionario, idFuncionario);
+        statement.setInt(indexIdRol, idRol);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public boolean deleteFunctionaryRole(int idFuncionario, int idRol) throws SQLException{
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL ELIMINAR_FUNCIONARIO_ROL(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdRol = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFuncionario, idFuncionario);
+        statement.setInt(indexIdRol, idRol);
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
