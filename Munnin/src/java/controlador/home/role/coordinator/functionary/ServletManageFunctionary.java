@@ -47,7 +47,7 @@ public class ServletManageFunctionary extends HttpServlet {
             } else {
                 switch (opcion) {
                     case "Remove":
-                        if(Coordinator.inhabilitarFuncionario(idFun)){
+                        if(Coordinator.disableFunctionary(idFun)){
                             request.setAttribute("caseMessage", 1);
                             request.setAttribute("message", "El funcionario fue inhabilitado exitosamente");
                         }else{
@@ -55,9 +55,9 @@ public class ServletManageFunctionary extends HttpServlet {
                             request.setAttribute("message", "El funcionario no ha podido ser inhabilitado");
                         }   break;
                     case "ChangeRoles":
-                        Funcionario funcionarioResult = Coordinator.fullInfoFuncionario(idFun);
+                        Funcionario funcionarioResult = Coordinator.viewAllInfoFunctionary(idFun);
                         request.setAttribute("funcionario", funcionarioResult);
-                        ArrayList<Rol> roles = Coordinator.verRoles();
+                        ArrayList<Rol> roles = Coordinator.viewRoles();
                         request.setAttribute("roles", roles);
                         request.getRequestDispatcher("/home/role/coordinator/elements/content/forms/modalRoles.jsp").forward(request, response);
                         return;

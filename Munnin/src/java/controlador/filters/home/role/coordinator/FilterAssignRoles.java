@@ -112,7 +112,7 @@ public class FilterAssignRoles implements Filter {
         Throwable problem = null;
         try {
             
-            ArrayList<Rol> roles = Coordinator.verRoles();
+            ArrayList<Rol> roles = Coordinator.viewRoles();
             request.setAttribute("roles", roles);
             
             chain.doFilter(request, response);

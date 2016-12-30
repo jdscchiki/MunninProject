@@ -23,6 +23,8 @@
 -- VER_FUNCIONARIO_DOCUMENTO
 -- VER_FUNCIONARIO_ACTIVO
 -- VER_TODOS_ROL
+-- VER_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- HABILITAR_FUNCIONARIO
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
@@ -2294,22 +2296,38 @@ DROP PROCEDURE IF EXISTS ver_funcionarios_centro $$
 CREATE PROCEDURE ver_funcionarios_centro (
         IN _id_centro VARCHAR(10),
         IN _pagina INT,
-        IN _funcionarioXpagina INT
+        IN _funcionarioXpagina INT,
+        IN _search VARCHAR(140)
     )
 BEGIN
     DECLARE _inicio INT;
-    DECLARE _fin INT;
     SET _inicio = (_pagina - 1) * _funcionarioXpagina;
-    SELECT 
-        id_funcionario ,
-        id_tipo_documento_funcionario ,
-        documento_funcionario,
-        nombre_funcionario,
-        apellido_funcionario,
-        correo_funcionario
-    FROM funcionario
-    WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1
-    LIMIT _inicio, _funcionarioXpagina ;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1
+        LIMIT _inicio, _funcionarioXpagina );
+    ELSE
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1 AND
+        (LOWER(documento_funcionario) REGEXP LOWER(_search) OR
+        LOWER(nombre_funcionario) REGEXP LOWER(_search) OR
+        LOWER(apellido_funcionario) REGEXP LOWER(_search))
+        LIMIT _inicio, _funcionarioXpagina;
+    END IF;
 END $$
 
 DELIMITER ;
@@ -2417,12 +2435,22 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS conteo_funcionarios_centro $$
 CREATE PROCEDURE conteo_funcionarios_centro (
-        IN _id_centro VARCHAR(10)
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
     )
 BEGIN
-    SELECT COUNT(id_funcionario) as conteo
-    FROM  funcionario
-    WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1;
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_funcionario) as conteo
+        FROM  funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1);
+    ELSE 
+        SELECT COUNT(id_funcionario) as conteo
+        FROM  funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 1 AND 
+            (LOWER(documento_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(apellido_funcionario) REGEXP LOWER(_filtro));
+    END IF;
 END $$
 
 DELIMITER ;
@@ -2532,3 +2560,62 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- -----------------------------------------------------
+-- SP VER_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_funcionarios_inhabilitados_centro $$
+CREATE PROCEDURE ver_funcionarios_inhabilitados_centro(
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 0);
+    ELSE 
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE 
+            id_centro_funcionario = _id_centro AND 
+            activo_funcionario = 0 AND 
+            (LOWER(documento_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(apellido_funcionario) REGEXP LOWER(_filtro));
+    END if;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP HABILITAR_FUNCIONARIO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS habilitar_funcionario $$
+CREATE PROCEDURE habilitar_funcionario (
+        IN _id_funcionario INT
+    )
+BEGIN
+    UPDATE funcionario
+    SET activo_funcionario = 1
+    WHERE id_funcionario = _id_funcionario;
+END $$
+
+DELIMITER ;

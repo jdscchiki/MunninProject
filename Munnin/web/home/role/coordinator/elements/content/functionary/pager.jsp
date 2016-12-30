@@ -19,14 +19,14 @@
 
         //si la pagina no es la primera entonces habilita el boton anterior
     %>
-    <li <%=(pagina > 1) ? "" : "class='disabled'"%>><a data-page='<%= (pagina > 1) ? (pagina-1)  : pagina%>'>anterior</a></li>
+    <li <%=(pagina > 1) ? "" : "class='disabled'"%>><a <%= (pagina > 1) ? ("data-page='"+(pagina-1))+"'"  : ""%>>anterior</a></li>
     <%
         for (int i = inicioPag; i <= finPag; i++) {//despliega los redireccionamientos a otras paginas
             //si la pagina en el paginador es la actual es marcada para que se vea diferente
     %>
-    <li <%= (i == pagina) ? "class = 'active'" : ""%> ><a data-page="<%=i%>"><%=i%></a></li>
+    <li <%= (i == pagina) ? "class = 'active'" : ""%> ><a data-page="<%=i%>" data-search="<%=request.getAttribute("search")%>"><%=i%></a></li>
     <%
         }
     %>
-    <li <%= (pagina < paginas) ? "" : "class='disabled'"%> ><a data-page='<%= (pagina < paginas) ? (pagina+1) : pagina%>' >siguiente</a></li>
+    <li <%= (pagina < paginas) ? "" : "class='disabled'"%> ><a <%= (pagina < paginas) ? "data-page='"+(pagina+1)+"'" : ""%> >siguiente</a></li>
 </ul>

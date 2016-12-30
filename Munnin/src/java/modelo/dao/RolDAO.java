@@ -149,7 +149,7 @@ public class RolDAO extends ConexionBD {
         return rol;
     }
     
-    public ArrayList<Rol> selectAllRoles() throws SQLException{
+    public ArrayList<Rol> selectAll() throws SQLException{
         ArrayList<Rol> roles = new ArrayList<>();
         
         String query = "{CALL VER_TODOS_ROL()}";

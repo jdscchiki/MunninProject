@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Business.Coordinator;
 
 /**
  *
@@ -31,7 +32,22 @@ public class ServletEnable extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        try {
+            String stringId = request.getParameter("id");
+            int id = Integer.parseInt(stringId);
+
+            if (Coordinator.enableFunctionary(id)) {
+                request.setAttribute("caseMessage", 1);
+                request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
+            } else {
+                request.setAttribute("caseMessage", 0);
+                request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
+            }
+            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

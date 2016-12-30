@@ -152,7 +152,7 @@ public class TipoDocumentoDAO extends ConexionBD {
      * @throws SQLException Error al realizar la consulta, revisar el
      * procedimiento almacenado
      */
-    public ArrayList<TipoDocumento> verTodos() throws SQLException {
+    public ArrayList<TipoDocumento> selectAll() throws SQLException {
         ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos

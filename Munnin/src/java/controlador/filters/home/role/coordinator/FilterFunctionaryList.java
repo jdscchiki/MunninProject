@@ -120,9 +120,8 @@ public class FilterFunctionaryList implements Filter {
                 HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
                 Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
                 request.setAttribute("page", pagina);
-                request.setAttribute("ContentTable", Coordinator.verFuncionariosCentro(funcionario.getIdCentro(), pagina, cantXpag));
-                request.setAttribute("pagesTable", Coordinator.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
-                
+                request.setAttribute("ContentTable", Coordinator.viewPagerFunctionaryCenter(funcionario.getIdCentro(), pagina, cantXpag, ""));
+                request.setAttribute("pagesTable", Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, ""));
             }catch(Exception ex){
                 request.setAttribute("mensaje", ex);
                 request.getRequestDispatcher("error.jsp").forward(request, response);

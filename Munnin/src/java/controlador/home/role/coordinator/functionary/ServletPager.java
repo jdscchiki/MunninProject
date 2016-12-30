@@ -34,19 +34,21 @@ public class ServletPager extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
+        try {
+            String search = request.getParameter("search");
             int page = Integer.parseInt(request.getParameter("page"));
             int cantXpag = 10;
-            
-            HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
-            Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
-            
+
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
             request.setAttribute("page", page);
-            request.setAttribute("ContentTable", Coordinator.verFuncionariosCentro(funcionario.getIdCentro(), page, cantXpag));
-            request.setAttribute("pagesTable", Coordinator.verPaginasFuncionarios(funcionario.getIdCentro(), cantXpag));
+            request.setAttribute("search", search);
+            request.setAttribute("ContentTable", Coordinator.viewPagerFunctionaryCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            System.out.println("paginas: "+ Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search));
+            request.setAttribute("pagesTable", Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search));
             request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/fullPager.jsp").forward(request, response);
-            
-        }catch(Exception ex){
+        } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }

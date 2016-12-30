@@ -115,7 +115,7 @@ public class FilterRegisterFunctionary implements Filter {
         Throwable problem = null;
         try {
             try {
-                ArrayList<TipoDocumento> tiposDoc = Coordinator.verTiposDocumentos();
+                ArrayList<TipoDocumento> tiposDoc = Coordinator.viewDocumentType();
                 request.setAttribute("tiposDoc", tiposDoc);
             } catch (NamingException e) {
                 //redireccion

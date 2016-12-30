@@ -1,10 +1,13 @@
-var selected = "-1";
-var currentPage = "1";
-
 $(document).ready(function () {
-    function refreshTable(page) {
+    var selectedEnabledFunctionary = "-1";
+    var currentPage = "1";
+    
+    var selectedDisabledFunctionary = "-1";
+    
+    function refreshTable(page, search) {
         var data = {
-            page: page
+            page: page,
+            search : search
         };
         $.ajax({
             type: "POST",
@@ -15,26 +18,48 @@ $(document).ready(function () {
                 currentPage = page;
             }
         });
-        selected = "-1";
+        selectedEnabledFunctionary = "-1";
     }
     ;
-
-    $(document).on("click", "#point tr", function () {
-        $("#point tr.selected").removeClass("selected");
+    
+    function refreshTableDisabledF(search) {
+        var data = {
+            search: search
+        };
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/refresh-disabled-functionary",
+            data: $.param(data),
+            success: function (response) {
+                $("#showDisabledFunctionary_Table").html(response);
+            }
+        });
+    }
+    ;
+    
+    $(document).on("click", "#showDisabledFunctionary_Table #point tr", function () {
+        $("#showDisabledFunctionary_Table #point tr.selected").removeClass("selected");
         $(this).toggleClass("selected");
-        selected = $(this).data("id");
+        selectedDisabledFunctionary = $(this).data("id");
     });
 
-    $(document).on("click", ".pagination a", function (event) {
+    $(document).on("click", "#fulltable #point tr", function () {
+        $("#fulltable #point tr.selected").removeClass("selected");
+        $(this).toggleClass("selected");
+        selectedEnabledFunctionary = $(this).data("id");
+    });
+
+    $(document).on("click", ".pagination a[data-page]", function (event) {
         event.preventDefault();
         var page = $(this).data("page");
-        refreshTable(page);
+        var search = $(this).data("search");
+        refreshTable(page, search);
     });
 
     $(document).on("click", "#remove", function (event) {
         event.preventDefault();
         var data = {
-            id: selected,
+            id: selectedEnabledFunctionary,
             operation: "Remove"
         };
 
@@ -44,7 +69,7 @@ $(document).ready(function () {
             data: $.param(data),
             success: function (response) {
                 $("#div_message").html(response);
-                refreshTable(currentPage);
+                refreshTable(currentPage, "");
             }
         });
     });
@@ -52,7 +77,7 @@ $(document).ready(function () {
     $(document).on("click", "#ChangeRoles", function (event) {
         event.preventDefault();
         var data = {
-            id: selected,
+            id: selectedEnabledFunctionary,
             operation: "ChangeRoles"
         };
 
@@ -64,23 +89,54 @@ $(document).ready(function () {
                 $("#div_message").html(response);
                 $("#assignRole").modal();
             }
-        });
+        });//
     });
     
-    $(document).on("click", "#ShowDisabled", function (event) {
+    $(document).on("click", "#showDisabled", function (event) {
         event.preventDefault();
-        var data = {
-            id: selected,
-            operation: "ChangeRoles"
-        };
-
         $.ajax({
             type: "POST",
             url: contextPath + "home/role/coordinator/show-disabled-functionary",
-            data: $.param(data),
             success: function (response) {
                 $("#div_message").html(response);
-                $("#assignRole").modal();
+                $("#disabledFunctionary").modal();
+            }
+        });
+    });
+    
+    $(document).on("click", "#enable-functionary", function (event) {
+        event.preventDefault();
+        var data = {
+            id: selectedDisabledFunctionary
+        };
+        $.ajax({
+            type: "POST",
+            url: contextPath + "home/role/coordinator/enable-functionary",
+            data: $.param(data),
+            success: function (response) {
+                $("#showDisabledFunctionary_message").html(response);
+                refreshTableDisabledF("");
+                refreshTable(currentPage, "");
+            }
+        });
+    });
+    
+    $(document).on("submit", "#formSearchFunctionaryEnable", function (event) {
+        event.preventDefault();
+        var search = $("#formSearchFunctionaryEnable input:text[name=search]").val();
+        currentPage = "1";
+        refreshTable(currentPage, search);
+    });
+    
+    $(document).on("submit", "#formDisabledFunctionary", function (event) {
+        event.preventDefault();
+        var form = $(this);
+        $.ajax({
+            type: "POST",
+            url: form.attr("action"),
+            data: form.serialize(),
+            success: function (response) {
+                $("#showDisabledFunctionary_Table").html(response);
             }
         });
     });
@@ -140,7 +196,7 @@ $(document).ready(function () {
                 data: $form.serialize(),
                 success: function (response) {
                     divMensaje.html(response);
-                    refreshTable(currentPage);
+                    refreshTable(currentPage, "");
                 }
             });
         }
@@ -152,6 +208,10 @@ $(document).ready(function () {
     });
 
     $(document).on('hidden.bs.modal', "#assignRole", function () {
+        $("#div_message").html("");
+    });
+    
+    $(document).on('hidden.bs.modal', "#disabledFunctionary", function () {
         $("#div_message").html("");
     });
     
