@@ -39,7 +39,6 @@ public class ServletRefreshDisabled extends HttpServlet {
             String search = request.getParameter("search");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
-            System.out.println("search: " + search);
             ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, search);
             request.setAttribute("ContentTable", disabledFunctionary);
             request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/table.jsp").forward(request, response);

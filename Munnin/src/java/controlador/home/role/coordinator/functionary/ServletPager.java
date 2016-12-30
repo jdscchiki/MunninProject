@@ -45,7 +45,6 @@ public class ServletPager extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("search", search);
             request.setAttribute("ContentTable", Coordinator.viewPagerFunctionaryCenter(funcionario.getIdCentro(), page, cantXpag, search));
-            System.out.println("paginas: "+ Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search));
             request.setAttribute("pagesTable", Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search));
             request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/fullPager.jsp").forward(request, response);
         } catch (Exception ex) {

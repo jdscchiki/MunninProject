@@ -39,14 +39,15 @@ public class ServletPass extends HttpServlet {
             String newPassword = request.getParameter("passwordNew");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            
+
             boolean[] result = General.changePassword(funcionario.getCorreo(), password, newPassword);
-            
+
             request.setAttribute("message", result);
-            
+
             request.getRequestDispatcher("/elements/content/messagesPassword.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println("Error 2: " + e);
+            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     }

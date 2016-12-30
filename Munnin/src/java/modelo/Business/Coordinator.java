@@ -143,7 +143,6 @@ public class Coordinator {
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         cantFuncionarios = funcionarioDAO.countFunctionaryCenter(idCentro, search);
-        System.out.println("cantidad de funcionarios: "+ cantFuncionarios);
         funcionarioDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
