@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelo.Business.Coordinator;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
@@ -47,13 +48,23 @@ public class ServletManageFunctionary extends HttpServlet {
             } else {
                 switch (opcion) {
                     case "Remove":
-                        if(Coordinator.disableFunctionary(idFun)){
-                            request.setAttribute("caseMessage", 1);
-                            request.setAttribute("message", "El funcionario fue inhabilitado exitosamente");
-                        }else{
-                            request.setAttribute("caseMessage", 0);
-                            request.setAttribute("message", "El funcionario no ha podido ser inhabilitado");
-                        }   break;
+                        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+                        switch (Coordinator.disableFunctionary(idFun, idCentro)) {
+                            case 0:
+                                request.setAttribute("caseMessage", 0);
+                                request.setAttribute("message", "El funcionario no ha podido ser inhabilitado");
+                                break;
+                            case 1:
+                                request.setAttribute("caseMessage", 1);
+                                request.setAttribute("message", "El funcionario fue inhabilitado exitosamente");
+                                break;
+                            case 2:
+                                request.setAttribute("caseMessage", 0);
+                                request.setAttribute("message", "Solo queda un coordinador habilitado para el centro");
+                                break;
+                        }
+                        break;
                     case "ChangeRoles":
                         Funcionario funcionarioResult = Coordinator.viewAllInfoFunctionary(idFun);
                         request.setAttribute("funcionario", funcionarioResult);

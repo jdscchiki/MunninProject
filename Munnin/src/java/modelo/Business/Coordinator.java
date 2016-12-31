@@ -160,7 +160,8 @@ public class Coordinator {
      * @param idCentro Id del centro a consultar
      * @param pagina El numero de la pagina a consultar
      * @param cantXpag La cantidad de funcionarios por pagina
-     * @param search filtro de busqueda de funcionario, por nombre, apellido, documento
+     * @param search filtro de busqueda de funcionario, por nombre, apellido,
+     * documento
      * @return
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD o en el query de
@@ -185,16 +186,22 @@ public class Coordinator {
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static boolean disableFunctionary(int idFuncionario) throws NamingException, SQLException {
-        boolean resultado;
+    public static int disableFunctionary(int idFuncionario, String idCentro) throws NamingException, SQLException {
+        int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        resultado = funcionarioDAO.disableFunctionary(idFuncionario);
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro)) {
+            resultado = 2;
+        } else {
+            if (funcionarioDAO.disableFunctionary(idFuncionario)) {
+                resultado = 1;
+            }
+        }
 
         funcionarioDAO.cerrarConexion();
 
         return resultado;
     }
-    
+
     public static boolean enableFunctionary(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -320,14 +327,14 @@ public class Coordinator {
         }
         return answer;
     }
-    
-    public static ArrayList<Funcionario> viewDisabledFunctionary(String idCentro, String filtro) throws NamingException, SQLException{
+
+    public static ArrayList<Funcionario> viewDisabledFunctionary(String idCentro, String filtro) throws NamingException, SQLException {
         ArrayList<Funcionario> answer;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         answer = funcionarioDAO.selectDisabledFunctionaryCenter(idCentro, filtro);
-        
+
         funcionarioDAO.cerrarConexion();
-        
+
         return answer;
     }
 }

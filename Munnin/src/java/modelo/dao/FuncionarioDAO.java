@@ -657,4 +657,23 @@ public class FuncionarioDAO extends ConexionBD {
         }
         return funcionarios;
     }
+    
+    public boolean isLastCoordinatorEnableCenter(String idCentro) throws SQLException{
+        boolean answer = false;
+
+        //datos de la consulta en base de datos
+        String query = "{CALL ES_ULTIMO_COORDINADOR_CENTRO(?)}";
+        int indexIdCentro = 1;
+        String colAnswer = "RESULTADO";
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCentro);
+
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            answer = rs.getBoolean(colAnswer);
+        }
+        return answer;
+    }
 }

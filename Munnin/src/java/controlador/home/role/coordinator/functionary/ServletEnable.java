@@ -35,13 +35,17 @@ public class ServletEnable extends HttpServlet {
         try {
             String stringId = request.getParameter("id");
             int id = Integer.parseInt(stringId);
-
-            if (Coordinator.enableFunctionary(id)) {
-                request.setAttribute("caseMessage", 1);
-                request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
+            if (id <= 0) {
+                request.setAttribute("caseMessage", 3);
+                request.setAttribute("message", "Seleciona un funcionario para realizar el proceso");
             } else {
-                request.setAttribute("caseMessage", 0);
-                request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
+                if (Coordinator.enableFunctionary(id)) {
+                    request.setAttribute("caseMessage", 1);
+                    request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
+                } else {
+                    request.setAttribute("caseMessage", 0);
+                    request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
+                }
             }
             request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
         } catch (Exception e) {

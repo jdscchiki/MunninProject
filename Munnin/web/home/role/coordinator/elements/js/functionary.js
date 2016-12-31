@@ -34,6 +34,7 @@ $(document).ready(function () {
                 $("#showDisabledFunctionary_Table").html(response);
             }
         });
+        selectedDisabledFunctionary = "-1";
     }
     ;
     
@@ -213,6 +214,7 @@ $(document).ready(function () {
     
     $(document).on('hidden.bs.modal', "#disabledFunctionary", function () {
         $("#div_message").html("");
+        selectedDisabledFunctionary = "-1";
     });
     
     $('[data-toggle="tooltip"]').tooltip();
