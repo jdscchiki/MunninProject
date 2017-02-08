@@ -45,7 +45,8 @@
                 <button type="button" class="btn btn-link" id="showDisabled">Ver Funcionarios Inhabilitados</button>
             </div>
         </div>
-        <div id="div_message">
+        <div id="div_message" >
+            
         </div>
     </div>
 </div>
