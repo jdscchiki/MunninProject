@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      lang="es">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/logo.png']}" />
+        <title>
+            <ui:insert name ="title">
+                Munnin
+            </ui:insert>
+        </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        
+        <h:outputStylesheet library="css" name="skin-start.css" />
+    </h:head>
+    <h:body>
+        <ui:insert name ="navbar">
+            <ui:include src="BasicTemplate/navbar.xhtml" ></ui:include>
+        </ui:insert>
+        <ui:insert name ="sidenav">
+            <ui:include src="BasicTemplate/sidenav.xhtml" ></ui:include>
+        </ui:insert>
+        <ui:insert name ="modalLogout">
+            <ui:include src="BasicTemplate/modalLogout.xhtml" ></ui:include>
+        </ui:insert>
+        <ui:insert name ="modalPassword">
+            <ui:include src="BasicTemplate/modalPassword.xhtml" ></ui:include>
+        </ui:insert>
+        <ui:insert name ="content">
+            <ui:include src="BasicTemplate/content.xhtml" ></ui:include>
+        </ui:insert>
+        <ui:insert name ="footer">
+            <ui:include src="BasicTemplate/footer.xhtml" ></ui:include>
+        </ui:insert>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:body>
+</html>

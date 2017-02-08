@@ -1,0 +1,45 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <composite:interface>
+    </composite:interface>
+    <composite:implementation>
+        <ul class="pagination">
+            <ui:repeat value="#{coordinator.functionary.ShowPagesLinks()}" var="page">
+                <li class="#{(coordinator.functionary.page == page)? 'active' : ''}" >
+                    <a data-page="#{page}" 
+                       data-ajax-url="ajax/tableFunctionaries.xhtml" 
+                       data-id-display-answer="fulltable">
+                        #{page}
+                    </a>
+                </li>
+            </ui:repeat>
+        </ul>
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{coordinator.functionary.viewContentEnabledFunctionaries()}" 
+                                   var="funtionary">
+                            <tr data-id="#{funtionary.id}">
+                                <td>#{funtionary.documento}</td>
+                                <td>#{funtionary.nombre}</td>
+                                <td>#{funtionary.apellido}</td>
+                                <td>#{funtionary.correo}</td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </composite:implementation>
+</html>
