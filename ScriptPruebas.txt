@@ -1,6 +1,67 @@
-/*==============================================================*/
-/* INSERT DATOS BASICOS                                         */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- DEPURAR DATOS
+-- -----------------------------------------------------
+
+DELETE FROM funcionario_rol;
+DELETE FROM categoria_producto;
+DELETE FROM categoria;
+DELETE FROM notificacion;
+DELETE FROM mensaje;
+DELETE FROM visita;
+DELETE FROM comentario;
+DELETE FROM programa_producto;
+DELETE FROM programa;
+DELETE FROM area;
+DELETE FROM rol;
+DELETE FROM evaluacion_item;
+DELETE FROM evaluacion_lista;
+DELETE FROM item_lista;
+DELETE FROM item;
+DELETE FROM lista;
+DELETE FROM tipo_lista;
+DELETE FROM autor;
+DELETE FROM funcionario;
+DELETE FROM tipo_documento;
+DELETE FROM version;
+DELETE FROM centro;
+DELETE FROM ciudad;
+DELETE FROM regional;
+DELETE FROM producto;
+DELETE FROM tipo_objeto_aprendizaje;
+DELETE FROM tipo_archivo;
+DELETE FROM estado;
+ALTER TABLE funcionario_rol AUTO_INCREMENT = 1;
+ALTER TABLE categoria_producto AUTO_INCREMENT = 1;
+ALTER TABLE categoria AUTO_INCREMENT = 1;
+ALTER TABLE notificacion AUTO_INCREMENT = 1;
+ALTER TABLE mensaje AUTO_INCREMENT = 1;
+ALTER TABLE visita AUTO_INCREMENT = 1;
+ALTER TABLE comentario AUTO_INCREMENT = 1;
+ALTER TABLE programa_producto AUTO_INCREMENT = 1;
+ALTER TABLE programa AUTO_INCREMENT = 1;
+ALTER TABLE area AUTO_INCREMENT = 1;
+ALTER TABLE rol AUTO_INCREMENT = 1;
+ALTER TABLE evaluacion_item AUTO_INCREMENT = 1;
+ALTER TABLE evaluacion_lista AUTO_INCREMENT = 1;
+ALTER TABLE item_lista AUTO_INCREMENT = 1;
+ALTER TABLE item AUTO_INCREMENT = 1;
+ALTER TABLE lista AUTO_INCREMENT = 1;
+ALTER TABLE tipo_lista AUTO_INCREMENT = 1;
+ALTER TABLE autor AUTO_INCREMENT = 1;
+ALTER TABLE funcionario AUTO_INCREMENT = 1;
+ALTER TABLE tipo_documento AUTO_INCREMENT = 1;
+ALTER TABLE version AUTO_INCREMENT = 1;
+ALTER TABLE centro AUTO_INCREMENT = 1;
+ALTER TABLE ciudad AUTO_INCREMENT = 1;
+ALTER TABLE regional AUTO_INCREMENT = 1;
+ALTER TABLE producto AUTO_INCREMENT = 1;
+ALTER TABLE tipo_objeto_aprendizaje AUTO_INCREMENT = 1;
+ALTER TABLE tipo_archivo AUTO_INCREMENT = 1;
+ALTER TABLE estado AUTO_INCREMENT = 1;
+
+-- -----------------------------------------------------
+-- pruebas de integridad de la base de datos
+-- -----------------------------------------------------
 
 INSERT INTO estado VALUES(1, "Rechazado");
 INSERT INTO tipo_archivo VALUES(1, ".doc");
@@ -9,56 +70,76 @@ INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
 INSERT INTO regional VALUES("11", "Regional Distrito Capital");
 INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
 INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-INSERT INTO version VALUES(1, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-INSERT INTO funcionario VALUES(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
+INSERT INTO version VALUES(1, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
+INSERT INTO tipo_documento VALUES (1, "CEDULA");
+/*pass= admin */
+INSERT INTO funcionario VALUES(1, 1, 1,"111111111111", "funcionario@misena.edu.co", "sha512:64000:153:f+wOQwSiGRIkzKqQ5xMIVuo97vr6N7Zq:3lZ91iyvH7omaY6i4FLBo5LLXR2552pkh11ag/+WSOVHi9yZUSme8zbd/kjAQF4FCAf6StzOfZITWpnLNefqZ4UFdWbanZ1oQDyWS+90OPyPINQhjOSkPS3fqDGUuCjkUX6CnMWG5E+XTWuLlWRz67ds/Cqco+wjkfEu+QLZXr2cwqiV1NKcY146klqF/+qtZenknRSfwy2M", "funcionario", "voluntario", NULL, "9303");
 INSERT INTO autor VALUES(1,1);
-INSERT INTO lista_chequeo VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
+INSERT INTO tipo_lista VALUES(1,'lista Equipo Pedagógico');
+INSERT INTO lista VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', 1, 1, 1);
 INSERT INTO item VALUES(1, "item pedagogico", 1);
-INSERT INTO detalle_lista VALUES(1,1,1);
-INSERT INTO eval_version_general VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
-INSERT INTO eval_detalle_lista VALUES(1, 1, "bueno", 1, 1);
-INSERT INTO rol VALUES(1, "coordinador", "administra el centro de formacion");
-INSERT INTO area VALUES(1, "teleinformatica", "9303");
+INSERT INTO item_lista VALUES(1,1);
+INSERT INTO evaluacion_lista VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
+INSERT INTO evaluacion_item VALUES(1, 1, "bueno", 1, 1);
+INSERT INTO rol VALUES(1, "coordinador");
+INSERT INTO area VALUES(1, "teleinformatica", 1, "9303");
 INSERT INTO programa VALUES(1, "ADSI", 1);
 INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
-INSERT INTO visita VALUES('2016-12-13', 1, 1);
-INSERT INTO categoria VALUES(1, "programación", "9303");
+INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
+INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje aprovado');
+INSERT INTO notificacion VALUES(1, 0, 1, 1, 1, 1);
+INSERT INTO categoria VALUES(1, "programación", 1, "9303");
 INSERT INTO programa_producto VALUES(1,1);
 INSERT INTO categoria_producto VALUES(1,1);
 INSERT INTO funcionario_rol VALUES(1,1);
 
-/*==============================================================*/
-/* SP INSERTAR                                                  */
-/*==============================================================*/
 
-CALL insertar_estado(2, "Aprobado");
-CALL insertar_tipo_archivo(2, ".rar");
-CALL insertar_tipo_objeto_aprendizaje(2, "Presentación");
-CALL insertar_producto(2, "GUIA PHP", "mucho php", "java", 2);
+
+-- INSERT INTO rol VALUES(2, "Equipo Tecnico");
+-- INSERT INTO rol VALUES(3, "Equipo Pedagogico");
+-- INSERT INTO rol VALUES(4, "Instructor");
+-- INSERT INTO rol VALUES(5, "Admin");
+-- INSERT INTO funcionario_rol VALUES(1,2);
+-- INSERT INTO funcionario_rol VALUES(1,3);
+-- INSERT INTO funcionario_rol VALUES(1,4);
+-- INSERT INTO funcionario_rol VALUES(1,5);
+
+-- -----------------------------------------------------
+-- SP INSERTAR
+-- -----------------------------------------------------
+
+CALL insertar_estado("Aprobado");
+CALL insertar_tipo_archivo(".rar");
+CALL insertar_tipo_objeto_aprendizaje("Presentación");
+CALL insertar_producto("GUIA PHP", "mucho php", "java", 2);
 CALL insertar_regional("1", "Direccion General");
 CALL insertar_ciudad("05001", "Medellín");
 CALL insertar_centro("9214", "Centro Metalmecanico", "11", "11001");
-CALL insertar_version(2, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
-CALL insertar_funcionario(2, "02", "funcionario2@misena.edu.co", "pass2", "funcionario2", "voluntario2", "empleado", NULL, "9303");
+CALL insertar_version(1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
+CALL insertar_tipo_documento("tarjeta de identidad");
+CALL insertar_funcionario(1, 2, "01", "funcionario2@misena.edu.co", "pass", "funcionario2", "voluntario2", NULL, "9303");
 CALL insertar_autor(2,2);
-CALL insertar_lista_chequeo(2, "Lista para Presentaciones", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
-CALL insertar_item(2, "item pedagogico 2", 1);
-CALL insertar_detalle_lista(2,2,2);
-CALL insertar_eval_version_general(2, 2, 2, NULL, NULL, NULL, 1);
-CALL insertar_eval_detalle_lista(2, NULL, NULL, 2, 2);
-CALL insertar_rol(2, "Equipo Tecnico", "Da concepto de provación tecnica al material de formación");
-CALL insertar_area(2, "Mercadeo", "9303");
-CALL insertar_programa(2, "Redes", 1);
-CALL insertar_comentario(2, "muy bonito x2", 4, '2016-08-13', 1, 2);
+CALL insertar_tipo_lista('lista Equipo Tecnico');
+CALL insertar_lista("Lista para Presentaciones", '01-01-01', "lista Equipo Pedagofico", 1, 1 ,1);
+CALL insertar_item("item pedagogico 2", 1);
+CALL insertar_item_lista(2,2);
+CALL insertar_evaluacion_lista(2, 2, NULL, NULL, NULL, 1);
+CALL insertar_evaluacion_item(NULL, NULL, 2, 2);
+CALL insertar_rol("Equipo Tecnico");
+CALL insertar_area("Mercadeo", TRUE, "9303");
+CALL insertar_programa("Redes", 1);
+CALL insertar_comentario("muy bonito x2", 4, '2016-08-13', 1, 2);
 CALL insertar_visita('2016-12-13', 1, 2);
-CALL insertar_categoria(2, "Infraestructura", "9303");
+CALL insertar_mensaje('objeto de aprendizaje rechazado');
+CALL insertar_notificacion(0, 1, 1, 1, 1);
+CALL insertar_categoria("Infraestructura", TRUE, "9303");
 CALL insertar_programa_producto(2,1);
 CALL insertar_categoria_producto(1,2);
 CALL insertar_funcionario_rol(2,1);
 
-/*==============================================================*/
-/* SP EDITAR                                                    */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- SP EDITAR
+-- -----------------------------------------------------
 
 CALL editar_estado(2, "Aprobado");
 CALL editar_tipo_archivo(2, ".rar");
@@ -67,27 +148,26 @@ CALL editar_producto(2, "GUIA PHP", "mucho php", "java", 2);
 CALL editar_regional("1", "Direccion General");
 CALL editar_ciudad("05001", "Medellín");
 CALL editar_centro("9214", "Centro Metalmecanico", "11", "11001");
-CALL editar_version(2, 1, "NoExiste", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
-CALL editar_funcionario(2, "02", "funcionario2@misena.edu.co", "pass2", "funcionario2", "voluntario2", "empleado", NULL, "9303");
-CALL editar_autor(2,2,2,2);
-CALL editar_lista_chequeo(2, "Lista para Presentaciones", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
+CALL editar_version(2, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
+CALL editar_tipo_documento(2, "tarjeta de identidad");
+CALL editar_funcionario(2, 1, 2, "01", "funcionario2@misena.edu.co", "pass", "funcionario2", "voluntario2", NULL, "9303");
+CALL editar_tipo_lista(2, 'lista Equipo Tecnico');
+CALL editar_lista(2, "Lista para Presentaciones", '01-01-01', "lista Equipo Pedagofico", 1, 1 ,1);
 CALL editar_item(2, "item pedagogico 2", 1);
-CALL editar_detalle_lista(2,2,2);
-CALL editar_eval_version_general(2, 2, 2, NULL, NULL, NULL, 1);
-CALL editar_eval_detalle_lista(2, NULL, NULL, 2, 2);
-CALL editar_rol(2, "Equipo Tecnico", "Da concepto de provación tecnica al material de formación");
-CALL editar_area(2, "Mercadeo", "9303");
+CALL editar_evaluacion_lista(2, 2, 2, NULL, NULL, NULL, 1);
+CALL editar_evaluacion_item(2, NULL, NULL, 2, 2);
+CALL editar_rol(2, "Equipo Tecnico");
+CALL editar_area(2, "Mercadeo", TRUE, "9303");
 CALL editar_programa(2, "Redes", 1);
 CALL editar_comentario(2, "muy bonito x2", 4, '2016-08-13', 1, 2);
-CALL editar_visita('2016-12-13', 1, 2, '2016-12-13', 1, 2);
-CALL editar_categoria(2, "Infraestructura", "9303");
-CALL editar_programa_producto(2,1,2,1);
-CALL editar_categoria_producto(1,2,1,2);
-CALL editar_funcionario_rol(2,1,2,1);
+CALL editar_visita(2 ,'2016-12-13', 1, 2);
+CALL editar_mensaje(2, 'objeto de aprendizaje rechazado');
+CALL editar_notificacion(2, 0, 1, 1, 1, 1);
+CALL editar_categoria(2, "Infraestructura", TRUE, "9303");
 
-/*==============================================================*/
-/* SP VER (ejecutar uno por uno)                                */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- SP VER (ejecutar uno por uno en phpmyadmin)
+-- -----------------------------------------------------
 
 CALL ver_estado(2);
 CALL ver_tipo_archivo(2);
@@ -97,43 +177,51 @@ CALL ver_regional("1");
 CALL ver_ciudad("05001");
 CALL ver_centro("9214");
 CALL ver_version(2);
+CALL ver_tipo_documento(2);
 CALL ver_funcionario(2);
 CALL ver_autor(2,2);
-CALL ver_lista_chequeo(2);
+CALL ver_tipo_lista(2);
+CALL ver_lista(2);
 CALL ver_item(2);
-CALL ver_detalle_lista(2);
-CALL ver_eval_version_general(2);
-CALL ver_eval_detalle_lista(2);
+CALL ver_item_lista(2,2);
+CALL ver_evaluacion_lista(2);
+CALL ver_evaluacion_item(2);
 CALL ver_rol(2);
 CALL ver_area(2);
 CALL ver_programa(2);
 CALL ver_comentario(2);
-CALL ver_visita('2016-12-13', 1, 2);
+CALL ver_visita(2);
+CALL ver_mensaje(2);
+CALL ver_notificacion(2);
 CALL ver_categoria(2);
 CALL ver_programa_producto(2,1);
 CALL ver_categoria_producto(1,2);
 CALL ver_funcionario_rol(2,1);
 
-/*==============================================================*/
-/* SP ELIMINAR                                                  */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- SP ELIMINAR
+-- -----------------------------------------------------
 
 CALL eliminar_funcionario_rol(2,1);
 CALL eliminar_categoria_producto(1,2);
 CALL eliminar_programa_producto(2,1);
 CALL eliminar_categoria(2);
-CALL eliminar_visita('2016-12-13', 1, 2);
+CALL eliminar_notificacion(2);
+CALL eliminar_mensaje(2);
+CALL eliminar_visita(2);
 CALL eliminar_comentario(2);
 CALL eliminar_programa(2);
 CALL eliminar_area(2);
 CALL eliminar_rol(2);
-CALL eliminar_eval_detalle_lista(2);
-CALL eliminar_eval_version_general(2);
-CALL eliminar_detalle_lista(2);
+CALL eliminar_evaluacion_item(2);
+CALL eliminar_evaluacion_lista(2);
+CALL eliminar_item_lista(2,2);
 CALL eliminar_item(2);
-CALL eliminar_lista_chequeo(2);
+CALL eliminar_lista(2);
+CALL eliminar_tipo_lista(2);
 CALL eliminar_autor(2,2);
 CALL eliminar_funcionario(2);
+CALL eliminar_tipo_documento(2);
 CALL eliminar_version(2);
 CALL eliminar_centro("9214");
 CALL eliminar_ciudad("05001");
@@ -143,513 +231,86 @@ CALL eliminar_tipo_objeto_aprendizaje(2);
 CALL eliminar_tipo_archivo(2);
 CALL eliminar_estado(2);
 
-/*==============================================================*/
-/* ESTADO                                                       */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- SP ALTERNOS
+-- -----------------------------------------------------
 
-CALL insertar_estado(1, "Rechazado");
-CALL Editar_estado(1, "Esperando");
+CALL login("funcionario@misena.edu.co");
+CALL REGISTRAR_FUNCIONARIO (1, '10000000', 'fulanito@correo', "NN", "prueba", "apellido", "telefono", "9303");
 
-CALL ver_estado (1);
 
-CALL eliminar_estado (1);
 
-/*==============================================================*/
-/* TIPO_ARCHIVO                                                 */
-/*==============================================================*/
+DELIMITER $$
 
-CALL insertar_tipo_archivo(1, ".rar");
-CALL editar_tipo_archivo(1, ".doc");
+DROP PROCEDURE IF EXISTS PruebaPaginacion$$
+CREATE PROCEDURE PruebaPaginacion()
+BEGIN
+    declare i int;
+    set i = 0;
+    while i<100 do
+        CALL REGISTRAR_FUNCIONARIO (1, concat('', i), concat('fulanito',i,'@correo'), "NN", "prueba", "apellido", "telefono", "9303");
+        set i=i+1;
+    end while;
+END $$
 
-CALL ver_tipo_archivo(1);
+DELIMITER ;
 
-CALL eliminar_tipo_archivo(1);
+call Pruebapaginacion()
+call ver_funcionarios_centro('9303', 1, 10)
 
-/*==============================================================*/
-/* TIPO_OBJETO_APRENDIZAJE                                      */
-/*==============================================================*/
+-- -----------------------------------------------------
+-- Insercion de datos de la aplicacion v1
+-- -----------------------------------------------------
 
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL editar_tipo_objeto_aprendizaje(1, "Presentación");
+INSERT INTO estado VALUES(1, "Rechazado");
 
-CALL ver_tipo_objeto_aprendizaje(1);
+INSERT INTO tipo_archivo VALUES(1, ".doc");
 
-CAll eliminar_tipo_objeto_aprendizaje(1);
+INSERT INTO tipo_objeto_aprendizaje VALUES(1, "Guia");
 
-/*==============================================================*/
-/* PRODUCTO                                                     */
-/*==============================================================*/
 
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL editar_producto(1, "GUIA JAVA", "java", "java", 1);
+INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
 
-CALL ver_producto(1);
 
-CALL eliminar_producto(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
+INSERT INTO regional VALUES("11", "Regional Distrito Capital");
 
-/*==============================================================*/
-/* VERSION                                                      */
-/*==============================================================*/
+INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
 
-CALL insertar_estado(1, "Aprovado");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-CALL editar_version(1, 1, "no se", TRUE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
+INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
 
-CALL ver_version(1);
+INSERT INTO version VALUES(1, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
+INSERT INTO tipo_documento VALUES (1, "CEDULA");
+/*pass= Admin123 */
+INSERT INTO funcionario VALUES(1, 1, 1,"111111111111", "funcionario@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "funcionario", "voluntario", NULL, "9303");
 
-CALL eliminar_version(1);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
 
-/*==============================================================*/
-/* REGIONAL                                                     */
-/*==============================================================*/
+INSERT INTO autor VALUES(1,1);
+INSERT INTO tipo_lista VALUES(1,'lista Equipo Pedagógico');
+INSERT INTO lista VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', 1, 1, 1);
+INSERT INTO item VALUES(1, "item pedagogico", 1);
+INSERT INTO item_lista VALUES(1,1);
+INSERT INTO evaluacion_lista VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
+INSERT INTO evaluacion_item VALUES(1, 1, "bueno", 1, 1);
 
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL editar_regional("11", "Regional Distrito Capital - Bogotá");
 
-CALL ver_regional("11");
+INSERT INTO rol VALUES(1, "Administrador");
+INSERT INTO rol VALUES(2, "Coordinador");
+INSERT INTO rol VALUES(3, "Equipo Tecnico");
+INSERT INTO rol VALUES(4, "Equipo Pedagogico");
+INSERT INTO rol VALUES(5, "Instructor");
 
-CALL eliminar_regional("11");
+INSERT INTO funcionario_rol VALUES(1,1);
+INSERT INTO funcionario_rol VALUES(1,2);
+INSERT INTO funcionario_rol VALUES(1,3);
+INSERT INTO funcionario_rol VALUES(1,4);
+INSERT INTO funcionario_rol VALUES(1,5);
 
-/*==============================================================*/
-/* CIUDAD                                                       */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL editar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-
-CALL ver_ciudad("11001");
-
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* CENTRO                                                       */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL editar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-
-CALL ver_centro("9303");
-
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* FUNCIONARIO                                                  */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL editar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado",NULL, "9303");
-
-CALL ver_funcionario(1);
-
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* AUTOR                                                        */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_estado(1, "Rechazado");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-CALL insertar_autor(1,1);
-CALL editar_autor(1,1,1,1);
-
-CALL ver_autor(1,1);
-
-CALL eliminar_autor(1,1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-CALL eliminar_version(1);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
-
-/*==============================================================*/
-/* LISTA_CHEQUEO                                                */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
-CALL editar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01',"lista Equipo Pedagofico", 1);
-
-CALL ver_lista_chequeo(1);
-
-CALL eliminar_lista_chequeo(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* ITEM                                                         */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_item(1, "item pedagogico", 1);
-CALL editar_item(1, "item pedagogico", 1);
-
-CALL ver_item(1);
-
-CALL eliminar_item(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* DETALLE_LISTA                                                */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
-CALL insertar_item(1, "item pedagogico", 1);
-CALL insertar_detalle_lista(1,1,1);
-CALL editar_detalle_lista(1,1,1);
-
-CALL ver_detalle_lista(1);
-
-CALL eliminar_detalle_lista(1);
-CALL eliminar_item(1);
-CALL eliminar_lista_chequeo(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* EVAL_VERSION_GENERAL                                         */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
-CALL insertar_estado(1, "Rechazado");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-CALL insertar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
-CALL editar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
-
-CALL ver_eval_version_general(1);
-
-CALL eliminar_eval_version_general(1);
-CALL eliminar_version(1);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
-CALL eliminar_lista_chequeo(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* EVAL_DETALLE_LISTA                                           */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_estado(1, "Rechazado");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-CALL insertar_lista_chequeo(1, "Lista para Guias", "lista para revisar guias", '01-01-01', "lista Equipo Pedagofico", 1);
-CALL insertar_eval_version_general(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
-CALL insertar_item(1, "item pedagogico", 1);
-CALL insertar_detalle_lista(1,1,1);
-CALL insertar_eval_detalle_lista(1, 1, "bueno", 1, 1);
-CALL editar_eval_detalle_lista(1, 1, "bueno", 1, 1);
-
-CALL ver_eval_detalle_lista(1);
-
-CALL eliminar_eval_detalle_lista(1);
-CALL eliminar_detalle_lista(1);
-CALL eliminar_item(1);
-CALL eliminar_eval_version_general(1);
-CALL eliminar_lista_chequeo(1);
-CALL eliminar_version(1);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* ROL                                                          */
-/*==============================================================*/
-
-CALL insertar_rol(1, "coordinador", "administra el centro de formacion");
-CALL editar_rol(1, "coordinador", "administra el centro de formacion");
-
-CALL ver_rol(1);
-
-CALL eliminar_rol(1);
-
-/*==============================================================*/
-/* AREA                                                         */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_area(1, "teleinformatica", "9303");
-CALL editar_area(1, "teleinformatica", "9303");
-
-CALL ver_area(1);
-
-CALL eliminar_area(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* PROGRAMA                                                     */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_area(1, "teleinformatica", "9303");
-CALL insertar_programa(1, "ADSI", 1);
-CALL editar_programa(1, "ADSI", 1);
-
-CALL ver_programa(1);
-
-CALL eliminar_programa(1);
-CALL eliminar_area(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* COMENTARIO                                                   */
-/*==============================================================*/
-
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_comentario(1, "muy bonito", 4, '2016-08-13', 1, 1);
-CALL editar_comentario(1, "muy bonito", 4, '2016-08-13', 1, 1);
-
-CALL ver_comentario(1);
-
-CALL eliminar_comentario(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-CALL eliminar_producto(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-
-/*==============================================================*/
-/* VISITA                                                       */
-/*==============================================================*/
-
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_visita('2016-12-13', 1, 1);
-CALL editar_visita('2016-12-13', 1, 1, '2016-08-13', 1, 1);
-
-CALL ver_visita('2016-08-13', 1, 1);
-
-CALL eliminar_visita('2016-08-13', 1, 1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-CALL eliminar_producto(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-
-/*==============================================================*/
-/* CATEGORIA                                                    */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_categoria(1, "programacion", "9303");
-CALL editar_categoria(1, "programacion", "9303");
-
-CALL ver_categoria(1);
-
-CALL eliminar_categoria(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* PROGRAMA_PRODUCTO                                            */
-/*==============================================================*/
-
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_area(1, "teleinformatica", "9303");
-CALL insertar_programa(1, "ADSI", 1);
-CALL insertar_programa_producto (1,1);
-CALL editar_programa_producto (1,1,1,1);
-
-CALL ver_programa_producto(1,1);
-
-CALL eliminar_programa_producto(1,1);
-CALL eliminar_programa(1);
-CALL eliminar_area(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-CALL eliminar_producto(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-
-/*==============================================================*/
-/* CATEGORIA_PRODUCTO                                           */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_categoria(1, "programacion", "9303");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_categoria_producto(1,1);
-CALL editar_categoria_producto(1,1,1,1);
-
-CALL ver_categoria_producto(1,1);
-
-CALL eliminar_categoria_producto(1,1);
-CALL eliminar_producto(1);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_categoria(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* FUNCIONARIO_ROL                                              */
-/*==============================================================*/
-
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_funcionario(1, "01", "funcionario@misena.edu.co", "pass", "funcionario", "voluntario", "empleado", NULL, "9303");
-CALL insertar_rol(1, "coordinador", "administra el centro de formacion");
-CALL insertar_funcionario_rol(1,1);
-CALL editar_funcionario_rol(1,1,1,1);
-
-CALL ver_funcionario_rol(1,1);
-
-CALL eliminar_funcionario_rol(1,1);
-CALL eliminar_rol(1);
-CALL eliminar_funcionario(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
-
-/*==============================================================*/
-/* VER_PRODUCTOS_APROVADOS                                      */
-/*==============================================================*/
-
-CALL insertar_estado(1, "Aprovado");
-CALL insertar_estado(2, "Rechazado");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_producto(1, "GUIA JAVA", "mucho java", "java", 1);
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL insertar_version(1, 1, "no se", FALSE, '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-CALL insertar_version(2, 2, "no se", FALSE, '11-11-11', '12-03-01', NULL, 2, 1, 1, "9303");
-
-CALL ver_productos_aprovados();
-
-CALL eliminar_version(1);
-CALL eliminar_version(2);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_estado(2);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
-
-/*==============================================================*/
-/* ENVIAR_NUEVO_PRODUCTO                                        */
-/*==============================================================*/
-
-CALL insertar_estado(1, "Aprovado");
-CALL insertar_estado(2, "Rechazado");
-CALL insertar_estado(3, "Revision del equipo tecnico");
-CALL insertar_tipo_objeto_aprendizaje(1, "Guia");
-CALL insertar_tipo_archivo(1, ".rar");
-CALL insertar_ciudad("11001", "SANTA FE DE BOGOTA, D. C." );
-CALL insertar_regional("11", "Regional Distrito Capital");
-CALL insertar_centro("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-CALL enviar_nuevo_producto("java para dummies", "para cuando no te gusta java pero te toca verlo de todas formas", "java, poo", 1, "nose", 1, "9303");
-
-CALL ver_version(1);
-
-CALL eliminar_version(1);
-CALL eliminar_producto(1);
-CALL eliminar_estado(1);
-CALL eliminar_estado(2);
-CALL eliminar_estado(3);
-CALL eliminar_tipo_objeto_aprendizaje(1);
-CALL eliminar_tipo_archivo(1);
-CALL eliminar_centro("9303");
-CALL eliminar_regional("11");
-CALL eliminar_ciudad("11001");
+INSERT INTO area VALUES(1, "teleinformatica", 1, "9303");
+INSERT INTO programa VALUES(1, "ADSI", 1);
+INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
+INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
+INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje aprovado');
+INSERT INTO notificacion VALUES(1, 0, 1, 1, 1, 1);
+INSERT INTO categoria VALUES(1, "programación", 1, "9303");
+INSERT INTO programa_producto VALUES(1,1);
+INSERT INTO categoria_producto VALUES(1,1);

@@ -8,25 +8,20 @@ package managedBeans.request.home.role.coordinator;
 import java.util.ArrayList;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import managedBeans.session.LoggedInUser;
 import modelo.Business.Coordinator;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
+import util.Pager;
 
 /**
  *
  * @author Juan David Segura
  */
-@Named(value = "coordinator.functionary")
+@Named(value = "coordinatorFunctionary")
 @RequestScoped
 public class functionary {
-
-    //id jsf input
-    private String searchId;
-    private String searchDisabledId;
-    private String formSearchId;
 
     //valores
     private int idFunctionary;
@@ -38,13 +33,12 @@ public class functionary {
     private ArrayList<Rol> roles;
     private int functionariesPerPage;
     private Integer page;
+    private boolean searchChange;
 
     @Inject
     private LoggedInUser loggedInUser;
 
     public functionary() {
-        searchId = "search";
-        formSearchId = "searchForm";
         functionariesPerPage = 10;
         if (page == null) {
             page = 1;
@@ -86,13 +80,8 @@ public class functionary {
 
         try {
             int totalPages = Coordinator.countPagesFunctionaryCenter(loggedInUser.getFuncionario().getIdCentro(), functionariesPerPage, search);
-            if (totalPages > 10) {
-                if (page > (totalPages - 5)) {
-                    result = totalPages - 10;
-                } else if (page > 5) {
-                    result = page - 5;
-                }
-            }
+
+            result = Pager.firstPage(page, totalPages, 10);
         } catch (Exception e) {
             message = e.getMessage();
         }
@@ -104,15 +93,7 @@ public class functionary {
         try {
             int totalPages = Coordinator.countPagesFunctionaryCenter(loggedInUser.getFuncionario().getIdCentro(), functionariesPerPage, search);
 
-            if (totalPages > 10) {
-                if (page > (totalPages - 5)) {
-                    result = totalPages;
-                } else if (page > 5) {
-                    result = page + 5;
-                }
-            } else {
-                result = totalPages;
-            }
+            result = Pager.lastPage(page, totalPages, 10);
         } catch (Exception e) {
             message = e.getMessage();
         }
@@ -122,80 +103,10 @@ public class functionary {
     public ArrayList<Integer> ShowPagesLinks() {
         ArrayList<Integer> result = new ArrayList<>();
         int end = lastLinkPage();
-        for (int i = firstLinkPage(); i < end; i++) {
+        for (int i = firstLinkPage(); i <= end; i++) {
             result.add(i);
         }
         return result;
-    }
-
-    public void ajaxSearchRequest() {
-        String newSearch = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(formSearchId + ":" + searchId);
-        String strNewPage = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("page");
-        try{
-            page = Integer.parseInt(strNewPage);
-        }catch(Exception e){
-            message = e.getMessage();
-        }
-        if (newSearch != null) {
-            search = newSearch;
-        }
-        System.out.println("bandera 2");
-    }
-
-    public String getSearchDisabled() {
-        return searchDisabled;
-    }
-
-    public void setSearchDisabled(String searchDisabled) {
-        this.searchDisabled = searchDisabled;
-    }
-
-    public LoggedInUser getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(LoggedInUser loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getFunctionariesPerPage() {
-        return functionariesPerPage;
-    }
-
-    public void setFunctionariesPerPage(int functionariesPerPage) {
-        this.functionariesPerPage = functionariesPerPage;
-    }
-
-    public String getFormSearchId() {
-        return formSearchId;
-    }
-
-    public void setFormSearchId(String formSearchId) {
-        this.formSearchId = formSearchId;
-    }
-
-    public String getSearchId() {
-        return searchId;
-    }
-
-    public void setSearchId(String searchId) {
-        this.searchId = searchId;
-    }
-
-    public String getSearchDisabledId() {
-        return searchDisabledId;
-    }
-
-    public void setSearchDisabledId(String searchDisabledId) {
-        this.searchDisabledId = searchDisabledId;
     }
 
     public int getIdFunctionary() {
@@ -222,6 +133,14 @@ public class functionary {
         this.search = search;
     }
 
+    public String getSearchDisabled() {
+        return searchDisabled;
+    }
+
+    public void setSearchDisabled(String searchDisabled) {
+        this.searchDisabled = searchDisabled;
+    }
+
     public String getOperation() {
         return operation;
     }
@@ -246,4 +165,35 @@ public class functionary {
         this.roles = roles;
     }
 
+    public int getFunctionariesPerPage() {
+        return functionariesPerPage;
+    }
+
+    public void setFunctionariesPerPage(int functionariesPerPage) {
+        this.functionariesPerPage = functionariesPerPage;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public boolean isSearchChange() {
+        return searchChange;
+    }
+
+    public void setSearchChange(boolean searchChange) {
+        this.searchChange = searchChange;
+    }
+
+    public LoggedInUser getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(LoggedInUser loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 }

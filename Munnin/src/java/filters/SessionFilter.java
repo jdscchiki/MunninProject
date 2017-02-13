@@ -130,9 +130,11 @@ public class SessionFilter implements Filter {
                     httpResponse.sendRedirect(((HttpServletRequest) request).getContextPath() + "/faces/login.xhtml");
                 }
             }
-            System.out.println("bandera 1");
-
-            chain.doFilter(request, response);
+            try{
+                chain.doFilter(request, response);
+            }catch(Exception e){
+                
+            }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
