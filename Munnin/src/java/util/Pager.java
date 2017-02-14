@@ -5,6 +5,8 @@
  */
 package util;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura
@@ -16,9 +18,9 @@ public class Pager {
      *
      * @param actualPage pagina en la que se encuentra
      * @param totalPages cantidad total de paginas
-     * @param pagesShown cantidad de paginas que van a ser mostradas en el
-     * paginador
-     * @return la primera pagina la cual va a ser linkeada en el paginador
+     * @param pagesShown cantidad de redirecciones a otras paginas que van a ser
+     * mostradas en el paginador
+     * @return la primera pagina a linkear en el paginador
      */
     public static int firstPage(int actualPage, int totalPages, int pagesShown) {
         int result = 1;
@@ -34,6 +36,15 @@ public class Pager {
         return result;
     }
 
+    /**
+     * Metodo para definir la ultima pagina en un paginador
+     *
+     * @param actualPage pagina en la que se encuentra actualmente
+     * @param totalPages cantidad de paginas en total
+     * @param pagesShown cantidad de redirecciones a otras paginas que van a ser
+     * mostradas en el paginador
+     * @return la ultima pagina a linkear en el paginador
+     */
     public static int lastPage(int actualPage, int totalPages, int pagesShown) {
         int result = pagesShown;
 
@@ -44,13 +55,27 @@ public class Pager {
             } else if (actualPage > pagesShown / 2) {
                 result = actualPage + (pagesShown / 2);
             }
-
         } else {
-
             result = totalPages;
-
         }
 
+        return result;
+    }
+    
+    public static ArrayList<Integer> showLinkedPages(int actualPage, int totalPages, int pagesShown){
+        ArrayList<Integer> result = new ArrayList<>();
+        
+        if(totalPages == 0){
+            return null;
+        }
+        
+        int start = firstPage(actualPage, totalPages, pagesShown);
+        int end = lastPage(actualPage, totalPages, pagesShown);
+        
+        for (int i = start; i <= end; i++) {
+            result.add(i);
+        }
+        
         return result;
     }
 
