@@ -24,7 +24,7 @@ public class FormLogin {
 
     private String mail;
     private String password;
-    private String menssage;
+    private String message;
 
     @Inject
     private LoggedInUser loggedInUser;
@@ -33,13 +33,13 @@ public class FormLogin {
         try {
             Funcionario tryLogin = General.verifyFunctionary(mail, password);
             if (tryLogin == null) {
-                menssage = "Usuario o contraseña incorrecta";
+                message = "Usuario o contraseña incorrecta";
             } else {
                 loggedInUser.setFuncionario(tryLogin);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("home/index.xhtml");
             }
         } catch (Exception e) {
-            menssage = "error: " + e;
+            message = "error: " + e;
         }
 
     }
@@ -71,11 +71,11 @@ public class FormLogin {
         this.password = password;
     }
 
-    public String getMenssage() {
-        return menssage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMenssage(String menssage) {
-        this.menssage = menssage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
