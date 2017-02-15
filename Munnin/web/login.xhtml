@@ -33,8 +33,8 @@
                        placeholder="Tu contraseña" 
                        required="true" />
                 <i class="fa fa-key"><span class="glyphicon glyphicon-lock"></span></i>
-                <div class="alert alert-danger" jsf:rendered="#{formLogin.menssage != null}" >
-                    #{formLogin.menssage}
+                <div class="alert alert-danger" jsf:rendered="#{formLogin.message != null}" >
+                    #{formLogin.message}
                 </div>
                 <button jsf:action="#{formLogin.doLogin}" >
                     <span> Ingresar </span>
