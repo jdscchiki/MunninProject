@@ -23,10 +23,7 @@ import modelo.bean.Funcionario;
 public class FormLogin {
 
     private String mail;
-    private String mailId;
-    private String passwordId;
     private String password;
-    private boolean renderMenssage;
     private String menssage;
 
     @Inject
@@ -48,9 +45,6 @@ public class FormLogin {
     }
 
     public FormLogin() {
-        mailId = "mail";
-        passwordId = "password";
-        renderMenssage = false;
     }
 
     public LoggedInUser getLoggedInUser() {
@@ -59,22 +53,6 @@ public class FormLogin {
 
     public void setLoggedInUser(LoggedInUser loggedInUser) {
         this.loggedInUser = loggedInUser;
-    }
-
-    public String getMailId() {
-        return mailId;
-    }
-
-    public void setMailId(String mailId) {
-        this.mailId = mailId;
-    }
-
-    public String getPasswordId() {
-        return passwordId;
-    }
-
-    public void setPasswordId(String passwordId) {
-        this.passwordId = passwordId;
     }
 
     public String getMail() {
@@ -91,14 +69,6 @@ public class FormLogin {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isRenderMenssage() {
-        return renderMenssage;
-    }
-
-    public void setRenderMenssage(boolean renderMenssage) {
-        this.renderMenssage = renderMenssage;
     }
 
     public String getMenssage() {
