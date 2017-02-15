@@ -13,16 +13,26 @@
     </h:head>
     <h:body>
         <div class="wrapper">
-            <form class="login" jsf:id="loginForm">
+            <form class="login" 
+                  jsf:id="loginForm">
                 <img src="#{resource['img/logo-completo.png']}" alt="munnin_icono" class="full-logo" />
                 <h2 class="title"> Inicia sesión en Munnin </h2>
-                <label jsf:for="#{formLogin.mailId}"> Correo </label>
-                <input type="email" jsf:id="#{formLogin.mailId}" jsf:value="#{formLogin.mail}" maxlength="40" placeholder="Tu correo" required="true" />
+                <label jsf:for="email"> Correo </label>
+                <input type="email" 
+                       jsf:id="email" 
+                       jsf:value="#{formLogin.mail}" 
+                       maxlength="40" 
+                       placeholder="Tu correo" 
+                       required="true" />
                 <i class="fa fa-user"><span class="glyphicon glyphicon-user"></span></i>
-                <label jsf:for="#{formLogin.passwordId}"> Contraseña </label>
-                <input type="password" jsf:id="#{formLogin.passwordId}" jsf:value="#{formLogin.password}" maxlength="16" placeholder="Tu contraseña" required="true" />
+                <label jsf:for="password"> Contraseña </label>
+                <input type="password" 
+                       jsf:id="password" 
+                       jsf:value="#{formLogin.password}" 
+                       maxlength="16" 
+                       placeholder="Tu contraseña" 
+                       required="true" />
                 <i class="fa fa-key"><span class="glyphicon glyphicon-lock"></span></i>
-                <a href="#">¡He olvidado mi contraseña! </a>
                 <div class="alert alert-danger" jsf:rendered="#{formLogin.menssage != null}" >
                     #{formLogin.menssage}
                 </div>
