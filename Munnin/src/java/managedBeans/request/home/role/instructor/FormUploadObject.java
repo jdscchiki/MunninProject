@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.servlet.http.Part;
+import util.FileManager;
 
 /**
  *
@@ -34,37 +35,8 @@ public class FormUploadObject {
     }
 
     public void upload() {
-        InputStream input = null;
-        OutputStream output = null;
-        try {
-            input = file.getInputStream();
-            output = new FileOutputStream(new File("C:\\Users\\Juan David Segura\\Downloads\\" + file.getSubmittedFileName()));
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = input.read(bytes)) != -1) {
-                output.write(bytes, 0, read);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-            if (output != null) {
-                try {
-                    // outputStream.flush();
-                    output.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-
-            }
+        if(FileManager.saveFile(file, "C:\\Users\\Juan David Segura\\Downloads\\test")){
+            message = "se guardo correctamente el archivo";
         }
     }
 
