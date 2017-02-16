@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="alert alert-danger" jsf:rendered="#{instructorFormUploadObject.message != null}" >
+                            <div class="alert alert-#{instructorFormUploadObject.alertMessage? "danger":"success"}" jsf:rendered="#{instructorFormUploadObject.message != null}" >
                                 #{instructorFormUploadObject.message}
                             </div>
                         </div>
