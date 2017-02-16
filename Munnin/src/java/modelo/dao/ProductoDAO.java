@@ -6,6 +6,7 @@
 package modelo.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -23,7 +24,7 @@ public class ProductoDAO extends ConexionBD {
     private static final String COL_NOMBRE = "nombre_producto";
     private static final String COL_DESCRIPCION = "descripcion_producto";
     private static final String COL_PALABRAS_CLAVE = "palabras_clave_producto";
-    private static final String COL_ID_TIPO_APRENDIZAJE = "id_tipo_aprendizaje_producto";
+    private static final String COL_ID_TIPO_APRENDIZAJE = "id_tipo_objeto_aprendizaje_producto";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -158,6 +159,60 @@ public class ProductoDAO extends ConexionBD {
         }
         if (!encontrado) {
             producto = null;
+        }
+
+        return producto;
+    }
+
+    public int create(Producto producto) throws SQLException {
+        int result = 0;
+
+        String query = "INSERT INTO producto ("
+                + COL_NOMBRE + ","
+                + COL_DESCRIPCION + ","
+                + COL_PALABRAS_CLAVE + ","
+                + COL_ID_TIPO_APRENDIZAJE + ") "
+                + "VALUES(?,?,?,?)";
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(1, producto.getNombre());
+        statement.setString(2, producto.getDescripcion());
+        statement.setString(3, producto.getPalabrasClave());
+        statement.setInt(4, producto.getTipoObjetoAprendizaje().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
+    }
+
+    public Producto pruebaSelect(Producto producto) throws SQLException {
+
+        String query = "SELECT "
+                + COL_ID + ","
+                + COL_NOMBRE + ","
+                + COL_DESCRIPCION + ","
+                + COL_PALABRAS_CLAVE + ","
+                + COL_ID_TIPO_APRENDIZAJE + " "
+                + "FROM producto"
+                + "WHERE "+COL_ID+"=?";
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query);
+        statement.setInt(1, producto.getId());
+
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            producto.setId(rs.getInt(COL_ID));
+            producto.setNombre(rs.getString(COL_NOMBRE));
+            producto.setDescripcion(rs.getString(COL_DESCRIPCION));
         }
 
         return producto;

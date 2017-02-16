@@ -6,6 +6,7 @@
 package modelo.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -28,7 +29,7 @@ public class VersionDAO extends ConexionBD {
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
     private static final String COL_FECHA_APROVACION = "fecha_aprovacion_version";
-    private static final String COL_ID_ESTADO = "id_estdo_version";
+    private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
     private static final String COL_ID_CENTRO = "id_centro_version";
@@ -200,5 +201,42 @@ public class VersionDAO extends ConexionBD {
         }
 
         return version;
+    }
+    
+    public int create(Version version) throws SQLException{
+        int result = 0;
+
+        String query = "INSERT INTO version ("
+                +COL_NUMERO+","
+                +COL_URL+","
+                +COL_FECHA+","
+                +COL_ID_ESTADO+","
+                +COL_ID_TIPO_ARCHIVO+","
+                +COL_ID_PRODUCTO+","
+                +COL_ID_CENTRO+") "
+                + "VALUES(?,'',CURRENT_DATE,3,?,?,?)";
+        int indexNumero = 1;
+        int indexIdTipoArchivo = 2;
+        int indexIdProducto = 3;
+        int indexIdCentro = 4;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setInt(indexNumero, version.getNumero());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
     }
 }
