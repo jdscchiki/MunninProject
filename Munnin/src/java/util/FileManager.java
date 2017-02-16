@@ -30,8 +30,8 @@ public class FileManager {
         OutputStream output = null;
         try {
             input = file.getInputStream();
-            
-            if(checkFolder(savePath)){
+
+            if (checkFolder(savePath)) {
                 output = new FileOutputStream(new File(savePath + File.separator + file.getSubmittedFileName()));
             }
 
@@ -77,5 +77,9 @@ public class FileManager {
         }
 
         return result;
+    }
+
+    public static boolean saveFileMunninServer(Part file, String savePath) {
+        return saveFile(file, SAVE_FOLDER + File.separator + savePath);
     }
 }

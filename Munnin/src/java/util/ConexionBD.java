@@ -61,7 +61,7 @@ public class ConexionBD {
      * @return null si la conexion se cerro correctamente
      * @throws SQLException no se pudo ejecutar el metodo .close
      */
-    public Connection cerrarConexion() throws SQLException {
+    public Connection closeConnection() throws SQLException {
         conexion.close();
         conexion = null;
         return conexion;
