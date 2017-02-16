@@ -28,12 +28,13 @@ public class FormUploadObject {
     private int objectTipe;
     private Part file;
     private String message;
+    private boolean alertMessage;
 
     @Inject
     private LoggedInUser loggedInUser;
 
     public FormUploadObject() {
-
+        alertMessage = true;
     }
 
     public void upload() {
@@ -45,8 +46,19 @@ public class FormUploadObject {
         producto.getTipoObjetoAprendizaje().setId(1);
         
         try {
-            if(Instructor.uploadNewLearningObject(file, producto, loggedInUser.getFuncionario().getCentro().getId()) == 0){
-                message = "error desconocido";
+            int operationResult = Instructor.uploadNewLearningObject(file, producto, loggedInUser.getFuncionario().getCentro().getId());
+            switch(operationResult){
+                case 0:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    message = "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo";
+                    alertMessage = true;
+                    break;
+                case 1:
+                    message = "Se ha subido satisfactoriamente el objeto de aprendizaje ";
+                    alertMessage = false;
             }
         } catch (Exception e) {
             message = e.getMessage();
@@ -99,6 +111,22 @@ public class FormUploadObject {
 
     public void setFile(Part file) {
         this.file = file;
+    }
+
+    public boolean isAlertMessage() {
+        return alertMessage;
+    }
+
+    public void setAlertMessage(boolean alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    public LoggedInUser getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(LoggedInUser loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 
 }

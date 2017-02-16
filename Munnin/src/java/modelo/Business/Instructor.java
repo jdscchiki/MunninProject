@@ -24,6 +24,12 @@ import util.FileManager;
 public class Instructor {
 
     public static int uploadNewLearningObject(Part file, Producto producto, String idCentro) throws NamingException, SQLException {
+        //0. error inesperado
+        //1. exito
+        //2. error al Insertar Objeto en la base de datos
+        //3. error al Insertar Version en la base de datos
+        //4. error al guardar archivo en repositorio
+        //5. error al guardar ruta de archivo en base de datos
         int result = 0;
 
         int idProducto = 0;
@@ -33,10 +39,8 @@ public class Instructor {
         ProductoDAO productoDAO = new ProductoDAO();
         idProducto = productoDAO.create(producto);
         productoDAO.closeConnection();
-
         if (idProducto == 0) {
-            System.out.println("Error en la creacion de producto");
-            return 0;
+            return 2;
         }
 
         //crea el registro de la version en la base de datos
@@ -52,21 +56,28 @@ public class Instructor {
         VersionDAO versionDAO = new VersionDAO();
         idVersion = versionDAO.create(version);
         versionDAO.closeConnection();
-
         if (idVersion == 0) {
-            System.out.println("Error en la creacion de version");
-            return 0;
+            return 3;
         }
 
         //calcula la ruta en donde se guardara el archivo con el id del centro, id producto y id version
         String savePath = File.separator + "c" + idCentro + File.separator + "p" + idProducto + File.separator + "v" + idVersion;
-        System.out.println("filePath: " + savePath);
+        
         //guarda el archivo
-        if (FileManager.saveFileMunninServer(file, savePath)) {
-            result = 1;
+        if (!FileManager.saveFileMunninServer(file, savePath)) {
+            return 4;
         }
         //guarda la ruta en la base de datos
-
+        version.setId(idVersion);
+        version.setUrl(savePath);
+        versionDAO = new VersionDAO();
+        if(versionDAO.editUrl(version)){
+            result = 1;
+        }else{
+            result = 5;
+        }
+        versionDAO.closeConnection();
+        
         return result;
     }
 

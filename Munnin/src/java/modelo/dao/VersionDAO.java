@@ -239,4 +239,26 @@ public class VersionDAO extends ConexionBD {
 
         return result;
     }
+    
+    public boolean editUrl(Version version) throws SQLException{
+        boolean result = false;
+        
+        String query = "UPDATE version SET "
+                + COL_URL +"=? "
+                + "WHERE "+COL_ID +"=?";
+        int indexURL = 1;
+        int indexId = 2;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(indexURL, version.getUrl());
+        statement.setInt(indexId, version.getId());
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+            result = true;
+        }
+        
+        return result;
+    }
 }
