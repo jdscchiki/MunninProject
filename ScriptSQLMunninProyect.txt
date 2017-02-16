@@ -25,7 +25,6 @@
 -- VER_FUNCIONARIOS_INHABILITADOS_CENTRO
 -- HABILITAR_FUNCIONARIO
 -- ES_ULTIMO_COORDINADOR_CENTRO
--- NUEVA_VERSION
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
