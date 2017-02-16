@@ -5,15 +5,14 @@
  */
 package managedBeans.request.home.role.instructor;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.servlet.http.Part;
-import util.FileManager;
+import managedBeans.session.LoggedInUser;
+import modelo.Business.Instructor;
+import modelo.bean.Producto;
+import modelo.bean.TipoObjetoAprendizaje;
 
 /**
  *
@@ -30,13 +29,27 @@ public class FormUploadObject {
     private Part file;
     private String message;
 
+    @Inject
+    private LoggedInUser loggedInUser;
+
     public FormUploadObject() {
 
     }
 
     public void upload() {
-        if(FileManager.saveFile(file, "C:\\Users\\Juan David Segura\\Downloads\\test")){
-            message = "se guardo correctamente el archivo";
+        Producto producto = new Producto();
+        producto.setNombre(name);
+        producto.setDescripcion(description);
+        producto.setPalabrasClave(keywords);
+        producto.setTipoObjetoAprendizaje(new TipoObjetoAprendizaje());
+        producto.getTipoObjetoAprendizaje().setId(1);
+        
+        try {
+            if(Instructor.uploadNewLearningObject(file, producto, loggedInUser.getFuncionario().getCentro().getId()) == 0){
+                message = "error desconocido";
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
         }
     }
 
