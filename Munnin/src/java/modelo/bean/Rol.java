@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David
@@ -13,6 +15,24 @@ public class Rol implements java.io.Serializable {
 
     private int id;
     private String nombre;
+    private ArrayList<Funcionario> funcionarios;
+    private ArrayList<Notificacion> notificaciones;
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(ArrayList<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+
+    public ArrayList<Notificacion> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
 
     public Rol() {
     }

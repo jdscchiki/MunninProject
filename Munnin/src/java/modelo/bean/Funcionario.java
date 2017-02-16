@@ -15,17 +15,79 @@ public class Funcionario implements java.io.Serializable {
 
     private int id;
     private boolean activo;
-    private int idTipoDocumento;
     private String documento;
     private String correo;
     private String contrasena;
     private String nombre;
     private String apellido;
-    private String cargo;
     private String telefono;
     private String idCentro;
-
+    private TipoDocumento tipoDocumento;
     private ArrayList<Rol> roles;
+    private ArrayList<Notificacion> notificaciones;
+    private ArrayList<Version> versiones;
+    private ArrayList<EvaluacionLista> evaluacionListas;
+    private ArrayList<Lista> listas;
+    private ArrayList<Item> items;
+    private ArrayList<Comentario> comentarios;
+    private ArrayList<Visita> visitas;
+
+    public ArrayList<Notificacion> getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
+
+    public ArrayList<Version> getVersiones() {
+        return versiones;
+    }
+
+    public void setVersiones(ArrayList<Version> versiones) {
+        this.versiones = versiones;
+    }
+
+    public ArrayList<EvaluacionLista> getEvaluacionListas() {
+        return evaluacionListas;
+    }
+
+    public void setEvaluacionListas(ArrayList<EvaluacionLista> evaluacionListas) {
+        this.evaluacionListas = evaluacionListas;
+    }
+
+    public ArrayList<Lista> getListas() {
+        return listas;
+    }
+
+    public void setListas(ArrayList<Lista> listas) {
+        this.listas = listas;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    public ArrayList<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(ArrayList<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public ArrayList<Visita> getVisitas() {
+        return visitas;
+    }
+
+    public void setVisitas(ArrayList<Visita> visitas) {
+        this.visitas = visitas;
+    }
+
 
     public int getId() {
         return id;
@@ -41,14 +103,6 @@ public class Funcionario implements java.io.Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public int getIdTipoDocumento() {
-        return idTipoDocumento;
-    }
-
-    public void setIdTipoDocumento(int idTipoDocumento) {
-        this.idTipoDocumento = idTipoDocumento;
     }
 
     public String getDocumento() {
@@ -107,12 +161,65 @@ public class Funcionario implements java.io.Serializable {
         this.idCentro = idCentro;
     }
 
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
     public ArrayList<Rol> getRoles() {
         return roles;
     }
 
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
+    }
+
+    public boolean isAdministrador() {
+        for (Rol rol : roles) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_ADMINISTRADOR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCoordinador() {
+        for (Rol rol : roles) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_COORDINADOR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isTecnico() {
+        for (Rol rol : roles) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_E_TECNICO) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPedagogico() {
+        for (Rol rol : roles) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_E_PEDAGOGICO) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isInstructor() {
+        for (Rol rol : roles) {
+            if (rol.getId() == modelo.dao.RolDAO.ID_INSTRUCTOR) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Funcionario() {

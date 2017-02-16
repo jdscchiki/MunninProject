@@ -13,10 +13,8 @@ import javax.naming.NamingException;
 import util.ConexionBD;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
+import modelo.bean.TipoDocumento;
 
-//cosas a tener en cuenta:
-//  documentar los metodos, es facil con la herramienta javadoc
-//  traten de ser lo mas explicitos posibles en la descripcion de los metodos
 /**
  * Esta clase realiza y procesa las consultas a bases de datos, de las tablas
  * funcionario, rol y rol funcionario
@@ -48,6 +46,159 @@ public class FuncionarioDAO extends ConexionBD {
     }
 
     /**
+     * Metodo para insertar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario insertado
+     * @return True si la insercion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean Insert(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
+        int indexActivo = 1;
+        int indexIdTipoDocumento = 2;
+        int indexDocumento = 3;
+        int indexCorreo = 4;
+        int indexContrasena = 5;
+        int indexNombre = 6;
+        int indexApellido = 7;
+        int indexTelefono = 8;
+        int indexIdCentro = 9;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setBoolean(indexActivo, funcionario.isActivo());
+        statement.setInt(indexIdTipoDocumento, funcionario.getTipoDocumento().getId());
+        statement.setString(indexDocumento, funcionario.getDocumento());
+        statement.setString(indexCorreo, funcionario.getCorreo());
+        statement.setString(indexContrasena, funcionario.getContrasena());
+        statement.setString(indexNombre, funcionario.getNombre());
+        statement.setString(indexApellido, funcionario.getApellido());
+        statement.setString(indexTelefono, funcionario.getTelefono());
+        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para actualizar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario a ser modificado
+     * @return True si la modificacion fue completada exitosamente
+     * @throws SQLException
+     */
+    public boolean update(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?)}";
+        int indexId = 1;
+        int indexActivo = 2;
+        int indexIdTipoDocumento = 3;
+        int indexDocumento = 4;
+        int indexCorreo = 5;
+        int indexContrasena = 6;
+        int indexNombre = 7;
+        int indexApellido = 8;
+        int indexTelefono = 9;
+        int indexIdCentro = 10;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        statement.setBoolean(indexActivo, funcionario.isActivo());
+        statement.setInt(indexIdTipoDocumento, funcionario.getTipoDocumento().getId());
+        statement.setString(indexDocumento, funcionario.getDocumento());
+        statement.setString(indexCorreo, funcionario.getCorreo());
+        statement.setString(indexContrasena, funcionario.getContrasena());
+        statement.setString(indexNombre, funcionario.getNombre());
+        statement.setString(indexApellido, funcionario.getApellido());
+        statement.setString(indexTelefono, funcionario.getTelefono());
+        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para borrar un funcionario en la base de datos
+     *
+     * @deprecated
+     * @param funcionario Datos del funcionario
+     * @return True si fue borrada exitosamente
+     * @throws SQLException
+     */
+    public boolean delete(Funcionario funcionario) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL ELIMINAR_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo para ver los datos de un funcionario
+     *
+     * @param funcionario Objeto de tipo Funcionario que en el atributo id tiene
+     * el valor del id a ser consultado
+     * @return los valores almacenados en la tabla funcionario de la base de
+     * datos
+     * @throws SQLException
+     */
+    public Funcionario select(Funcionario funcionario) throws SQLException {
+
+        String query = "{CALL VER_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setContrasena(rs.getString(COL_CONTRASENA));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setTelefono(rs.getString(COL_TELEFONO));
+            funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
+        }
+        if (!encontrado) {
+            funcionario = null;
+        }
+
+        return funcionario;
+    }
+
+    /**
      * Consulta los datos del funcionario
      *
      * @param correo Correo del usuario
@@ -56,11 +207,11 @@ public class FuncionarioDAO extends ConexionBD {
      * @version 1.0
      * @throws java.sql.SQLException existe un priblema en la consulta
      */
-    public Funcionario buscarFuncionarioCorreo(String correo) throws SQLException {
+    public Funcionario selectFunctionaryByMail(String correo) throws SQLException {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos
-        String query = "{CALL LOGIN(?)}";
+        String query = "{CALL INGRESO(?)}";
         int indexCorreo = 1;
 
         funcionario.setCorreo(correo);
@@ -73,7 +224,9 @@ public class FuncionarioDAO extends ConexionBD {
             //asigna los valores resultantes de la consulta
             funcionario.setId(rs.getInt(COL_ID));
             funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
             funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
             funcionario.setContrasena(rs.getString(COL_CONTRASENA));
             funcionario.setNombre(rs.getString(COL_NOMBRE));
@@ -97,7 +250,7 @@ public class FuncionarioDAO extends ConexionBD {
      * de datos, false en caso contrario
      * @throws SQLException existe un priblema en la consulta
      */
-    public boolean registrar(Funcionario funcionario) throws SQLException {
+    public boolean registerFunctionary(Funcionario funcionario) throws SQLException {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -112,7 +265,7 @@ public class FuncionarioDAO extends ConexionBD {
         int indexIdCentro = 8;
 
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setInt(indexTipoDoc, funcionario.getIdTipoDocumento());
+        statement.setInt(indexTipoDoc, funcionario.getTipoDocumento().getId());
         statement.setString(indexDoc, funcionario.getDocumento());
         statement.setString(indexCorreo, funcionario.getCorreo());
         statement.setString(indexContrasena, funcionario.getContrasena());
@@ -133,21 +286,107 @@ public class FuncionarioDAO extends ConexionBD {
     }
 
     /**
+     * Metodo para comprobar si existe un funcionario registrsado en la
+     * plataforma con el mismo correo
+     *
+     * @param mail correo del funcionario
+     * @return true si ese correo ya se encuentra registrado en la plataforma
+     * @throws SQLException
+     */
+    public boolean existFunctionaryByMail(String mail) throws SQLException {
+        boolean result = false;
+
+        String query = "{CALL VER_FUNCIONARIO_CORREO(?)}";
+        int indexMail = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexMail, mail);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Metodo para comprobar si un funcionario se encuentra activo en la
+     * plataforma
+     *
+     * @param correo correo del funcionario
+     * @param documentType id del tipo de documento del funcionario
+     * @param document documento del funcionario
+     * @return True si existe un funcionario con el mismo documento, y correo en
+     * la plataforma, ademas de encontrarse activo
+     * @throws SQLException
+     */
+    public boolean isActiveFunctionary(String correo, int documentType, String document) throws SQLException {
+        boolean result = false;
+
+        String query = "{CALL VER_FUNCIONARIO_ACTIVO(?,?,?)}";
+        int indexCorreo = 1;
+        int indexDocumentType = 2;
+        int indexDocument = 3;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexCorreo, correo);
+        statement.setInt(indexDocumentType, documentType);
+        statement.setString(indexDocument, document);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Metodo para comprobar si existe un funcionario registrsado en la
+     * plataforma con el mismo documento
+     *
+     * @param document documento del funcionario
+     * @param documentType id del tipo de documento del funcionario
+     * @return True si existe un funcionario registrado en la aplicacion con el
+     * mismo documento
+     * @throws SQLException
+     */
+    public boolean existFunctionaryByDocument(String document, int documentType) throws SQLException {
+        boolean result = false;
+
+        String query = "{CALL VER_FUNCIONARIO_DOCUMENTO(?,?)}";
+        int indexDocument = 1;
+        int indexDocumentType = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexDocument, document);
+        statement.setInt(indexDocumentType, documentType);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
      * Consulta los roles de un funcionario
      *
      * @param id id del funcionario
      * @return ArrayList de los roles
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Rol> verRoles(int id) throws SQLException {
+    public ArrayList<Rol> selectRolesFunctionary(int id) throws SQLException {
         ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
         int indexIdFunc = 1;
 
-        String resId_rol = "id_rol_funci_rol";//nombre de la columna del select
-        String resNombre_rol = "nombre_rol";//nombre de la columna del select
+        String resIdRol = "id_rol_funcionario_rol";//nombre de la columna del select
+        String resNombreRol = "nombre_rol";//nombre de la columna del select
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
@@ -158,8 +397,8 @@ public class FuncionarioDAO extends ConexionBD {
         while (rs.next()) {
             //asigna los valores resultantes de la consulta
             Rol rol = new Rol();
-            rol.setId(rs.getInt(resId_rol));
-            rol.setNombre(rs.getString(resNombre_rol));
+            rol.setId(rs.getInt(resIdRol));
+            rol.setNombre(rs.getString(resNombreRol));
             roles.add(rol);
         }
 
@@ -174,31 +413,36 @@ public class FuncionarioDAO extends ConexionBD {
      * grandes)
      * @param cantXpag resultados por pagina al realizar consulta(usado para
      * consultas a centros grandes)
+     * @param search busqueda de funcionario por nombre, apellido o documento
      * @return ArrayList de los funcionarios pertenecientes a un centro por
      * intervalos
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Funcionario> verFuncionariosCentro(String idCentro, int pagina, int cantXpag) throws SQLException {
+    public ArrayList<Funcionario> selectSomeFunctionaryCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?)}";
+        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
+        int indexSearch = 4;
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setString(indexCentro, idCentro);
         statement.setInt(indexPagina, pagina);
         statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
             //asigna los valores resultantes de la consulta
             Funcionario funcionario = new Funcionario();
             funcionario.setId(rs.getInt(COL_ID));
-            funcionario.setIdTipoDocumento(rs.getInt(COL_ID_TIPODOCUMENTO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
             funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
             funcionario.setNombre(rs.getString(COL_NOMBRE));
             funcionario.setApellido(rs.getString(COL_APELLIDO));
@@ -208,18 +452,28 @@ public class FuncionarioDAO extends ConexionBD {
         return funcionarios;
     }
 
-    public int conteoFuncionariosCentro(String idCentro) throws SQLException {
+    /**
+     * Metodo para realizar un conteo del los funcionarios del centro
+     *
+     * @param idCentro id del centro
+     * @param search filtro de busqueda
+     * @return Entero con la catidad de funcionario registrados en el centro
+     * @throws SQLException
+     */
+    public int countFunctionaryCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?)}";
+        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?,?)}";
         int indexCentro = 1;
+        int indexFiltro = 2;
 
         String resConteo = "conteo";//nombre de la columna del select
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setString(indexCentro, idCentro);
+        statement.setString(indexFiltro, search);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
@@ -229,7 +483,15 @@ public class FuncionarioDAO extends ConexionBD {
         return conteo;
     }
 
-    public boolean inhabilitarFuncionario(int idFuncionario) throws SQLException {
+    /**
+     * Methodo para inhabilitar fuincionarios registrados en la aplicación, de
+     * esta manera no se les permitira ingresar a la plataforma
+     *
+     * @param idFuncionario id del funcionario que va a ser inhabiltado
+     * @return true si fue inhabilitado
+     * @throws SQLException
+     */
+    public boolean disableFunctionary(int idFuncionario) throws SQLException {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
@@ -250,17 +512,47 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
     
-    public boolean cambioContra(int id, String correo) throws SQLException {
+    public boolean enableFunctionary(int idFuncionario) throws SQLException {
         boolean resultado;//esta es la futura respuesta
-        
+
         //datos de la consulta en base de datos
-        String query = "{CALL CAMBIOCONTRASENA(?,?)}";
+        String query = "{CALL HABILITAR_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idFuncionario);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Metodo para realizar un cambio de contraseña en la aplicacion
+     *
+     * @param id id del funcionario
+     * @param password Nueva contraseña, debe estar encriptada para que pueda
+     * ingresar a la plataforma
+     * @return True si la contraseña fue cambiada correctamente
+     * @throws SQLException
+     */
+    public boolean changePassword(int id, String password) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL CAMBIO_CONTRASENA(?,?)}";
         int indexId = 1;
         int indexContrasena = 2;
-        
+
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, id);
-        statement.setString(indexContrasena, correo);
+        statement.setString(indexContrasena, password);
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
@@ -271,5 +563,117 @@ public class FuncionarioDAO extends ConexionBD {
         }
 
         return resultado;
+    }
+
+    /**
+     * metodo para asignar un rol a un funcionario
+     *
+     * @param idFuncionario id del funcionario
+     * @param idRol id del rol que va a ser asignado al funcionario
+     * @return true si el rol fue asignado correctamente al funcionario
+     * @throws SQLException
+     */
+    public boolean addFunctionaryRole(int idFuncionario, int idRol) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL INSERTAR_FUNCIONARIO_ROL(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdRol = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFuncionario, idFuncionario);
+        statement.setInt(indexIdRol, idRol);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+
+    /**
+     * metodo para privar a un funcionario de los privilegios de un rol
+     *
+     * @param idFuncionario id del funcionario
+     * @param idRol id del rol del que va a ser privado el funcionario
+     * @return true si fueron eliminados correctamente los permisos del
+     * funcionrio
+     * @throws SQLException
+     */
+    public boolean deleteFunctionaryRole(int idFuncionario, int idRol) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL ELIMINAR_FUNCIONARIO_ROL(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdRol = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFuncionario, idFuncionario);
+        statement.setInt(indexIdRol, idRol);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public ArrayList<Funcionario> selectDisabledFunctionaryCenter(String idCentro, String filtro) throws SQLException{
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_FUNCIONARIOS_INHABILITADOS_CENTRO(?,?)}";
+        int indexCentro = 1;
+        int indexFiltro = 2;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setString(indexFiltro, filtro);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setCorreo(rs.getString(COL_CORREO));
+            funcionarios.add(funcionario);
+        }
+        return funcionarios;
+    }
+    
+    public boolean isLastCoordinatorEnableCenter(String idCentro) throws SQLException{
+        boolean answer = false;
+
+        //datos de la consulta en base de datos
+        String query = "{CALL ES_ULTIMO_COORDINADOR_CENTRO(?)}";
+        int indexIdCentro = 1;
+        String colAnswer = "RESULTADO";
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCentro);
+
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            answer = rs.getBoolean(colAnswer);
+        }
+        return answer;
     }
 }

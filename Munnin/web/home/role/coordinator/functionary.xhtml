@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:components="http://java.sun.com/jsf/composite/components/home/role/coordinator">
+    <ui:composition template="/WEB-INF/template/BasicTemplate.xhtml" >
+        <ui:define name="title">
+            Funcionarios Coordinador
+        </ui:define>
+        <ui:define name="linksNavbar">
+            <ui:include src="/WEB-INF/template/BasicTemplate/navbarLinks/coordinator.xhtml" ></ui:include>
+        </ui:define>
+        <ui:define name="contentPage">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Administrar los funcionarios del centro</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div id="fulltable">
+                                <form id="loaderForm"
+                                      class="form-horizontal"
+                                      data-ajax-url="ajax/tableFunctionaries.xhtml"
+                                      data-id-display-answer="fulltable">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" 
+                                    class="btn btn-primary btn-block" 
+                                    data-toggle="modal" 
+                                    data-target="#registerFunctionary">
+                                Registrar</button>
+                            <button type="button" 
+                                    class="btn btn-primary btn-block"
+                                    id="ChangeRoles" >
+                                Cambiar roles</button>
+                            <button type="button" 
+                                    class="btn btn-primary btn-block" 
+                                    id="remove">
+                                Inhabilitar</button>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="button" 
+                                    class="btn btn-link" 
+                                    id="showDisabled">
+                                Ver Funcionarios Inhabilitados</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <h:outputScript target="body">
+                $(document).ready(function () {
+                    sendAjaxFormMunnin($("#loaderForm"));
+                });
+            </h:outputScript>
+        </ui:define>
+    </ui:composition>
+</html>

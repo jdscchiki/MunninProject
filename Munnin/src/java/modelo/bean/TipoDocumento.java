@@ -5,6 +5,8 @@
  */
 package modelo.bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Juan David Segura Castro 
@@ -13,6 +15,15 @@ public class TipoDocumento implements java.io.Serializable {
 
     private int id;
     private String nombre;
+    private ArrayList<Funcionario> funcionarios;
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(ArrayList<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 
     public TipoDocumento() {
     }
