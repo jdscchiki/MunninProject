@@ -16,7 +16,6 @@ public class Version {
     private int id;
     private int numero;
     private String url;
-    private boolean notificacion;
     private Date fecha;
     private Date fechaCaducidad;
     private Date fechaAprovacion;
@@ -74,14 +73,6 @@ public class Version {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public boolean isNotificacion() {
-        return notificacion;
-    }
-
-    public void setNotificacion(boolean notificacion) {
-        this.notificacion = notificacion;
     }
 
     public Date getFecha() {

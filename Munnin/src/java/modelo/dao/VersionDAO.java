@@ -25,7 +25,6 @@ public class VersionDAO extends ConexionBD {
     private static final String COL_ID = "id_version";
     private static final String COL_NUMERO = "numero_version";
     private static final String COL_URL = "url_version";
-    private static final String COL_NOTIFICACION = "notificacion_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
     private static final String COL_FECHA_APROVACION = "fecha_aprovacion_version";
@@ -55,22 +54,20 @@ public class VersionDAO extends ConexionBD {
     public boolean Insert(Version version) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?)}";
+        String query = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?)}";
         int indexNumero = 1;
         int indexUrl = 2;
-        int indexNotificacion = 3;
-        int indexFecha = 4;
-        int indexFechaCaducidad = 5;
-        int indexfechaAprovacion = 6;
-        int indexIdEstado = 7;
-        int indexIdTipoArchivo = 8;
-        int indexIdProducto = 9;
-        int indexIdCentro = 10;
+        int indexFecha = 3;
+        int indexFechaCaducidad = 4;
+        int indexfechaAprovacion = 5;
+        int indexIdEstado = 6;
+        int indexIdTipoArchivo = 7;
+        int indexIdProducto = 8;
+        int indexIdCentro = 9;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexNumero, version.getNumero());
         statement.setString(indexUrl, version.getUrl());
-        statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
         statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
@@ -99,24 +96,22 @@ public class VersionDAO extends ConexionBD {
     public boolean update(Version version) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
+        String query = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?)}";
         int indexId = 1;
         int indexNumero = 2;
         int indexUrl = 3;
-        int indexNotificacion = 4;
-        int indexFecha = 5;
-        int indexFechaCaducidad = 6;
-        int indexfechaAprovacion = 7;
-        int indexIdEstado = 8;
-        int indexIdTipoArchivo = 9;
-        int indexIdProducto = 10;
-        int indexIdCentro = 11;
+        int indexFecha = 4;
+        int indexFechaCaducidad = 5;
+        int indexfechaAprovacion = 6;
+        int indexIdEstado = 7;
+        int indexIdTipoArchivo = 8;
+        int indexIdProducto = 9;
+        int indexIdCentro = 10;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, version.getId());
         statement.setInt(indexNumero, version.getNumero());
         statement.setString(indexUrl, version.getUrl());
-        statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
         statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
@@ -184,7 +179,6 @@ public class VersionDAO extends ConexionBD {
             version.setId(rs.getInt(COL_ID));
             version.setNumero(rs.getInt(COL_NUMERO));
             version.setUrl(rs.getString(COL_URL));
-            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
