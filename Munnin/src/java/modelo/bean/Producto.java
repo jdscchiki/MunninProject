@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Producto {
+public class Producto implements java.io.Serializable{
     private int id;
     private String nombre;
     private String descripcion;

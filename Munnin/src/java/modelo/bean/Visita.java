@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class Visita {
+public class Visita implements java.io.Serializable{
     private Date fecha;
     private Producto producto;
     private Funcionario funcionario;

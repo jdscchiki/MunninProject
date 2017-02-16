@@ -21,7 +21,7 @@ public class Funcionario implements java.io.Serializable {
     private String nombre;
     private String apellido;
     private String telefono;
-    private String idCentro;
+    private Centro centro;
     private TipoDocumento tipoDocumento;
     private ArrayList<Rol> roles;
     private ArrayList<Notificacion> notificaciones;
@@ -153,12 +153,12 @@ public class Funcionario implements java.io.Serializable {
         this.telefono = telefono;
     }
 
-    public String getIdCentro() {
-        return idCentro;
+    public Centro getCentro() {
+        return centro;
     }
 
-    public void setIdCentro(String idCentro) {
-        this.idCentro = idCentro;
+    public void setCentro(Centro centro) {
+        this.centro = centro;
     }
 
     public TipoDocumento getTipoDocumento() {

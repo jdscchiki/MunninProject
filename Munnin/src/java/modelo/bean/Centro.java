@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Centro {
+public class Centro implements java.io.Serializable{
 
     private String id;
     private String nombre;

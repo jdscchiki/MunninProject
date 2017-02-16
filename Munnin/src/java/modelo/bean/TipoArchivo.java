@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class TipoArchivo {
+public class TipoArchivo implements java.io.Serializable{
     private int id;
     private String extension;
     private ArrayList<Version> versiones;

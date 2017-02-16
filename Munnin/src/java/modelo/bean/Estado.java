@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Estado {
+public class Estado implements java.io.Serializable{
 
     private int id;
     private String nombre;

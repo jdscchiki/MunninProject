@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Mensaje {
+public class Mensaje implements java.io.Serializable{
     private int id;
     private String texto;
     private ArrayList<Notificacion> notificaciones;

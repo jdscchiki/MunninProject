@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class Lista {
+public class Lista implements java.io.Serializable{
     private int id;
     private String nombre;
     private String descripcion;

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class Comentario {
+public class Comentario implements java.io.Serializable{
     private int id;
     private String valoracion;
     private int puntuacion;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Regional {
+public class Regional implements java.io.Serializable{
     private String id;
     private String nombre;
     private ArrayList<Centro> centros;

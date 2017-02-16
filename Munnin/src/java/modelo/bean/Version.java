@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Juan David Segura
  */
-public class Version {
+public class Version implements java.io.Serializable{
     private int id;
     private int numero;
     private String url;
