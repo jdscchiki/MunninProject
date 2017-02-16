@@ -17,7 +17,7 @@ import javax.servlet.http.Part;
  */
 public class FileManager {
 
-    private final static String SAVE_FOLDER = "C:\\Users\\Juan David Segura\\Downloads";
+    private final static String SAVE_FOLDER = "C:"+File.separator+"MunninRepository";
 
     public static boolean saveFile(Part file) {
         return saveFile(file, SAVE_FOLDER);
