@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
+import modelo.bean.Centro;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
 import modelo.bean.TipoDocumento;
@@ -56,7 +57,9 @@ public class Coordinator {
          */
 
         int resultado = 0;
-        funcionario.setIdCentro(idCentro);
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        funcionario.setCentro(centro);
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -80,7 +83,7 @@ public class Coordinator {
             }
         }
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -98,7 +101,7 @@ public class Coordinator {
         TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
         tiposDoc = tipoDocumentoDAO.selectAll();
 
-        tipoDocumentoDAO.cerrarConexion();
+        tipoDocumentoDAO.closeConnection();
 
         return tiposDoc;
     }
@@ -121,7 +124,7 @@ public class Coordinator {
             }
         }
 
-        rolDAO.cerrarConexion();
+        rolDAO.closeConnection();
 
         return roles;
     }
@@ -143,7 +146,7 @@ public class Coordinator {
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         cantFuncionarios = funcionarioDAO.countFunctionaryCenter(idCentro, search);
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         paginas = cantFuncionarios / cantXpag;
         if (cantFuncionarios % cantXpag != 0) {
@@ -172,7 +175,7 @@ public class Coordinator {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         funcionarios = funcionarioDAO.selectSomeFunctionaryCenter(idCentro, pagina, cantXpag, search);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return funcionarios;
     }
@@ -197,7 +200,7 @@ public class Coordinator {
             }
         }
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -207,7 +210,7 @@ public class Coordinator {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         resultado = funcionarioDAO.enableFunctionary(idFuncionario);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -220,7 +223,7 @@ public class Coordinator {
         resultado.setRoles(funcionarioDAO.selectRolesFunctionary(resultado.getId()));
         resultado.setContrasena(null);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -295,7 +298,7 @@ public class Coordinator {
         if (resultado == 0) {//si resultado no cambia en ningun momento la operacion fue exitosa
             resultado = 1;//operacion exitosa
         }
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -333,7 +336,7 @@ public class Coordinator {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         answer = funcionarioDAO.selectDisabledFunctionaryCenter(idCentro, filtro);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return answer;
     }

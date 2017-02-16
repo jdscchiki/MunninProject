@@ -47,7 +47,7 @@ public class FormFunctionarySearch {
     public ArrayList<Funcionario> viewFunctionaries() {
         ArrayList<Funcionario> result;
         try {
-            result = Coordinator.viewPagerFunctionaryCenter(loggedInUser.getFuncionario().getIdCentro(), page, functionariesPerPage, search);
+            result = Coordinator.viewPagerFunctionaryCenter(loggedInUser.getFuncionario().getCentro().getId(), page, functionariesPerPage, search);
         } catch (Exception e) {
             message = e.getMessage();
             result = null;
@@ -60,7 +60,7 @@ public class FormFunctionarySearch {
         int totalPages = 0;
         
         try {
-            totalPages = Coordinator.countPagesFunctionaryCenter(loggedInUser.getFuncionario().getIdCentro(), functionariesPerPage, search);
+            totalPages = Coordinator.countPagesFunctionaryCenter(loggedInUser.getFuncionario().getCentro().getId(), functionariesPerPage, search);
             result = Pager.showLinkedPages(page, totalPages, 10);
         } catch (Exception e) {
             message = e.getMessage();

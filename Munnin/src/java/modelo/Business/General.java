@@ -54,7 +54,7 @@ public class General {
             }
         }
 
-        consulta.cerrarConexion();
+        consulta.closeConnection();
         return funcionarioLog;
     }
 
@@ -78,7 +78,7 @@ public class General {
                 if (consulta.changePassword(funcionario.getId(), Encriptado.createHash(newPassword))) {
                     result[0] = true;
                 }
-                consulta.cerrarConexion();
+                consulta.closeConnection();
             } else {
                 if(PassGenerator.hasNumber(newPassword)){
                     result[3]=true;
