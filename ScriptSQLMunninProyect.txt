@@ -10,11 +10,11 @@
 -- EDITAR_(nombre de la tabla)(exp: autor, programa_producto, categoria_producto, funcionario_rol)
 -- ELIMINAR_(nombre de la tabla)
 -- VER_(nombre de la tabla)
+-- VER_TODOS_(nombre de la tabla)
 -- -----------------------------------------------------
 -- VER_FUNCIONARIOS_CENTRO
 -- REGISTRAR_FUNCIONARIO
 -- INGRESO
--- VER_TODOS_TIPO_DOCUMENTO
 -- VER_ROLES_FUNCIONARIO
 -- CONTEO_FUNCIONARIOS_CENTRO
 -- INHABILITAR_FUNCIONARIO
@@ -22,10 +22,10 @@
 -- VER_FUNCIONARIO_CORREO
 -- VER_FUNCIONARIO_DOCUMENTO
 -- VER_FUNCIONARIO_ACTIVO
--- VER_TODOS_ROL
 -- VER_FUNCIONARIOS_INHABILITADOS_CENTRO
 -- HABILITAR_FUNCIONARIO
 -- ES_ULTIMO_COORDINADOR_CENTRO
+-- NUEVA_VERSION
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
@@ -579,6 +579,18 @@ BEGIN
 	WHERE id_area = _id_area;
 END $$
 
+-- ver todos area
+
+DROP PROCEDURE IF EXISTS ver_todos_area $$
+CREATE PROCEDURE ver_todos_area () 
+BEGIN
+	SELECT id_area , 
+	nombre_area ,
+        activo_area ,
+	id_centro_area 
+	FROM area;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -616,12 +628,23 @@ END $$
 DROP PROCEDURE IF EXISTS ver_autor $$
 CREATE PROCEDURE ver_autor (
 	IN _id_funcionario_autor INT ,
-	IN _id_version_autor INT )BEGIN
+	IN _id_version_autor INT )
+BEGIN
 	SELECT id_funcionario_autor ,
 	id_version_autor
 	FROM autor
 	WHERE id_funcionario_autor = _id_funcionario_autor AND 
 	id_version_autor = _id_version_autor;
+END $$
+
+-- ver todos autor
+
+DROP PROCEDURE IF EXISTS ver_todos_autor $$
+CREATE PROCEDURE ver_todos_autor ()
+BEGIN
+	SELECT id_funcionario_autor ,
+	id_version_autor
+	FROM autor;
 END $$
 
 DELIMITER ;
@@ -689,6 +712,18 @@ BEGIN
 	WHERE id_categoria = _id_categoria;
 END $$
 
+-- ver todos categoria
+
+DROP PROCEDURE IF EXISTS ver_todos_categoria $$
+CREATE PROCEDURE ver_todos_categoria ()
+BEGIN
+	SELECT id_categoria ,
+	nombre_categoria ,
+        activo_categoria ,
+	id_centro_categoria
+	FROM categoria;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -733,6 +768,16 @@ BEGIN
 	FROM categoria_producto
 	WHERE id_categoria_cat_prod = _id_categoria_cat_prod AND
 		id_producto_cat_prod = _id_producto_cat_prod;
+END $$
+
+-- ver todos categoria_producto
+
+DROP PROCEDURE IF EXISTS ver_todos_categoria_producto $$
+CREATE PROCEDURE ver_todos_categoria_producto ()
+BEGIN
+	SELECT id_categoria_cat_prod,
+	id_producto_cat_prod
+	FROM categoria_producto;
 END $$
 
 DELIMITER ;
@@ -799,6 +844,18 @@ BEGIN
 	WHERE id_centro = _id_centro ;
 END $$
 
+-- ver todos centro
+
+DROP PROCEDURE IF EXISTS ver_todos_centro $$
+CREATE PROCEDURE ver_todos_centro ()
+BEGIN
+	SELECT id_centro ,
+	nombre_centro ,
+	id_regional_centro ,
+	id_ciudad_centro
+	FROM centro;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -851,6 +908,16 @@ BEGIN
 	nombre_ciudad
 	FROM ciudad
 	WHERE id_ciudad = _id_ciudad ;
+END $$
+
+-- ver todos ciudad
+
+DROP PROCEDURE IF EXISTS ver_todos_ciudad $$
+CREATE PROCEDURE ver_todos_ciudad ()
+BEGIN
+	SELECT id_ciudad ,
+	nombre_ciudad
+	FROM ciudad;
 END $$
 
 DELIMITER ;
@@ -930,6 +997,20 @@ BEGIN
 	WHERE id_comentario = _id_comentario ;
 END $$
 
+-- ver todos comentario
+
+DROP PROCEDURE IF EXISTS ver_todos_comentario $$
+CREATE PROCEDURE ver_todos_comentario ()
+BEGIN
+	SELECT id_comentario ,
+	valoracion_comentario ,
+	puntuacion_comentario ,
+	fecha_comentario ,
+	id_producto_comentario ,
+        id_funcionario_comentario
+	FROM comentario;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -977,6 +1058,17 @@ BEGIN
 	FROM item_lista
 	WHERE id_lista_item_lista = _id_lista_item_lista AND
             id_item_item_lista = _id_item_item_lista;
+END $$
+
+-- ver todos item_lista
+
+DROP PROCEDURE IF EXISTS ver_todos_item_lista $$
+CREATE PROCEDURE ver_todos_item_lista ()
+BEGIN
+	SELECT 
+            id_lista_item_lista ,
+            id_item_item_lista
+	FROM item_lista;
 END $$
 
 DELIMITER ;
@@ -1031,6 +1123,16 @@ BEGIN
 	nombre_estado
 	FROM estado 
 	WHERE id_estado = _id_estado;
+END $$
+
+-- ver todos estado
+
+DROP PROCEDURE IF EXISTS ver_todos_estado $$
+CREATE PROCEDURE ver_todos_estado () 
+BEGIN
+	SELECT id_estado , 
+	nombre_estado
+	FROM estado;
 END $$
 
 DELIMITER ;
@@ -1103,6 +1205,20 @@ BEGIN
 	id_item_evaluacion_item 
 	FROM evaluacion_item
 	WHERE id_evaluacion_item = _id_evaluacion_item ;
+END $$
+
+
+-- ver todos evaluacion_item
+
+DROP PROCEDURE IF EXISTS ver_todos_evaluacion_item $$
+CREATE PROCEDURE ver_todos_evaluacion_item () 
+BEGIN
+	SELECT id_evaluacion_item ,
+	calificacion_evaluacion_item ,
+	observacion_evaluacion_item ,
+	id_evaluacion_lista_evaluacion_item ,
+	id_item_evaluacion_item 
+	FROM evaluacion_item;
 END $$
 
 DELIMITER ;
@@ -1187,6 +1303,21 @@ BEGIN
 	id_evaluador_evaluacion_lista
 	FROM evaluacion_lista
 	WHERE id_evaluacion_lista = _id_evaluacion_lista ;
+END $$
+
+-- ver todos evaluacion_lista
+
+DROP PROCEDURE IF EXISTS ver_todos_evaluacion_lista $$
+CREATE PROCEDURE ver_todos_evaluacion_lista () 
+BEGIN
+	SELECT id_evaluacion_lista ,
+	id_version_evaluacion_lista ,
+	id_lista_evaluacion_lista ,
+	calificacion_evaluacion_lista ,
+	observaciones_evaluacion_lista ,
+	fecha_evaluacion_lista ,
+	id_evaluador_evaluacion_lista
+	FROM evaluacion_lista ;
 END $$
 
 DELIMITER ;
@@ -1294,6 +1425,24 @@ BEGIN
 	WHERE id_funcionario = _id_funcionario ;
 END $$
 
+-- ver todos funcionario
+
+DROP PROCEDURE IF EXISTS ver_todos_funcionario $$
+CREATE PROCEDURE ver_todos_funcionario () 
+BEGIN
+	SELECT id_funcionario ,
+        activo_funcionario,
+        id_tipo_documento_funcionario ,
+	documento_funcionario ,
+	correo_funcionario ,
+	contrasena_funcionario ,
+	nombre_funcionario ,
+	apellido_funcionario ,
+	telefono_funcionario ,
+	id_centro_funcionario
+	FROM funcionario;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1339,6 +1488,16 @@ BEGIN
 	FROM funcionario_rol
 	WHERE id_funcionario_funcionario_rol = _id_funcionario_funcionario_rol AND
 		id_rol_funcionario_rol = _id_rol_funcionario_rol ;
+END $$
+
+-- ver todos funcionario_rol
+
+DROP PROCEDURE IF EXISTS ver_todos_funcionario_rol $$
+CREATE PROCEDURE ver_todos_funcionario_rol ()
+BEGIN
+	SELECT id_funcionario_funcionario_rol ,
+	id_rol_funcionario_rol
+	FROM funcionario_rol;
 END $$
 
 DELIMITER ;
@@ -1399,6 +1558,17 @@ BEGIN
 	id_autor_item
 	FROM item
 	WHERE id_item = _id_item ;
+END $$
+
+-- ver todos item
+
+DROP PROCEDURE IF EXISTS ver_todos_item $$
+CREATE PROCEDURE ver_todos_item ()
+BEGIN
+	SELECT id_item ,
+	descriptor_item ,
+	id_autor_item
+	FROM item;
 END $$
 
 DELIMITER ;
@@ -1485,6 +1655,21 @@ BEGIN
 	WHERE id_lista = _id_lista ;
 END $$
 
+-- ver todos lista
+
+DROP PROCEDURE IF EXISTS ver_todos_lista $$
+CREATE PROCEDURE ver_todos_lista ()
+BEGIN
+	SELECT id_lista ,
+	nombre_lista ,
+	descripcion_lista ,
+	fecha_lista ,
+	id_autor_lista ,
+        activo_lista ,
+        id_tipo_lista_lista 
+	FROM lista;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1538,6 +1723,17 @@ BEGIN
             texto_mensaje
 	FROM mensaje
 	WHERE id_mensaje = _id_mensaje ;
+END $$
+
+-- ver todos mensaje
+
+DROP PROCEDURE IF EXISTS ver_todos_mesaje $$
+CREATE PROCEDURE ver_todos_mensaje ()
+BEGIN
+	SELECT 
+            id_mensaje ,
+            texto_mensaje
+	FROM mensaje;
 END $$
 
 DELIMITER ;
@@ -1619,6 +1815,21 @@ BEGIN
 	WHERE id_notificacion = _id_notificacion ;
 END $$
 
+-- ver todos notificacion
+
+DROP PROCEDURE IF EXISTS ver_todos_notificacion $$
+CREATE PROCEDURE ver_todos_notificacion ()
+BEGIN
+	SELECT 
+                id_notificacion ,
+                visto_notificacion ,
+                id_mensaje_notificacion ,
+                id_version_notificacion ,
+                id_funcionario_notificacion ,
+                id_rol_notificacion
+	FROM notificacion;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1691,6 +1902,19 @@ BEGIN
 	WHERE id_producto = _id_producto ;
 END $$
 
+-- ver todos producto
+
+DROP PROCEDURE IF EXISTS ver_todos_producto $$
+CREATE PROCEDURE ver_todos_producto ()
+BEGIN
+	SELECT id_producto ,
+	nombre_producto ,
+	descripcion_producto ,
+	palabras_clave_producto ,
+	id_tipo_objeto_aprendizaje_producto
+	FROM producto;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1751,6 +1975,17 @@ BEGIN
 	WHERE id_programa = _id_programa ;
 END $$
 
+-- ver todos programa
+
+DROP PROCEDURE IF EXISTS ver_todos_programa $$
+CREATE PROCEDURE ver_todos_programa ()
+BEGIN
+	SELECT id_programa ,
+	nombre_programa ,
+	id_area_programa
+	FROM programa;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1796,6 +2031,16 @@ BEGIN
 	FROM programa_producto
 	WHERE id_producto_prog_prod = _id_producto_prog_prod AND
 		id_programa_prog_prod = _id_programa_prog_prod ;
+END $$
+
+-- ver todos programa_producto
+
+DROP PROCEDURE IF EXISTS ver_todos_programa_producto $$
+CREATE PROCEDURE ver_todos_programa_producto ()
+BEGIN
+	SELECT id_producto_prog_prod ,
+	id_programa_prog_prod
+	FROM programa_producto ;
 END $$
 
 DELIMITER ;
@@ -1853,6 +2098,16 @@ BEGIN
 	WHERE id_regional = _id_regional ;
 END $$
 
+-- ver todos regional
+
+DROP PROCEDURE IF EXISTS ver_todos_regional $$
+CREATE PROCEDURE ver_todos_regional ()
+BEGIN
+	SELECT id_regional ,
+	nombre_regional
+	FROM regional;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -1905,6 +2160,16 @@ BEGIN
 	nombre_rol 
 	FROM rol
 	WHERE id_rol = _id_rol ;
+END $$
+
+-- ver todos rol
+
+DROP PROCEDURE IF EXISTS ver_todos_rol $$
+CREATE PROCEDURE ver_todos_rol ()
+BEGIN
+	SELECT id_rol ,
+	nombre_rol 
+	FROM rol;
 END $$
 
 DELIMITER ;
@@ -1960,6 +2225,16 @@ BEGIN
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
 
+-- ver todos tipo_archivo
+
+DROP PROCEDURE IF EXISTS ver_todos_tipo_archivo $$
+CREATE PROCEDURE ver_todos_tipo_archivo () 
+BEGIN
+	SELECT id_tipo_archivo , 
+	extension_tipo_archivo 
+	FROM tipo_archivo;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -2011,6 +2286,16 @@ BEGIN
         nombre_tipo_documento
 	FROM tipo_documento
 	WHERE id_tipo_documento = _id_tipo_documento ;
+END $$
+
+-- ver todos tipo_documento
+
+DROP PROCEDURE IF EXISTS ver_todos_tipo_documento $$
+CREATE PROCEDURE ver_todos_tipo_documento () 
+BEGIN
+	SELECT id_tipo_documento ,
+        nombre_tipo_documento
+	FROM tipo_documento;
 END $$
 
 DELIMITER ;
@@ -2066,6 +2351,16 @@ BEGIN
 	WHERE id_tipo_lista = _id_tipo_lista ;
 END $$
 
+-- ver todos tipo_lista
+
+DROP PROCEDURE IF EXISTS ver_todos_tipo_lista $$
+CREATE PROCEDURE ver_todos_tipo_lista () 
+BEGIN
+	SELECT id_tipo_lista ,
+        nombre_tipo_lista
+	FROM tipo_lista;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -2117,6 +2412,16 @@ BEGIN
 	nombre_tipo_obj_apren
 	FROM tipo_objeto_aprendizaje
 	WHERE id_tipo_objeto_aprendizaje = _id_tipo_objeto_aprendizaje ;
+END $$
+
+-- ver todos tipo_objeto_aprendizaje
+
+DROP PROCEDURE IF EXISTS ver_todos_tipo_objeto_aprendizaje $$
+CREATE PROCEDURE ver_todos_tipo_objeto_aprendizaje () 
+BEGIN
+	SELECT id_tipo_objeto_aprendizaje , 
+	nombre_tipo_obj_apren
+	FROM tipo_objeto_aprendizaje;
 END $$
 
 DELIMITER ;
@@ -2220,6 +2525,24 @@ BEGIN
 	WHERE id_version = _id_version ;
 END $$
 
+-- ver todos version
+
+DROP PROCEDURE IF EXISTS ver_todos_version $$
+CREATE PROCEDURE ver_todos_version () 
+BEGIN
+	SELECT id_version , 
+	numero_version ,
+        url_version ,
+        fecha_version ,
+        fecha_caducidad_version ,
+        fecha_aprobacion_version ,
+        id_estado_version ,
+        id_tipo_archivo_version ,
+        id_producto_version ,
+        id_centro_version
+	FROM version;
+END $$
+
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -2282,6 +2605,17 @@ BEGIN
 	id_funcionario_visita
 	FROM visita
 	WHERE id_visita = _id_visita ;
+END $$
+
+-- ver todos visita
+
+DROP PROCEDURE IF EXISTS ver_todos_visita $$
+CREATE PROCEDURE ver_todos_visita ()
+BEGIN
+	SELECT fecha_visita , 
+	id_producto_visita ,
+	id_funcionario_visita
+	FROM visita;
 END $$
 
 DELIMITER ;
@@ -2386,23 +2720,6 @@ BEGIN
 	id_centro_funcionario
     FROM funcionario
     WHERE correo_funcionario = _correo_funcionario AND activo_funcionario = 1;
-END $$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- SP VER_TODOS_TIPO_DOCUMENTO
--- -----------------------------------------------------
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS ver_todos_tipo_documento $$
-CREATE PROCEDURE ver_todos_tipo_documento (
-    )
-BEGIN
-    SELECT id_tipo_documento ,
-        nombre_tipo_documento
-    FROM tipo_documento ;
 END $$
 
 DELIMITER ;
@@ -2546,21 +2863,6 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP VER_TODOS_ROL
--- -----------------------------------------------------
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS ver_todos_rol $$
-CREATE PROCEDURE ver_todos_rol()
-BEGIN
-    SELECT  id_rol ,
-            nombre_rol
-    FROM rol;
-END $$
-DELIMITER ;
-
--- -----------------------------------------------------
 -- SP VER_FUNCIONARIOS_INHABILITADOS_CENTRO
 -- -----------------------------------------------------
 
@@ -2640,3 +2942,4 @@ BEGIN
 END $$
 
 DELIMITER ;
+
