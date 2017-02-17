@@ -9,7 +9,6 @@ package modelo.Business;
  *
  * @author Sergio
  */
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,8 +17,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import managedBeans.session.LoggedInUser;
 import modelo.bean.Funcionario;
 import modelo.bean.TipoDocumento;
 import org.apache.poi.ss.usermodel.Cell;
@@ -30,11 +28,12 @@ import util.Encriptado;
 
 public class Excel {
      public void leerArchivo(String ruta) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException{        
-        Funcionario funcionario = new Funcionario();
+        LoggedInUser loggedInUser = new LoggedInUser();
+        Funcionario funcionario = new Funcionario();        
         TipoDocumento tipoDocumento = new TipoDocumento();
-	FileInputStream file = new FileInputStream(new File(ruta));
-        //HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-        //String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+	FileInputStream file = new FileInputStream(new File(ruta));        
+        String idCentro = loggedInUser.getFuncionario().getIdCentro();
+        //String idCentro = "9303";
 	// Crear el objeto que tendra el libro de Excel
 	XSSFWorkbook workbook = new XSSFWorkbook(file);
 	/*
@@ -68,7 +67,7 @@ public class Excel {
                 funcionario.setApellido(celda.getStringCellValue());
                 celda = cellIterator.next(); 
                 funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
-                Coordinator.registerFunctionary(funcionario, "1");
+                Coordinator.registerFunctionary(funcionario, idCentro);
 	}
 	workbook.close();
     }
