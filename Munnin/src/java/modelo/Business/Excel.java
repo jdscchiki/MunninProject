@@ -9,19 +9,32 @@ package modelo.Business;
  *
  * @author Sergio
  */
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.Iterator;
+import javax.mail.MessagingException;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import modelo.bean.Funcionario;
+import modelo.bean.TipoDocumento;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import util.Encriptado;
 
 public class Excel {
-     public void leerArchivo(String ruta) throws IOException{
+     public void leerArchivo(String ruta) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException{        
+        Funcionario funcionario = new Funcionario();
+        TipoDocumento tipoDocumento = new TipoDocumento();
 	FileInputStream file = new FileInputStream(new File(ruta));
+        //HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+        //String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
 	// Crear el objeto que tendra el libro de Excel
 	XSSFWorkbook workbook = new XSSFWorkbook(file);
 	/*
@@ -42,27 +55,21 @@ public class Excel {
 	    // Obtenemos el iterator que permite recorres todas las celdas de una fila
 	    Iterator<Cell> cellIterator = row.cellIterator();
 	    Cell celda;
-	    while (cellIterator.hasNext()){
-		celda = cellIterator.next();
-		// Dependiendo del formato de la celda el valor se debe mostrar como String, Fecha, boolean, entero...
-		switch(celda.getCellType()) {
-		case Cell.CELL_TYPE_NUMERIC:
-		    if(DateUtil.isCellDateFormatted(celda) ){
-		       System.out.println(celda.getDateCellValue());
-		    }else{
-		       System.out.println(celda.getNumericCellValue());
-		    }
-		    break;
-		case Cell.CELL_TYPE_STRING:
-		    System.out.println(celda.getStringCellValue());
-		    break;
-		case Cell.CELL_TYPE_BOOLEAN:
-		    System.out.println(celda.getBooleanCellValue());
-		    break;
-		}
-	    }
+            celda = cellIterator.next();
+                tipoDocumento.setId((int)(celda.getNumericCellValue()));
+                funcionario.setTipoDocumento(tipoDocumento);
+                cellIterator.next();
+                funcionario.setDocumento(Double.toString(celda.getNumericCellValue()));
+                celda = cellIterator.next();
+                funcionario.setCorreo(celda.getStringCellValue());
+                celda = cellIterator.next(); 
+                funcionario.setNombre(celda.getStringCellValue());
+                celda = cellIterator.next(); 
+                funcionario.setApellido(celda.getStringCellValue());
+                celda = cellIterator.next(); 
+                funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
+                Coordinator.registerFunctionary(funcionario, "1");
 	}
 	workbook.close();
-        
     }
 }

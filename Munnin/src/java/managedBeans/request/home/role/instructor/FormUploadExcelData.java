@@ -12,12 +12,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.mail.MessagingException;
+import javax.naming.NamingException;
 import javax.servlet.http.Part;
 
 import modelo.Business.Excel;
+import util.Encriptado;
 
 /**
  *
@@ -54,7 +59,7 @@ public class FormUploadExcelData {
         
     }
     
-    public void upload() throws IOException {
+    public void upload() throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         InputStream input = null;
         OutputStream output = null;
         try {
@@ -88,5 +93,7 @@ public class FormUploadExcelData {
             }
         }
         obj.leerArchivo(this.getRuta());
+        File fichero = new File(ruta);
+        fichero.delete();
     }
 }
