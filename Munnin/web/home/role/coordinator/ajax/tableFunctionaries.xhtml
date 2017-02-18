@@ -11,9 +11,10 @@
                      jsf:rendered="#{coordinatorFunctionary.message != null}">
                     #{coordinatorFunctionary.message}
                 </div>
-                <form jsf:id="searchFunctionaryForm" class="form-horizontal" 
+                <form jsf:id="searchFunctionaryForm" 
+                      class="form-horizontal" 
                       data-ajax-url="ajax/tableFunctionaries.xhtml"
-                      data-id-display-answer="fulltable"
+                      data-id-display-answer="ajaxTableFunctionaries"
                       data-form-name="searchFunctionaryForm">
                     <div class="form-group">
                         <label class="control-label col-sm-1" 
@@ -42,7 +43,7 @@
             </div>
             <div class="col-lg-12">
                 <ul class="pagination">
-                    <ui:repeat value="#{coordinatorFunctionary.ShowPagesLinks()}" var="page">
+                    <ui:repeat value="#{coordinatorFunctionary.showPagesLinks()}" var="page">
                         <li class="#{(coordinatorFunctionary.page == page)? 'active' : ''}" >
                             <a data-page="#{page}" 
                                data-form-send="searchFunctionaryForm">
