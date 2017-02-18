@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedBeans.request.home.role.coordinator;
+package managedBeans.request.home.role.coordinator.functionary;
 
 import java.util.ArrayList;
 import javax.inject.Named;
@@ -19,7 +19,7 @@ import util.Pager;
  *
  * @author Juan David Segura
  */
-@Named(value = "coordinatorFunctionary")
+@Named(value = "coordinatorFunctionarySearch")
 @RequestScoped
 public class FormFunctionarySearch {
 
@@ -29,7 +29,6 @@ public class FormFunctionarySearch {
     private ArrayList<Rol> roles;
     private int functionariesPerPage;
     private Integer page;
-    private boolean searchChange;
 
     @Inject
     private LoggedInUser loggedInUser;
@@ -55,7 +54,7 @@ public class FormFunctionarySearch {
         return result;
     }
 
-    public ArrayList<Integer> ShowPagesLinks() {
+    public ArrayList<Integer> showPagesLinks() {
         ArrayList<Integer> result = new ArrayList<>();
         int totalPages = 0;
         
@@ -107,14 +106,6 @@ public class FormFunctionarySearch {
 
     public void setPage(Integer page) {
         this.page = page;
-    }
-
-    public boolean isSearchChange() {
-        return searchChange;
-    }
-
-    public void setSearchChange(boolean searchChange) {
-        this.searchChange = searchChange;
     }
 
     public LoggedInUser getLoggedInUser() {
