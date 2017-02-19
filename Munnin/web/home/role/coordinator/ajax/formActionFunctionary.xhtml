@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="es"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <h:body >
+        <form jsf:id="formActionTable"
+              data-ajax-url="ajax/formActionFunctionary.xhtml"
+              data-id-display-answer="ajaxAnswer"
+              data-form-name="formActionTable"
+              data-refresh-form="searchFunctionaryForm">
+            <input type="hidden" 
+                   jsf:id="selected" 
+                   jsf:value="#{coordinatorFunctionaryFormAction.idSelected}"
+                   data-name="idSelected"/>
+            <input type="hidden" 
+                   jsf:id="actionName" 
+                   jsf:value="#{coordinatorFunctionaryFormAction.action}"
+                   data-name="action"/>
+        </form>
+        
+        <div jsf:rendered="#{coordinatorFunctionaryFormAction.selectAction()}">
+            <div class="alert alert-#{coordinatorFunctionaryFormAction.alertMessage ? 'danger':'success'} "
+                 jsf:rendered="#{coordinatorFunctionaryFormAction.message != null}" 
+                 >
+                #{coordinatorFunctionaryFormAction.message}
+            </div>
+        </div>
+    </h:body>
+</html>
