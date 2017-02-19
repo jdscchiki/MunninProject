@@ -16,52 +16,88 @@
                     <h3>Administrar los funcionarios del centro</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-10">
-                            
+                    <form jsf:id="formFuncionario">
+                        <input type="hidden" 
+                               jsf:id="idSelected" 
+                               jsf:value="#{coordinatorFunctionary.idSelected}" 
+                               data-munnin-name="idFunctionary"/>
+                        <div class="row">
+                            <div class="col-sm-12 alert alert-#{coordinatorFunctionary.alertMessage ? 'danger':'success'} "
+                                 jsf:rendered="#{coordinatorFunctionary.message != null}" >
+                                #{coordinatorFunctionary.message}
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1" 
+                                           jsf:for="search" >
+                                        Buscar:
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" 
+                                                   placeholder="Buscar funcionario" 
+                                                   jsf:id="search" 
+                                                   jsf:value="#{coordinatorFunctionary.search}" />
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="submit">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <ul class="pagination">
+                                    <ui:repeat value="#{coordinatorFunctionary.showPagesLinks()}" 
+                                               var="page">
+                                        <li class="#{(coordinatorFunctionary.page == page)? 'active' : ''}" >
+                                            <h:commandLink action="#{coordinatorFunctionary.changePage(page)}">
+                                                #{page}</h:commandLink>
+                                        </li>
+                                    </ui:repeat>
+                                </ul>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Documento</th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Correo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            <ui:repeat value="#{coordinatorFunctionary.viewFunctionaries()}" 
+                                                       var="funtionary">
+                                                <tr data-munnin-id="#{funtionary.id}"
+                                                    data-munnin-input-bind='idFunctionary'>
+                                                    <td>#{funtionary.documento}</td>
+                                                    <td>#{funtionary.nombre}</td>
+                                                    <td>#{funtionary.apellido}</td>
+                                                    <td>#{funtionary.correo}</td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary btn-block">Registrar</button>
+                                <button type="button" class="btn btn-primary btn-block">Cambiar Rol</button>
+                                <h:commandButton styleClass="btn btn-primary btn-block" 
+                                                 action="#{coordinatorFunctionary.deleteSelected}" 
+                                                 value="Inhabilitar" />
+                            </div>
                         </div>
-                        <div class="col-lg-2">
-
-                            <button type="button" 
-                                    class="btn btn-primary btn-block" 
-                                    data-toggle="modal" 
-                                    data-target="#registerFunctionary">
-                                Registrar</button>
-                            <button type="button" 
-                                    class="btn btn-primary btn-block"
-                                    >
-                                Cambiar roles</button>
-                            <button type="submit" 
-                                    class="btn btn-primary btn-block"
-                                    data-munnin-action="disable"
-                                    data-form-send="formActionTable">
-                                Inhabilitar</button>
-
-                        </div>
-                        <div class="col-lg-12">
-                            <button type="button" 
-                                    class="btn btn-link" 
-                                    id="showDisabled">
-                                Ver Funcionarios Inhabilitados</button>
-                        </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
-            <div id="registerFunctionary" class="modal fade" role="dialog">
-                <div id="ajaxModalRegister">
-
-                </div>
-            </div>
-            
-            <h:outputScript target="body">
-                $(document).ready(function () {
+            <div jsf:rendered=''>
                 
-                loadAjaxContentMunnin('ajax/tableFunctionaries.xhtml', 'ajaxTableFunctionary');
-                loadAjaxContentMunnin('ajax/formRegisterFunctionary.xhtml', 'ajaxModalRegister');
-                loadAjaxContentMunnin('ajax/formActionFunctionary.xhtml', 'ajaxAnswer');
-                });
-            </h:outputScript>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

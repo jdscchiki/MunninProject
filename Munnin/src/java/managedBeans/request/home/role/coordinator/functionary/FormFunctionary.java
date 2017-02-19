@@ -19,28 +19,52 @@ import util.Pager;
  *
  * @author Juan David Segura
  */
-@Named(value = "coordinatorFunctionarySearch")
+@Named(value = "coordinatorFunctionary")
 @RequestScoped
-public class FormFunctionarySearch {
+public class FormFunctionary {
 
-    //valores
     private String search;
-    private String message;
     private ArrayList<Rol> roles;
     private int functionariesPerPage;
     private Integer page;
 
+    private Integer idSelected;
+    private boolean alertMessage;
+    private boolean render;
+
+    private String message;
+
     @Inject
     private LoggedInUser loggedInUser;
 
-    public FormFunctionarySearch() {
+    public FormFunctionary() {
+        search = "";
         functionariesPerPage = 10;
-        if (page == null) {
-            page = 1;
+        page = 1;
+        idSelected = -1;
+        alertMessage = true;
+        render = false;
+    }
+
+    public void deleteSelected() {
+        if (idSelected <= 0) {
+            message = "Es necesario seleccionar un funcionario para realizar la accion";
+        } else {
+            try {
+                int result = Coordinator.disableFunctionary(idSelected, loggedInUser.getFuncionario().getCentro().getId());
+                switch (result) {
+                    case 1:
+                        message = "Se ha inhabilitado el funcionario";
+                        alertMessage = false;
+                        break;
+                    case 2:
+                        message = "Es el ultimo coordinador del centro";
+                }
+            } catch (Exception ex) {
+                message = ex.getMessage();
+            }
         }
-        if (search == null) {
-            search = "";
-        }
+        idSelected = -1;
     }
 
     public ArrayList<Funcionario> viewFunctionaries() {
@@ -57,23 +81,27 @@ public class FormFunctionarySearch {
     public ArrayList<Integer> showPagesLinks() {
         ArrayList<Integer> result = new ArrayList<>();
         int totalPages = 0;
-        
+
         try {
             totalPages = Coordinator.countPagesFunctionaryCenter(loggedInUser.getFuncionario().getCentro().getId(), functionariesPerPage, search);
             result = Pager.showLinkedPages(page, totalPages, 10);
         } catch (Exception e) {
             message = e.getMessage();
         }
-        
+
         return result;
     }
 
-    public String getSearch() {
-        return search;
+    public void changePage(int page) {
+        this.page = page;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
+    public LoggedInUser getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(LoggedInUser loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 
     public String getMessage() {
@@ -82,6 +110,38 @@ public class FormFunctionarySearch {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isAlertMessage() {
+        return alertMessage;
+    }
+
+    public void setAlertMessage(boolean alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    public boolean isRender() {
+        return render;
+    }
+
+    public void setRender(boolean render) {
+        this.render = render;
+    }
+
+    public Integer getIdSelected() {
+        return idSelected;
+    }
+
+    public void setIdSelected(Integer idSelected) {
+        this.idSelected = idSelected;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public ArrayList<Rol> getRoles() {
@@ -108,11 +168,4 @@ public class FormFunctionarySearch {
         this.page = page;
     }
 
-    public LoggedInUser getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(LoggedInUser loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
 }
