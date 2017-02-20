@@ -1,5 +1,11 @@
 $(document).ready(function () {
     
+    $(document).on("'hidden.bs.modal'", "div.destroy-on-close", function (event) {
+        console.log('deberia funcionar');
+        $(this).remove();
+        
+    });
+    
     $(document).on("click", "tr[data-munnin-input-bind]", function (event) {
         event.preventDefault();
         

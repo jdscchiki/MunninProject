@@ -6,6 +6,7 @@
 package managedBeans.request.home.role.coordinator.functionary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import managedBeans.session.LoggedInUser;
 import modelo.Business.Coordinator;
 import modelo.bean.Funcionario;
 import modelo.bean.Rol;
+import modelo.dao.RolDAO;
 import util.Pager;
 
 /**
@@ -27,12 +29,15 @@ public class FormFunctionary {
     private ArrayList<Rol> roles;
     private int functionariesPerPage;
     private Integer page;
-
     private Integer idSelected;
-    private boolean alertMessage;
-    private boolean render;
 
+    private boolean alertMessage;
     private String message;
+    private String modalMessage;
+
+    private Funcionario selectedFuncionary;
+    private int[] idSelectedRoles;
+    private boolean renderChangeRole;
 
     @Inject
     private LoggedInUser loggedInUser;
@@ -43,7 +48,62 @@ public class FormFunctionary {
         page = 1;
         idSelected = -1;
         alertMessage = true;
-        render = false;
+
+        System.out.println("render:"+renderChangeRole);
+        renderChangeRole = false;
+    }
+
+    public void saveChangeRole() {
+        
+        ArrayList<String> rolesChanged = new ArrayList<>();
+        try {
+            for (int i = 0; i < idSelectedRoles.length; i++) {
+                rolesChanged.add("" + idSelectedRoles[i]);
+            }
+            int resultCase = Coordinator.AssignRoles(selectedFuncionary.getId(), rolesChanged);
+            switch(resultCase){
+                case 1:
+                    modalMessage = "Operacion existosa";
+                    alertMessage = false;
+                    break;
+                default:
+                    modalMessage = "Ha ocurrido un problema durante la operacion";
+                    alertMessage = true;
+            }
+            renderChangeRole = true;
+        } catch (Exception e) {
+            message = e.getMessage();
+        }
+    }
+
+    public void changeRoleSelected() {
+        if (idSelected <= 0) {
+            message = "Es necesario seleccionar un funcionario para realizar la accion";
+        } else {
+            try {
+                selectedFuncionary = Coordinator.viewAllInfoFunctionary(idSelected);
+                idSelectedRoles = new int[selectedFuncionary.getRoles().size()];
+                for (int i = 0; i < selectedFuncionary.getRoles().size(); i++) {
+                    if (selectedFuncionary.getRoles().get(i).getId() != RolDAO.ID_ADMINISTRADOR) {
+                        idSelectedRoles[i] = selectedFuncionary.getRoles().get(i).getId();
+                    }
+                }
+            } catch (Exception e) {
+                message = e.getMessage();
+            }
+            renderChangeRole = true;
+        }
+        idSelected = -1;
+    }
+
+    public ArrayList<Rol> viewRoles() {
+        ArrayList<Rol> result = new ArrayList<>();
+        try {
+            result = Coordinator.viewRoles();
+        } catch (Exception e) {
+            message = "lo sentimos ha ocurrido un error";
+        }
+        return result;
     }
 
     public void deleteSelected() {
@@ -68,6 +128,7 @@ public class FormFunctionary {
     }
 
     public ArrayList<Funcionario> viewFunctionaries() {
+        System.out.println("render: "+renderChangeRole);
         ArrayList<Funcionario> result;
         try {
             result = Coordinator.viewPagerFunctionaryCenter(loggedInUser.getFuncionario().getCentro().getId(), page, functionariesPerPage, search);
@@ -120,14 +181,6 @@ public class FormFunctionary {
         this.alertMessage = alertMessage;
     }
 
-    public boolean isRender() {
-        return render;
-    }
-
-    public void setRender(boolean render) {
-        this.render = render;
-    }
-
     public Integer getIdSelected() {
         return idSelected;
     }
@@ -166,6 +219,38 @@ public class FormFunctionary {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public boolean isRenderChangeRole() {
+        return renderChangeRole;
+    }
+
+    public void setRenderChangeRole(boolean renderChangeRole) {
+        this.renderChangeRole = renderChangeRole;
+    }
+
+    public Funcionario getSelectedFuncionary() {
+        return selectedFuncionary;
+    }
+
+    public void setSelectedFuncionary(Funcionario selectedFuncionary) {
+        this.selectedFuncionary = selectedFuncionary;
+    }
+
+    public String getModalMessage() {
+        return modalMessage;
+    }
+
+    public void setModalMessage(String modalMessage) {
+        this.modalMessage = modalMessage;
+    }
+
+    public int[] getIdSelectedRoles() {
+        return idSelectedRoles;
+    }
+
+    public void setIdSelectedRoles(int[] idSelectedRoles) {
+        this.idSelectedRoles = idSelectedRoles;
     }
 
 }

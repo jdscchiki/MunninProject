@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/WEB-INF/template/BasicTemplate.xhtml" >
         <ui:define name="title">
             Funcionarios Coordinador
@@ -11,12 +12,13 @@
             <ui:include src="/WEB-INF/template/BasicTemplate/navbarLinks/coordinator.xhtml" ></ui:include>
         </ui:define>
         <ui:define name="contentPage">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3>Administrar los funcionarios del centro</h3>
-                </div>
-                <div class="panel-body">
-                    <form jsf:id="formFuncionario">
+            <form jsf:id="formFuncionario"
+                  class="form-horizontal">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Administrar los funcionarios del centro</h3>
+                    </div>
+                    <div class="panel-body">
                         <input type="hidden" 
                                jsf:id="idSelected" 
                                jsf:value="#{coordinatorFunctionary.idSelected}" 
@@ -60,7 +62,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>Documento</th>
@@ -86,18 +88,73 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-block">Registrar</button>
-                                <button type="button" class="btn btn-primary btn-block">Cambiar Rol</button>
+                                <h:commandButton styleClass="btn btn-primary btn-block" 
+                                                 action="#{coordinatorFunctionary.changeRoleSelected()}" 
+                                                 value="Cambiar Rol" />
                                 <h:commandButton styleClass="btn btn-primary btn-block" 
                                                  action="#{coordinatorFunctionary.deleteSelected}" 
                                                  value="Inhabilitar" />
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div jsf:rendered=''>
-                
-            </div>
+                <div jsf:rendered='#{coordinatorFunctionary.renderChangeRole}'>
+                    <div id="changeRoleModal" class="modal fade destroy-on-close" role="dialog">
+                        <input type="hidden" jsf:value="#{coordinatorFunctionary.renderChangeRole}" />
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <input type="button" class="close" data-dismiss='modal' value="&#215;" />
+                                    <h4 class="modal-title">Administrar los roles del funcionario</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-sm-12 alert alert-#{coordinatorFunctionary.alertMessage ? 'danger':'success'} "
+                                         jsf:rendered="#{coordinatorFunctionary.modalMessage != null}" >
+                                        #{coordinatorFunctionary.modalMessage}
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3">Funcionario :</label>
+                                        <div class="col-lg-4">
+                                            <p class="form-control-static">
+                                                #{coordinatorFunctionary.selectedFuncionary.nombre} #{coordinatorFunctionary.selectedFuncionary.apellido}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3">Roles :</label>
+                                        <div class="col-lg-4">
+                                            <h:selectManyCheckbox id="roles"
+                                                                  value="#{coordinatorFunctionary.idSelectedRoles}"
+                                                                  layout="pageDirection"
+                                                                  styleClass="">
+                                                <f:selectItems value="#{coordinatorFunctionary.viewRoles()}"
+                                                               var="rol"
+                                                               itemLabel="#{rol.nombre}"
+                                                               itemValue="#{rol.id}" />
+                                            </h:selectManyCheckbox>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton styleClass="btn btn-primary" 
+                                                         action="#{coordinatorFunctionary.saveChangeRole()}" 
+                                                         value="Guardar" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">cerrar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <h:outputScript target="body">
+                $(document).ready(function () {
+                $('#changeRoleModal').modal();
+                });
+            </h:outputScript>
+
         </ui:define>
     </ui:composition>
 </html>

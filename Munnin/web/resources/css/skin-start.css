@@ -509,7 +509,6 @@ tr.table-row {
 /*--/responsive--*/
 /*-- Tables --*/
 td {
-    border: 1px #DDD solid; 
     padding: 5px; 
     cursor: pointer;
 }
