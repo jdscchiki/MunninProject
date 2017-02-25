@@ -6,17 +6,17 @@ $('.login').on('submit', function(e) {
     var $this = $(this),
     $state = $this.find('button > .state');
     $this.addClass('loading');
-    $state.html('Verificando');
+    $state.html('Cargando...');
     //verificando animacion
     setTimeout(function() {
-        $this.addClass('ok');
-        $state.html('Bienvenido !');
+        //$this.addClass('ok');
+        //$state.html('Bienvenido !');
         setTimeout(function() {
-            $state.html('Log in');
+            //$state.html('Log in');
             $this.removeClass('ok loading');
             /*--aqui se redirecciona--*/
             location.href="munnin.jsp";
             working = false;
-        }, 2000);
-    }, 3000);
+        }, 1000);
+    }, 1000);
 });
