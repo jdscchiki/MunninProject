@@ -2629,15 +2629,18 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS es_ultimo_coordinador_centro $$
 CREATE PROCEDURE es_ultimo_coordinador_centro (
-        IN _id_centro VARCHAR(10)
+        IN _id_centro VARCHAR(10),
+        IN _id_funcionario INT
     )
 BEGIN
-    SELECT IF(COUNT(id_funcionario)>1, FALSE, TRUE) as resultado
+    SELECT IF(COUNT(id_funcionario)=0, TRUE, FALSE) as resultado
     FROM funcionario
     INNER JOIN funcionario_rol
     ON id_funcionario = id_funcionario_funcionario_rol
     WHERE activo_funcionario = 1 AND 
-        id_rol_funcionario_rol = 2;
+        id_rol_funcionario_rol = 2 AND
+        id_centro_funcionario = _id_centro AND
+        id_funcionario <> _id_funcionario;
 END $$
 
 DELIMITER ;
