@@ -164,7 +164,7 @@ public class SessionFilter implements Filter {
                 } else {//revisa que no venga del login para evitar otro ingreso a la aplicacion
                     request.setAttribute("nombreUsuario", ((Funcionario) sesion.getAttribute("usuario")).getNombre());
                     if (ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/home/inicio.jsp");
+                        ((HttpServletResponse) response).sendRedirect(contextPath + "/home/intro.jsp");
                         return;
                     }
                 }

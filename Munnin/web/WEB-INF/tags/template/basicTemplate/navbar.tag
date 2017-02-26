@@ -10,7 +10,7 @@
 <%@taglib prefix="navbarLinks" tagdir="/WEB-INF/tags/template/basicTemplate/navbarLinks"%>
 
 <%@attribute name="funcionario" required="true" type="Funcionario"%>
-<%@attribute name="actualRole" required="false" type="Integer"%>
+<%@attribute name="actualRole" required="true" type="Integer"%>
 <%@attribute name="actualPage" required="true" type="Integer"%>
 
 <nav class="navbar navbar-default">

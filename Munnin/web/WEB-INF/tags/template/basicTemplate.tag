@@ -8,13 +8,29 @@
 <%@taglib prefix="component" tagdir="/WEB-INF/tags/template/basicTemplate/"%>
 <%@tag import="modelo.bean.Funcionario" %>
 
-<%@attribute name="title" required="true"%>
-<%@attribute name="panelTitle" required="true"%>
-<%@attribute name="actualPage" required="true" type="Integer"%>
-<%@attribute name="actualRole" required="false" type="Integer" %>
-<%@attribute name="funcionario" required="true" type="Funcionario"%>
+<%@attribute name="title" 
+             required="true"
+             description="The title of the page in the browser tab"%>
+<%@attribute name="panelTitle" 
+             required="true"
+             description="The title of the page in the panel header"%>
+<%@attribute name="actualPage" 
+             required="true" 
+             type="Integer" 
+             description="Integer of the page selected in navbar"%>
+<%@attribute name="actualRole" 
+             required="true" 
+             type="Integer" 
+             description="Integer of the selected roles in sidenav"%>
+<%@attribute name="funcionario" 
+             required="true" 
+             type="Funcionario"
+             description="Logged in user"%>
 
-<%@attribute name="aditionalJS" fragment="true" required="false"%>
+<%@attribute name="additionalJS" 
+             fragment="true" 
+             required="false"
+             description="space to add JavaScript import or code"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -49,6 +65,6 @@
     </div>
 <component:footer />
 <component:js />
-<jsp:invoke fragment="aditionalJS" />
+<jsp:invoke fragment="additionalJS" />
 </body>
 </html>

@@ -1,18 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page language="java" session="false"%>
-<%
-    request.setAttribute("title", "Munnin Coordinador");
-    request.setAttribute("navbar", 3);
-    request.setAttribute("mainPage", 3);
-
-    String aditionalJS = "";
-    aditionalJS += "<script src='" + request.getContextPath() + "/home/role/coordinator/elements/js/functionary.js' languaje='Javascript' type='text/javascript'></script>";
-    request.setAttribute("aditionalJS", aditionalJS);
-%>
-<jsp:include page="/elements/content/top.jsp" />
-<div class="panel panel-default">
-    <div class="panel-heading"><h3>Administrar los funcionarios del centro</h3></div>
-    <div class="panel-body">
+<%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<template:basicTemplate actualPage="3"
+                        actualRole="2"
+                        funcionario="${sessionScope.usuario}"
+                        title="Funcionarios Coordinador Munnin"
+                        panelTitle="Administrar los funcionarios del centro">
+    <jsp:attribute name="additionalJS">
+        <script type="text/javascript">
+            var contextPath = ${URIMunnin};
+        </script>
+        <script src="elements/js/functionary.js" type="text/javascript"></script>
+    </jsp:attribute>
+    <jsp:body>
         <div class="row">
             <div class="col-lg-10">
                 <form id="formSearchFunctionaryEnable" class="form-horizontal" method="POST" action="${URICoordinator}pagerFunctionary">
@@ -31,7 +30,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-8">
                 <div id="fulltable">
                     <jsp:include page="/home/role/coordinator/elements/content/functionary/fullPager.jsp" />
                 </div>
@@ -45,13 +44,6 @@
                 <button type="button" class="btn btn-link" id="showDisabled">Ver Funcionarios Inhabilitados</button>
             </div>
         </div>
-        <div id="div_message" >
-            
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    var contextPath = ${URIMunnin};
-</script>
-<jsp:include page="/home/role/coordinator/elements/content/forms/modalRegisterFunctionary.jsp" />
-<jsp:include page="/elements/content/bot.jsp" />
+        <jsp:include page="/home/role/coordinator/elements/content/forms/modalRegisterFunctionary.jsp" />
+    </jsp:body>
+</template:basicTemplate>

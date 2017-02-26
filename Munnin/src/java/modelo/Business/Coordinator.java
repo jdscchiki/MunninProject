@@ -181,6 +181,7 @@ public class Coordinator {
      * Inhabilita la cuenta de un funcionario
      *
      * @param idFuncionario Id del funcionario a inhabilitar
+     * @param idCentro
      * @return True, si el funcionario fue inhabilitado correctamente
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD o en el query de
@@ -189,7 +190,7 @@ public class Coordinator {
     public static int disableFunctionary(int idFuncionario, String idCentro) throws NamingException, SQLException {
         int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro)) {
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro,idFuncionario)) {
             resultado = 2;
         } else {
             if (funcionarioDAO.disableFunctionary(idFuncionario)) {

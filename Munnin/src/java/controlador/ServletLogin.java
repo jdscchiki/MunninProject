@@ -52,7 +52,7 @@ public class ServletLogin extends HttpServlet {
             } else {
                 HttpSession sesion = (HttpSession) request.getSession();
                 sesion.setAttribute("usuario", funcionario);
-                response.sendRedirect(request.getContextPath()+"/home/inicio.jsp");
+                response.sendRedirect(request.getContextPath()+"/home/intro.jsp");
             }
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

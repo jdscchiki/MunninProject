@@ -35,6 +35,8 @@ public class ServletPager extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            System.out.println("parametros__" + util.Pager.getSearchParameters(request));
+
             String search = request.getParameter("search");
             int page = Integer.parseInt(request.getParameter("page"));
             int cantXpag = 10;

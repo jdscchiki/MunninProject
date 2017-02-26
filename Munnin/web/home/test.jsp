@@ -13,10 +13,9 @@
                         actualRole="2"
                         actualPage="1"
                         panelTitle="Administrar">
-    <jsp:attribute name="aditionalJS">
+    <jsp:attribute name="additionalJS">
 
     </jsp:attribute>
-
     <jsp:body>
         <p>hola</p>
         <template:message message="hola" type="info" />
