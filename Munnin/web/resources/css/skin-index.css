@@ -1,6 +1,6 @@
 body {
 	height: 100vh;
-	background: url("../imagenes/prueba.jpg") 50% fixed;
+        
 	background-size: cover;
 }
 /*-- animate login --*/
