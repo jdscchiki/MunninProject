@@ -167,7 +167,7 @@ public class Coordinator {
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static ArrayList<Funcionario> viewPagerFunctionaryCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+    public static ArrayList<Funcionario> viewFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         funcionarios = funcionarioDAO.selectSomeFunctionaryCenter(idCentro, pagina, cantXpag, search);

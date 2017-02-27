@@ -6,15 +6,17 @@
                         title="Funcionarios Coordinador Munnin"
                         panelTitle="Administrar los funcionarios del centro">
     <jsp:attribute name="additionalJS">
-        <script type="text/javascript">
-            var contextPath = ${URIMunnin};
-        </script>
-        <script src="elements/js/functionary.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-10">
-                <form id="formSearchFunctionaryEnable" class="form-horizontal" method="POST" action="${URICoordinator}pagerFunctionary">
+            <div class="col-lg-12">
+                <form id="formSearchFunctionaryEnable" 
+                      class="form-horizontal" 
+                      method="POST" 
+                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
+                      data-ajax-form="true"
+                      data-diplay-result="#fulltable">
                     <div class="form-group">
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">
@@ -30,20 +32,18 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-8">
-                <div id="fulltable">
-                    <jsp:include page="/home/role/coordinator/elements/content/functionary/fullPager.jsp" />
-                </div>
+            <div class="col-lg-8" id="fulltable">
+                <jsp:include page="functionary/table.jsp" />
             </div>
             <div class="col-lg-2">
                 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#registerFunctionary">Registrar</button>
-                <button type="button" class="btn btn-primary btn-block" id="ChangeRoles" class="btn btn-primary btn-block">Cambiar roles</button>
-                <button type="button" class="btn btn-primary btn-block" id="remove" class="btn btn-primary btn-block">Inhabilitar</button>
+                <button type="button" class="btn btn-primary btn-block" class="btn btn-primary btn-block">Cambiar roles</button>
+                <button type="button" class="btn btn-primary btn-block" class="btn btn-primary btn-block">Inhabilitar</button>
             </div>
             <div class="col-lg-12">
                 <button type="button" class="btn btn-link" id="showDisabled">Ver Funcionarios Inhabilitados</button>
             </div>
         </div>
-        <jsp:include page="/home/role/coordinator/elements/content/forms/modalRegisterFunctionary.jsp" />
+        <jsp:include page="/home/role/coordinator/functionary/modalRegisterFunctionary.jsp" />
     </jsp:body>
 </template:basicTemplate>

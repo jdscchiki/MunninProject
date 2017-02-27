@@ -54,7 +54,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a data-toggle="popover" data-placement="bottom" title="funciona!" data-content="Aqui irian las notificaciones."><span class="glyphicon glyphicon-bell"></span></a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ${funcionario.getNombre()}</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> nombre</a>
                     <ul class="dropdown-menu ">
                         <li><a ><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
                         <li><a data-toggle="modal" data-target="#changePassword"><i class="fa fa-shield" aria-hidden="true"> </i>Cambio de contraseña</a></li>

@@ -27,17 +27,17 @@ import modelo.Business.Coordinator;
  */
 @WebFilter(filterName = "FilterFunctionaryList", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
 public class FilterFunctionaryList implements Filter {
-    
+
     private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public FilterFunctionaryList() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -64,8 +64,8 @@ public class FilterFunctionaryList implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -103,30 +103,33 @@ public class FilterFunctionaryList implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("ListaFuncionariosFilter:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
-        
+
         Throwable problem = null;
         try {
-            try{
+            try {
                 int cantXpag = 10;//resultados por pagina
+                int page = 1;//pagina a cargar
+                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+                Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-                int pagina = 1;//pagina a cargar
-                
-                HttpSession sesion = (HttpSession) ((HttpServletRequest)request).getSession();
-                Funcionario funcionario = (Funcionario)sesion.getAttribute("usuario");
-                request.setAttribute("page", pagina);
-                request.setAttribute("ContentTable", Coordinator.viewPagerFunctionaryCenter(funcionario.getIdCentro(), pagina, cantXpag, ""));
-                request.setAttribute("pagesTable", Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, ""));
-            }catch(Exception ex){
+                int totalPages = Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, "");
+
+                request.setAttribute("page", page);
+                request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+                request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, ""));
+                request.setAttribute("lastSearch", "");
+                request.setAttribute("diplayResult", "#fulltable");
+            } catch (Exception ex) {
                 request.setAttribute("mensaje", ex);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
-            
+
             chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -135,7 +138,7 @@ public class FilterFunctionaryList implements Filter {
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -170,16 +173,16 @@ public class FilterFunctionaryList implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("ListaFuncionariosFilter:Initializing filter");
             }
         }
@@ -198,20 +201,20 @@ public class FilterFunctionaryList implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -228,7 +231,7 @@ public class FilterFunctionaryList implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -242,9 +245,9 @@ public class FilterFunctionaryList implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

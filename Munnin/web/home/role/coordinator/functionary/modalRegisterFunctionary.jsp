@@ -1,7 +1,6 @@
-<%@page import="modelo.bean.TipoDocumento"%>
-<%@page import="java.util.ArrayList"%>
-<form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-functionary">
-    <div id="registerFunctionary" class="modal fade" role="dialog">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<div id="registerFunctionary" class="modal fade" role="dialog">
+    <form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-functionary">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,20 +12,9 @@
                         <label for="formRegisterFunctionaryTipoDoc" class="control-label col-lg-3">Tipo de documento:</label>
                         <div class="col-lg-4">
                             <select id="formRegisterFunctionaryTipoDoc" class="form-control" name="tipoDoc">
-                                <!-- Las opciones se actualizan con una consulta al servidor-->
-                                <%
-                                    if (request.getAttribute("tiposDoc") != null) {
-                                        ArrayList<TipoDocumento> tiposDoc = (ArrayList<TipoDocumento>) request.getAttribute("tiposDoc");
-                                        if (!tiposDoc.isEmpty()) {
-                                            for (int i = 0; i < tiposDoc.size(); i++) {
-                                %>
-                                <option value="<%=tiposDoc.get(i).getId()%>"> <%=tiposDoc.get(i).getNombre()%> </option>
-                                <%
-                                            }
-                                        }
-                                    }
-                                %>
-
+                                <c:forEach items="${tiposDoc}" var="tipoDoc">
+                                    <option value="${tipoDoc.getId()}">${tipoDoc.getNombre()}</option>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -62,7 +50,7 @@
                     </div>
                     <div class="form-group">
                         <div id="divRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -74,5 +62,5 @@
             </div>
 
         </div>
-    </div>
-</form>
+    </form>
+</div>

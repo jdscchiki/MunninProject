@@ -82,13 +82,13 @@ public class Pager {
     }
 
     public static String getSearchParameters(HttpServletRequest request) {
-        String result = "?";
+        String result = "";
 
         Enumeration<String> parameterNames = request.getParameterNames();
 
         while (parameterNames.hasMoreElements()) {
             String parameterName = parameterNames.nextElement();
-            if ("page".equals(parameterName)) {
+            if (!"page".equals(parameterName)) {
                 String[] parameterValues = request.getParameterValues(parameterName);
                 for (String parameterValue : parameterValues) {
                     result += parameterName + "=" + parameterValue + "&";

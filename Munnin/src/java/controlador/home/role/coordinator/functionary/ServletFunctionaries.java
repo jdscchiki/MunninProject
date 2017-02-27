@@ -19,8 +19,8 @@ import modelo.Business.Coordinator;
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletPager", urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
-public class ServletPager extends HttpServlet {
+@WebServlet(name = "ServletFunctionaries", urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
+public class ServletFunctionaries extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,20 +35,26 @@ public class ServletPager extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            System.out.println("parametros___" + util.Pager.getSearchParameters(request));
 
             String search = request.getParameter("search");
-            int page = Integer.parseInt(request.getParameter("page"));
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if(strPage!=null){
+                page=Integer.parseInt(strPage);
+            }
+            
             int cantXpag = 10;
 
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
+            int totalPages = Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search);
             request.setAttribute("page", page);
-            request.setAttribute("search", search);
-            request.setAttribute("ContentTable", Coordinator.viewPagerFunctionaryCenter(funcionario.getIdCentro(), page, cantXpag, search));
-            request.setAttribute("pagesTable", Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search));
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/fullPager.jsp").forward(request, response);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("diplayResult", "#fulltable");
+            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
