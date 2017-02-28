@@ -15,7 +15,7 @@
 <%@attribute name="displayResult" required="true"%>
 <%@attribute name="actionForm" required="false"%>
 
-<ul class="pagination" data-servlet="${servlet}" data-diplay="${displayResult}" data-form-action="${actionForm}">
+<ul class="pagination" data-servlet="${servlet}" data-display="${displayResult}" data-form-action="${actionForm}">
     <c:forEach items="${pages}" var="page" >
         <li class="${(actualPage==page)?'active':''}">
             <a data-link-page="${search}page=${page}">${page}</a>
