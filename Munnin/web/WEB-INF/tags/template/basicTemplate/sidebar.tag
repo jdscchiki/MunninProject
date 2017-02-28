@@ -6,8 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="sidebar of basicTemplate" pageEncoding="UTF-8"%>
-<%@tag import="modelo.bean.Funcionario" %>
-<%@attribute name="funcionario" required="true" type="modelo.bean.Funcionario"%>
+<%@tag import="model.bean.Funcionario" %>
+<%@attribute name="funcionario" required="true" type="Funcionario"%>
 <%@attribute name="activeRole" type="Integer" required="false"%>
 
 <div class="left">

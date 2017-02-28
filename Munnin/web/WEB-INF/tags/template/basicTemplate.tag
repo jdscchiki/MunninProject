@@ -6,7 +6,7 @@
 
 <%@tag description="Template for most of the application" pageEncoding="UTF-8"%>
 <%@taglib prefix="component" tagdir="/WEB-INF/tags/template/basicTemplate/"%>
-<%@tag import="modelo.bean.Funcionario" %>
+<%@tag import="model.bean.Funcionario" %>
 
 <%@attribute name="title" 
              required="true"

@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="navbar of basicTemplate" pageEncoding="UTF-8"%>
-<%@tag import="modelo.bean.Funcionario" %>
+<%@tag import="model.bean.Funcionario" %>
 <%@taglib prefix="navbarLinks" tagdir="/WEB-INF/tags/template/basicTemplate/navbarLinks"%>
 
 <%@attribute name="funcionario" required="true" type="Funcionario"%>
