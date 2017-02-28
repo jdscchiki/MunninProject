@@ -53,9 +53,7 @@ public class ServletFunctionaries extends HttpServlet {
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
             request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("formTable", "#formActionFunctionaryEnable");
             request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("formTable", "#formActionFunctionaryEnable");
             request.setAttribute("idTable", "tableBodyFunctionaries");
             request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {

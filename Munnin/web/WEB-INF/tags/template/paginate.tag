@@ -21,5 +21,3 @@
         </li>
     </c:forEach>
 </ul>
-
-

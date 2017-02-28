@@ -125,7 +125,6 @@ public class FilterFunctionaryList implements Filter {
                 request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, ""));
                 request.setAttribute("lastSearch", "");
                 request.setAttribute("displayResult", "fulltable");
-                request.setAttribute("formTable", "#formActionFunctionaryEnable");
                 request.setAttribute("idTable", "tableBodyFunctionaries");
             } catch (Exception ex) {
                 request.setAttribute("mensaje", ex);
