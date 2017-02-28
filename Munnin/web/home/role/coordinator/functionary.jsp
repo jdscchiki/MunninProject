@@ -23,7 +23,7 @@
                       method="POST" 
                       action="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
                       data-ajax-form="true"
-                      data-diplay="fulltable">
+                      data-display="fulltable">
                     <div class="form-group">
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">

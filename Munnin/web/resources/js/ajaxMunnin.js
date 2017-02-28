@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     //attributes
     var $ajaxForm = 'data-ajax-form';//true to process via jquery ajax
-    var $displayResult = 'data-diplay';//selector of the result of the request
+    var $displayResult = 'data-display';//selector of the result of the request
     var $linkPage = 'data-link-page';//attr for the info to change the page
     var $linkServlet = 'data-servlet';//attr for the link of the servlet
 
