@@ -5,8 +5,7 @@
                    pages="${pages}"
                    search="${lastSearch}"
                    servlet="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
-                   displayResult="${displayResult}"
-                   actionForm="${formTable}"/>
+                   displayResult="${displayResult}"/>
 <div class="container-fluid">
     <div class="table-responsive">
         <table class="table table-bordered">
