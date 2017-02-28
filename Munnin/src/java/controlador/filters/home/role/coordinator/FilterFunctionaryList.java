@@ -124,7 +124,9 @@ public class FilterFunctionaryList implements Filter {
                 request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
                 request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, ""));
                 request.setAttribute("lastSearch", "");
-                request.setAttribute("diplayResult", "#fulltable");
+                request.setAttribute("displayResult", "fulltable");
+                request.setAttribute("formTable", "#formActionFunctionaryEnable");
+                request.setAttribute("idTable", "tableBodyFunctionaries");
             } catch (Exception ex) {
                 request.setAttribute("mensaje", ex);
                 request.getRequestDispatcher("error.jsp").forward(request, response);

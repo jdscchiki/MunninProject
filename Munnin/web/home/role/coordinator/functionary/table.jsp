@@ -5,7 +5,8 @@
                    pages="${pages}"
                    search="${lastSearch}"
                    servlet="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
-                   displayResult="${diplayResult}"/>
+                   displayResult="${displayResult}"
+                   actionForm="${formTable}"/>
 <div class="container-fluid">
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -17,9 +18,13 @@
                     <th>Correo</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="${idTable}"
+                   data-display="${displayResult}"
+                   data-actual-state="${lastSearch}page=${page}"
+                   data-url-receiver="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary">
                 <c:forEach items="${contentTable}" var="funcionario" >
-                    <tr data-id="${funcionario.getId()}">
+                    <tr data-id="${funcionario.getId()}" 
+                        data-data-table="${idTable}">
                         <td>${funcionario.getDocumento()}</td>
                         <td>${funcionario.getNombre()}</td>
                         <td>${funcionario.getApellido()}</td>

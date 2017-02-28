@@ -61,7 +61,7 @@ public class ServletAssignRoles extends HttpServlet {
                     request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
                     break;
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         }catch(Exception e){
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

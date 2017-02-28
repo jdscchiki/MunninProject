@@ -39,7 +39,7 @@ public class ServletManageFunctionary extends HttpServlet {
         try {
             String idFuncionario = request.getParameter("id");
             int idFun;
-            String opcion = request.getParameter("operation");
+            String opcion = request.getParameter("action");
 
             idFun = Integer.parseInt(idFuncionario);
             if (idFun <= 0) {
@@ -47,7 +47,7 @@ public class ServletManageFunctionary extends HttpServlet {
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los funcionarios");
             } else {
                 switch (opcion) {
-                    case "Remove":
+                    case "disable":
                         HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
                         String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
                         switch (Coordinator.disableFunctionary(idFun, idCentro)) {
@@ -65,12 +65,12 @@ public class ServletManageFunctionary extends HttpServlet {
                                 break;
                         }
                         break;
-                    case "ChangeRoles":
+                    case "changeRoles":
                         Funcionario funcionarioResult = Coordinator.viewAllInfoFunctionary(idFun);
                         request.setAttribute("funcionario", funcionarioResult);
                         ArrayList<Rol> roles = Coordinator.viewRoles();
                         request.setAttribute("roles", roles);
-                        request.getRequestDispatcher("/home/role/coordinator/elements/content/forms/modalRoles.jsp").forward(request, response);
+                        request.getRequestDispatcher("/home/role/coordinator/functionary/modalRoles.jsp").forward(request, response);
                         return;
                     default:
                         request.setAttribute("caseMessage", 0);
@@ -78,7 +78,7 @@ public class ServletManageFunctionary extends HttpServlet {
                         break;
                 }
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

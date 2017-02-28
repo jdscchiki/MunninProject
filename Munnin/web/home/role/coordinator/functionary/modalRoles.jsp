@@ -1,7 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <div id="assignRole" class="modal fade" role="dialog">
-    <form id="formAssignRole" class="form-horizontal" role="form" method="POST" action="${URICoordinator}assign-roles">
+    <form id="formAssignRole" 
+          class="form-horizontal" 
+          role="form" 
+          method="POST" 
+          action="${pageContext.request.contextPath}/home/role/coordinator/assign-roles"
+          data-data-table="tableBodyFunctionaries"
+          data-display="formAssignRole_message">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,7 +19,7 @@
                         <label class="control-label col-lg-3">Funcionario :</label>
                         <div class="col-lg-4">
                             <p class="form-control-static">
-                                ${funcionario.getNombre() + " " + funcionario.getApellido()}
+                                ${funcionario.getNombre()} ${funcionario.getApellido()}
                             </p>
                         </div>
                     </div>
@@ -46,10 +52,19 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formAssignRole">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#assignRole").modal();
+            $(document).on("hidden.bs.modal", "#assignRole", function (event) {
+                $(this).remove();
+            });
+        });
+    </script>
+
 </div>
