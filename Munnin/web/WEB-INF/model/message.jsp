@@ -10,6 +10,6 @@
 <html>
     <body>
         <template:message message="${message}"
-                          type="danger"/>
+                          type="${messageType}"/>
     </body>
 </html>

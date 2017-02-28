@@ -52,15 +52,15 @@ public class ServletManageFunctionary extends HttpServlet {
                         String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
                         switch (Coordinator.disableFunctionary(idFun, idCentro)) {
                             case 0:
-                                request.setAttribute("caseMessage", 0);
+                                request.setAttribute("messageType", "danger");
                                 request.setAttribute("message", "El funcionario no ha podido ser inhabilitado");
                                 break;
                             case 1:
-                                request.setAttribute("caseMessage", 1);
+                                request.setAttribute("messageType", "success");
                                 request.setAttribute("message", "El funcionario fue inhabilitado exitosamente");
                                 break;
                             case 2:
-                                request.setAttribute("caseMessage", 0);
+                                request.setAttribute("messageType", "danger");
                                 request.setAttribute("message", "Solo queda un coordinador habilitado para el centro");
                                 break;
                         }
@@ -73,7 +73,7 @@ public class ServletManageFunctionary extends HttpServlet {
                         request.getRequestDispatcher("/home/role/coordinator/functionary/modalRoles.jsp").forward(request, response);
                         return;
                     default:
-                        request.setAttribute("caseMessage", 0);
+                        request.setAttribute("messageType", "danger");
                         request.setAttribute("message", "no ha podido ser completada la accion");
                         break;
                 }

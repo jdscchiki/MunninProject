@@ -41,23 +41,23 @@ public class ServletAssignRoles extends HttpServlet {
             
             switch(Coordinator.AssignRoles(idFun, idRoles)){
                 case 0:
-                    request.setAttribute("caseMessage", 0);
+                    request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "no ha podido realizarse la operacion");
                     break;
                 case 1:
-                    request.setAttribute("caseMessage", 1);
+                    request.setAttribute("messageType", "success");
                     request.setAttribute("message", "se han cambiado los roles correctamente");
                     break;
                 case 2:
-                    request.setAttribute("caseMessage", 0);
+                    request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
                 case 3:
-                    request.setAttribute("caseMessage", 3);
+                    request.setAttribute("messageType", "warning");
                     request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
                     break;
                 case 4:
-                    request.setAttribute("caseMessage", 3);
+                    request.setAttribute("messageType", "warning");
                     request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
                     break;
             }
