@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
+import model.bean.Centro;
 import util.ConexionBD;
 import model.bean.Funcionario;
 import model.bean.Rol;
@@ -76,7 +77,7 @@ public class FuncionarioDAO extends ConexionBD {
         statement.setString(indexNombre, funcionario.getNombre());
         statement.setString(indexApellido, funcionario.getApellido());
         statement.setString(indexTelefono, funcionario.getTelefono());
-        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        statement.setString(indexIdCentro, funcionario.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -120,7 +121,7 @@ public class FuncionarioDAO extends ConexionBD {
         statement.setString(indexNombre, funcionario.getNombre());
         statement.setString(indexApellido, funcionario.getApellido());
         statement.setString(indexTelefono, funcionario.getTelefono());
-        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        statement.setString(indexIdCentro, funcionario.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -189,7 +190,9 @@ public class FuncionarioDAO extends ConexionBD {
             funcionario.setNombre(rs.getString(COL_NOMBRE));
             funcionario.setApellido(rs.getString(COL_APELLIDO));
             funcionario.setTelefono(rs.getString(COL_TELEFONO));
-            funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            funcionario.setCentro(centro);
         }
         if (!encontrado) {
             funcionario = null;
@@ -232,7 +235,9 @@ public class FuncionarioDAO extends ConexionBD {
             funcionario.setNombre(rs.getString(COL_NOMBRE));
             funcionario.setApellido(rs.getString(COL_APELLIDO));
             funcionario.setTelefono(rs.getString(COL_TELEFONO));
-            funcionario.setIdCentro(rs.getString(COL_ID_CENTRO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            funcionario.setCentro(centro);
         }
         if (!encontrado) {
             funcionario = null;//si no existe el correo en la base de datos retorna null
@@ -272,7 +277,7 @@ public class FuncionarioDAO extends ConexionBD {
         statement.setString(indexNombre, funcionario.getNombre());
         statement.setString(indexApellido, funcionario.getApellido());
         statement.setString(indexTelefono, funcionario.getTelefono());
-        statement.setString(indexIdCentro, funcionario.getIdCentro());
+        statement.setString(indexIdCentro, funcionario.getCentro().getId());
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();

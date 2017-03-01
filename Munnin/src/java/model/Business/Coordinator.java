@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
+import model.bean.Centro;
 import model.bean.Funcionario;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
@@ -56,7 +57,9 @@ public class Coordinator {
          */
 
         int resultado = 0;
-        funcionario.setIdCentro(idCentro);
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        funcionario.setCentro(centro);
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();

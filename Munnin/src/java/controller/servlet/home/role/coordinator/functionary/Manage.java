@@ -49,7 +49,7 @@ public class Manage extends HttpServlet {
                 switch (opcion) {
                     case "disable":
                         HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
                         switch (Coordinator.disableFunctionary(idFun, idCentro)) {
                             case 0:
                                 request.setAttribute("messageType", "danger");

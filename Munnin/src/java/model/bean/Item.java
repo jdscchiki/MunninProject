@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Item {
+public class Item implements java.io.Serializable {
     private int id;
     private String descriptor;
     private Funcionario autor;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class TipoLista {
+public class TipoLista implements java.io.Serializable {
     private int id;
     private String nombre;
     private ArrayList<Lista> listas;

@@ -9,7 +9,7 @@ package model.bean;
  *
  * @author Juan David Segura
  */
-public class Notificacion {
+public class Notificacion implements java.io.Serializable {
     private int id;
     private boolean visto;
     private Mensaje mensaje;

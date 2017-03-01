@@ -44,7 +44,7 @@ public class Register extends HttpServlet {
             String apellido = request.getParameter("apellido");
             String telefono = request.getParameter("telefono");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
             idTipoDoc = Integer.parseInt(tipoDoc);
 
             Funcionario nuevoFuncionario = new Funcionario();

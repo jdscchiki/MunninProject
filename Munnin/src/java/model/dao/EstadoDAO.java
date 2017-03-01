@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Estado;
 import util.ConexionBD;
@@ -140,5 +141,22 @@ public class EstadoDAO extends ConexionBD {
         }
 
         return estado;
+    }
+    
+    public ArrayList<Estado> selectAll() throws SQLException {
+        ArrayList<Estado> result = new ArrayList<>();
+        String query = "{CALL VER_ESTADO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID));
+            estado.setNombre(rs.getString(COL_NOMBRE));
+            result.add(estado);
+        }
+
+        return result;
     }
 }

@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Ciudad;
@@ -162,5 +163,31 @@ public class CentroDAO extends ConexionBD {
         }
 
         return centro;
+    }
+    
+    public ArrayList<Centro> selectAll() throws SQLException {
+        ArrayList<Centro> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_CENTRO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID));
+            centro.setNombre(rs.getString(COL_NOMBRE));
+            Regional regional = new Regional();
+            regional.setId(rs.getString(COL_ID_REGIONAL));
+            centro.setRegional(regional);
+            Ciudad ciudad = new Ciudad();
+            ciudad.setId(rs.getString(COL_ID_CIUDAD));
+            centro.setCiudad(ciudad);
+            
+            result.add(centro);
+        }
+
+        return result;
     }
 }
