@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @author Juan David Segura Castro
  */
 @WebServlet(urlPatterns = {"/exit"})
-public class ServletSalida extends HttpServlet {
+public class LogOut extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home;
+package controller.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -17,14 +17,22 @@ import model.Business.General;
 
 /**
  *
- * @author Sergio
+ * Se encarga de administrar la solicitudes realizadas desde el login de la
+ * aplicación
+ *
+ * @version 1.0
+ * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/change-password"})
-public class ServletPass extends HttpServlet {
+@WebServlet(urlPatterns = {"/login"})
+public class Login extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Procesa las solicitudes para ambos HTTP <code>GET</code> y
+     * <code>POST</code> methods. Realiza la conexion a Bases de datos y
+     * redirecciona a index.jsp si los datos ingresados no son correctos y si lo
+     * son correctos redirecciona a munnin.jsp, envia los datos del Usuario
+     * logueado a traves de HttpSession
+     *
      *
      * @param request servlet request
      * @param response servlet response
@@ -35,21 +43,21 @@ public class ServletPass extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String password = request.getParameter("passwordCurrent");
-            String newPassword = request.getParameter("passwordNew");
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-
-            boolean[] result = General.changePassword(funcionario.getCorreo(), password, newPassword);
-
-            request.setAttribute("message", result);
-
-            request.getRequestDispatcher("/elements/content/messagesPassword.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            String correo = request.getParameter("textCorreo");
+            String contrasena = request.getParameter("textContr");
+            Funcionario funcionario = General.verifyFunctionary(correo, contrasena);
+            if (funcionario == null) {
+                request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+            } else {
+                HttpSession sesion = (HttpSession) request.getSession();
+                sesion.setAttribute("usuario", funcionario);
+                response.sendRedirect(request.getContextPath()+"/home/intro.jsp");
+            }
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -88,7 +96,7 @@ public class ServletPass extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Este servlet se encarga de procesar las peticiones de ingreso a la plataforma";
     }// </editor-fold>
 
 }
