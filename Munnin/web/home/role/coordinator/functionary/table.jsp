@@ -4,7 +4,7 @@
 <template:paginate actualPage="${page}"
                    pages="${pages}"
                    search="${lastSearch}"
-                   servlet="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
+                   servlet="${urlServlet}"
                    displayResult="${displayResult}"/>
 <div class="container-fluid">
     <div class="table-responsive">
@@ -20,7 +20,7 @@
             <tbody id="${idTable}"
                    data-display="${displayResult}"
                    data-actual-state="${lastSearch}page=${page}"
-                   data-url-receiver="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary">
+                   data-url-receiver="${urlServlet}">
                 <c:forEach items="${contentTable}" var="funcionario" >
                     <tr data-id="${funcionario.getId()}" 
                         data-data-table="${idTable}">

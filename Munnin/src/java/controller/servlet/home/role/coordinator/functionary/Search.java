@@ -48,13 +48,14 @@ public class Search extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search);
+            int totalPages = Coordinator.countPagesFunctionariesCenter(funcionario.getIdCentro(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
             request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("idTable", "tableBodyFunctionaries");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerFunctionary"));
             request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

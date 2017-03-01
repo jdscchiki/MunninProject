@@ -21,7 +21,7 @@ import model.bean.Funcionario;
  * @author Juan David Segura
  */
 @WebServlet(urlPatterns = {"/home/role/coordinator/refresh-disabled-functionary"})
-public class RefreshDisabled extends HttpServlet {
+public class SearchDisabled extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,11 +37,26 @@ public class RefreshDisabled extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String search = request.getParameter("search");
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if (strPage != null) {
+                page = Integer.parseInt(strPage);
+            }
+
+            int cantXpag = 10;
+
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
-            ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, search);
-            
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/table.jsp").forward(request, response);
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
+            int totalPages = Coordinator.countPagesFunctionariesDisabledCenter(funcionario.getIdCentro(), cantXpag, search);
+            request.setAttribute("page", page);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Coordinator.viewFunctionariesDisabledCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("displayResult", "showDisabledFunctionaryTable");
+            request.setAttribute("idTable", "tableBodyFunctionariesDisabled");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/refresh-disabled-functionary"));
+            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

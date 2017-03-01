@@ -138,11 +138,26 @@ public class Coordinator {
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static int countPagesFunctionaryCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+    public static int countPagesFunctionariesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionaryCenter(idCentro, search);
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search);
+        funcionarioDAO.cerrarConexion();
+
+        paginas = cantFuncionarios / cantXpag;
+        if (cantFuncionarios % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static int countPagesFunctionariesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantFuncionarios;
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        cantFuncionarios = funcionarioDAO.countFunctionariesDisabledCenter(idCentro, search);
         funcionarioDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
@@ -170,7 +185,7 @@ public class Coordinator {
     public static ArrayList<Funcionario> viewFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionaryCenter(idCentro, pagina, cantXpag, search);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search);
 
         funcionarioDAO.cerrarConexion();
 
@@ -329,13 +344,13 @@ public class Coordinator {
         return answer;
     }
 
-    public static ArrayList<Funcionario> viewDisabledFunctionary(String idCentro, String filtro) throws NamingException, SQLException {
-        ArrayList<Funcionario> answer;
+    public static ArrayList<Funcionario> viewFunctionariesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        answer = funcionarioDAO.selectDisabledFunctionaryCenter(idCentro, filtro);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesDisableCenter(idCentro, pagina, cantXpag, search);
 
         funcionarioDAO.cerrarConexion();
 
-        return answer;
+        return funcionarios;
     }
 }

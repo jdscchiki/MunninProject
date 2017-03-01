@@ -62,7 +62,12 @@
                     Inhabilitar</button>
             </div>
             <div class="col-lg-12">
-                <button type="button" class="btn btn-link" id="showDisabled">Ver Funcionarios Inhabilitados</button>
+                <button type="button" 
+                        class="btn btn-link" 
+                        data-servlet="${pageContext.request.contextPath}/home/role/coordinator/functionary/modalShowDisable.jsp"
+                        data-display="message_functionaries">
+                    Ver Funcionarios Inhabilitados
+                </button>
             </div>
         </div>
         <form id="formActionFunctionaryEnable"

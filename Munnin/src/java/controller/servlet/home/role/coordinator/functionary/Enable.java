@@ -40,14 +40,14 @@ public class Enable extends HttpServlet {
                 request.setAttribute("message", "Seleciona un funcionario para realizar el proceso");
             } else {
                 if (Coordinator.enableFunctionary(id)) {
-                    request.setAttribute("caseMessage", "success");
+                    request.setAttribute("messageType", "success");
                     request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
                 } else {
-                    request.setAttribute("caseMessage", "danger");
+                    request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
                 }
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
