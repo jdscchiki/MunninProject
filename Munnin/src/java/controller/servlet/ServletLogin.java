@@ -23,7 +23,7 @@ import model.Business.General;
  * @version 1.0
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/login"})
+@WebServlet(urlPatterns = {"/login"})
 public class ServletLogin extends HttpServlet {
 
     /**

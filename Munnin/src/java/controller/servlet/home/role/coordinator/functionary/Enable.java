@@ -6,22 +6,19 @@
 package controller.servlet.home.role.coordinator.functionary;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
-import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletShowDisabled", urlPatterns = {"/home/role/coordinator/show-disabled-functionary"})
-public class ServletShowDisabled extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/enable-functionary"})
+public class Enable extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,16 +32,23 @@ public class ServletShowDisabled extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
-            
-            ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, "");
-            
-            request.setAttribute("ContentTable", disabledFunctionary);
-            
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/modalShowDisable.jsp").forward(request, response);
-        }catch(Exception e){
+        try {
+            String stringId = request.getParameter("id");
+            int id = Integer.parseInt(stringId);
+            if (id <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Seleciona un funcionario para realizar el proceso");
+            } else {
+                if (Coordinator.enableFunctionary(id)) {
+                    request.setAttribute("caseMessage", "success");
+                    request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
+                } else {
+                    request.setAttribute("caseMessage", "danger");
+                    request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
+                }
+            }
+            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+        } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }

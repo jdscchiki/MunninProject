@@ -19,8 +19,8 @@ import model.Business.Coordinator;
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletAssignRoles", urlPatterns = {"/home/role/coordinator/assign-roles"})
-public class ServletAssignRoles extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/assign-roles"})
+public class AssignRoles extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

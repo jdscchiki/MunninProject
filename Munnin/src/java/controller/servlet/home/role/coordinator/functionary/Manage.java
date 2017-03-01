@@ -21,8 +21,8 @@ import model.bean.Rol;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletAdminFuncionarios", urlPatterns = {"/home/role/coordinator/admin-functionary"})
-public class ServletManageFunctionary extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/admin-functionary"})
+public class Manage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

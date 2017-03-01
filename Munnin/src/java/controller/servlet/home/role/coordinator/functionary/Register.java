@@ -20,8 +20,8 @@ import model.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(name = "ServletRegistroFuncionario", urlPatterns = {"/home/role/coordinator/register-functionary"})
-public class ServletRegisterFunctionary extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/register-functionary"})
+public class Register extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

@@ -6,21 +6,22 @@
 package controller.servlet.home.role.coordinator.functionary;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.bean.Funcionario;
 import model.Business.Coordinator;
+import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletFunctionaries", urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
-public class ServletFunctionaries extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/refresh-disabled-functionary"})
+public class RefreshDisabled extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,27 +36,12 @@ public class ServletFunctionaries extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-
             String search = request.getParameter("search");
-            String strPage = request.getParameter("page");
-            int page = 1;
-            if (strPage != null) {
-                page = Integer.parseInt(strPage);
-            }
-
-            int cantXpag = 10;
-
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-
-            int totalPages = Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search);
-            request.setAttribute("page", page);
-            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, search));
-            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyFunctionaries");
-            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, search);
+            
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

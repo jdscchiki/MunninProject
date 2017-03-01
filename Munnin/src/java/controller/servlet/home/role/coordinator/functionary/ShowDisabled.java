@@ -20,8 +20,8 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletRefreshDisabled", urlPatterns = {"/home/role/coordinator/refresh-disabled-functionary"})
-public class ServletRefreshDisabled extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/show-disabled-functionary"})
+public class ShowDisabled extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +35,17 @@ public class ServletRefreshDisabled extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String search = request.getParameter("search");
+        try{
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
-            ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, search);
+            
+            ArrayList<Funcionario> disabledFunctionary = Coordinator.viewDisabledFunctionary(idCentro, "");
+            
             request.setAttribute("ContentTable", disabledFunctionary);
-            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/table.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
+            
+            request.getRequestDispatcher("/home/role/coordinator/elements/content/functionary/modalShowDisable.jsp").forward(request, response);
+        }catch(Exception e){
+            request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }

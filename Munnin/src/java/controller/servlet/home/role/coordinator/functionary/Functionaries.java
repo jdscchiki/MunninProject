@@ -11,14 +11,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.bean.Funcionario;
 import model.Business.Coordinator;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(name = "ServletEnable", urlPatterns = {"/home/role/coordinator/enable-functionary"})
-public class ServletEnable extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
+public class Functionaries extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,23 +35,29 @@ public class ServletEnable extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String stringId = request.getParameter("id");
-            int id = Integer.parseInt(stringId);
-            if (id <= 0) {
-                request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Seleciona un funcionario para realizar el proceso");
-            } else {
-                if (Coordinator.enableFunctionary(id)) {
-                    request.setAttribute("caseMessage", "success");
-                    request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
-                } else {
-                    request.setAttribute("caseMessage", "danger");
-                    request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
-                }
+
+            String search = request.getParameter("search");
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if (strPage != null) {
+                page = Integer.parseInt(strPage);
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+
+            int cantXpag = 10;
+
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
+            int totalPages = Coordinator.countPagesFunctionaryCenter(funcionario.getIdCentro(), cantXpag, search);
+            request.setAttribute("page", page);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Coordinator.viewFunctionariesCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("displayResult", "fulltable");
+            request.setAttribute("idTable", "tableBodyFunctionaries");
+            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }

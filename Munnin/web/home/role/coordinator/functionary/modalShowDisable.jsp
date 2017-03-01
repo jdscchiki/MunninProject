@@ -1,7 +1,5 @@
-<%@page import="modelo.bean.Funcionario"%>
-<%@page import="java.util.ArrayList"%>
-<form id="formDisabledFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}refresh-disabled-functionary">
-    <div id="disabledFunctionary" class="modal fade" role="dialog">
+<div id="disabledFunctionary" class="modal fade" role="dialog">
+    <form id="formDisabledFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}refresh-disabled-functionary">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -23,8 +21,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="showDisabledFunctionary_Table" style="max-height: 300px; overflow-y: auto">
-                            <jsp:include page="/home/role/coordinator/elements/content/functionary/table.jsp" />
+                        <div id="showDisabledFunctionary_Table">
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -39,5 +37,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
