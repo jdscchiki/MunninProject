@@ -20,7 +20,7 @@ import model.Business.Coordinator;
  * @author Juan David Segura
  */
 @WebServlet(urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
-public class Functionaries extends HttpServlet {
+public class Search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
