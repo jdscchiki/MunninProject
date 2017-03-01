@@ -2644,3 +2644,77 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_funcionario) as conteo
+        FROM  funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 0);
+    ELSE 
+        SELECT COUNT(id_funcionario) as conteo
+        FROM  funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 0 AND 
+            (LOWER(documento_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_funcionario) REGEXP LOWER(_filtro) OR
+            LOWER(apellido_funcionario) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_FUNCIONARIOS_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE VER_FUNCIONARIOS_INHABILITADOS_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _funcionarioXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _funcionarioXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 0
+        LIMIT _inicio, _funcionarioXpagina );
+    ELSE
+        SELECT 
+            id_funcionario ,
+            id_tipo_documento_funcionario ,
+            documento_funcionario,
+            nombre_funcionario,
+            apellido_funcionario,
+            correo_funcionario
+        FROM funcionario
+        WHERE id_centro_funcionario = _id_centro AND activo_funcionario = 0 AND
+        (LOWER(documento_funcionario) REGEXP LOWER(_search) OR
+        LOWER(nombre_funcionario) REGEXP LOWER(_search) OR
+        LOWER(apellido_funcionario) REGEXP LOWER(_search))
+        LIMIT _inicio, _funcionarioXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
