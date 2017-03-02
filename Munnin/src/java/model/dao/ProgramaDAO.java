@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Programa;
@@ -149,5 +150,27 @@ public class ProgramaDAO extends ConexionBD {
         }
 
         return programa;
+    }
+    
+    public ArrayList<Programa> selectAll() throws SQLException {
+        ArrayList<Programa> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_PROGRAMA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Programa programa = new Programa();
+            programa.setId(rs.getInt(COL_ID));
+            programa.setNombre(rs.getString(COL_NOMBRE));
+            Area area = new Area();
+            area.setId(rs.getInt(COL_ID_AREA));
+            programa.setArea(area);
+            
+            result.add(programa);
+        }
+
+        return result;
     }
 }

@@ -145,7 +145,8 @@ public class EstadoDAO extends ConexionBD {
     
     public ArrayList<Estado> selectAll() throws SQLException {
         ArrayList<Estado> result = new ArrayList<>();
-        String query = "{CALL VER_ESTADO()}";
+        
+        String query = "{CALL VER_TODOS_ESTADO()}";
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         ResultSet rs = statement.executeQuery();

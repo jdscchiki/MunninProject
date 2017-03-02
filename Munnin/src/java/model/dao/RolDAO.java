@@ -150,7 +150,7 @@ public class RolDAO extends ConexionBD {
     }
     
     public ArrayList<Rol> selectAll() throws SQLException{
-        ArrayList<Rol> roles = new ArrayList<>();
+        ArrayList<Rol> result = new ArrayList<>();
         
         String query = "{CALL VER_TODOS_ROL()}";
 
@@ -161,9 +161,9 @@ public class RolDAO extends ConexionBD {
             Rol rol = new Rol();
             rol.setId(rs.getInt(COL_ID));
             rol.setNombre(rs.getString(COL_NOMBRE));
-            roles.add(rol);
+            result.add(rol);
         }
         
-        return roles;
+        return result;
     }
 }

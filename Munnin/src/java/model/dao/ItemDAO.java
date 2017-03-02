@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Item;
@@ -149,5 +150,27 @@ public class ItemDAO extends ConexionBD {
         }
 
         return Item;
+    }
+    
+    public ArrayList<Item> selectAll() throws SQLException {
+        ArrayList<Item> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_ITEM()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Item item = new Item();
+            item.setId(rs.getInt(COL_ID));
+            item.setDescriptor(rs.getString(COL_DESCRIPTOR));
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_AUTOR));
+            item.setAutor(funcionario);
+            
+            result.add(item);
+        }
+
+        return result;
     }
 }

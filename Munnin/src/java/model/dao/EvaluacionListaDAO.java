@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
@@ -180,5 +181,35 @@ public class EvaluacionListaDAO extends ConexionBD {
         }
 
         return evaluacionLista;
+    }
+    
+    public ArrayList<EvaluacionLista> selectAll() throws SQLException {
+        ArrayList<EvaluacionLista> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_EVALUACION_LISTA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            EvaluacionLista evaluacionLista = new EvaluacionLista();
+            evaluacionLista.setId(rs.getInt(COL_ID));
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID_VERSION));
+            evaluacionLista.setVersion(version);
+            Lista lista = new Lista();
+            lista.setId(rs.getInt(COL_ID_LISTA));
+            evaluacionLista.setLista(lista);
+            evaluacionLista.setCalificacion(rs.getInt(COL_CALIFICACION));
+            evaluacionLista.setObservaciones(rs.getString(COL_OBSERVACION));
+            evaluacionLista.setFecha(rs.getDate(COL_FECHA));
+            Funcionario evaluador = new Funcionario();
+            evaluador.setId(rs.getInt(COL_ID_EVALUADOR));
+            evaluacionLista.setEvaluador(evaluador);
+            
+            result.add(evaluacionLista);
+        }
+
+        return result;
     }
 }

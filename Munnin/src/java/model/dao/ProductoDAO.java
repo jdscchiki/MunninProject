@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Producto;
 import model.bean.TipoObjetoAprendizaje;
@@ -161,5 +162,29 @@ public class ProductoDAO extends ConexionBD {
         }
 
         return producto;
+    }
+    
+    public ArrayList<Producto> selectAll() throws SQLException {
+        ArrayList<Producto> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_PRODUCTO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID));
+            producto.setNombre(rs.getString(COL_NOMBRE));
+            producto.setDescripcion(rs.getString(COL_DESCRIPCION));
+            producto.setPalabrasClave(rs.getString(COL_PALABRAS_CLAVE));
+            TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
+            tipoObjetoAprendizaje.setId(rs.getInt(COL_ID_TIPO_APRENDIZAJE));
+            producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
+            
+            result.add(producto);
+        }
+
+        return result;
     }
 }

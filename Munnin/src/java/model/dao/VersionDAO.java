@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Estado;
@@ -206,5 +207,41 @@ public class VersionDAO extends ConexionBD {
         }
 
         return version;
+    }
+    
+    public ArrayList<Version> selectAll() throws SQLException {
+        ArrayList<Version> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_VERSION()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setUrl(rs.getString(COL_URL));
+            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
+            version.setFecha(rs.getDate(COL_FECHA));
+            version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
+            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID_ESTADO));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
+            version.setTipoArchivo(tipoArchivo);
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            version.setCentro(centro);
+            
+            result.add(version);
+        }
+
+        return result;
     }
 }

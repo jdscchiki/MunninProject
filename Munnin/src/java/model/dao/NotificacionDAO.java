@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Mensaje;
@@ -178,5 +179,36 @@ public class NotificacionDAO extends ConexionBD {
         }
 
         return notificacion;
+    }
+    
+    public ArrayList<Notificacion> selectAll() throws SQLException {
+        ArrayList<Notificacion> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_NOTIFICACION()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Notificacion notificacion = new Notificacion();
+            notificacion.setId(rs.getInt(COL_ID));
+            notificacion.setVisto(rs.getBoolean(COL_ACTIVO));
+            Mensaje mensaje = new Mensaje();
+            mensaje.setId(rs.getInt(COL_ID_MENSAJE));
+            notificacion.setMensaje(mensaje);
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID_VERSION));
+            notificacion.setVersion(version);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_FUNCIONARIO));
+            notificacion.setFuncionario(funcionario);
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(COL_ID_ROL));
+            notificacion.setRol(rol);
+            
+            result.add(notificacion);
+        }
+
+        return result;
     }
 }

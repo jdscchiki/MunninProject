@@ -200,6 +200,36 @@ public class FuncionarioDAO extends ConexionBD {
 
         return funcionario;
     }
+    
+    public ArrayList<Funcionario> selectAll() throws SQLException {
+        ArrayList<Funcionario> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_FUNCIONARIO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID));
+            funcionario.setActivo(rs.getBoolean(COL_ACTIVO));
+            TipoDocumento tipoDocumento = new TipoDocumento();
+            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
+            funcionario.setTipoDocumento(tipoDocumento);
+            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
+            funcionario.setContrasena(rs.getString(COL_CONTRASENA));
+            funcionario.setNombre(rs.getString(COL_NOMBRE));
+            funcionario.setApellido(rs.getString(COL_APELLIDO));
+            funcionario.setTelefono(rs.getString(COL_TELEFONO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            funcionario.setCentro(centro);
+            
+            result.add(funcionario);
+        }
+
+        return result;
+    }
 
     /**
      * Consulta los datos del funcionario

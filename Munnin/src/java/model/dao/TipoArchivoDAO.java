@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.TipoArchivo;
 import util.ConexionBD;
@@ -141,5 +142,24 @@ public class TipoArchivoDAO extends ConexionBD {
         }
 
         return tipoArchivo;
+    }
+    
+    public ArrayList<TipoArchivo> selectAll() throws SQLException {
+        ArrayList<TipoArchivo> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_TIPO_ARCHIVO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID));
+            tipoArchivo.setExtension(rs.getString(COL_EXTENSION));
+            
+            result.add(tipoArchivo);
+        }
+
+        return result;
     }
 }
