@@ -244,7 +244,7 @@ public class FuncionarioDAO extends ConexionBD {
         Funcionario funcionario = new Funcionario();//el objeto en donde se guardan los resultados de la consulta
 
         //datos de la consulta en base de datos
-        String query = "{CALL INGRESO(?)}";
+        String query = "{CALL VER_FUNCIONARIO_CORREO(?)}";
         int indexCorreo = 1;
 
         funcionario.setCorreo(correo);
@@ -289,7 +289,7 @@ public class FuncionarioDAO extends ConexionBD {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL REGISTRAR_FUNCIONARIO(?,?,?,?,?,?,?,?)}";
+        String query = "{CALL INSERTAR_FUNCIONARIO_REGISTRO(?,?,?,?,?,?,?,?)}";
         int indexTipoDoc = 1;
         int indexDoc = 2;
         int indexCorreo = 3;
@@ -417,7 +417,7 @@ public class FuncionarioDAO extends ConexionBD {
         ArrayList<Rol> roles = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_ROLES_FUNCIONARIO(?)}";
+        String query = "{CALL VER_TODOS_ROL_FUNCIONARIO(?)}";
         int indexIdFunc = 1;
 
         String resIdRol = "id_rol_funcionario_rol";//nombre de la columna del select
@@ -457,7 +457,7 @@ public class FuncionarioDAO extends ConexionBD {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIOS_CENTRO(?,?,?,?)}";
+        String query = "{CALL VER_TODOS_FUNCIONARIO_CENTRO(?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
@@ -491,7 +491,7 @@ public class FuncionarioDAO extends ConexionBD {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIOS_INHABILITADOS_CENTRO(?,?,?,?)}";
+        String query = "{CALL VER_TODOS_FUNCIONARIO_INHABILITADOS_CENTRO(?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
@@ -533,7 +533,7 @@ public class FuncionarioDAO extends ConexionBD {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_FUNCIONARIOS_CENTRO(?,?)}";
+        String query = "{CALL VER_FUNCIONARIO_CENTRO_CONTEO(?,?)}";
         int indexCentro = 1;
         int indexFiltro = 2;
 
@@ -556,7 +556,7 @@ public class FuncionarioDAO extends ConexionBD {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO(?,?)}";
+        String query = "{CALL VER_FUNCIONARIO_INHABILITADO_CENTRO_CONTEO(?,?)}";
         int indexCentro = 1;
         int indexFiltro = 2;
 
@@ -587,7 +587,7 @@ public class FuncionarioDAO extends ConexionBD {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL INHABILITAR_FUNCIONARIO(?)}";
+        String query = "{CALL EDITAR_FUNCIONARIO_INHABILITAR(?)}";
         int indexId = 1;
 
         CallableStatement statement = getConexion().prepareCall(query);
@@ -608,7 +608,7 @@ public class FuncionarioDAO extends ConexionBD {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL HABILITAR_FUNCIONARIO(?)}";
+        String query = "{CALL EDITAR_FUNCIONARIO_HABILITAR(?)}";
         int indexId = 1;
 
         CallableStatement statement = getConexion().prepareCall(query);
@@ -638,7 +638,7 @@ public class FuncionarioDAO extends ConexionBD {
         boolean resultado;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CAMBIO_CONTRASENA(?,?)}";
+        String query = "{CALL EDITAR_FUNCIONARIO_CONTRASENA(?,?)}";
         int indexId = 1;
         int indexContrasena = 2;
 
@@ -720,41 +720,11 @@ public class FuncionarioDAO extends ConexionBD {
         return resultado;
     }
 
-    public ArrayList<Funcionario> selectDisabledFunctionaryCenter(String idCentro, String filtro) throws SQLException {
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
-
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIOS_INHABILITADOS_CENTRO(?,?)}";
-        int indexCentro = 1;
-        int indexFiltro = 2;
-
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setString(indexFiltro, filtro);
-
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Funcionario funcionario = new Funcionario();
-            funcionario.setId(rs.getInt(COL_ID));
-            TipoDocumento tipoDocumento = new TipoDocumento();
-            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
-            funcionario.setTipoDocumento(tipoDocumento);
-            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
-            funcionario.setNombre(rs.getString(COL_NOMBRE));
-            funcionario.setApellido(rs.getString(COL_APELLIDO));
-            funcionario.setCorreo(rs.getString(COL_CORREO));
-            funcionarios.add(funcionario);
-        }
-        return funcionarios;
-    }
-
     public boolean isLastCoordinatorEnableCenter(String idCentro, int idFuncionario) throws SQLException {
         boolean answer = false;
 
         //datos de la consulta en base de datos
-        String query = "{CALL ES_ULTIMO_COORDINADOR_CENTRO(?,?)}";
+        String query = "{CALL VER_FUNCIONARIO_ES_ULTIMO_COORDINADOR(?,?)}";
         int indexIdCentro = 1;
         int indexIdFuncionario = 2;
         String colAnswer = "RESULTADO";

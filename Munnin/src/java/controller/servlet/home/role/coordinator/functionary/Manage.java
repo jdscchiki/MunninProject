@@ -43,7 +43,7 @@ public class Manage extends HttpServlet {
 
             idFun = Integer.parseInt(idFuncionario);
             if (idFun <= 0) {
-                request.setAttribute("caseMessage", 3);
+                request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los funcionarios");
             } else {
                 switch (opcion) {
