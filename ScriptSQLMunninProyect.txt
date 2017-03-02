@@ -2620,13 +2620,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP VER_FUNCIONARIOS_CENTRO
+-- SP VER_TODOS_FUNCIONARIO_CENTRO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_funcionarios_centro $$
-CREATE PROCEDURE ver_funcionarios_centro (
+DROP PROCEDURE IF EXISTS VER_TODOS_FUNCIONARIO_CENTRO $$
+CREATE PROCEDURE VER_TODOS_FUNCIONARIO_CENTRO (
         IN _id_centro VARCHAR(10),
         IN _pagina INT,
         IN _funcionarioXpagina INT,
@@ -2666,13 +2666,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP REGISTRAR_FUNCIONARIO
+-- SP INSERTAR_FUNCIONARIO_REGISTRO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS registrar_funcionario $$
-CREATE PROCEDURE registrar_funcionario (
+DROP PROCEDURE IF EXISTS INSERTAR_FUNCIONARIO_REGISTRO $$
+CREATE PROCEDURE INSERTAR_FUNCIONARIO_REGISTRO (
         IN _id_tipo_documento_funcionario INT ,
         IN _documento_funcionario VARCHAR(12) ,
         IN _correo_funcionario VARCHAR(100) ,
@@ -2698,13 +2698,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP INGRESO
+-- SP VER_FUNCIONARIO_CORREO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ingreso $$
-CREATE PROCEDURE ingreso (
+DROP PROCEDURE IF EXISTS VER_FUNCIONARIO_CORREO $$
+CREATE PROCEDURE VER_FUNCIONARIO_CORREO (
         IN _correo_funcionario VARCHAR(100)
     )
 BEGIN
@@ -2724,30 +2724,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP VER_TODOS_TIPO_DOCUMENTO
+-- SP VER_TODOS_ROL_FUNCIONARIO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_todos_tipo_documento $$
-CREATE PROCEDURE ver_todos_tipo_documento (
-    )
-BEGIN
-    SELECT id_tipo_documento ,
-        nombre_tipo_documento
-    FROM tipo_documento ;
-END $$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- SP VER_ROLES_FUNCIONARIO
--- -----------------------------------------------------
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS ver_roles_funcionario $$
-CREATE PROCEDURE ver_roles_funcionario (
+DROP PROCEDURE IF EXISTS VER_TODOS_ROL_FUNCIONARIO $$
+CREATE PROCEDURE VER_TODOS_ROL_FUNCIONARIO (
         IN _id_funcionario INT
     )
 BEGIN
@@ -2761,13 +2744,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP CONTEO_FUNCIONARIOS_CENTRO
+-- SP VER_FUNCIONARIO_CENTRO_CONTEO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS conteo_funcionarios_centro $$
-CREATE PROCEDURE conteo_funcionarios_centro (
+DROP PROCEDURE IF EXISTS VER_FUNCIONARIO_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_FUNCIONARIO_CENTRO_CONTEO (
         IN _id_centro VARCHAR(10),
         IN _filtro VARCHAR(140)
     )
@@ -2789,13 +2772,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP INHABILITAR_FUNCIONARIO
+-- SP EDITAR_FUNCIONARIO_INHABILITAR
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS inhabilitar_funcionario $$
-CREATE PROCEDURE inhabilitar_funcionario (
+DROP PROCEDURE IF EXISTS EDITAR_FUNCIONARIO_INHABILITAR $$
+CREATE PROCEDURE EDITAR_FUNCIONARIO_INHABILITAR (
         IN _id_funcionario INT
     )
 BEGIN
@@ -2807,35 +2790,19 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP CAMBIO_CONTRASENA
+-- SP EDITAR_FUNCIONARIO_CONTRASENA
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS cambio_Contrasena $$
-CREATE PROCEDURE cambio_Contrasena(
+DROP PROCEDURE IF EXISTS EDITAR_FUNCIONARIO_CONTRASENA $$
+CREATE PROCEDURE EDITAR_FUNCIONARIO_CONTRASENA(
     in id INT, 
     in pass VARCHAR(255))
 BEGIN
     UPDATE funcionario
     SET contrasena_funcionario = pass
     WHERE id_funcionario = id;
-END $$
-DELIMITER ;
-
--- -----------------------------------------------------
--- SP VER_FUNCIONARIO_CORREO
--- -----------------------------------------------------
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS ver_funcionario_correo $$
-CREATE PROCEDURE ver_funcionario_correo(
- in _correo VARCHAR(100))
-BEGIN
-    SELECT id_funcionario
-    FROM funcionario
-    WHERE correo_funcionario = _correo;
 END $$
 DELIMITER ;
 
@@ -2879,28 +2846,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP VER_TODOS_ROL
+-- SP EDITAR_FUNCIONARIO_HABILITAR
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_todos_rol $$
-CREATE PROCEDURE ver_todos_rol()
-BEGIN
-    SELECT  id_rol ,
-            nombre_rol
-    FROM rol;
-END $$
-DELIMITER ;
-
--- -----------------------------------------------------
--- SP HABILITAR_FUNCIONARIO
--- -----------------------------------------------------
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS habilitar_funcionario $$
-CREATE PROCEDURE habilitar_funcionario (
+DROP PROCEDURE IF EXISTS EDITAR_FUNCIONARIO_HABILITAR $$
+CREATE PROCEDURE EDITAR_FUNCIONARIO_HABILITAR (
         IN _id_funcionario INT
     )
 BEGIN
@@ -2912,13 +2864,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP ES_ULTIMO_COORDINADOR_CENTRO
+-- SP VER_FUNCIONARIO_ES_ULTIMO_COORDINADOR
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS es_ultimo_coordinador_centro $$
-CREATE PROCEDURE es_ultimo_coordinador_centro (
+DROP PROCEDURE IF EXISTS VER_FUNCIONARIO_ES_ULTIMO_COORDINADOR $$
+CREATE PROCEDURE VER_FUNCIONARIO_ES_ULTIMO_COORDINADOR (
         IN _id_centro VARCHAR(10),
         IN _id_funcionario INT
     )
@@ -2936,13 +2888,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- SP VER_FUNCIONARIO_INHABILITADO_CENTRO_CONTEO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO $$
-CREATE PROCEDURE CONTEO_FUNCIONARIOS_INHABILITADOS_CENTRO (
+DROP PROCEDURE IF EXISTS VER_FUNCIONARIO_INHABILITADO_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_FUNCIONARIO_INHABILITADO_CENTRO_CONTEO (
         IN _id_centro VARCHAR(10),
         IN _filtro VARCHAR(140)
     )
@@ -2964,13 +2916,13 @@ END $$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- SP VER_FUNCIONARIOS_INHABILITADOS_CENTRO
+-- SP VER_TODOS_FUNCIONARIO_INHABILITADOS_CENTRO
 -- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS VER_FUNCIONARIOS_INHABILITADOS_CENTRO $$
-CREATE PROCEDURE VER_FUNCIONARIOS_INHABILITADOS_CENTRO (
+DROP PROCEDURE IF EXISTS VER_TODOS_FUNCIONARIO_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE VER_TODOS_FUNCIONARIO_INHABILITADOS_CENTRO (
         IN _id_centro VARCHAR(10),
         IN _pagina INT,
         IN _funcionarioXpagina INT,
