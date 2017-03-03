@@ -77,6 +77,45 @@ public class PassGenerator {
         return pswd;
     }
 
+    public static boolean hasNumber(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            for (int j = 0; j < NUMEROS.length(); j++) {
+                if (password.charAt(i) == NUMEROS.charAt(j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasUppercase(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            for (int j = 0; j < MAYUSCULAS.length(); j++) {
+                if (password.charAt(i) == MAYUSCULAS.charAt(j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasLowercase(String password) {
+        for (int i = 0; i < password.length(); i++) {
+            for (int j = 0; j < MINUSCULAS.length(); j++) {
+                if (password.charAt(i) == MINUSCULAS.charAt(j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isSecureLong(String password) {
+        
+        return password.length() >= 8;
+    }
+
+
     /**
      * Evalua si la contraseña posee minusculas, mayusculas, numeros y
      * caracteres especiales
@@ -87,49 +126,18 @@ public class PassGenerator {
      */
     public static int evaluatePassword(String password) {
         int lvlSecurity = 0;
-        boolean lvl1 = false;
-        boolean lvl2 = false;
-        boolean lvl3 = false;
-        boolean lvl4 = false;
 
-        bucle:
-        for (int i = 0; i < password.length(); i++) {
-            if (!lvl1) {
-                for (int j = 0; j < NUMEROS.length(); j++) {
-                    if (password.charAt(i) == NUMEROS.charAt(j)) {
-                        lvlSecurity++;
-                        lvl1 = true;
-                        continue bucle;
-                    }
-                }
-            }
-            if (!lvl2) {
-                for (int j = 0; j < MAYUSCULAS.length(); j++) {
-                    if (password.charAt(i) == MAYUSCULAS.charAt(j)) {
-                        lvlSecurity++;
-                        lvl2 = true;
-                        continue bucle;
-                    }
-                }
-            }
-            if (!lvl3) {
-                for (int j = 0; j < MINUSCULAS.length(); j++) {
-                    if (password.charAt(i) == MINUSCULAS.charAt(j)) {
-                        lvlSecurity++;
-                        lvl3 = true;
-                        continue bucle;
-                    }
-                }
-            }
-            if (!lvl4) {
-                for (int j = 0; j < ESPECIALES.length(); j++) {
-                    if (password.charAt(i) == ESPECIALES.charAt(j)) {
-                        lvlSecurity++;
-                        lvl4 = true;
-                        continue bucle;
-                    }
-                }
-            }
+        if(hasNumber(password)){
+            lvlSecurity++;
+        }
+        if(hasUppercase(password)){
+            lvlSecurity++;
+        }
+        if(hasLowercase(password)){
+            lvlSecurity++;
+        }
+        if(isSecureLong(password)){
+            lvlSecurity++;
         }
 
         return lvlSecurity;
@@ -144,7 +152,9 @@ public class PassGenerator {
      * @see util.PassGenerator#evaluatePassword(java.lang.String)
      */
     public static boolean isSecure(String password) {
-        return evaluatePassword(password) >= 3;
+
+        return evaluatePassword(password) >= 4;
+
     }
 
     /**
@@ -155,13 +165,15 @@ public class PassGenerator {
      */
     public static String getSecurePassword() {
         String pass = "";
-        boolean flag = true;
-        while (flag) {
+
+        while (true) {
             pass = getPassword();
             if (isSecure(pass)) {
-                flag = false;
+                break;
+
             }
         }
         return pass;
     }
+
 }

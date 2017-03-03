@@ -6,23 +6,21 @@
     <head>
         <title>Munnin</title>
         <meta charset="UTF-8">
-        <%
-            response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-        %>
+
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="shortcut icon" type="image/x-icon" href="elements/img/logo.png">
+        <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/img/logo.png">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <link rel="stylesheet" href="elements/css/skin-index.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/skin-index.css">
+
         
     </head>
     <body>
         <div class="wrapper">
-            <form class="login" role="form" method="post" action="${URIMunnin}ingreso" onsubmit="return validar()">
+
+            <form class="login" role="form" method="POST" action="${pageContext.request.contextPath}/login" onsubmit="return validar()">
                 <!--la imagen es muy grande, toca ajustarla-->
-                <img src="elements/img/logo-completo.png" alt="munnin_icono" class="full-logo">
+                <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="full-logo">
+
                 <h2 class="title"> Inicia sesión en Munnin </h2>
                 <label for="email"> Correo </label>
                 <input type="email" id="email" maxlength="40" placeholder="Tu correo" name="textCorreo">
@@ -45,9 +43,11 @@
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="elements/js/prefixfree.min.js"></script>
-        <script src="elements/js/index_validator.js" type="text/javascript"></script>
-        <script src="elements/js/mensajes.js" type="text/javascript"></script>
+
+        <script src="${pageContext.request.contextPath}/resources/js/prefixfree.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/index_validator.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/mensajes.js" type="text/javascript"></script>
+
         <% if (request.getAttribute("Mensaje") != null) { %>
         ${Mensaje}
         <% }%>
