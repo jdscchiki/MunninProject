@@ -13,9 +13,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryTipoDoc" class="control-label col-lg-3">Tipo de documento:</label>
+                        <label for="formRegisterFunctionaryTipoDoc" 
+                               class="control-label col-lg-3">
+                            Tipo de documento:</label>
                         <div class="col-lg-4">
-                            <select id="formRegisterFunctionaryTipoDoc" class="form-control" name="tipoDoc">
+                            <select id="formRegisterFunctionaryTipoDoc" 
+                                    class="form-control" 
+                                    name="tipoDoc">
                                 <c:forEach items="${tiposDoc}" var="tipoDoc">
                                     <option value="${tipoDoc.getId()}">${tipoDoc.getNombre()}</option>
                                 </c:forEach>
@@ -25,31 +29,64 @@
                     <div class="form-group">
                         <label for="formRegisterFunctionaryDocumento" class="control-label col-lg-3">Documento :</label>
                         <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formRegisterFunctionaryDocumento" name="documento" placeholder="Documento" maxlength="12">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="formRegisterFunctionaryDocumento" 
+                                   name="documento" 
+                                   placeholder="Documento" 
+                                   maxlength="12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryCorreo" class="control-label col-lg-3">Correo : </label>
+                        <label for="formRegisterFunctionaryCorreo" 
+                               class="control-label col-lg-3">
+                            Correo : </label>
                         <div class="col-lg-6">
-                            <input type="email" class="form-control" id="formRegisterFunctionaryCorreo" name="correo" placeholder="Correo electronico" maxlength="100">
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="formRegisterFunctionaryCorreo" 
+                                   name="correo" 
+                                   placeholder="Correo electronico" 
+                                   maxlength="100">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryNombre" class="control-label col-lg-3">Nombres : </label>
+                        <label for="formRegisterFunctionaryNombre" 
+                               class="control-label col-lg-3">
+                            Nombres : </label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" id="formRegisterFunctionaryNombre" name="nombre" placeholder="Nombres"maxlength="70">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="formRegisterFunctionaryNombre" 
+                                   name="nombre" 
+                                   placeholder="Nombres"
+                                   maxlength="70">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryApellido" class="control-label col-lg-3">Apellidos : </label>
+                        <label for="formRegisterFunctionaryApellido" 
+                               class="control-label col-lg-3">
+                            Apellidos : </label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" id="formRegisterFunctionaryApellido" name="apellido" placeholder="Apellidos" maxlength="70">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="formRegisterFunctionaryApellido" 
+                                   name="apellido" 
+                                   placeholder="Apellidos" 
+                                   maxlength="70">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryTelefono" class="control-label col-lg-3">Telefono:</label>
+                        <label for="formRegisterFunctionaryTelefono" 
+                               class="control-label col-lg-3">
+                            Telefono:</label>
                         <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formRegisterFunctionaryTelefono" name="telefono" placeholder="Telefono" maxlength="10">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="formRegisterFunctionaryTelefono" 
+                                   name="telefono" 
+                                   placeholder="Telefono" 
+                                   maxlength="10">
                         </div>
                     </div>
                     <div class="form-group">
