@@ -1,6 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="registerFunctionary" class="modal fade" role="dialog">
-    <form id="formRegisterFunctionary" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-functionary">
+    <form id="formRegisterFunctionary" 
+          class="form-horizontal" 
+          role="form" 
+          method="POST" 
+          action="${pageContext.request.contextPath}/home/role/coordinator/register-functionary">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,7 +64,6 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
-
         </div>
     </form>
 </div>
