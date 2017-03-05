@@ -35,36 +35,42 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-    <component:head title="${title}" />
-    <component:navbar funcionario="${funcionario}" 
-                      actualRole="${actualRole}" 
-                      actualPage="${actualPage}"/>
-    <component:sidebar funcionario="${funcionario}"
-                       activeRole="${actualRole}" />
-    <component:modalLogOut />
-    <component:modalPassword />
-</head>
-<body>
-    <div id="main" class="contain">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panelMunnin">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3>${panelTitle}</h3>
-                            </div>
-                            <div class="panel-body">
-                                <jsp:doBody />
+        <component:head title="${title}" />
+        <component:navbar funcionario="${funcionario}" 
+                          actualRole="${actualRole}" 
+                          actualPage="${actualPage}"/>
+        <component:sidebar funcionario="${funcionario}"
+                           activeRole="${actualRole}" />
+        <component:modalLogOut />
+        <component:modalPassword />
+    </head>
+    <body>
+        <div id="main" class="contain">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-9"> 
+                        <div class="panelMunnin">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3"> 
+                        <div class="panelMunnin">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3>${panelTitle}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <jsp:doBody />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-<component:footer />
-<component:js />
-<jsp:invoke fragment="additionalJS" />
-</body>
+        <!--aqui preloader-->
+        <component:footer />
+        <component:js />
+        <jsp:invoke fragment="additionalJS" />
+    </body>
 </html>

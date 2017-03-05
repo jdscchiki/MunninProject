@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/exit" >Salir</a>
+                <a type="button" class="btn btn-success" href="${pageContext.request.contextPath}/exit" >Salir</a>
             </div>
         </div>
     </div>
