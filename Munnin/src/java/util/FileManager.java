@@ -17,7 +17,7 @@ import javax.servlet.http.Part;
  */
 public class FileManager {
 
-    private final static String SAVE_FOLDER = "C:\\Users\\Juan David Segura\\Downloads\\";
+    private final static String SAVE_FOLDER = "C:"+File.separator+"MunninRepository";
 
     public static boolean saveFile(Part file) {
         return saveFile(file, SAVE_FOLDER);
@@ -31,9 +31,7 @@ public class FileManager {
         try {
             input = file.getInputStream();
 
-            if (savePath.endsWith(File.separator)) {
-                output = new FileOutputStream(new File(savePath + file.getSubmittedFileName()));
-            } else {
+            if (checkFolder(savePath)) {
                 output = new FileOutputStream(new File(savePath + File.separator + file.getSubmittedFileName()));
             }
 
@@ -64,5 +62,24 @@ public class FileManager {
         }
 
         return result;
+    }
+
+    public static boolean checkFolder(String path) {
+        boolean result = false;
+
+        File folder = new File(path);
+        if (folder.exists()) {
+            result = true;
+        } else {
+            if (folder.mkdirs()) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean saveFileMunninServer(Part file, String savePath) {
+        return saveFile(file, SAVE_FOLDER + File.separator + savePath);
     }
 }

@@ -6,6 +6,8 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -61,21 +63,39 @@ public class Pager {
 
         return result;
     }
-    
-    public static ArrayList<Integer> showLinkedPages(int actualPage, int totalPages, int pagesShown){
+
+    public static ArrayList<Integer> showLinkedPages(int actualPage, int totalPages, int pagesShown) {
         ArrayList<Integer> result = new ArrayList<>();
-        
-        if(totalPages == 0){
+
+        if (totalPages == 0) {
             return null;
         }
-        
+
         int start = firstPage(actualPage, totalPages, pagesShown);
         int end = lastPage(actualPage, totalPages, pagesShown);
-        
+
         for (int i = start; i <= end; i++) {
             result.add(i);
         }
-        
+
+        return result;
+    }
+
+    public static String getSearchParameters(HttpServletRequest request) {
+        String result = "";
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+            String parameterName = parameterNames.nextElement();
+            if (!"page".equals(parameterName)) {
+                String[] parameterValues = request.getParameterValues(parameterName);
+                for (String parameterValue : parameterValues) {
+                    result += parameterName + "=" + parameterValue + "&";
+                }
+            }
+        }
+
         return result;
     }
 

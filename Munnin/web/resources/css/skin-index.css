@@ -1,6 +1,6 @@
 body {
 	height: 100vh;
-	background: url("#{resource['img/backgroundLogin.jpg']}") 50% fixed;
+        
 	background-size: cover;
 }
 /*-- animate login --*/
@@ -24,8 +24,6 @@ body {
 	width: 100%;
 	min-height: 100%;
 	padding: 20px;
-	/*background: rgba(35,131,118,0.85);*/
-	background: rgba(7, 107, 93, 0.59);
 }
 
 .login {
