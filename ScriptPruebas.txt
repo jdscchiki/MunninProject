@@ -263,6 +263,11 @@ call ver_funcionarios_centro('9303', 1, 10)
 -- -----------------------------------------------------
 
 INSERT INTO estado VALUES(1, "Rechazado");
+INSERT INTO estado VALUES(2, "Aprovado");
+INSERT INTO estado VALUES(3, "Revision Equipo tecnico");
+INSERT INTO estado VALUES(4, "Revision Equipo pedagógico");
+INSERT INTO estado VALUES(5, "Revision de Coordinación");
+INSERT INTO estado VALUES(6, "Correcciones pendientes");
 
 INSERT INTO tipo_archivo VALUES(1, ".doc");
 

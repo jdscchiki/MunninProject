@@ -41,7 +41,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-8" id="fulltable">
+            <div class="col-lg-10" id="fulltable">
                 
             </div>
             <div class="col-lg-2">

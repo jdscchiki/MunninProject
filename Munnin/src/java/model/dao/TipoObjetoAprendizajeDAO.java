@@ -20,7 +20,7 @@ import util.ConexionBD;
 public class TipoObjetoAprendizajeDAO extends ConexionBD {
 
     private static final String COL_ID = "id_tipo_objeto_aprendizaje";
-    private static final String COL_NOMBRE = "nombre_tipo_objeto_aprendizaje";
+    private static final String COL_NOMBRE = "nombre_tipo_obj_apren";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos

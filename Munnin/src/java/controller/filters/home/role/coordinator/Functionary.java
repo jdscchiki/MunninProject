@@ -27,8 +27,8 @@ import model.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro 
  */
-@WebFilter(filterName = "FilterRegisterFunctionary", urlPatterns = {"/home/role/coordinator/functionary.jsp"})
-public class FilterRegisterFunctionary implements Filter {
+@WebFilter(urlPatterns = {"/home/role/coordinator/functionary.jsp"})
+public class Functionary implements Filter {
 
     private static final boolean debug = false;
 
@@ -37,7 +37,7 @@ public class FilterRegisterFunctionary implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public FilterRegisterFunctionary() {
+    public Functionary() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)

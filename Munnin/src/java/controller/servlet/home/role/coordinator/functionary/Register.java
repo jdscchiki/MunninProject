@@ -82,10 +82,11 @@ public class Register extends HttpServlet {
                     request.setAttribute("message", "No ha podido ser enviado el correo con la contraseña del nuevo funcionario");
                     break;
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (NumberFormatException e) {
+            request.setAttribute("messageType", "warning");
             request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
