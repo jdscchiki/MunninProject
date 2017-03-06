@@ -8,4 +8,4 @@
 
 <%@attribute name="actualPage" required="true"%>
 
-<li ${actualPage==1 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/administraror/intro.jsp" class="btn">Notificaciones</a></li>
+<li ${actualPage==1 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/administraror/intro.jsp" >Notificaciones</a></li>
