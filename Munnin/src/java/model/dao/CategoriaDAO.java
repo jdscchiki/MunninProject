@@ -181,4 +181,27 @@ public class CategoriaDAO extends ConexionBD {
 
         return result;
     }
+    
+    public ArrayList<Categoria> selectAllCenter(String idCentro) throws SQLException{
+        ArrayList<Categoria> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_CATEGORIA_CENTRO(?,?)}";
+        int indexIdCentro = 1;
+        int indexActivo = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCentro);
+        statement.setBoolean(indexActivo, true);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Categoria categoria = new Categoria();
+            categoria.setId(rs.getInt(COL_ID));
+            categoria.setNombre(rs.getString(COL_NOMBRE));
+            
+            result.add(categoria);
+        }
+        
+        return result;
+    }
 }

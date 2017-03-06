@@ -5,17 +5,7 @@
  */
 package controller.servlet.home.role.instructor.uploadObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.List;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -69,9 +59,9 @@ public class upload extends HttpServlet {
             tipoObjetoAprendizaje.setId(Integer.parseInt(strIdObjectType));
             producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
 
-            int operationResult = Instructor.uploadNewLearningObject(filePart, producto, idCentro);
+            int[] operationResult = Instructor.uploadNewLearningObject(filePart, producto, idCentro);
 
-            switch (operationResult) {
+            switch (operationResult[0]) {
                 case 0:
                 case 2:
                 case 3:
@@ -83,7 +73,11 @@ public class upload extends HttpServlet {
                 case 1:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "Se ha subido satisfactoriamente el objeto de aprendizaje");
-                    break;
+                    request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
+                    request.setAttribute("learningObject", operationResult[1]);
+                    
+                    request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                    return;
             }
             request.getRequestDispatcher("/home/role/instructor/uploadobject.jsp").forward(request, response);
         } catch (Exception e) {
