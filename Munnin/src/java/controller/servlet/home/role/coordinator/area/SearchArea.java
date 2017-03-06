@@ -20,7 +20,7 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerArea"})
+@WebServlet(urlPatterns = {"/home/role/area/pagerArea"})
 public class SearchArea extends HttpServlet {
 
     /**
@@ -56,8 +56,8 @@ public class SearchArea extends HttpServlet {
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("idTable", "tableBodyAreas");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerArea"));
-            request.getRequestDispatcher("/home/role/coordinator/functionary/tableArea.jsp").forward(request, response);
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/area/pagerArea"));
+            request.getRequestDispatcher("/home/role/coordinator/area/tableArea.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

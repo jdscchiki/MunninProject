@@ -19,7 +19,7 @@ import model.bean.Area;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/register-area"})
+@WebServlet(urlPatterns = {"/home/role/area/register-area"})
 public class RegisterArea extends HttpServlet {
 
     /**

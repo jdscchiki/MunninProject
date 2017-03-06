@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerArea", "fulltable");
+               ajaxLoadContent("${pageContext.request.contextPath}/home/role/area/pagerArea", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -23,9 +23,9 @@
                 <form id="formSearchAreaEnable" 
                       class="form-horizontal" 
                       method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerArea"
+                      action="${pageContext.request.contextPath}/home/role/area/pagerArea"
                       data-ajax-form="true"
-                      data-display="message_areas">
+                      data-display="message_areas">                    
                     <div class="form-group">
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">
@@ -66,6 +66,6 @@
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>
-        <jsp:include page="/home/role/coordinator/functionary/modalCreateArea.jsp" />
+        <jsp:include page="/home/role/coordinator/area/modalCreateArea.jsp" />
     </jsp:body>
 </template:basicTemplate>
