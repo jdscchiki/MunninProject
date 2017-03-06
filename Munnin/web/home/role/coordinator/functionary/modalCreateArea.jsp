@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="registerArea" class="modal fade" role="dialog">
-    <form id="formRegisterArea" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-area">
+    <form id="formRegisterArea" class="form-horizontal" role="form" method="POST" action="${URICoordinator}register-area" data-ajax-form="true"
+                      data-display="message_areas">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

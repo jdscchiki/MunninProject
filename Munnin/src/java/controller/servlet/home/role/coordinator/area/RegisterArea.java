@@ -55,10 +55,10 @@ public class RegisterArea extends HttpServlet {
                     request.setAttribute("message", "Actualmente existe un area activo con los datos ingresados");
                     break;
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

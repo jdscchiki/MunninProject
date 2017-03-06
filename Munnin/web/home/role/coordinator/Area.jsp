@@ -25,7 +25,7 @@
                       method="POST" 
                       action="${pageContext.request.contextPath}/home/role/coordinator/pagerArea"
                       data-ajax-form="true"
-                      data-display="fulltable">
+                      data-display="message_areas">
                     <div class="form-group">
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">
@@ -60,7 +60,8 @@
         <form id="formActionAreaEnable"
               method="POST"
               action="${pageContext.request.contextPath}/home/role/coordinator/admin-functionary"
-              data-display="message_functionaries"
+              data-display="message_areas"
+              data-ajax-form="true"
               data-data-table="tableBodyAreas">
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
