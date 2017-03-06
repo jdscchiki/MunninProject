@@ -2960,3 +2960,26 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_CATEGORIA_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_CATEGORIA_CENTRO $$
+CREATE PROCEDURE VER_TODOS_CATEGORIA_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _activo_categoria BOOLEAN
+    )
+BEGIN
+    SELECT 
+        id_categoria,
+        nombre_categoria
+    FROM categoria
+    WHERE
+        activo_categoria = _activo_categoria AND
+        id_centro_categoria = _id_centro;
+END $$
+
+DELIMITER ;
