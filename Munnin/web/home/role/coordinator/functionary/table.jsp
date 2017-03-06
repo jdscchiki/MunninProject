@@ -8,7 +8,7 @@
                    displayResult="${displayResult}"/>
 <div class="container-fluid">
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Documento</th>

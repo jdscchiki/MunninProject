@@ -16,10 +16,10 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_functionaries">
+            <div class="col-md-12" id="message_functionaries">
 
             </div>
-            <div class="col-lg-12">
+            <div class="col-sm-6">
                 <form id="formSearchFunctionaryEnable" 
                       class="form-horizontal" 
                       method="POST" 
@@ -27,41 +27,41 @@
                       data-ajax-form="true"
                       data-display="fulltable">
                     <div class="form-group">
-                        <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar funcionario" id="searchMunnin" name="search">
+                        <label class="control-label col-sm-4" for="searchMunnin">Buscar Funcionario:</label>
+                        
+                            <div class="input-group col-sm-8">
+                                <input type="text" class="form-control" placeholder="Buscar..." id="searchMunnin" name="search">
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
                                         <i class="glyphicon glyphicon-search"></i>
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </form>
             </div>
-            <div class="col-lg-8" id="fulltable">
-                
-            </div>
-            <div class="col-lg-2">
+            <div class="col-md-6">
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-primary" 
                         data-toggle="modal" 
                         data-target="#registerFunctionary">
                     Registrar</button>
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-primary" 
                         data-panel-table="formActionFunctionaryEnable"
                         data-action="changeRoles">
                     Cambiar roles</button>
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-primary" 
                         data-panel-table="formActionFunctionaryEnable"
                         data-action="disable">
                     Inhabilitar</button>
             </div>
-            <div class="col-lg-12">
+            <div class="col-md-12" id="fulltable">
+                
+            </div>
+            <div class="col-md-12">
                 <button type="button" 
                         class="btn btn-link" 
                         data-servlet="${pageContext.request.contextPath}/home/role/coordinator/functionary/modalShowDisable.jsp"

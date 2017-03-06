@@ -44,25 +44,39 @@
         <component:modalLogOut />
         <component:modalPassword />
     </head>
-    <body>
+    <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-9"> 
                         <div class="panelMunnin">
-
+                            <jsp:doBody />
                         </div>
                     </div>
                     <div class="col-md-3"> 
                         <div class="panelMunnin">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3>${panelTitle}</h3>
+                            <h3>${panelTitle}</h3>
+                            <hr>
+                            <div class="media">
+                                <div class="media-left media-middle">
+                                    <img src="${pageContext.request.contextPath}/resources/img/img_avatar2.png" class="media-object" style="width:60px">
                                 </div>
-                                <div class="panel-body">
-                                    <jsp:doBody />
+                                <div class="media-body">
+                                    <h4 class="media-heading">Media Middle</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="media">
+                                <div class="media-left media-middle">
+                                    <img src="${pageContext.request.contextPath}/resources/img/img_avatar2.png" class="media-object" style="width:60px">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Media Middle</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                </div>
+                            </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
