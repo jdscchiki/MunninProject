@@ -16,11 +16,11 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_functionaries">
+            <div class="col-lg-12" id="message_areas">
 
             </div>
             <div class="col-lg-12">
-                <form id="formSearchFunctionaryEnable" 
+                <form id="formSearchAreaEnable" 
                       class="form-horizontal" 
                       method="POST" 
                       action="${pageContext.request.contextPath}/home/role/coordinator/pagerArea"
@@ -48,13 +48,8 @@
                 <button type="button" 
                         class="btn btn-primary btn-block" 
                         data-toggle="modal" 
-                        data-target="#registerFunctionary">
-                    Registrar</button>
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="changeRoles">
-                    Cambiar roles</button>
+                        data-target="#registerArea">
+                    Crear Area</button>
                 <button type="button"
                         class="btn btn-primary btn-block" 
                         data-panel-table="formActionFunctionaryEnable"
@@ -62,7 +57,7 @@
                     Inhabilitar</button>
             </div>
         </div>
-        <form id="formActionFunctionaryEnable"
+        <form id="formActionAreaEnable"
               method="POST"
               action="${pageContext.request.contextPath}/home/role/coordinator/admin-functionary"
               data-display="message_functionaries"
@@ -70,6 +65,6 @@
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>
-        <jsp:include page="/home/role/coordinator/functionary/modalRegisterFunctionary.jsp" />
+        <jsp:include page="/home/role/coordinator/functionary/modalCreateArea.jsp" />
     </jsp:body>
 </template:basicTemplate>

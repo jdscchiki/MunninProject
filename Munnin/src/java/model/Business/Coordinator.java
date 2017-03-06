@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
+import model.bean.Centro;
 import model.bean.Funcionario;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
@@ -65,24 +66,46 @@ public class Coordinator {
 
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
-        } else {
-            if (funcionarioDAO.existFunctionaryByMail(funcionario.getCorreo())) {
-                resultado = 3;
-            } else if (funcionarioDAO.existFunctionaryByDocument(funcionario.getDocumento(), funcionario.getTipoDocumento().getId())) {
-                resultado = 4;
+        } else if (funcionarioDAO.existFunctionaryByMail(funcionario.getCorreo())) {
+            resultado = 3;
+        } else if (funcionarioDAO.existFunctionaryByDocument(funcionario.getDocumento(), funcionario.getTipoDocumento().getId())) {
+            resultado = 4;
+        } else if (funcionarioDAO.registerFunctionary(funcionario)) {
+            funcionario.setContrasena(null);
+            if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
+                resultado = 1;
             } else {
-                if (funcionarioDAO.registerFunctionary(funcionario)) {
-                    funcionario.setContrasena(null);
-                    if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
-                        resultado = 1;
-                    } else {
-                        resultado = 5;
-                    }
-                }
+                resultado = 5;
             }
         }
 
         funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        area.setCentro(centro);
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isActiveArea(area.getNombre())) {
+            resultado = 2;
+        } else if (areaDAO.registerArea(area)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
 
         return resultado;
     }
@@ -154,7 +177,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int countAreas;
@@ -168,7 +191,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static int countPagesFunctionariesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
@@ -207,7 +230,7 @@ public class Coordinator {
 
         return funcionarios;
     }
-    
+
     public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
@@ -231,12 +254,10 @@ public class Coordinator {
     public static int disableFunctionary(int idFuncionario, String idCentro) throws NamingException, SQLException {
         int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro,idFuncionario)) {
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro, idFuncionario)) {
             resultado = 2;
-        } else {
-            if (funcionarioDAO.disableFunctionary(idFuncionario)) {
-                resultado = 1;
-            }
+        } else if (funcionarioDAO.disableFunctionary(idFuncionario)) {
+            resultado = 1;
         }
 
         funcionarioDAO.cerrarConexion();

@@ -212,4 +212,44 @@ public class AreaDAO extends ConexionBD {
         }
         return conteo;
     }
+    
+    public boolean isActiveArea(String nombre) throws SQLException {
+        boolean result = false;
+
+        String query = "{CALL VER_AREA_ACTIVO(?)}";
+        int indexNombre = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexNombre, nombre);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            result = true;
+        }
+
+        return result;
+    }
+    
+    public boolean registerArea(Area area) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL REGISTRAR_AREA(?,?)}";
+        int indexNombre = 1;
+        int indexIdCentro = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexNombre, area.getNombre());
+        statement.setString(indexIdCentro, area.getCentro().getId());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
 }
