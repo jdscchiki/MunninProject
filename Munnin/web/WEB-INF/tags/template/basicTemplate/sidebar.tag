@@ -21,21 +21,21 @@
     <c:if test="${funcionario.isCoordinador()}">
         <a href="${pageContext.request.contextPath}/home/role/coordinator/intro.jsp" >
             <div class="item ${activeRole==2?"active":""}">
-                <span class="fa fa-file-o glyphicon" style="font-size:18px"></span>Coordinador
+                <img src="${pageContext.request.contextPath}/resources/img/coord.png" alt="_icono" class="glyphicon">Coordinador
             </div>
         </a>
     </c:if>
     <c:if test="${funcionario.isTecnico()}">
         <a href="${pageContext.request.contextPath}/home/role/technical/intro.jsp" >
             <div class="item ${activeRole==3?"active":""}">
-                <span class="fa fa-group glyphicon" style="font-size:18px"></span>E. Técnico
+                <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon">E. Técnico
             </div>
         </a>
     </c:if>
     <c:if test="${funcionario.isPedagogico()}">
         <a href="${pageContext.request.contextPath}/home/role/pedagogical/intro.jsp" >
             <div class="item ${activeRole==4?"active":""}">
-                <span class="fa fa-group glyphicon" style="font-size:18px"></span>E. Pedagógico
+                <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon">E. Pedagógico
             </div>
         </a>
     </c:if>
