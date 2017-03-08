@@ -21,7 +21,7 @@ import model.bean.Rol;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/admin-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/manage"})
 public class Manage extends HttpServlet {
 
     /**

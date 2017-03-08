@@ -4,7 +4,7 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/register-functionary">
+          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/register">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

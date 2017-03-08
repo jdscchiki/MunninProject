@@ -19,7 +19,7 @@ import model.Business.Coordinator;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerFunctionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/search"})
 public class Search extends HttpServlet {
 
     /**
@@ -55,7 +55,7 @@ public class Search extends HttpServlet {
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("idTable", "tableBodyFunctionaries");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerFunctionary"));
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/functionary/search"));
             request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

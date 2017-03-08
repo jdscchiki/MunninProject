@@ -20,7 +20,7 @@ import model.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/register-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/register"})
 public class Register extends HttpServlet {
 
     /**

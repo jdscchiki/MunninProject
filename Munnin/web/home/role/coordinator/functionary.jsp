@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
+               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/functionary/search", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -23,7 +23,7 @@
                 <form id="formSearchFunctionaryEnable" 
                       class="form-horizontal" 
                       method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary"
+                      action="${pageContext.request.contextPath}/home/role/coordinator/functionary/search"
                       data-ajax-form="true"
                       data-display="fulltable">
                     <div class="form-group">
@@ -72,7 +72,7 @@
         </div>
         <form id="formActionFunctionaryEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/admin-functionary"
+              action="${pageContext.request.contextPath}/home/role/coordinator/functionary/manage"
               data-display="message_functionaries"
               data-data-table="tableBodyFunctionaries">
             <input type="hidden" name="id" value="-1" data-selected-item="">

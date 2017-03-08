@@ -20,7 +20,7 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/refresh-disabled-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/search-disabled"})
 public class SearchDisabled extends HttpServlet {
 
     /**
@@ -55,7 +55,7 @@ public class SearchDisabled extends HttpServlet {
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "showDisabledFunctionaryTable");
             request.setAttribute("idTable", "tableBodyFunctionariesDisabled");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/refresh-disabled-functionary"));
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/functionary/search-disabled"));
             request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
