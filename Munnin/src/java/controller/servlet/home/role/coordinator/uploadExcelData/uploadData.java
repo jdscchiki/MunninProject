@@ -16,8 +16,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import model.Business.Excel;
+import model.bean.Funcionario;
 
 /**
  *
@@ -30,27 +32,6 @@ import model.Business.Excel;
 //        maxRequestSize = 1024 * 1024 * 100)   	// 100 MB
 @MultipartConfig
 public class uploadData extends HttpServlet {
-    private Part file;
-    private String message;
-    private String ruta;
-
-    public String getRuta() {
-        return ruta;
-    }
-
-    public void setRuta(String ruta) {
-        this.ruta = ruta;
-    }
-
-    public Part getFile() {
-        return file;
-    }
-
-    public void setFile(Part file) {
-        this.file = file;
-    }
-
-    Excel obj = new Excel();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -61,63 +42,67 @@ public class uploadData extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {    
-        try {
-            
-        InputStream input = null;
-        OutputStream output = null;
-        try {
-            input = file.getInputStream();
-            ruta = "D:\\Sergio\\archivos\\" + file.getSubmittedFileName();
-            output = new FileOutputStream(new File("D:\\Sergio\\archivos\\" + file.getSubmittedFileName()));
-            int read = 0;
-            byte[] bytes = new byte[1024];
+            throws ServletException, IOException {
+        try {            
+            InputStream input = null;
+            OutputStream output = null;
+            Excel obj = new Excel();
+            String ruta="";
+            try {
+                Part file = request.getPart("objectFile");
+                input = file.getInputStream();
+                ruta = "D:\\Sergio\\archivos\\" + file.getSubmittedFileName();
+                output = new FileOutputStream(new File("D:\\Sergio\\archivos\\" + file.getSubmittedFileName()));
+                int read = 0;
+                byte[] bytes = new byte[1024];
 
-            while ((read = input.read(bytes)) != -1) {
-                output.write(bytes, 0, read);
+                while ((read = input.read(bytes)) != -1) {
+                    output.write(bytes, 0, read);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage() + "1");
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage()+"2");
+                    }
+                }
+                if (output != null) {
+                    try {
+                        // outputStream.flush();
+                        output.close();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage()+"3");
+                    }
+
+                }
             }
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+            obj.leerArchivo(ruta, funcionario.getIdCentro());
+            File fichero = new File(ruta);
+            fichero.delete();
+            request.setAttribute("messageType", "success");
+            request.getRequestDispatcher("/home/role/instructor/uploadExcelData.jsp").forward(request, response);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-            if (output != null) {
-                try {
-                    // outputStream.flush();
-                    output.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-
-            }
+            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-        obj.leerArchivo(this.getRuta());
-        File fichero = new File(ruta);
-        fichero.delete();
-        request.getRequestDispatcher("/home/role/instructor/uploadExcelData.jsp").forward(request, response);
     }
-    catch (Exception e) {
-        request.setAttribute("mensaje", e);
-        request.getRequestDispatcher("/error.jsp").forward(request, response);
-    }
-}
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -131,7 +116,7 @@ public class uploadData extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -142,7 +127,7 @@ public class uploadData extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

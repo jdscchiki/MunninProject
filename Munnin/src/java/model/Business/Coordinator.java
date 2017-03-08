@@ -57,13 +57,15 @@ public class Coordinator {
         4. existe un usuario no-activo con el mismo documento
         5. el correo no pudo ser enviado
          */
-
+        System.out.println("bandera3");
         int resultado = 0;
         funcionario.setIdCentro(idCentro);
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-
+        System.out.println(funcionario.getCorreo());
+        System.out.println(funcionario.getTipoDocumento().getId());
+        System.out.println(funcionario.getDocumento());
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
         } else if (funcionarioDAO.existFunctionaryByMail(funcionario.getCorreo())) {
@@ -78,9 +80,7 @@ public class Coordinator {
                 resultado = 5;
             }
         }
-
         funcionarioDAO.cerrarConexion();
-
         return resultado;
     }
 

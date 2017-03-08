@@ -29,14 +29,29 @@ $(document).ready(function () {
      * @returns {void}
      */
     function ajaxSendForm($form) {
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            success: function (response) {
-                $("#" + $form.attr($displayResultAttr)).html(response);
-            }
-        });
+        if ($form.attr('enctype') === 'multipart/form-data') {
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                data: new FormData($form[0]),
+                success: function (response) {
+                    $("#" + $form.attr($displayResultAttr)).html(response);
+                }
+            });
+        } else {
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: $form.serialize(),
+                success: function (response) {
+                    $("#" + $form.attr($displayResultAttr)).html(response);
+                }
+            });
+        }
     }
 
     /**

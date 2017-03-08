@@ -24,7 +24,7 @@
                             <input type="file" 
                                    name="objectFile" 
                                    id="objectFile" 
-                                   class="form-control" >
+                                   class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
