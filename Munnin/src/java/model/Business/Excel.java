@@ -48,7 +48,6 @@ public class Excel {
 	Row row;
 	// Recorremos todas las filas para mostrar el contenido de cada celda
 	while (rowIterator.hasNext()){
-            System.out.println("bandera2");
 	    row = rowIterator.next();
 	    // Obtenemos el iterator que permite recorres todas las celdas de una fila
 	    Iterator<Cell> cellIterator = row.cellIterator();
@@ -66,14 +65,7 @@ public class Excel {
                 funcionario.setApellido(celda.getStringCellValue());
                 celda = cellIterator.next();
                 funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
-                System.out.println(funcionario.getTipoDocumento().getId());
-                System.out.println(funcionario.getDocumento());
-                System.out.println(funcionario.getNombre());
-                System.out.println(funcionario.getCorreo());
-                System.out.println(funcionario.getTelefono());
-                System.out.println(idCentro);
-                int resultado = Coordinator.registerFunctionary(funcionario, idCentro);
-                System.out.println(resultado);
+                Coordinator.registerFunctionary(funcionario, idCentro);
 	}        
 	workbook.close();
     }
