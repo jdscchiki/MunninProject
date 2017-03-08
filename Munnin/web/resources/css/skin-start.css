@@ -127,7 +127,9 @@ thead {
 div.left div.active{
     background-color: #0E6257;
 }
-div.left div:hover:not(.active){background-color: #0E6257}
+div.left div:hover:not(.active){
+    background-color: #3ECAB8
+}
 .type{
     height: 47px;;
 }
@@ -371,7 +373,6 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 td {
     cursor: pointer;
 }
-
 tr.selected {
     background-color: #ececec;
 }

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : sidebar
-    Created on : 22/02/2017, 08:07:41 PM
-    Author     : Juan David Segura
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="sidebar of basicTemplate" pageEncoding="UTF-8"%>
 <%@tag import="model.bean.Funcionario" %>

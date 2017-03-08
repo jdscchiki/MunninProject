@@ -1,9 +1,3 @@
-<%-- 
-    Document   : message
-    Created on : 26/02/2017, 04:22:43 PM
-    Author     : Juan David Segura
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag import="java.util.ArrayList"%>
 <%@tag description="usual message model of the application" pageEncoding="UTF-8"%>

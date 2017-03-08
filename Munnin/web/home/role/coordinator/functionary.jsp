@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -28,16 +28,16 @@
                       data-display="fulltable">
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="searchMunnin">Buscar Funcionario:</label>
-                        
-                            <div class="input-group col-sm-8">
-                                <input type="text" class="form-control" placeholder="Buscar..." id="searchMunnin" name="search">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
+
+                        <div class="input-group col-sm-8">
+                            <input type="text" class="form-control" placeholder="Buscar..." id="searchMunnin" name="search">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
                             </div>
-                        
+                        </div>
+
                     </div>
                 </form>
             </div>
@@ -59,7 +59,7 @@
                     Inhabilitar</button>
             </div>
             <div class="col-md-12" id="fulltable">
-                
+
             </div>
             <div class="col-md-12">
                 <button type="button" 

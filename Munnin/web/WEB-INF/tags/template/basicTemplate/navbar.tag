@@ -1,9 +1,3 @@
-<%-- 
-    Document   : navbar
-    Created on : 22/02/2017, 07:54:37 PM
-    Author     : Juan David Segura
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="navbar of basicTemplate" pageEncoding="UTF-8"%>
 <%@tag import="model.bean.Funcionario" %>

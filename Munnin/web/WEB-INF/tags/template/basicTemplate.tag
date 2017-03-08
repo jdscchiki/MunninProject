@@ -1,9 +1,3 @@
-<%-- 
-    Document   : basicTemplate
-    Created on : 22/02/2017, 07:10:28 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="Template for most of the application" pageEncoding="UTF-8"%>
 <%@taglib prefix="component" tagdir="/WEB-INF/tags/template/basicTemplate/"%>
 <%@tag import="model.bean.Funcionario" %>

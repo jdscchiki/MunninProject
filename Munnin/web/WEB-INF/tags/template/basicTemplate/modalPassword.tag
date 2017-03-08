@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modalPassword
-    Created on : 22/02/2017, 08:30:58 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="modal to change password on basicTemplate" pageEncoding="UTF-8"%>
 
 <div id="changePassword" class="modal fade" role="dialog">

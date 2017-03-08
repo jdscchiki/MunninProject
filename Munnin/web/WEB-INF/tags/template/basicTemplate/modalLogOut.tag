@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modalLogOut
-    Created on : 22/02/2017, 08:28:04 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="logout modal of basicTemplate" pageEncoding="UTF-8"%>
 
 <div class="modal fade" id="vtn">
