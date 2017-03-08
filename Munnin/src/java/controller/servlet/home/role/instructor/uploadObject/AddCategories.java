@@ -7,6 +7,7 @@ package controller.servlet.home.role.instructor.uploadObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.servlet.ServletException;
@@ -14,6 +15,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Business.Instructor;
+import model.bean.Categoria;
+import model.bean.Funcionario;
+import model.bean.Producto;
 
 /**
  *
@@ -36,14 +42,48 @@ public class AddCategories extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try {
-            ArrayList<String> idCategories = new ArrayList<>(Arrays.asList(request.getParameterValues("role")));
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
             int idLearningObject = Integer.parseInt(request.getParameter("learningObject"));
-            ArrayList<Integer> intIdCategories = new ArrayList<>();
-            for (String idCategory : idCategories) {
-                intIdCategories.add(Integer.parseInt(idCategory));
+            try {
+                ArrayList<String> idCategories = new ArrayList<>(Arrays.asList(request.getParameterValues("categories")));
+
+                Producto producto = new Producto();
+                producto.setId(idLearningObject);
+                ArrayList<Categoria> categorias = new ArrayList<>();
+                for (String idCategory : idCategories) {
+                    Categoria categoria = new Categoria();
+                    categoria.setId(Integer.parseInt(idCategory));
+                    categorias.add(categoria);
+                }
+                producto.setCategorias(categorias);
+
+                try {
+                    int addedCategories = Instructor.setCategoriesProduct(producto);
+                    if (addedCategories < 1) {
+                        request.setAttribute("messageType", "warning");
+                        request.setAttribute("message", "Deben agregarse una o más categorias");
+                        request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
+                        request.setAttribute("learningObject", idLearningObject);
+                        request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "Se han agregado " + addedCategories + " categorias");
+                        request.setAttribute("learningObject", idLearningObject);
+                        request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                    }
+                } catch (SQLException sqle) {
+                    request.setAttribute("mensaje", sqle.getErrorCode());
+                    request.getRequestDispatcher("/error.jsp").forward(request, response);
+                }
+            } catch (NullPointerException npe) {
+                System.out.println("bandera_1");
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Deben agregarse una o más categorias");
+                request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
+                request.setAttribute("learningObject", idLearningObject);
+                request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
             }
-            
-            
 
         } catch (Exception e) {
             request.setAttribute("mensaje", e);

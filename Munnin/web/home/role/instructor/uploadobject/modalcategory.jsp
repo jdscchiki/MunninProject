@@ -8,7 +8,9 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/instructor/uploadobject/addcategories">
+          action="${pageContext.request.contextPath}/home/role/instructor/uploadobject/addcategories"
+          data-ajax-form="true"
+          data-display="message_uploadobject">
         <input type="hidden" name="learningObject" value="${learningObject}">
         <div class="modal-dialog">
             <div class="modal-content">
