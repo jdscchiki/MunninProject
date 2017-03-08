@@ -4,7 +4,9 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/register">
+          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/register"
+          data-display="divRegisterFunctionary_message"
+          data-data-table="tableBodyFunctionaries">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -96,9 +98,18 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Registrar</button>
-                    <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" 
+                            class="btn btn-success"
+                            data-panel-table="formRegisterFunctionary"
+                            data-action="">
+                        Registrar</button>
+                    <button type="reset" 
+                            class="btn btn-danger">
+                        Borrar datos del formulario</button>
+                    <button type="button" 
+                            class="btn btn-default" 
+                            data-dismiss="modal">
+                        Cerrar</button>
                 </div>
             </div>
         </div>
