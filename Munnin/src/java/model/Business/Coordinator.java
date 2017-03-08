@@ -10,10 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
+import model.bean.Area;
 import model.bean.Centro;
 import model.bean.Funcionario;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
+import model.dao.AreaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
 import util.PassGenerator;
@@ -127,6 +129,56 @@ public class Coordinator {
         rolDAO.cerrarConexion();
 
         return roles;
+    }
+    
+    public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        AreaDAO areaDAO = new AreaDAO();
+        countAreas = areaDAO.countAreasCenter(idCentro, search);
+        areaDAO.cerrarConexion();
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        area.setCentro(centro);
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isActiveArea(area.getNombre())) {
+            resultado = 2;
+        } else if (areaDAO.registerArea(area)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Area> area;
+        AreaDAO areaDAO = new AreaDAO();
+        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search);
+
+        areaDAO.cerrarConexion();
+
+        return area;
     }
 
     /**
