@@ -449,19 +449,21 @@ public class FuncionarioDAO extends ConexionBD {
      * @param cantXpag resultados por pagina al realizar consulta(usado para
      * consultas a centros grandes)
      * @param search busqueda de funcionario por nombre, apellido o documento
+     * @param active busca entre funcionarios activos o inhabilitados (true para los activos)
      * @return ArrayList de los funcionarios pertenecientes a un centro por
      * intervalos
      * @throws SQLException existe un priblema en la consulta
      */
-    public ArrayList<Funcionario> selectSomeFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
+    public ArrayList<Funcionario> selectSomeFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search, boolean active) throws SQLException {
         ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_TODOS_FUNCIONARIO_CENTRO(?,?,?,?)}";
+        String query = "{CALL VER_TODOS_FUNCIONARIO_CENTRO(?,?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
         int indexSearch = 4;
+        int indexActive = 5;
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
@@ -469,40 +471,7 @@ public class FuncionarioDAO extends ConexionBD {
         statement.setInt(indexPagina, pagina);
         statement.setInt(indexCantXPag, cantXpag);
         statement.setString(indexSearch, search);
-
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Funcionario funcionario = new Funcionario();
-            funcionario.setId(rs.getInt(COL_ID));
-            TipoDocumento tipoDocumento = new TipoDocumento();
-            tipoDocumento.setId(rs.getInt(COL_ID_TIPODOCUMENTO));
-            funcionario.setTipoDocumento(tipoDocumento);
-            funcionario.setDocumento(rs.getString(COL_DOCUMENTO));
-            funcionario.setNombre(rs.getString(COL_NOMBRE));
-            funcionario.setApellido(rs.getString(COL_APELLIDO));
-            funcionario.setCorreo(rs.getString(COL_CORREO));
-            funcionarios.add(funcionario);
-        }
-        return funcionarios;
-    }
-
-    public ArrayList<Funcionario> selectSomeFunctionariesDisableCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();//esta es la futura respuesta
-
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_TODOS_FUNCIONARIO_INHABILITADOS_CENTRO(?,?,?,?)}";
-        int indexCentro = 1;
-        int indexPagina = 2;
-        int indexCantXPag = 3;
-        int indexSearch = 4;
-
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setInt(indexPagina, pagina);
-        statement.setInt(indexCantXPag, cantXpag);
-        statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
@@ -526,46 +495,26 @@ public class FuncionarioDAO extends ConexionBD {
      *
      * @param idCentro id del centro
      * @param search filtro de busqueda
+     * @param active busca entre funcionarios activos o inhabilitados (true para los activos)
      * @return Entero con la catidad de funcionario registrados en el centro
      * @throws SQLException
      */
-    public int countFunctionariesCenter(String idCentro, String search) throws SQLException {
+    public int countFunctionariesCenter(String idCentro, String search, boolean active) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIO_CENTRO_CONTEO(?,?)}";
-        int indexCentro = 1;
-        int indexFiltro = 2;
+        String query = "{CALL VER_FUNCIONARIO_CENTRO_CONTEO(?,?,?)}";
+        int indexIdCentro = 1;
+        int indexSearch = 2;
+        int indexActive = 3;
 
         String resConteo = "conteo";//nombre de la columna del select
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setString(indexFiltro, search);
-
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            conteo = rs.getInt(resConteo);
-        }
-        return conteo;
-    }
-
-    public int countFunctionariesDisabledCenter(String idCentro, String search) throws SQLException {
-        int conteo = 0;//esta es la futura respuesta
-
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_FUNCIONARIO_INHABILITADO_CENTRO_CONTEO(?,?)}";
-        int indexCentro = 1;
-        int indexFiltro = 2;
-
-        String resConteo = "conteo";//nombre de la columna del select
-
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setString(indexFiltro, search);
+        statement.setString(indexIdCentro, idCentro);
+        statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {

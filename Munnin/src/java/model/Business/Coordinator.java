@@ -197,7 +197,7 @@ public class Coordinator {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search);
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, true);
         funcionarioDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
@@ -212,7 +212,7 @@ public class Coordinator {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesDisabledCenter(idCentro, search);
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, false);
         funcionarioDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
@@ -240,7 +240,7 @@ public class Coordinator {
     public static ArrayList<Funcionario> viewFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, true);
 
         funcionarioDAO.cerrarConexion();
 
@@ -402,7 +402,7 @@ public class Coordinator {
     public static ArrayList<Funcionario> viewFunctionariesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesDisableCenter(idCentro, pagina, cantXpag, search);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, false);
 
         funcionarioDAO.cerrarConexion();
 
