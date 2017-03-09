@@ -15,6 +15,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import model.bean.Funcionario;
 
 /**
  *
@@ -68,7 +71,11 @@ public class PedagogicalFilter implements Filter {
         Throwable problem = null;
         try {
             
-            System.out.println("role_filter");
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            if(!((Funcionario) sesion.getAttribute("usuario")).isPedagogico()){
+                
+                return;
+            }
             
             chain.doFilter(request, response);
         } catch (Throwable t) {
