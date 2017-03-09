@@ -27,7 +27,7 @@
                     <div class="bar3"></div>
                 </div>
             </button>
-            <a class="navbar-brand" href="#">Inicio</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp">Inicio</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
