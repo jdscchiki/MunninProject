@@ -45,44 +45,41 @@ public class AddCategories extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
             int idLearningObject = Integer.parseInt(request.getParameter("learningObject"));
-            try {
-                ArrayList<String> idCategories = new ArrayList<>(Arrays.asList(request.getParameterValues("categories")));
 
-                Producto producto = new Producto();
-                producto.setId(idLearningObject);
-                ArrayList<Categoria> categorias = new ArrayList<>();
-                for (String idCategory : idCategories) {
-                    Categoria categoria = new Categoria();
-                    categoria.setId(Integer.parseInt(idCategory));
-                    categorias.add(categoria);
-                }
-                producto.setCategorias(categorias);
+            String[] arrayCategories = {};
+            if (request.getParameterValues("categories")!=null) {
+                arrayCategories = request.getParameterValues("categories");
+            }
 
-                try {
-                    int addedCategories = Instructor.setCategoriesProduct(producto);
-                    if (addedCategories < 1) {
-                        request.setAttribute("messageType", "warning");
-                        request.setAttribute("message", "Deben agregarse una o más categorias");
-                        request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
-                        request.setAttribute("learningObject", idLearningObject);
-                        request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("messageType", "success");
-                        request.setAttribute("message", "Se han agregado " + addedCategories + " categorias");
-                        request.setAttribute("learningObject", idLearningObject);
-                        request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
-                    }
-                } catch (SQLException sqle) {
-                    request.setAttribute("mensaje", sqle.getErrorCode());
-                    request.getRequestDispatcher("/error.jsp").forward(request, response);
-                }
-            } catch (NullPointerException npe) {
-                System.out.println("bandera_1");
+            if (arrayCategories.length < 1) {
                 request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Deben agregarse una o más categorias");
                 request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
                 request.setAttribute("learningObject", idLearningObject);
                 request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+            } else {
+                Producto producto = new Producto();
+                producto.setId(idLearningObject);
+                ArrayList<Categoria> categorias = new ArrayList<>();
+                for (String idCategory : arrayCategories) {
+                    Categoria categoria = new Categoria();
+                    categoria.setId(Integer.parseInt(idCategory));
+                    categorias.add(categoria);
+                }
+                producto.setCategorias(categorias);
+                int addedCategories = Instructor.setCategoriesProduct(producto);
+                if (addedCategories < 1) {
+                    request.setAttribute("messageType", "warning");
+                    request.setAttribute("message", "Deben agregarse una o más categorias");
+                    request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
+                    request.setAttribute("learningObject", idLearningObject);
+                    request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "Se han agregado " + addedCategories + " categorias");
+                    request.setAttribute("learningObject", idLearningObject);
+                    request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                }
             }
 
         } catch (Exception e) {

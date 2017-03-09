@@ -62,14 +62,6 @@ public class upload extends HttpServlet {
             int[] operationResult = Instructor.uploadNewLearningObject(filePart, producto, idCentro);
 
             switch (operationResult[0]) {
-                case 0:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo");
-                    break;
                 case 1:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "Se ha subido satisfactoriamente el objeto de aprendizaje");
@@ -77,9 +69,18 @@ public class upload extends HttpServlet {
                     request.setAttribute("learningObject", operationResult[1]);
                     
                     request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
-                    return;
+                    break;
+                case 0:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                default:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo");
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+                    break;    
             }
-            request.getRequestDispatcher("/home/role/instructor/uploadobject.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
