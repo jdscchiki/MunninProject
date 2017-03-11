@@ -10,9 +10,7 @@
                 </div>
                 <div class="modal-body">
                     <h6>Organizar los datos de la siguiente manera</h6>
-                    <div class="form-group">
-                        <img src="/../../../../resources/img/excel.png" alt=""/>
-                    </div>
+                        <img src="${pageContext.request.contextPath}/resources/img/excel.png" alt=""/>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

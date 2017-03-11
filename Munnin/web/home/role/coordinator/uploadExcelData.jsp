@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
-<template:basicTemplate actualPage="2"
-                        actualRole="5"
+<template:basicTemplate actualPage="6"
+                        actualRole="2"
                         funcionario="${sessionScope.usuario}"
                         title="Carga Mavisa Coordinador Munnin"
                         panelTitle="Carga Masiva de Datos">
@@ -18,6 +18,8 @@
         </button>
         <div class="row">
             <div class="col-lg-12">
+                <div class="col-lg-offset-2 col-sm-10" id="message_uploadobject">
+                </div>
                 <form class="form-horizontal"
                       enctype="multipart/form-data"
                       method="POST"
@@ -31,12 +33,6 @@
                                    name="objectFile" 
                                    id="objectFile" 
                                    class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-sm-10" id="message_uploadobject">
-                        </div>
-                        <div class="col-lg-offset-2 col-sm-10" id="message_uploadobject2">
                         </div>
                     </div>
                     <div class="form-group">

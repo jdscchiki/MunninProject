@@ -61,13 +61,11 @@ public class uploadData extends HttpServlet {
                     output.write(bytes, 0, read);
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage() + "1");
             } finally {
                 if (input != null) {
                     try {
                         input.close();
                     } catch (Exception e) {
-                        System.out.println(e.getMessage()+"2");
                     }
                 }
                 if (output != null) {
@@ -75,7 +73,6 @@ public class uploadData extends HttpServlet {
                         // outputStream.flush();
                         output.close();
                     } catch (Exception e) {
-                        System.out.println(e.getMessage()+"3");
                     }
 
                 }
@@ -86,11 +83,19 @@ public class uploadData extends HttpServlet {
             fila = obj.leerArchivo(ruta, funcionario.getIdCentro());
             File fichero = new File(ruta);
             fichero.delete();
+            String msn="";
+            for (int i = 0; i < fila.size(); i++) {
+                msn = msn + " " + fila.get(i).toString();
+            }
             request.setAttribute("messageType", "success");
-            if (fila.size() > 0) {
-                request.setAttribute("message", "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo");
+            if (fila.size() == 1) {
+                request.setAttribute("message", "Se han presentado errores en la linea " + msn);
+            }else if (fila.size() > 0) {                
+                request.setAttribute("message", "Se han presentado errores en las lineas " + msn);
+            }else{
+                request.setAttribute("message", "Se ha realizado satisfactoriamente la carga");
             }            
-            request.getRequestDispatcher("/home/role/instructor/uploadExcelData.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

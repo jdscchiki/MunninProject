@@ -32,7 +32,7 @@ public class Excel {
         Funcionario funcionario = new Funcionario();
         TipoDocumento tipoDocumento = new TipoDocumento();
         ArrayList<Integer> fila = new ArrayList<>();
-        int count = 0;
+        int count = 0, bien = 0;
         FileInputStream file = new FileInputStream(new File(ruta));
         //String idCentro = "9303";
         // Crear el objeto que tendra el libro de Excel
@@ -49,28 +49,36 @@ public class Excel {
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
         Row row;
-        // Recorremos todas las filas para mostrar el contenido de cada celda
+        // Recorremos todas las filas para mostrar el contenido de cada celda        
         while (rowIterator.hasNext()) {
-            row = rowIterator.next();
-            // Obtenemos el iterator que permite recorres todas las celdas de una fila
-            Iterator<Cell> cellIterator = row.cellIterator();
-            Cell celda;
-            celda = cellIterator.next();
-            tipoDocumento.setId((int) (celda.getNumericCellValue()));
-            funcionario.setTipoDocumento(tipoDocumento);
-            celda = cellIterator.next();
-            funcionario.setDocumento(Double.toString(celda.getNumericCellValue()));
-            celda = cellIterator.next();
-            funcionario.setCorreo(celda.getStringCellValue());
-            celda = cellIterator.next();
-            funcionario.setNombre(celda.getStringCellValue());
-            celda = cellIterator.next();
-            funcionario.setApellido(celda.getStringCellValue());
-            celda = cellIterator.next();
-            funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
+            try {
+                row = rowIterator.next();
+                // Obtenemos el iterator que permite recorres todas las celdas de una fila
+                Iterator<Cell> cellIterator = row.cellIterator();
+                Cell celda = cellIterator.next();
+                String doc = celda.getStringCellValue();
+                if ("cc".equals(doc.toLowerCase()) || "cedula".equals(doc.toLowerCase())) {
+                    tipoDocumento.setId(1);
+                    funcionario.setTipoDocumento(tipoDocumento);
+                }
+                celda = cellIterator.next();
+                funcionario.setDocumento(Double.toString(celda.getNumericCellValue()));
+                celda = cellIterator.next();
+                funcionario.setCorreo(celda.getStringCellValue());
+                celda = cellIterator.next();
+                funcionario.setNombre(celda.getStringCellValue());
+                celda = cellIterator.next();
+                funcionario.setApellido(celda.getStringCellValue());
+                celda = cellIterator.next();
+                funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
+            } catch (Exception e) {
+            }
             int resultado = Coordinator.registerFunctionary(funcionario, idCentro);
+            count++;
             if (resultado != 1) {
                 fila.add(count);
+            } else {
+                bien++;
             }
         }
         workbook.close();

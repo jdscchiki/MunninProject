@@ -70,11 +70,7 @@ public class Coordinator {
             resultado = 4;
         } else if (funcionarioDAO.registerFunctionary(funcionario)) {
             funcionario.setContrasena(null);
-            if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
-                resultado = 1;
-            } else {
-                resultado = 5;
-            }
+            resultado = 1;
         }
         funcionarioDAO.cerrarConexion();
         return resultado;
