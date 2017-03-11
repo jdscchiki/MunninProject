@@ -224,13 +224,13 @@ public class ProductoDAO extends ConexionBD {
         int result = 0;
 
         String query = "{CALL INSERTAR_CATEGORIA_PRODUCTO(?,?)}";
-        int indexId = 1;
-        int indexIdCategoria = 2;
+        int indexIdCategoria = 1;
+        int indexId = 2;
 
         for (Categoria categoria : producto.getCategorias()) {
             CallableStatement statement = this.getConexion().prepareCall(query);
-            statement.setInt(indexId, producto.getId());
             statement.setInt(indexIdCategoria, categoria.getId());
+            statement.setInt(indexId, producto.getId());
             if (statement.executeUpdate() == 1) {
                 this.getConexion().commit();
                 result++;

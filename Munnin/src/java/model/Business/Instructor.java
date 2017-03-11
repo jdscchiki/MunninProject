@@ -111,10 +111,10 @@ public class Instructor {
 
     public static int setCategoriesProduct(Producto producto) throws NamingException, SQLException {
         int result = 0;
-
-        if (producto == null || 
-                producto.getId() <= 0 || 
-                producto.getCategorias() == null) {
+        
+        if (producto == null
+                || producto.getId() <= 0
+                || producto.getCategorias() != null) {
             ProductoDAO productoDAO = new ProductoDAO();
             result = productoDAO.insertCategories(producto);
             productoDAO.cerrarConexion();
