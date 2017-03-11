@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/area/pagerArea", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/area/pagerArea", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -26,7 +26,7 @@
                       action="${pageContext.request.contextPath}/home/role/area/pagerArea"
                       data-ajax-form="true"
                       data-display="message_areas">                    
-                    <div class="form-group">
+                    <div class="form-group">                        
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">
                             <div class="input-group">
@@ -42,20 +42,15 @@
                 </form>
             </div>
             <div class="col-lg-8" id="fulltable">
-                
+
             </div>
             <div class="col-lg-2">
                 <button type="button" 
                         class="btn btn-primary btn-block" 
                         data-toggle="modal" 
                         data-target="#registerArea">
-                    Crear Area</button>
-                <button type="button"
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="disable">
-                    Inhabilitar</button>
-            </div>
+                    Crear Area</button>                
+            </div>                                            
         </div>
         <form id="formActionAreaEnable"
               method="POST"

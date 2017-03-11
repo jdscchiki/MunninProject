@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -81,10 +82,14 @@ public class uploadData extends HttpServlet {
             }
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            obj.leerArchivo(ruta, funcionario.getIdCentro());
+            ArrayList<Integer> fila = new ArrayList<>();
+            fila = obj.leerArchivo(ruta, funcionario.getIdCentro());
             File fichero = new File(ruta);
             fichero.delete();
             request.setAttribute("messageType", "success");
+            if (fila.size() > 0) {
+                request.setAttribute("message", "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo");
+            }            
             request.getRequestDispatcher("/home/role/instructor/uploadExcelData.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);

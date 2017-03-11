@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
@@ -26,15 +27,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Encriptado;
 
 public class Excel {
-     public void leerArchivo(String ruta, String idCentro) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException{        
-        System.out.println("bandera 10");
-        Funcionario funcionario = new Funcionario();        
+
+    public ArrayList<Integer> leerArchivo(String ruta, String idCentro) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        Funcionario funcionario = new Funcionario();
         TipoDocumento tipoDocumento = new TipoDocumento();
-	FileInputStream file = new FileInputStream(new File(ruta));    
+        ArrayList<Integer> fila = new ArrayList<>();
+        int count = 0;
+        FileInputStream file = new FileInputStream(new File(ruta));
         //String idCentro = "9303";
-	// Crear el objeto que tendra el libro de Excel
-	XSSFWorkbook workbook = new XSSFWorkbook(file);
-	/*
+        // Crear el objeto que tendra el libro de Excel
+        XSSFWorkbook workbook = new XSSFWorkbook(file);
+        /*
 20	
 	 * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
 21	
@@ -42,31 +45,35 @@ public class Excel {
 22	
 	 * que nos permite recorrer cada una de las filas que contiene.
 23	
-	 */
-	XSSFSheet sheet = workbook.getSheetAt(0);
-	Iterator<Row> rowIterator = sheet.iterator();
-	Row row;
-	// Recorremos todas las filas para mostrar el contenido de cada celda
-	while (rowIterator.hasNext()){
-	    row = rowIterator.next();
-	    // Obtenemos el iterator que permite recorres todas las celdas de una fila
-	    Iterator<Cell> cellIterator = row.cellIterator();
-	    Cell celda;
+         */
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        Row row;
+        // Recorremos todas las filas para mostrar el contenido de cada celda
+        while (rowIterator.hasNext()) {
+            row = rowIterator.next();
+            // Obtenemos el iterator que permite recorres todas las celdas de una fila
+            Iterator<Cell> cellIterator = row.cellIterator();
+            Cell celda;
             celda = cellIterator.next();
-                tipoDocumento.setId((int)(celda.getNumericCellValue()));
-                funcionario.setTipoDocumento(tipoDocumento);
-                celda = cellIterator.next();
-                funcionario.setDocumento(Double.toString(celda.getNumericCellValue()));
-                celda = cellIterator.next();
-                funcionario.setCorreo(celda.getStringCellValue());
-                celda = cellIterator.next(); 
-                funcionario.setNombre(celda.getStringCellValue());
-                celda = cellIterator.next(); 
-                funcionario.setApellido(celda.getStringCellValue());
-                celda = cellIterator.next();
-                funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
-                Coordinator.registerFunctionary(funcionario, idCentro);
-	}        
-	workbook.close();
+            tipoDocumento.setId((int) (celda.getNumericCellValue()));
+            funcionario.setTipoDocumento(tipoDocumento);
+            celda = cellIterator.next();
+            funcionario.setDocumento(Double.toString(celda.getNumericCellValue()));
+            celda = cellIterator.next();
+            funcionario.setCorreo(celda.getStringCellValue());
+            celda = cellIterator.next();
+            funcionario.setNombre(celda.getStringCellValue());
+            celda = cellIterator.next();
+            funcionario.setApellido(celda.getStringCellValue());
+            celda = cellIterator.next();
+            funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
+            int resultado = Coordinator.registerFunctionary(funcionario, idCentro);
+            if (resultado != 1) {
+                fila.add(count);
+            }
+        }
+        workbook.close();
+        return fila;
     }
 }

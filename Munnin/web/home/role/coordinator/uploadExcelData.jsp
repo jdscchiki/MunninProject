@@ -10,6 +10,12 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
     </jsp:attribute>
     <jsp:body>
+        <button type="button" 
+                class="btn btn-primary" 
+                data-toggle="modal" 
+                data-target="#hintExcel">
+            <span class="glyphicon glyphicon-question-sign"></span>
+        </button>
         <div class="row">
             <div class="col-lg-12">
                 <form class="form-horizontal"
@@ -37,12 +43,13 @@
                         <div class="col-lg-offset-2 col-sm-4">
                             <button type="submit" class="btn btn-success">
                                 Enviar
-                            </button>
+                            </button>                            
                         </div>
                     </div>
 
                 </form>
             </div>
         </div>
+        <jsp:include page="/home/role/coordinator/functionary/modalHint.jsp" />
     </jsp:body>
 </template:basicTemplate>
