@@ -28,10 +28,11 @@ import util.Encriptado;
 
 public class Excel {
 
-    public ArrayList<Integer> leerArchivo(String ruta, String idCentro) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public ArrayList[] leerArchivo(String ruta, String idCentro) throws IOException, Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         Funcionario funcionario = new Funcionario();
         TipoDocumento tipoDocumento = new TipoDocumento();
         ArrayList<Integer> fila = new ArrayList<>();
+        ArrayList<Integer> dato = new ArrayList<>();        
         int count = 0, bien = 0;
         FileInputStream file = new FileInputStream(new File(ruta));
         //String idCentro = "9303";
@@ -79,9 +80,11 @@ public class Excel {
                 fila.add(count);
             } else {
                 bien++;
+                dato.add(bien);
             }
         }
+        ArrayList[] d = {fila, dato};
         workbook.close();
-        return fila;
+        return d;
     }
 }
