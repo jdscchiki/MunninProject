@@ -5,7 +5,7 @@
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
                         title="Carga Mavisa Coordinador Munnin"
-                        panelTitle="Carga Masiva de Datos">
+                        panelTitle="Carga Masiva de Datos (Excel)">
     <jsp:attribute name="additionalJS">
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
     </jsp:attribute>
@@ -32,7 +32,9 @@
                             <input type="file" 
                                    name="objectFile" 
                                    id="objectFile" 
-                                   class="form-control">
+                                   class="form-control"
+                                   accept= application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                                   >
                         </div>
                     </div>
                     <div class="form-group">

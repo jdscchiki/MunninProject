@@ -6,10 +6,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Ayuda</h4>
+                    <h3 class="modal-title">Ayuda</h3>
                 </div>
                 <div class="modal-body">
-                    <h6>Organizar los datos de la siguiente manera</h6>
+                    <h4>Organizar los datos de la siguiente manera</h4>
                         <img src="${pageContext.request.contextPath}/resources/img/excel.png" alt=""/>
                 </div>
                 <div class="modal-footer">
