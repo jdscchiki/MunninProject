@@ -22,6 +22,7 @@ public class ProgramaDAO extends ConexionBD {
 
     private static final String COL_ID = "id_programa";
     private static final String COL_NOMBRE = "nombre_programa";
+    private static final String COL_ACTIVO = "activo_programa";
     private static final String COL_ID_AREA = "id_area_programa";
 
     /**
@@ -45,12 +46,14 @@ public class ProgramaDAO extends ConexionBD {
     public boolean Insert(Programa programa) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_PROGRAMA(?,?)}";
+        String query = "{CALL INSERTAR_PROGRAMA(?,?,?)}";
         int indexNombre = 1;
-        int indexIdArea = 2;
+        int indexActivo = 2;
+        int indexIdArea = 3;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setString(indexNombre, programa.getNombre());
+        statement.setBoolean(indexActivo, programa.isActivo());
         statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -73,14 +76,16 @@ public class ProgramaDAO extends ConexionBD {
     public boolean update(Programa programa) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_PROGRAMA(?,?,?)}";
+        String query = "{CALL EDITAR_PROGRAMA(?,?,?,?)}";
         int indexId = 1;
         int indexNombre = 2;
-        int indexIdArea = 3;
+        int indexActivo = 3;
+        int indexIdArea = 4;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, programa.getId());
         statement.setString(indexNombre, programa.getNombre());
+        statement.setBoolean(indexActivo, programa.isActivo());
         statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
@@ -141,6 +146,7 @@ public class ProgramaDAO extends ConexionBD {
             encontrado = true;
             programa.setId(rs.getInt(COL_ID));
             programa.setNombre(rs.getString(COL_NOMBRE));
+            programa.setActivo(rs.getBoolean(COL_ACTIVO));
             Area area = new Area();
             area.setId(rs.getInt(COL_ID_AREA));
             programa.setArea(area);
@@ -164,6 +170,7 @@ public class ProgramaDAO extends ConexionBD {
             Programa programa = new Programa();
             programa.setId(rs.getInt(COL_ID));
             programa.setNombre(rs.getString(COL_NOMBRE));
+            programa.setActivo(rs.getBoolean(COL_ACTIVO));
             Area area = new Area();
             area.setId(rs.getInt(COL_ID_AREA));
             programa.setArea(area);
@@ -171,6 +178,28 @@ public class ProgramaDAO extends ConexionBD {
             result.add(programa);
         }
 
+        return result;
+    }
+    
+    public ArrayList<Programa> selectAllCenter(String idCenter) throws SQLException{
+        ArrayList<Programa> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_PROGRAMA_CENTRO(?,?)}";
+        int indexIdCentro = 1;
+        int indexActivo = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCenter);
+        statement.setBoolean(indexActivo, true);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Programa programa = new Programa();
+            programa.setId(rs.getInt(COL_ID));
+            programa.setNombre(rs.getString(COL_NOMBRE));
+            result.add(programa);
+        }
+        
         return result;
     }
 }

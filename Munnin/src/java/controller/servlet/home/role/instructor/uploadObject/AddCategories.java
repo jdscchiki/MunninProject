@@ -67,15 +67,16 @@ public class AddCategories extends HttpServlet {
                 int addedCategories = Instructor.setCategoriesProduct(producto);
                 if (addedCategories < 1) {
                     request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Deben agregarse una o más categorias");
+                    request.setAttribute("message", "Ha ocurrido un problema al agregar las categorias");
                     request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
                     request.setAttribute("learningObject", idLearningObject);
                     request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
                 } else {
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "Se han agregado " + addedCategories + " categorias");
+                    request.setAttribute("programmes", Instructor.viewAllProgrammes(idCentro));
                     request.setAttribute("learningObject", idLearningObject);
-                    request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);
+                    request.getRequestDispatcher("/home/role/instructor/uploadobject/modalprogram.jsp").forward(request, response);
                 }
             }
 

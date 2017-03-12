@@ -36,7 +36,7 @@
                                     id="formInstructorSelectProgramInputProgram"
                                     name="programmes">
                                 <c:forEach items="${programmes}" var="program">
-                                    <option value="${program.getId()}">${category.getNombre()}</option>
+                                    <option value="${program.getId()}">${program.getNombre()}</option>
                                 </c:forEach>
                             </select>
                         </div>

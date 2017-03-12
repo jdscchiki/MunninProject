@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Programa implements java.io.Serializable {
     private int id;
     private String nombre;
+    private boolean activo;
     private Area area;
     private ArrayList<Producto> productos;
 
@@ -23,6 +24,14 @@ public class Programa implements java.io.Serializable {
 
     public void setProductos(ArrayList<Producto> productos) {
         this.productos = productos;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public int getId() {

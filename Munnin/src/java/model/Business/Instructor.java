@@ -13,11 +13,13 @@ import javax.servlet.http.Part;
 import model.bean.Categoria;
 import model.bean.Centro;
 import model.bean.Producto;
+import model.bean.Programa;
 import model.bean.TipoArchivo;
 import model.bean.TipoObjetoAprendizaje;
 import model.bean.Version;
 import model.dao.CategoriaDAO;
 import model.dao.ProductoDAO;
+import model.dao.ProgramaDAO;
 import model.dao.TipoObjetoAprendizajeDAO;
 import model.dao.VersionDAO;
 import util.FileManager;
@@ -120,6 +122,16 @@ public class Instructor {
             productoDAO.cerrarConexion();
         }
 
+        return result;
+    }
+    
+    public static ArrayList<Programa> viewAllProgrammes(String idCenter) throws NamingException, SQLException{
+        ArrayList<Programa> result;
+        
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        result = programaDAO.selectAllCenter(idCenter);
+        programaDAO.cerrarConexion();
+        
         return result;
     }
 }

@@ -425,6 +425,7 @@ ENGINE = InnoDB;
 CREATE TABLE programa (
   id_programa INT(11) NOT NULL AUTO_INCREMENT,
   nombre_programa VARCHAR(50) NOT NULL,
+  activo_programa BIT(1) NOT NULL,
   id_area_programa INT(11) NOT NULL,
   PRIMARY KEY (id_programa),
   INDEX id_area_programa (id_area_programa ASC),
@@ -1927,13 +1928,16 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS insertar_programa $$
 CREATE PROCEDURE insertar_programa (
 	IN _nombre_programa VARCHAR(50) ,
+        IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
 	INSERT INTO programa(
 		nombre_programa ,
+                activo_programa ,
 		id_area_programa )
 	VALUES (
 		_nombre_programa ,
+                _activo_programa ,
 		_id_area_programa );
 END $$
 
@@ -1943,10 +1947,12 @@ DROP PROCEDURE IF EXISTS editar_programa $$
 CREATE PROCEDURE editar_programa (
 	IN _id_programa INT ,
 	IN _nombre_programa VARCHAR(50) ,
+        IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
 	UPDATE programa
 	SET nombre_programa = _nombre_programa ,
+                activo_programa = _activo_programa ,
 		id_area_programa = _id_area_programa 
 	WHERE id_programa = _id_programa ;
 END $$
@@ -1969,6 +1975,7 @@ CREATE PROCEDURE ver_programa (
 BEGIN
 	SELECT id_programa ,
 	nombre_programa ,
+        activo_programa ,
 	id_area_programa
 	FROM programa
 	WHERE id_programa = _id_programa ;
@@ -1981,6 +1988,7 @@ CREATE PROCEDURE ver_todos_programa ()
 BEGIN
 	SELECT id_programa ,
 	nombre_programa ,
+        activo_programa ,
 	id_area_programa
 	FROM programa;
 END $$
@@ -2908,6 +2916,31 @@ BEGIN
     WHERE
         activo_categoria = _activo_categoria AND
         id_centro_categoria = _id_centro;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_PROGRAMA_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_PROGRAMA_CENTRO $$
+CREATE PROCEDURE VER_TODOS_PROGRAMA_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    SELECT 
+        p.id_programa,
+        p.nombre_programa
+    FROM programa p
+    INNER JOIN area a
+    ON id_area_programa = id_area
+    WHERE
+        p.activo_programa = _activo AND
+        a.id_centro_area = _id_centro;
 END $$
 
 DELIMITER ;
