@@ -58,7 +58,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#modalInstructorSelectProgram").modal();
-            
+            $(document).on("submit","#formInstructorSelectProgram",function (event){
+                $(".modal-backdrop.fade.in").remove();
+            });
             $(document).on("hidden.bs.modal", "#modalInstructorSelectProgram", function (event) {
                 $(this).remove();
             });

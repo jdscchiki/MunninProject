@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Categoria;
 import model.bean.Producto;
+import model.bean.Programa;
 import model.bean.TipoObjetoAprendizaje;
 import util.ConexionBD;
 
@@ -231,6 +232,28 @@ public class ProductoDAO extends ConexionBD {
             CallableStatement statement = this.getConexion().prepareCall(query);
             statement.setInt(indexIdCategoria, categoria.getId());
             statement.setInt(indexId, producto.getId());
+            if (statement.executeUpdate() == 1) {
+                this.getConexion().commit();
+                result++;
+            } else {
+                this.getConexion().rollback();
+            }
+        }
+
+        return result;
+    }
+    
+    public int insertProgrammes(Producto producto) throws SQLException {
+        int result = 0;
+
+        String query = "{CALL INSERTAR_PROGRAMA_PRODUCTO(?,?)}";
+        int indexId = 1;
+        int indexIdPrograma = 2;
+
+        for (Programa programa : producto.getProgramas()) {
+            CallableStatement statement = this.getConexion().prepareCall(query);
+            statement.setInt(indexId, producto.getId());
+            statement.setInt(indexIdPrograma, programa.getId());
             if (statement.executeUpdate() == 1) {
                 this.getConexion().commit();
                 result++;

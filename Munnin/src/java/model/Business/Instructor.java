@@ -134,4 +134,18 @@ public class Instructor {
         
         return result;
     }
+    
+    public static int setProgrammesProduct(Producto producto) throws NamingException, SQLException {
+        int result = 0;
+        
+        if (producto == null
+                || producto.getId() <= 0
+                || producto.getProgramas()!= null) {
+            ProductoDAO productoDAO = new ProductoDAO();
+            result = productoDAO.insertProgrammes(producto);
+            productoDAO.cerrarConexion();
+        }
+
+        return result;
+    }
 }
