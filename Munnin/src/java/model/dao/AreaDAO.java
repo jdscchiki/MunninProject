@@ -252,4 +252,146 @@ public class AreaDAO extends ConexionBD {
 
         return resultado;
     }
+    
+    public boolean updateArea(Area area) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL UPDATE_AREA(?,?,?)}";
+        int indexNombre = 1;
+        int indexIdCentro = 2;
+        int indexIdArea = 3;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexNombre, area.getNombre());
+        statement.setString(indexIdCentro, area.getCentro().getId());
+        statement.setInt(indexIdArea, area.getId());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public boolean isLastAreaEnableCenter(String idCentro, int idArea) throws SQLException {
+        boolean answer = false;
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_AREA_ES_ULTIMO_AREA(?,?)}";
+        int indexIdCentro = 1;
+        int indexIdArea = 2;
+        String colAnswer = "RESULTADO";
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCentro);
+        statement.setInt(indexIdArea, idArea);
+
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            answer = rs.getBoolean(colAnswer);
+        }
+        return answer;
+    }
+    
+    public boolean disableArea(int idArea) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_AREA_INHABILITAR(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idArea);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public int countAreasDisabledCenter(String idCentro, String search) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_AREA_INHABILITADO_CENTRO_CONTEO(?,?)}";
+        int indexCentro = 1;
+        int indexFiltro = 2;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setString(indexFiltro, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+    
+    public ArrayList<Area> selectSomeAreaDisableCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Area> areas = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_TODOS_AREA_INHABILITADOS_CENTRO(?,?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Area area = new Area();
+            area.setId(rs.getInt(COL_ID));
+            area.setNombre(rs.getString(COL_NOMBRE));
+            Centro centro = new Centro();
+            centro.setId(COL_ID_CENTRO);
+            area.setCentro(centro);
+            areas.add(area);
+        }
+        return areas;
+    }
+    
+    public boolean enableArea(int idArea) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_AREA_HABILITAR(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idArea);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
 }

@@ -13,14 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
-import model.bean.Area;
 import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/area/pagerArea"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/pagerArea"})
 public class SearchArea extends HttpServlet {
 
     /**

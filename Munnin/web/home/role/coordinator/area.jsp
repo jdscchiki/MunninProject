@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/area/pagerArea", "fulltable");
+               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/area/pagerArea", "fulltable");
             });
         </script>
     </jsp:attribute>

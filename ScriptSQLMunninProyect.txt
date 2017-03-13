@@ -2944,3 +2944,206 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+----------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_areas_centro $$
+CREATE PROCEDURE ver_areas_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _areaXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _areaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_area,
+            nombre_area,
+            id_centro_area
+        FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 1
+        LIMIT _inicio, _areaXpagina );
+    ELSE
+        SELECT 
+            id_area,
+            nombre_area,
+            id_centro_area
+        FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 1 AND
+        (LOWER(id_area) REGEXP LOWER(_search) OR
+        LOWER(nombre_area) REGEXP LOWER(_search) OR
+        LOWER(id_centro_area) REGEXP LOWER(_search))
+        LIMIT _inicio, _areaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_area_activo $$
+CREATE PROCEDURE ver_area_activo(
+    in _nombre VARCHAR(100)) 
+BEGIN
+    SELECT *
+    FROM area
+    WHERE activo_area = 1 AND nombre_area = _nombre;
+END $$
+DELIMITER ;
+
+---------------------------------------
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS registrar_area $$
+CREATE PROCEDURE registrar_area (
+        IN _nombre_area VARCHAR(12) ,
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    CALL insertar_area(
+        _nombre_area ,
+	1 ,
+        _id_centro);
+END $$
+
+DELIMITER ;
+
+
+---------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_AREA_ES_ULTIMO_AREA $$
+CREATE PROCEDURE VER_AREA_ES_ULTIMO_AREA (
+        IN _id_centro VARCHAR(10),
+        IN _id_area INT
+    )
+BEGIN
+    SELECT IF(COUNT(id_area)=0, TRUE, FALSE) as resultado
+    FROM area
+    WHERE activo_area = 1 AND 
+        id_centro_area = _id_centro AND
+        id_area <> _id_area;
+END $$
+
+DELIMITER ;
+
+----------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_AREA_INHABILITAR $$
+CREATE PROCEDURE EDITAR_AREA_INHABILITAR (
+        IN _id_area INT
+    )
+BEGIN
+    UPDATE area
+    SET activo_area = 0
+    WHERE id_area = _id_area;
+END $$
+
+DELIMITER ;
+
+-----------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_AREA_INHABILITADO_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_AREA_INHABILITADO_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = " ") THEN(
+        SELECT COUNT(id_area) as conteo
+        FROM  area
+        WHERE id_centro_area = _id_centro AND activo_area = 0);
+    ELSE 
+        SELECT COUNT(id_area) as conteo
+        FROM  area
+        WHERE id_centro_area = _id_centro AND activo_area = 0 AND 
+            (LOWER(id_area) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro) OR
+            LOWER(id_centro_area) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+--------------------------------------
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_AREA_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE VER_TODOS_AREA_INHABILITADOS_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _areaXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _areaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_area ,
+            nombre_area,
+            id_centro_area
+        FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 0
+        LIMIT _inicio, _areaXpagina );
+    ELSE
+        SELECT 
+            id_area ,
+            nombre_area,
+            id_centro_area
+        FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 0 AND
+        (LOWER(id_area) REGEXP LOWER(_search) OR
+        LOWER(nombre_areao) REGEXP LOWER(_search) OR
+        LOWER(id_centro_area) REGEXP LOWER(_search))
+        LIMIT _inicio, _areaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-----------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_AREA_HABILITAR $$
+CREATE PROCEDURE EDITAR_AREA_HABILITAR (
+        IN _id_area INT
+    )
+BEGIN
+    UPDATE area
+    SET activo_area = 1
+    WHERE id_area = _id_area;
+END $$
+
+DELIMITER ;
+
+--------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS update_area $$
+CREATE PROCEDURE update_area (
+        IN _nombre_area VARCHAR(12) ,
+        IN _id_centro VARCHAR(10),
+    	IN _id_area int
+    )
+BEGIN
+    CALL editar_area(
+        _id_area,
+        _nombre_area ,
+		1 ,
+        _id_centro);
+END $$
+
+DELIMITER ;
