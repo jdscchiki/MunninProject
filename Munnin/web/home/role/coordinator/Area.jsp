@@ -53,6 +53,11 @@
                 <button type="button" 
                         class="btn btn-primary btn-block" 
                         data-panel-table="formActionAreaEnable"
+                        data-action="editArea">
+                    Editar Area</button>
+                <button type="button" 
+                        class="btn btn-primary btn-block" 
+                        data-panel-table="formActionAreaEnable"
                         data-action="disable">
                     Inhabilitar</button>
             </div>

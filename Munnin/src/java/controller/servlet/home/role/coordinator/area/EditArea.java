@@ -6,7 +6,6 @@
 package controller.servlet.home.role.coordinator.area;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,14 +15,13 @@ import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
 import model.bean.Area;
 import model.bean.Funcionario;
-import model.bean.Rol;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/area/manage"})
-public class ManageArea extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/edit-area"})
+public class EditArea extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,51 +36,36 @@ public class ManageArea extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idArea = request.getParameter("id");
-            int idAre;
-            String opcion = request.getParameter("action");
-            idAre = Integer.parseInt(idArea);
-            if (idAre <= 0) {
-                request.setAttribute("caseMessage", 3);
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las areas");
-            } else {
-                switch (opcion) {
-                    case "disable":
-                        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-                        Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-                        String idCentro = funcionario.getIdCentro();
-                        switch (Coordinator.disableArea(idAre, idCentro)) {
-                            case 0:
-                                request.setAttribute("messageType", "danger");
-                                request.setAttribute("message", "El area no ha podido ser inhabilitada");
-                                break;
-                            case 1:
-                                request.setAttribute("messageType", "success");
-                                request.setAttribute("message", "El area fue inhabilitada exitosamente");
-                                break;
-                            case 2:
-                                request.setAttribute("messageType", "danger");
-                                request.setAttribute("message", "Solo queda un area habilitado para el centro");
-                                break;
-                        }
-                        break;
-                    case "editArea":
-                        Area areaResult = Coordinator.viewAllInfoArea(idAre);
-                        request.setAttribute("area", areaResult);
-                        request.getRequestDispatcher("/home/role/coordinator/area/modalEditArea.jsp").forward(request, response);
-                        return;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        break;
-                }
+            String nombre = request.getParameter("nombre");
+            String id = request.getParameter("id");
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+
+            Area edit = new Area();
+            edit.setNombre(nombre);
+            edit.setId(Integer.parseInt(id));
+            switch(Coordinator.updateArea(edit, idCentro)){
+                case 0:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "no ha podido realizarse la edicion");
+                    break;
+                case 1:
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "la edicion se ha completado exitosamente");
+                    break;
+                case 2:
+                    request.setAttribute("messageType", "warning");
+                    request.setAttribute("message", "Actualmente existe un area activo con los datos ingresados");
+                    break;
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

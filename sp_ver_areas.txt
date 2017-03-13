@@ -178,3 +178,23 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+--------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS update_area $$
+CREATE PROCEDURE update_area (
+        IN _nombre_area VARCHAR(12) ,
+        IN _id_centro VARCHAR(10),
+    	IN _id_area int
+    )
+BEGIN
+    CALL editar_area(
+        _id_area,
+        _nombre_area ,
+		1 ,
+        _id_centro);
+END $$
+
+DELIMITER ;

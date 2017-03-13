@@ -101,6 +101,32 @@ public class Coordinator {
 
         return resultado;
     }
+    
+    public static int updateArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        area.setCentro(centro);
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isActiveArea(area.getNombre())) {
+            resultado = 2;
+        } else if (areaDAO.updateArea(area)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
 
     /**
      * consulta de los tipos de documento
@@ -317,6 +343,17 @@ public class Coordinator {
         resultado.setContrasena(null);
 
         funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static Area viewAllInfoArea(int idArea) throws NamingException, SQLException {
+        Area resultado = new Area();
+        AreaDAO areaDAO = new AreaDAO();
+        resultado.setId(idArea);
+        resultado = areaDAO.select(resultado);
+
+        areaDAO.cerrarConexion();
 
         return resultado;
     }
