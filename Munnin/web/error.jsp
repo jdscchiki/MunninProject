@@ -1,9 +1,3 @@
-<%-- 
-    Document   : error
-    Created on : 30/10/2016, 10:57:13 PM
-    Author     : Juan David Segura Castro <JBadCode>
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java" session="false"%>
 <!DOCTYPE html>

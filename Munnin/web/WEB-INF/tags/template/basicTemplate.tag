@@ -41,6 +41,9 @@
     <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
             <div class="container-fluid">
+                <div class="jumbotron">
+                    <h1>${panelTitle}</h1>      
+                </div>
                 <div class="row">
                     <div class="col-md-9"> 
                         <div class="panelMunnin">
@@ -49,8 +52,6 @@
                     </div>
                     <div class="col-md-3"> 
                         <div class="panelMunnin">
-                            <h3>${panelTitle}</h3>
-                            <hr>
                             <div class="media">
                                 <div class="media-left media-middle">
                                     <img src="${pageContext.request.contextPath}/resources/img/img_avatar2.png" class="media-object" style="width:60px">
@@ -76,6 +77,23 @@
                 </div>
             </div>
         </div>
+
+        <div class="leftS">
+            <nav class="menu">
+                <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+                <label class="menu-open-button" for="menu-open">
+                    <span class="hamburger hamburger-1"></span>
+                    <span class="hamburger hamburger-2"></span>
+                    <span class="hamburger hamburger-3"></span>
+                </label>
+                <a href="#" class="menu-item"> <span class="fa fa-star glyphicon"></span></a>
+                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/coord.png" alt="_icono" class="glyphicon"></a>
+                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon"></a>
+                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon"></a>
+                <a href="#" class="menu-item"> <span class="fa fa-user-circle glyphicon"></a>
+                <a href="#" class="menu-item"> <i class="fa fa-ellipsis-h"></i></a>
+            </nav>
+        </div>                        
         <!--aqui preloader-->
         <component:footer />
         <component:js />
