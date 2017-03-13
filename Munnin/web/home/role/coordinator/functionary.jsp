@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -42,7 +42,7 @@
                 </form>
             </div>
             <div class="col-lg-8" id="fulltable">
-                
+
             </div>
             <div class="col-lg-2">
                 <button type="button" 

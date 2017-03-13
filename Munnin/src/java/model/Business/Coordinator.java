@@ -198,6 +198,21 @@ public class Coordinator {
 
         return paginas;
     }
+    
+    public static int countPagesAreaDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantArea;
+        AreaDAO areaDAO = new AreaDAO();
+        cantArea = areaDAO.countAreasDisabledCenter(idCentro, search);
+        areaDAO.cerrarConexion();
+
+        paginas = cantArea / cantXpag;
+        if (cantArea % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
 
     /**
      * Consulta los funcionarios de un centro en especifico, en una pagina
@@ -256,6 +271,22 @@ public class Coordinator {
 
         return resultado;
     }
+    
+    public static int disableArea(int idArea, String idCentro) throws NamingException, SQLException {
+        int resultado = 0;
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isLastAreaEnableCenter(idCentro, idArea)) {
+            resultado = 2;
+        } else if (areaDAO.disableArea(idArea)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    
 
     public static boolean enableFunctionary(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
@@ -391,5 +422,15 @@ public class Coordinator {
         funcionarioDAO.cerrarConexion();
 
         return funcionarios;
+    }
+    
+    public static ArrayList<Area> viewAreaDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Area> area;
+        AreaDAO areaDAO = new AreaDAO();
+        area = areaDAO.selectSomeAreaDisableCenter(idCentro, pagina, cantXpag, search);
+
+        areaDAO.cerrarConexion();
+
+        return area;
     }
 }

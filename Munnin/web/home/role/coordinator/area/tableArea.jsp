@@ -13,7 +13,6 @@
                 <tr>
                     <th>Id Area</th>
                     <th>Nombre</th>
-                    <th>Id Centro</th>
                 </tr>
             </thead>
             <tbody id="${idTable}"
@@ -25,7 +24,6 @@
                         data-data-table="${idTable}">
                         <td>${area.getId()}</td>
                         <td>${area.getNombre()}</td>
-                        <td>${area.getCentro()}</td>
                     </tr>
                 </c:forEach>
             </tbody>

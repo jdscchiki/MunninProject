@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/area/pagerArea", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerArea", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -23,7 +23,7 @@
                 <form id="formSearchAreaEnable" 
                       class="form-horizontal" 
                       method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/area/pagerArea"
+                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerArea"
                       data-ajax-form="true"
                       data-display="message_areas">                    
                     <div class="form-group">                        
@@ -49,12 +49,25 @@
                         class="btn btn-primary btn-block" 
                         data-toggle="modal" 
                         data-target="#registerArea">
-                    Crear Area</button>                
-            </div>                                            
+                    Crear Area</button>
+                <button type="button" 
+                        class="btn btn-primary btn-block" 
+                        data-panel-table="formActionAreaEnable"
+                        data-action="disable">
+                    Inhabilitar</button>
+            </div>
+            <div class="col-lg-12">
+                <button type="button" 
+                        class="btn btn-link" 
+                        data-servlet="${pageContext.request.contextPath}/home/role/coordinator/area/modalShowDisableArea.jsp"
+                        data-display="message_areas">
+                    Ver Area Inhabilitadas 
+                </button>
+            </div>
         </div>
         <form id="formActionAreaEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/admin-functionary"
+              action="${pageContext.request.contextPath}/home/role/coordinator/area/manage"
               data-display="message_areas"
               data-ajax-form="true"
               data-data-table="tableBodyAreas">

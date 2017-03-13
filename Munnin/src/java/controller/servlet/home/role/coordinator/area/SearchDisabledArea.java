@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package controller.servlet.home.role.coordinator.area;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
-import model.bean.Area;
 import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerArea"})
-public class SearchArea extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/refresh-disabled-area"})
+public class SearchDisabledArea extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,7 +35,6 @@ public class SearchArea extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-
             String search = request.getParameter("search");
             String strPage = request.getParameter("page");
             int page = 1;
@@ -49,14 +47,14 @@ public class SearchArea extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesAreasCenter(funcionario.getIdCentro(), cantXpag, search);
+            int totalPages = Coordinator.countPagesAreaDisabledCenter(funcionario.getIdCentro(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewAreasCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("contentTable", Coordinator.viewAreaDisabledCenter(funcionario.getIdCentro(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyAreas");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/area/pagerArea"));
+            request.setAttribute("displayResult", "showDisabledAreaTable");
+            request.setAttribute("idTable", "tableBodyAreaDisabled");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/area/refresh-disabled-area"));
             request.getRequestDispatcher("/home/role/coordinator/area/tableArea.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
