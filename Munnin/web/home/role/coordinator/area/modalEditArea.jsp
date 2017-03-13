@@ -19,7 +19,7 @@
                     </div>
                     <div class="form-group">
                         <div id="divEditArea_message" class="col-lg-offset-3 col-lg-8">
-
+                            
                         </div>
                     </div>
                 </div>

@@ -55,7 +55,7 @@ public class EditArea extends HttpServlet {
                     break;
                 case 2:
                     request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un area activo con los datos ingresados");
+                    request.setAttribute("message", "Actualmente existe un area activa con los datos ingresados");
                     break;
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);

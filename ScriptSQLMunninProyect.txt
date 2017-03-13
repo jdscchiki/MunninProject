@@ -3147,3 +3147,31 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_areas_centro $$
+CREATE PROCEDURE conteo_areas_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_area) as conteo
+        FROM  area
+        WHERE id_centro_area = _id_centro AND activo_area = 1);
+    ELSE 
+        SELECT COUNT(id_area) as conteo
+        FROM  area
+        WHERE id_centro_area = _id_centro AND activo_area = 1 AND 
+            (LOWER(id_area) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro) OR
+            LOWER(id_centro_area) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
