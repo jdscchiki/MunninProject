@@ -37,14 +37,14 @@ public class EnableArea extends HttpServlet {
             int id = Integer.parseInt(stringId);
             if (id <= 0) {
                 request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Seleciona un funcionario para realizar el proceso");
+                request.setAttribute("message", "Seleciona un area para realizar el proceso");
             } else {
-                if (Coordinator.enableFunctionary(id)) {
+                if (Coordinator.enableArea(id)) {
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "Se ha habilitado correctamente la cuenta del funcionario");
+                    request.setAttribute("message", "Se ha habilitado correctamente el area");
                 } else {
                     request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "No se ha podido habilitar la cuenta del funcionario");
+                    request.setAttribute("message", "No se ha podido habilitar el area");
                 }
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);

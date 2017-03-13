@@ -299,7 +299,7 @@ public class AreaDAO extends ConexionBD {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_AREA_INHABILITADOS_CENTRO(?,?)}";
+        String query = "{CALL VER_AREA_INHABILITADO_CENTRO_CONTEO(?,?)}";
         int indexCentro = 1;
         int indexFiltro = 2;
 
@@ -322,7 +322,7 @@ public class AreaDAO extends ConexionBD {
         ArrayList<Area> areas = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_AREA_INHABILITADOS_CENTRO(?,?,?,?)}";
+        String query = "{CALL VER_TODOS_AREA_INHABILITADOS_CENTRO(?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
@@ -347,5 +347,26 @@ public class AreaDAO extends ConexionBD {
             areas.add(area);
         }
         return areas;
+    }
+    
+    public boolean enableArea(int idArea) throws SQLException {
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_AREA_HABILITAR(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idArea);
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
     }
 }

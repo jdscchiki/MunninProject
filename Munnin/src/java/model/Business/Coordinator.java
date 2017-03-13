@@ -297,6 +297,16 @@ public class Coordinator {
 
         return resultado;
     }
+    
+    public static boolean enableArea(int idFuncionario) throws NamingException, SQLException {
+        boolean resultado;
+        AreaDAO areaDAO = new AreaDAO();
+        resultado = areaDAO.enableArea(idFuncionario);
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
 
     public static Funcionario viewAllInfoFunctionary(int idFuncionario) throws NamingException, SQLException {
         Funcionario resultado = new Funcionario();
