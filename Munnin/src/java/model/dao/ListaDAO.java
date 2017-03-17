@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Lista;
 import model.bean.TipoLista;
@@ -167,5 +168,30 @@ public class ListaDAO extends ConexionBD {
         }
 
         return lista;
+    }
+    
+    public ArrayList<Lista> selectAll() throws SQLException {
+        ArrayList<Lista> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_LISTA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Lista lista = new Lista();
+            lista.setId(rs.getInt(COL_ID));
+            lista.setNombre(rs.getString(COL_NOMBRE));
+            lista.setDescripcion(rs.getString(COL_DESCRIPCION));
+            lista.setFecha(rs.getDate(COL_FECHA));
+            TipoLista tipoLista = new TipoLista();
+            tipoLista.setId(rs.getInt(COL_ID_TIPO_LISTA));
+            lista.setTipoLista(tipoLista);
+            lista.setIdAutor(rs.getInt(COL_ID_AUTOR));
+            
+            result.add(lista);
+        }
+
+        return result;
     }
 }

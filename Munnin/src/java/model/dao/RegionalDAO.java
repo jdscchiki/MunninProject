@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Regional;
 import util.ConexionBD;
@@ -142,5 +143,24 @@ public class RegionalDAO extends ConexionBD {
         }
 
         return regional;
+    }
+    
+    public ArrayList<Regional> selectAll() throws SQLException {
+        ArrayList<Regional> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_REGIONAL()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Regional regional = new Regional();
+            regional.setId(rs.getString(COL_ID));
+            regional.setNombre(rs.getString(COL_NOMBRE));
+            
+            result.add(regional);
+        }
+
+        return result;
     }
 }

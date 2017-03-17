@@ -49,14 +49,14 @@ public class SearchArea extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesAreasCenter(funcionario.getIdCentro(), cantXpag, search);
+            int totalPages = Coordinator.countPagesAreasCenter(funcionario.getCentro().getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewAreasCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("contentTable", Coordinator.viewAreasCenter(funcionario.getCentro().getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("idTable", "tableBodyAreas");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/area/pagerArea"));
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerArea"));
             request.getRequestDispatcher("/home/role/coordinator/area/tableArea.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

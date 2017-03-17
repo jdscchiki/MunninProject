@@ -19,7 +19,7 @@ import model.Business.Coordinator;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/assign-roles"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/assign-roles"})
 public class AssignRoles extends HttpServlet {
 
     /**

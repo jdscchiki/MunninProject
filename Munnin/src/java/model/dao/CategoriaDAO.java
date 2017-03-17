@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Categoria;
 import model.bean.Centro;
@@ -156,5 +157,51 @@ public class CategoriaDAO extends ConexionBD {
         }
 
         return categoria;
+    }
+    
+    public ArrayList<Categoria> selectAll() throws SQLException {
+        ArrayList<Categoria> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_CATEGORIA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Categoria categoria = new Categoria();
+            categoria.setId(rs.getInt(COL_ID));
+            categoria.setNombre(rs.getString(COL_NOMBRE));
+            categoria.setActivo(rs.getBoolean(COL_ACTIVO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            categoria.setCentro(centro);
+            
+            result.add(categoria);
+        }
+
+        return result;
+    }
+    
+    public ArrayList<Categoria> selectAllCenter(String idCentro) throws SQLException{
+        ArrayList<Categoria> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_CATEGORIA_CENTRO(?,?)}";
+        int indexIdCentro = 1;
+        int indexActivo = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCentro);
+        statement.setBoolean(indexActivo, true);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Categoria categoria = new Categoria();
+            categoria.setId(rs.getInt(COL_ID));
+            categoria.setNombre(rs.getString(COL_NOMBRE));
+            
+            result.add(categoria);
+        }
+        
+        return result;
     }
 }

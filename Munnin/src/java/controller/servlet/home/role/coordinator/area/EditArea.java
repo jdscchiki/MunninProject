@@ -39,7 +39,7 @@ public class EditArea extends HttpServlet {
             String nombre = request.getParameter("nombre");
             String id = request.getParameter("id");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
 
             Area edit = new Area();
             edit.setNombre(nombre);

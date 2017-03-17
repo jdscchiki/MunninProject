@@ -57,73 +57,35 @@ public class Coordinator {
         4. existe un usuario no-activo con el mismo documento
         5. el correo no pudo ser enviado
          */
+
         int resultado = 0;
-        funcionario.setIdCentro(idCentro);
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        funcionario.setCentro(centro);
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encriptado.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
-        } else if (funcionarioDAO.existFunctionaryByMail(funcionario.getCorreo())) {
-            resultado = 3;
-        } else if (funcionarioDAO.existFunctionaryByDocument(funcionario.getDocumento(), funcionario.getTipoDocumento().getId())) {
-            resultado = 4;
-        } else if (funcionarioDAO.registerFunctionary(funcionario)) {
-            funcionario.setContrasena(null);
-            resultado = 1;
+        } else {
+            if (funcionarioDAO.existFunctionaryByMail(funcionario.getCorreo())) {
+                resultado = 3;
+            } else if (funcionarioDAO.existFunctionaryByDocument(funcionario.getDocumento(), funcionario.getTipoDocumento().getId())) {
+                resultado = 4;
+            } else {
+                if (funcionarioDAO.registerFunctionary(funcionario)) {
+                    funcionario.setContrasena(null);
+                    if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
+                        resultado = 1;
+                    } else {
+                        resultado = 5;
+                    }
+                }
+            }
         }
+
         funcionarioDAO.cerrarConexion();
-        return resultado;
-    }
-
-    public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
-        /*
-        0. fallo
-        1. completado
-        2. existe un usuario activo con los datos ingresados
-        3. existe un usuario no-activo con el mismo correo
-        4. existe un usuario no-activo con el mismo documento
-        5. el correo no pudo ser enviado
-         */
-
-        int resultado = 0;
-        Centro centro = new Centro();
-        centro.setId(idCentro);
-        area.setCentro(centro);
-        AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
-            resultado = 2;
-        } else if (areaDAO.registerArea(area)) {
-            resultado = 1;
-        }
-
-        areaDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    public static int updateArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
-        /*
-        0. fallo
-        1. completado
-        2. existe un usuario activo con los datos ingresados
-        3. existe un usuario no-activo con el mismo correo
-        4. existe un usuario no-activo con el mismo documento
-        5. el correo no pudo ser enviado
-         */
-
-        int resultado = 0;
-        Centro centro = new Centro();
-        centro.setId(idCentro);
-        area.setCentro(centro);
-        AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
-            resultado = 2;
-        } else if (areaDAO.updateArea(area)) {
-            resultado = 1;
-        }
-
-        areaDAO.cerrarConexion();
 
         return resultado;
     }
@@ -168,6 +130,56 @@ public class Coordinator {
 
         return roles;
     }
+    
+    public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        AreaDAO areaDAO = new AreaDAO();
+        countAreas = areaDAO.countAreasCenter(idCentro, search);
+        areaDAO.cerrarConexion();
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        area.setCentro(centro);
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isActiveArea(area.getNombre())) {
+            resultado = 2;
+        } else if (areaDAO.registerArea(area)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Area> area;
+        AreaDAO areaDAO = new AreaDAO();
+        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search);
+
+        areaDAO.cerrarConexion();
+
+        return area;
+    }
 
     /**
      * Consulta la cantidad de paginas necesarias para mostrar todos los
@@ -185,36 +197,7 @@ public class Coordinator {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search);
-        funcionarioDAO.cerrarConexion();
-
-        paginas = cantFuncionarios / cantXpag;
-        if (cantFuncionarios % cantXpag != 0) {
-            paginas++;
-        }
-
-        return paginas;
-    }
-
-    public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
-        int paginas;
-        int countAreas;
-        AreaDAO areaDAO = new AreaDAO();
-        countAreas = areaDAO.countAreasCenter(idCentro, search);
-        areaDAO.cerrarConexion();
-        paginas = countAreas / cantXpag;
-        if (countAreas % cantXpag != 0) {
-            paginas++;
-        }
-
-        return paginas;
-    }
-
-    public static int countPagesFunctionariesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
-        int paginas;
-        int cantFuncionarios;
-        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesDisabledCenter(idCentro, search);
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, true);
         funcionarioDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
@@ -225,15 +208,15 @@ public class Coordinator {
         return paginas;
     }
     
-    public static int countPagesAreaDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+    public static int countPagesFunctionariesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
-        int cantArea;
-        AreaDAO areaDAO = new AreaDAO();
-        cantArea = areaDAO.countAreasDisabledCenter(idCentro, search);
-        areaDAO.cerrarConexion();
+        int cantFuncionarios;
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, false);
+        funcionarioDAO.cerrarConexion();
 
-        paginas = cantArea / cantXpag;
-        if (cantArea % cantXpag != 0) {
+        paginas = cantFuncionarios / cantXpag;
+        if (cantFuncionarios % cantXpag != 0) {
             paginas++;
         }
 
@@ -257,21 +240,11 @@ public class Coordinator {
     public static ArrayList<Funcionario> viewFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, true);
 
         funcionarioDAO.cerrarConexion();
 
         return funcionarios;
-    }
-
-    public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-        ArrayList<Area> area;
-        AreaDAO areaDAO = new AreaDAO();
-        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search);
-
-        areaDAO.cerrarConexion();
-
-        return area;
     }
 
     /**
@@ -287,32 +260,18 @@ public class Coordinator {
     public static int disableFunctionary(int idFuncionario, String idCentro) throws NamingException, SQLException {
         int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro, idFuncionario)) {
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro,idFuncionario)) {
             resultado = 2;
-        } else if (funcionarioDAO.disableFunctionary(idFuncionario)) {
-            resultado = 1;
+        } else {
+            if (funcionarioDAO.disableFunctionary(idFuncionario)) {
+                resultado = 1;
+            }
         }
 
         funcionarioDAO.cerrarConexion();
 
         return resultado;
     }
-    
-    public static int disableArea(int idArea, String idCentro) throws NamingException, SQLException {
-        int resultado = 0;
-        AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isLastAreaEnableCenter(idCentro, idArea)) {
-            resultado = 2;
-        } else if (areaDAO.disableArea(idArea)) {
-            resultado = 1;
-        }
-
-        areaDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    
 
     public static boolean enableFunctionary(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
@@ -320,16 +279,6 @@ public class Coordinator {
         resultado = funcionarioDAO.enableFunctionary(idFuncionario);
 
         funcionarioDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    public static boolean enableArea(int idFuncionario) throws NamingException, SQLException {
-        boolean resultado;
-        AreaDAO areaDAO = new AreaDAO();
-        resultado = areaDAO.enableArea(idFuncionario);
-
-        areaDAO.cerrarConexion();
 
         return resultado;
     }
@@ -343,17 +292,6 @@ public class Coordinator {
         resultado.setContrasena(null);
 
         funcionarioDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    public static Area viewAllInfoArea(int idArea) throws NamingException, SQLException {
-        Area resultado = new Area();
-        AreaDAO areaDAO = new AreaDAO();
-        resultado.setId(idArea);
-        resultado = areaDAO.select(resultado);
-
-        areaDAO.cerrarConexion();
 
         return resultado;
     }
@@ -464,11 +402,88 @@ public class Coordinator {
     public static ArrayList<Funcionario> viewFunctionariesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesDisableCenter(idCentro, pagina, cantXpag, search);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, false);
 
         funcionarioDAO.cerrarConexion();
 
         return funcionarios;
+    }
+    
+    
+    public static int updateArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+        /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        area.setCentro(centro);
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isActiveArea(area.getNombre())) {
+            resultado = 2;
+        } else if (areaDAO.updateArea(area)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static boolean enableArea(int idFuncionario) throws NamingException, SQLException {
+        boolean resultado;
+        AreaDAO areaDAO = new AreaDAO();
+        resultado = areaDAO.enableArea(idFuncionario);
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static int disableArea(int idArea, String idCentro) throws NamingException, SQLException {
+        int resultado = 0;
+        AreaDAO areaDAO = new AreaDAO();
+        if (areaDAO.isLastAreaEnableCenter(idCentro, idArea)) {
+            resultado = 2;
+        } else if (areaDAO.disableArea(idArea)) {
+            resultado = 1;
+        }
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static Area viewAllInfoArea(int idArea) throws NamingException, SQLException {
+        Area resultado = new Area();
+        AreaDAO areaDAO = new AreaDAO();
+        resultado.setId(idArea);
+        resultado = areaDAO.select(resultado);
+
+        areaDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static int countPagesAreaDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantArea;
+        AreaDAO areaDAO = new AreaDAO();
+        cantArea = areaDAO.countAreasDisabledCenter(idCentro, search);
+        areaDAO.cerrarConexion();
+
+        paginas = cantArea / cantXpag;
+        if (cantArea % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
     }
     
     public static ArrayList<Area> viewAreaDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {

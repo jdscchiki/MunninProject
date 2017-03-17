@@ -6,10 +6,7 @@
 package controller.servlet.home.role.coordinator.uploadExcelData;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,12 +18,13 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import model.Business.Excel;
 import model.bean.Funcionario;
+import util.FileManager;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/uploadExcelData/uploadData"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/uploadexceldata/uploaddata"})
 //@MultipartConfig(
 //        fileSizeThreshold = 1024 * 1024 * 10, // 10 MB 
 //        maxFileSize = 1024 * 1024 * 50, // 50 MB
@@ -46,66 +44,58 @@ public class uploadData extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            InputStream input = null;
-            OutputStream output = null;
-            Excel obj = new Excel();
-            String ruta = "";
-            try {
-                Part file = request.getPart("objectFile");
-                input = file.getInputStream();
-                ruta = "D:\\Sergio\\archivos\\" + file.getSubmittedFileName();
-                output = new FileOutputStream(new File("D:\\Sergio\\archivos\\" + file.getSubmittedFileName()));
-                int read = 0;
-                byte[] bytes = new byte[1024];
 
-                while ((read = input.read(bytes)) != -1) {
-                    output.write(bytes, 0, read);
-                }
-            } catch (Exception e) {
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (Exception e) {
+            Part file = request.getPart("objectFile");
+            String ruta = File.separator + "excel" + File.separator + "t" + System.currentTimeMillis();
+
+            if (!FileManager.saveFileMunninServer(file, ruta)) {
+                request.setAttribute("messageType", "danger");
+                request.setAttribute("message", "Se ha presentado un error al guardar el archivo");
+                request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+            } else {
+                String realPath = "C:" + File.separator + "MunninRepository" + File.separator + ruta + File.separator + file.getSubmittedFileName();
+
+                Excel obj = new Excel();
+
+                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+                Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+                
+                ArrayList[] readResult = obj.leerArchivo(realPath, funcionario.getCentro().getId());
+                
+                File fichero = new File(realPath);
+                fichero.delete();
+                
+                if (readResult[0].isEmpty() && readResult[1].isEmpty()) {
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "El archivo enviado no tiene ningun contenido");
+                } else {
+                    if (readResult[1].size() == 1) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "Se ha registrado " + readResult[1].size() + " elemento correctamente");
+                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
+                    } else if (readResult[1].size() > 0) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "Se han registrado " + readResult[1].size() + " elementos correctamente");
+                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
+                    }
+
+                    String msn = "";
+                    for (int i = 0; i < readResult[0].size(); i++) {
+                        msn = msn + " " + readResult[0].get(i).toString();
+                    }
+                    
+                    if (readResult[0].size() == 1) {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "Se han presentado errores en la linea " + msn);
+                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
+                    } else if (readResult[0].size() > 0) {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "Se han presentado errores en las lineas " + msn);
+                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
                     }
                 }
-                if (output != null) {
-                    try {
-                        // outputStream.flush();
-                        output.close();
-                    } catch (Exception e) {
-                    }
 
-                }
             }
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            ArrayList[] s = obj.leerArchivo(ruta, funcionario.getIdCentro());
-            File fichero = new File(ruta);
-            fichero.delete();
-            String msn = "";
-            for (int i = 0; i < s[0].size(); i++) {
-                msn = msn + " " + s[0].get(i).toString();
-            }
-
-            if (s[1].size() == 1) {
-                request.setAttribute("messageType", "success");
-                request.setAttribute("message", "Se ha registrado " + s[1].size() + " elemento correctamente");
-            }else if(s[1].size() > 0){
-                request.setAttribute("messageType", "success");
-                request.setAttribute("message", "Se han registrado " + s[1].size() + " elementos correctamente");
-            }
-            
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
-
-            if (s[0].size() == 1) {
-                request.setAttribute("messageType", "danger");
-                request.setAttribute("message", "Se han presentado errores en la linea " + msn);
-            } else if (s[0].size() > 0) {
-                request.setAttribute("messageType", "danger");
-                request.setAttribute("message", "Se han presentado errores en las lineas " + msn);
-            }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").include(request, response);
 
         } catch (Exception e) {
             request.setAttribute("mensaje", e);

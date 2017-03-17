@@ -9,7 +9,7 @@ package model.bean;
  *
  * @author Juan David Segura
  */
-public class EvaluacionItem {
+public class EvaluacionItem implements java.io.Serializable {
     private int id;
     private int calificacion;
     private String observarcion;

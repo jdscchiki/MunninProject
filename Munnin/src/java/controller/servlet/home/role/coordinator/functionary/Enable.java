@@ -17,7 +17,7 @@ import model.Business.Coordinator;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/enable-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/enable"})
 public class Enable extends HttpServlet {
 
     /**

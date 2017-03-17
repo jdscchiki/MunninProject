@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.TipoObjetoAprendizaje;
 import util.ConexionBD;
@@ -19,7 +20,7 @@ import util.ConexionBD;
 public class TipoObjetoAprendizajeDAO extends ConexionBD {
 
     private static final String COL_ID = "id_tipo_objeto_aprendizaje";
-    private static final String COL_NOMBRE = "nombre_tipo_objeto_aprendizaje";
+    private static final String COL_NOMBRE = "nombre_tipo_obj_apren";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -144,5 +145,24 @@ public class TipoObjetoAprendizajeDAO extends ConexionBD {
         }
 
         return tipoObjetoAprendizaje;
+    }
+    
+    public ArrayList<TipoObjetoAprendizaje> selectAll() throws SQLException {
+        ArrayList<TipoObjetoAprendizaje> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_TIPO_OBJETO_APRENDIZAJE()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
+            tipoObjetoAprendizaje.setId(rs.getInt(COL_ID));
+            tipoObjetoAprendizaje.setNombre(rs.getString(COL_NOMBRE));
+            
+            result.add(tipoObjetoAprendizaje);
+        }
+
+        return result;
     }
 }

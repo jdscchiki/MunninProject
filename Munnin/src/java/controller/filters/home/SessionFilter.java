@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -19,7 +18,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.bean.Funcionario;
 
 /**
  *
@@ -42,27 +40,6 @@ public class SessionFilter implements Filter {
         if (debug) {
             log("SessionFilter:DoBeforeProcessing");
         }
-
-        // Write code here to process the request and/or response before
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
-        // such as the parameters.
-        /*
-	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    String values[] = request.getParameterValues(name);
-	    int n = values.length;
-	    StringBuffer buf = new StringBuffer();
-	    buf.append(name);
-	    buf.append("=");
-	    for(int i=0; i < n; i++) {
-	        buf.append(values[i]);
-	        if (i < n-1)
-	            buf.append(",");
-	    }
-	    log(buf.toString());
-	}
-         */
     }
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
@@ -70,24 +47,6 @@ public class SessionFilter implements Filter {
         if (debug) {
             log("SessionFilter:DoAfterProcessing");
         }
-
-        // Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-        /*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-         */
-        // For example, a filter might append something to the response.
-        /*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
     }
 
     /**
@@ -113,62 +72,29 @@ public class SessionFilter implements Filter {
         try {
             //cache control
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-            httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0
-            httpResponse.setDateHeader("Expires", 0); // Proxies.
-            
-            //todo el codigo para verificar sessiones
-            //revisa que no sea un componente de la pagina(imagenes, css, js, etc)
-            boolean isComp = false;
-            ArrayList<String> componenetes = new ArrayList<>();
-            componenetes.add(".js");
-            componenetes.add(".css");
-            componenetes.add(".png");
-            for (String componenete : componenetes) {
-                if (((HttpServletRequest) request).getRequestURI().endsWith(componenete)) {
-                    isComp = true;
-                    break;
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+
+            //codigo para verificar sessiones
+            String contextPath = ((HttpServletRequest) request).getContextPath();
+
+            //accede a la sesion almacenada
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+
+            boolean ajax = "XMLHttpRequest".equals(httpRequest.getHeader("X-Requested-With"));
+            if (sesion.getAttribute("usuario") == null) {
+                if (ajax) {
+                    httpResponse.sendRedirect(contextPath + "/sessionTimeOut.jsp");
+                    return;
+                } else {
+                    httpResponse.sendRedirect(contextPath + "/index.jsp");
+                    return;
                 }
             }
-            //quitar de los comentarios el siguiente codigo si algun elemento no carga, y añadirlo al ArrayList de componentes
-//            System.out.println("uri: "+((HttpServletRequest)request).getRequestURI());
 
-            //si es un componente, no es necesario el filtro
-            if (!isComp) {
-                boolean ExcepcionUri = false;
-                //las execepciones del filtro de inicio de sesion
-                ArrayList<String> excepcionesUriEnd = new ArrayList<>();
-                excepcionesUriEnd.add("/index.jsp");
-                excepcionesUriEnd.add("/login");
-                excepcionesUriEnd.add("/error.jsp");
-                excepcionesUriEnd.add("/");
-                for (String UriEnd : excepcionesUriEnd) {
-                    if (((HttpServletRequest) request).getRequestURI().endsWith(UriEnd)) {
-                        ExcepcionUri = true;
-                        break;
-                    }
-                }
-
-                //acede al contexto de la aplicacion, es decir, al nombre de la aplicacion
-                String contextPath = ((HttpServletRequest) request).getContextPath();
-
-                //accede a la sesion almacenada
-                HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-
-                //valida que no exista una sesion de usuario activa
-                if (sesion.getAttribute("usuario") == null) {
-                    if (!ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/index.jsp");
-                        return;
-                    }
-                } else {//revisa que no venga del login para evitar otro ingreso a la aplicacion
-                    request.setAttribute("nombreUsuario", ((Funcionario) sesion.getAttribute("usuario")).getNombre());
-                    if (ExcepcionUri) {
-                        ((HttpServletResponse) response).sendRedirect(contextPath + "/home/intro.jsp");
-                        return;
-                    }
-                }
-            }
             chain.doFilter(request, response);
 
         } catch (Throwable t) {
@@ -183,7 +109,8 @@ public class SessionFilter implements Filter {
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
-        if (problem != null) {
+        if (problem
+                != null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
             }

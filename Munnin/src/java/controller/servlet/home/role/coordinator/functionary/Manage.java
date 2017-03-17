@@ -21,7 +21,7 @@ import model.bean.Rol;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/admin-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/manage"})
 public class Manage extends HttpServlet {
 
     /**
@@ -43,13 +43,13 @@ public class Manage extends HttpServlet {
 
             idFun = Integer.parseInt(idFuncionario);
             if (idFun <= 0) {
-                request.setAttribute("caseMessage", 3);
+                request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los funcionarios");
             } else {
                 switch (opcion) {
                     case "disable":
                         HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
                         switch (Coordinator.disableFunctionary(idFun, idCentro)) {
                             case 0:
                                 request.setAttribute("messageType", "danger");

@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
@@ -167,5 +168,30 @@ public class EvaluacionItemDAO extends ConexionBD {
         }
 
         return evaluacionItem;
+    }
+    
+    public ArrayList<EvaluacionItem> selectAll() throws SQLException {
+        ArrayList<EvaluacionItem> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_EVALUACION_ITEM()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            EvaluacionItem evaluacionItem = new EvaluacionItem();
+            evaluacionItem.setId(rs.getInt(COL_ID));
+            evaluacionItem.setCalificacion(rs.getInt(COL_CALIFICACION));
+            evaluacionItem.setObservarcion(rs.getString(COL_OBSERVACION));
+            EvaluacionLista evaluacionLista = new EvaluacionLista();
+            evaluacionLista.setId(rs.getInt(COL_ID_EVALUACION_LISTA));
+            evaluacionItem.setEvaluacionLista(evaluacionLista);
+            Item item = new Item();
+            item.setId(rs.getInt(COL_ID_ITEM));
+            evaluacionItem.setItem(item);
+            result.add(evaluacionItem);
+        }
+
+        return result;
     }
 }

@@ -42,9 +42,30 @@ public class ChangePassword extends HttpServlet {
 
             boolean[] result = General.changePassword(funcionario.getCorreo(), password, newPassword);
 
-            request.setAttribute("message", result);
+            String message = "";
 
-            request.getRequestDispatcher("/elements/content/messagesPassword.jsp").forward(request, response);
+            if (result[0]) {
+                message = "Se ha completado el cambio de contraseña con exito";
+                request.setAttribute("messageType", "success");
+            } else {
+                if (!result[1]) {
+                    message = "La contraseña antigua no es la correcta";
+                    request.setAttribute("messageType", "warning");
+                } else {
+                    if (!result[2]) {
+                        message = "Nueva contraseña no es segura, necesita de letras en mayúscula y minúscula, y números.";
+                        
+                        request.setAttribute("messageType", "warning");
+                    }else{
+                        message = "Ha ocurrido un problema";
+                        request.setAttribute("messageType", "danger");
+                    }
+                }
+            }
+
+            request.setAttribute("message", message);
+
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);

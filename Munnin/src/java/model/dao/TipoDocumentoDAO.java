@@ -153,21 +153,22 @@ public class TipoDocumentoDAO extends ConexionBD {
      * procedimiento almacenado
      */
     public ArrayList<TipoDocumento> selectAll() throws SQLException {
-        ArrayList<TipoDocumento> tiposDoc = new ArrayList<>();//el objeto en donde se guardan los resultados de la consulta
+        ArrayList<TipoDocumento> result = new ArrayList<>();
 
         //datos de la consulta en base de datos
         String query = "{CALL VER_TODOS_TIPO_DOCUMENTO()}";
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        ResultSet rs = statement.executeQuery();
+        
         while (rs.next()) {
             TipoDocumento td = new TipoDocumento();
             td.setId(rs.getInt(COL_ID));
             td.setNombre(rs.getString(COL_NOMBRE));
-            tiposDoc.add(td);
+            result.add(td);
         }
 
-        return tiposDoc;
+        return result;
     }
 
 }

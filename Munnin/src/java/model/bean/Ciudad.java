@@ -9,7 +9,7 @@ package model.bean;
  *
  * @author Juan David Segura
  */
-public class Ciudad {
+public class Ciudad implements java.io.Serializable {
 
     private String id;
     private String nombre;

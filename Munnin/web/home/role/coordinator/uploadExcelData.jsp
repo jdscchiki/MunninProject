@@ -23,7 +23,7 @@
                 <form class="form-horizontal"
                       enctype="multipart/form-data"
                       method="POST"
-                      action="${pageContext.request.contextPath}/home/role/coordinator/uploadExcelData/uploadData"
+                      action="${pageContext.request.contextPath}/home/role/coordinator/uploadexceldata/uploaddata"
                       data-ajax-form="true"
                       data-display="message_uploadobject">
                     <div class="form-group">
@@ -41,13 +41,13 @@
                         <div class="col-lg-offset-2 col-sm-4">
                             <button type="submit" class="btn btn-success">
                                 Enviar
-                            </button>                            
+                            </button>
                         </div>
                     </div>
 
                 </form>
             </div>
         </div>
-        <jsp:include page="/home/role/coordinator/functionary/modalHint.jsp" />
+        <jsp:include page="/home/role/coordinator/uploadexceldata/modalHint.jsp" />
     </jsp:body>
 </template:basicTemplate>

@@ -20,7 +20,7 @@ import model.bean.TipoDocumento;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/register-functionary"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/register"})
 public class Register extends HttpServlet {
 
     /**
@@ -44,7 +44,7 @@ public class Register extends HttpServlet {
             String apellido = request.getParameter("apellido");
             String telefono = request.getParameter("telefono");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
             idTipoDoc = Integer.parseInt(tipoDoc);
 
             Funcionario nuevoFuncionario = new Funcionario();
@@ -82,10 +82,11 @@ public class Register extends HttpServlet {
                     request.setAttribute("message", "No ha podido ser enviado el correo con la contraseña del nuevo funcionario");
                     break;
             }
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (NumberFormatException e) {
+            request.setAttribute("messageType", "warning");
             request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
-            request.getRequestDispatcher("/elements/content/message.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

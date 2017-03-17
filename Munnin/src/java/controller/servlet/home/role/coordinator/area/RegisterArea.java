@@ -37,7 +37,7 @@ public class RegisterArea extends HttpServlet {
         try {//conversion de datos
             String nombre = request.getParameter("nombre");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getIdCentro();
+            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
 
             Area nuevoArea = new Area();
             nuevoArea.setNombre(nombre);

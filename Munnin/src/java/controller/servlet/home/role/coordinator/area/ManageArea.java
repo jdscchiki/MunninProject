@@ -50,7 +50,7 @@ public class ManageArea extends HttpServlet {
                     case "disable":
                         HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
                         Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-                        String idCentro = funcionario.getIdCentro();
+                        String idCentro = funcionario.getCentro().getId();
                         switch (Coordinator.disableArea(idAre, idCentro)) {
                             case 0:
                                 request.setAttribute("messageType", "danger");

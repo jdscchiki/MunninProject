@@ -47,10 +47,10 @@ public class SearchDisabledArea extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesAreaDisabledCenter(funcionario.getIdCentro(), cantXpag, search);
+            int totalPages = Coordinator.countPagesAreaDisabledCenter(funcionario.getCentro().getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewAreaDisabledCenter(funcionario.getIdCentro(), page, cantXpag, search));
+            request.setAttribute("contentTable", Coordinator.viewAreaDisabledCenter(funcionario.getCentro().getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "showDisabledAreaTable");
             request.setAttribute("idTable", "tableBodyAreaDisabled");

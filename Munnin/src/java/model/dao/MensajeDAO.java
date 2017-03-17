@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Mensaje;
 import util.ConexionBD;
@@ -141,5 +142,24 @@ public class MensajeDAO extends ConexionBD {
         }
 
         return mensaje;
+    }
+    
+    public ArrayList<Mensaje> selectAll() throws SQLException {
+        ArrayList<Mensaje> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_MENSAJE()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Mensaje mensaje = new Mensaje();
+            mensaje.setId(rs.getInt(COL_ID));
+            mensaje.setTexto(rs.getString(COL_TEXTO));
+            
+            result.add(mensaje);
+        }
+
+        return result;
     }
 }

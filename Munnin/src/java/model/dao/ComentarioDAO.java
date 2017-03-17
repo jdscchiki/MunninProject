@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Comentario;
 import model.bean.Funcionario;
@@ -173,5 +174,31 @@ public class ComentarioDAO extends ConexionBD {
         }
 
         return comentario;
+    }
+
+    public ArrayList<Comentario> selectAll() throws SQLException {
+        ArrayList<Comentario> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_CATEGORIA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Comentario comentario = new Comentario();
+            comentario.setId(rs.getInt(COL_ID));
+            comentario.setValoracion(rs.getString(COL_VALORACION));
+            comentario.setPuntuacion(rs.getInt(COL_PUNTUACION));
+            comentario.setFecha(rs.getDate(COL_FECHA));
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            comentario.setProducto(producto);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_FUNCIONARIO));
+            comentario.setFuncionario(funcionario);
+            result.add(comentario);
+        }
+
+        return result;
     }
 }

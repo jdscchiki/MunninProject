@@ -4,9 +4,49 @@
         <filter-name>SessionFilter</filter-name>
         <filter-class>controller.filters.home.SessionFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AdministratorFilter</filter-name>
+        <filter-class>controller.filters.home.role.administrator.AdministratorFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>InstructorFilter</filter-name>
+        <filter-class>controller.filters.home.role.instructor.InstructorFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>PedagogicalFilter</filter-name>
+        <filter-class>controller.filters.home.role.pedagogical.PedagogicalFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>CoordinatorFilter</filter-name>
+        <filter-class>controller.filters.home.role.coordinator.CoordinatorFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>TechnicalFilter</filter-name>
+        <filter-class>controller.filters.home.role.technical.TechnicalFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
         <url-pattern>/home/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdministratorFilter</filter-name>
+        <url-pattern>/home/role/administrator/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>InstructorFilter</filter-name>
+        <url-pattern>/home/role/instructor/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PedagogicalFilter</filter-name>
+        <url-pattern>/home/role/pedagogical/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CoordinatorFilter</filter-name>
+        <url-pattern>/home/role/coordinator/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>TechnicalFilter</filter-name>
+        <url-pattern>/home/role/technical/*</url-pattern>
     </filter-mapping>
     <session-config>
         <session-timeout>

@@ -6,10 +6,14 @@
 package model.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
+import model.bean.Categoria;
 import model.bean.Producto;
+import model.bean.Programa;
 import model.bean.TipoObjetoAprendizaje;
 import util.ConexionBD;
 
@@ -23,7 +27,7 @@ public class ProductoDAO extends ConexionBD {
     private static final String COL_NOMBRE = "nombre_producto";
     private static final String COL_DESCRIPCION = "descripcion_producto";
     private static final String COL_PALABRAS_CLAVE = "palabras_clave_producto";
-    private static final String COL_ID_TIPO_APRENDIZAJE = "id_tipo_aprendizaje_producto";
+    private static final String COL_ID_TIPO_APRENDIZAJE = "id_tipo_objeto_aprendizaje_producto";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -43,8 +47,8 @@ public class ProductoDAO extends ConexionBD {
      * @return True si la insercion fue completada exitosamente
      * @throws SQLException
      */
-    public boolean Insert(Producto producto) throws SQLException {
-        boolean resultado;
+    public boolean insert(Producto producto) throws SQLException {
+        boolean result;
 
         String query = "{CALL INSERTAR_PRODUCTO(?,?,?,?)}";
         int indexNombre = 1;
@@ -59,12 +63,12 @@ public class ProductoDAO extends ConexionBD {
         statement.setInt(indexIdTipoObjetoAprendizaj, producto.getTipoObjetoAprendizaje().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -161,5 +165,103 @@ public class ProductoDAO extends ConexionBD {
         }
 
         return producto;
+    }
+
+    public ArrayList<Producto> selectAll() throws SQLException {
+        ArrayList<Producto> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_PRODUCTO()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID));
+            producto.setNombre(rs.getString(COL_NOMBRE));
+            producto.setDescripcion(rs.getString(COL_DESCRIPCION));
+            producto.setPalabrasClave(rs.getString(COL_PALABRAS_CLAVE));
+            TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
+            tipoObjetoAprendizaje.setId(rs.getInt(COL_ID_TIPO_APRENDIZAJE));
+            producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
+
+            result.add(producto);
+        }
+
+        return result;
+    }
+
+    public int create(Producto producto) throws SQLException {
+        int result = 0;
+
+        String query = "INSERT INTO producto ("
+                + COL_NOMBRE + ","
+                + COL_DESCRIPCION + ","
+                + COL_PALABRAS_CLAVE + ","
+                + COL_ID_TIPO_APRENDIZAJE + ") "
+                + "VALUES(?,?,?,?)";
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(1, producto.getNombre());
+        statement.setString(2, producto.getDescripcion());
+        statement.setString(3, producto.getPalabrasClave());
+        statement.setInt(4, producto.getTipoObjetoAprendizaje().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
+    }
+
+    public int insertCategories(Producto producto) throws SQLException {
+        int result = 0;
+
+        String query = "{CALL INSERTAR_CATEGORIA_PRODUCTO(?,?)}";
+        int indexIdCategoria = 1;
+        int indexId = 2;
+
+        for (Categoria categoria : producto.getCategorias()) {
+            CallableStatement statement = this.getConexion().prepareCall(query);
+            statement.setInt(indexIdCategoria, categoria.getId());
+            statement.setInt(indexId, producto.getId());
+            if (statement.executeUpdate() == 1) {
+                this.getConexion().commit();
+                result++;
+            } else {
+                this.getConexion().rollback();
+            }
+        }
+
+        return result;
+    }
+    
+    public int insertProgrammes(Producto producto) throws SQLException {
+        int result = 0;
+
+        String query = "{CALL INSERTAR_PROGRAMA_PRODUCTO(?,?)}";
+        int indexId = 1;
+        int indexIdPrograma = 2;
+
+        for (Programa programa : producto.getProgramas()) {
+            CallableStatement statement = this.getConexion().prepareCall(query);
+            statement.setInt(indexId, producto.getId());
+            statement.setInt(indexIdPrograma, programa.getId());
+            if (statement.executeUpdate() == 1) {
+                this.getConexion().commit();
+                result++;
+            } else {
+                this.getConexion().rollback();
+            }
+        }
+
+        return result;
     }
 }

@@ -52,6 +52,8 @@ public class Excel {
         Row row;
         // Recorremos todas las filas para mostrar el contenido de cada celda        
         while (rowIterator.hasNext()) {
+            count++;
+            int resultado = 0;
             try {
                 row = rowIterator.next();
                 // Obtenemos el iterator que permite recorres todas las celdas de una fila
@@ -72,10 +74,10 @@ public class Excel {
                 funcionario.setApellido(celda.getStringCellValue());
                 celda = cellIterator.next();
                 funcionario.setTelefono(Double.toString(celda.getNumericCellValue()));
+                resultado = Coordinator.registerFunctionary(funcionario, idCentro);
             } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            int resultado = Coordinator.registerFunctionary(funcionario, idCentro);
-            count++;
             if (resultado != 1) {
                 fila.add(count);
             } else {

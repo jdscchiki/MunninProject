@@ -6,8 +6,10 @@
 package model.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Estado;
@@ -29,7 +31,7 @@ public class VersionDAO extends ConexionBD {
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
     private static final String COL_FECHA_APROVACION = "fecha_aprovacion_version";
-    private static final String COL_ID_ESTADO = "id_estdo_version";
+    private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
     private static final String COL_ID_CENTRO = "id_centro_version";
@@ -206,5 +208,100 @@ public class VersionDAO extends ConexionBD {
         }
 
         return version;
+    }
+    
+    public ArrayList<Version> selectAll() throws SQLException {
+        ArrayList<Version> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_VERSION()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setUrl(rs.getString(COL_URL));
+            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
+            version.setFecha(rs.getDate(COL_FECHA));
+            version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
+            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID_ESTADO));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
+            version.setTipoArchivo(tipoArchivo);
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            version.setCentro(centro);
+            
+            result.add(version);
+        }
+
+        return result;
+    }
+    
+    public int create(Version version) throws SQLException{
+        int result = 0;
+
+        String query = "INSERT INTO version ("
+                +COL_NUMERO+","
+                +COL_URL+","
+                +COL_FECHA+","
+                +COL_ID_ESTADO+","
+                +COL_ID_TIPO_ARCHIVO+","
+                +COL_ID_PRODUCTO+","
+                +COL_ID_CENTRO+") "
+                + "VALUES(?,'',CURRENT_DATE,3,?,?,?)";
+        int indexNumero = 1;
+        int indexIdTipoArchivo = 2;
+        int indexIdProducto = 3;
+        int indexIdCentro = 4;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setInt(indexNumero, version.getNumero());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
+    }
+    
+    public boolean editUrl(Version version) throws SQLException{
+        boolean result = false;
+        
+        String query = "UPDATE version SET "
+                + COL_URL +"=? "
+                + "WHERE "+COL_ID +"=?";
+        int indexURL = 1;
+        int indexId = 2;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(indexURL, version.getUrl());
+        statement.setInt(indexId, version.getId());
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+            result = true;
+        }
+        
+        return result;
     }
 }

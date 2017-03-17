@@ -5,7 +5,7 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/assign-roles"
+          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/assign-roles"
           data-data-table="tableBodyFunctionaries"
           data-display="formAssignRole_message">
         <div class="modal-dialog">

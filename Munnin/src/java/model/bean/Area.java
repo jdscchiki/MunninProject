@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Juan David Segura
  */
-public class Area {
+public class Area implements java.io.Serializable {
 
     private int id;
     private String nombre;

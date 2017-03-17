@@ -8,6 +8,7 @@ package model.dao;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Ciudad;
 import util.ConexionBD;
@@ -142,5 +143,23 @@ public class CiudadDAO extends ConexionBD {
         }
 
         return ciudad;
+    }
+    
+    public ArrayList<Ciudad> selectAll() throws SQLException {
+        ArrayList<Ciudad> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_CIUDAD()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Ciudad ciudad = new Ciudad();
+            ciudad.setId(rs.getString(COL_ID));
+            ciudad.setNombre(rs.getString(COL_NOMBRE));
+            result.add(ciudad);
+        }
+
+        return result;
     }
 }
