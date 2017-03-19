@@ -13,15 +13,21 @@ import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
 import model.bean.Funcionario;
+import model.bean.Item;
+import model.bean.Lista;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
+import model.bean.Version;
 import model.dao.AreaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
 import util.PassGenerator;
 import util.Mail;
 import model.dao.FuncionarioDAO;
+import model.dao.ItemDAO;
+import model.dao.ListaDAO;
 import model.dao.RolDAO;
+import model.dao.VersionDAO;
 
 /**
  * clase dedicada a la logica de negocio usada por el rol de coordinador
@@ -131,12 +137,47 @@ public class Coordinator {
         return roles;
     }
     
+    public static ArrayList<Item> viewItems() throws NamingException, SQLException {
+        ArrayList<Item> items;
+
+        ItemDAO itemDAO = new ItemDAO();
+        items = itemDAO.selectAll();
+        itemDAO.cerrarConexion();
+
+        return items;
+    }
+    
+    public static ArrayList<Lista> viewLista(String IdCentro) throws NamingException, SQLException {
+        ArrayList<Lista> items;
+        Lista lista = new Lista();
+        lista.setIdAutor(Integer.parseInt(IdCentro));
+        ListaDAO listaDAO = new ListaDAO();
+        items = listaDAO.selectListas(lista);
+        listaDAO.cerrarConexion();
+
+        return items;
+    }
+    
     public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int countAreas;
         AreaDAO areaDAO = new AreaDAO();
         countAreas = areaDAO.countAreasCenter(idCentro, search);
         areaDAO.cerrarConexion();
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static int countPagesFilesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        VersionDAO versionDAO = new VersionDAO();
+        countAreas = versionDAO.countFilesCenter(idCentro, search);
+        versionDAO.cerrarConexion();
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
             paginas++;
@@ -180,6 +221,16 @@ public class Coordinator {
 
         return area;
     }
+    
+    public static ArrayList<Version> viewFilesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Version> version;
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.selectSomeFilesCenter(idCentro, pagina, cantXpag, search);
+
+        versionDAO.cerrarConexion();
+
+        return version;
+    }
 
     /**
      * Consulta la cantidad de paginas necesarias para mostrar todos los
@@ -214,6 +265,21 @@ public class Coordinator {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, false);
         funcionarioDAO.cerrarConexion();
+
+        paginas = cantFuncionarios / cantXpag;
+        if (cantFuncionarios % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static int countPagesCheckList(int idAutor, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantFuncionarios;
+        ListaDAO listaDAO = new ListaDAO();
+        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, false);
+        listaDAO.cerrarConexion();
 
         paginas = cantFuncionarios / cantXpag;
         if (cantFuncionarios % cantXpag != 0) {
@@ -295,6 +361,18 @@ public class Coordinator {
 
         return resultado;
     }
+    
+    public static Version viewAllInfoVersion(int idVersion) throws NamingException, SQLException {
+        Version resultado = new Version();
+        VersionDAO versionDAO = new VersionDAO();
+        resultado.setId(idVersion);
+        resultado = versionDAO.select(resultado);
+        
+        versionDAO.cerrarConexion();
+        
+        return resultado;
+    }
+
 
     /**
      * Metodo para asignar roles a los funcionarios
@@ -407,6 +485,16 @@ public class Coordinator {
         funcionarioDAO.cerrarConexion();
 
         return funcionarios;
+    }
+    
+    public static ArrayList<Lista> viewCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Lista> listas;
+        ListaDAO listaDAO = new ListaDAO();
+        listas = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);
+
+        listaDAO.cerrarConexion();
+
+        return listas;
     }
     
     

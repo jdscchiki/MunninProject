@@ -194,4 +194,81 @@ public class ListaDAO extends ConexionBD {
 
         return result;
     }
+    
+    public ArrayList<Lista> selectListas(Lista lista) throws SQLException {
+        ArrayList<Lista> result = new ArrayList<>();
+        
+        String query = "{CALL VER_LISTAS_FUNCIONARIO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, lista.getId());
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            lista = new Lista();
+            lista.setId(rs.getInt(COL_ID));
+            lista.setNombre(rs.getString(COL_NOMBRE));
+            lista.setDescripcion(rs.getString(COL_DESCRIPCION));
+            lista.setFecha(rs.getDate(COL_FECHA));
+            result.add(lista);
+        }
+
+        return result;
+    }
+    
+    public int countCheckListFunctionay(int idAutor, String search, boolean active) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_LISTAS_FUNCIONARIO_CONTEO(?,?,?)}";
+        int indexIdAutor = 1;
+        int indexSearch = 2;
+        int indexActive = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdAutor, idAutor);
+        statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+    
+    public ArrayList<Lista> selectSomeCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Lista> listas = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_LISTAS_FUNCIONARIOS(?,?,?,?)}";
+        int indexAutor = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexAutor, idAutor);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Lista lista = new Lista();
+            lista.setId(rs.getInt(COL_ID));
+            lista.setNombre(rs.getString(COL_NOMBRE));
+            lista.setDescripcion(rs.getString(COL_DESCRIPCION));
+            lista.setFecha(rs.getDate(COL_FECHA));
+            listas.add(lista);
+        }
+        return listas;
+    }
 }
