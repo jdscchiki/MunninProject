@@ -58,12 +58,8 @@ public class ManageFile extends HttpServlet {
                         request.getRequestDispatcher("/home/role/technical/files/modalEvaluarItems.jsp").forward(request, response);
                         return;
                     case "checkList":
-                        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-                        String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
                         Version versionResult2 = Coordinator.viewAllInfoVersion(idItem);
                         request.setAttribute("version", versionResult2);
-                        ArrayList<Lista> listas = Coordinator.viewLista(idCentro);
-                        request.setAttribute("items", listas);
                         request.getRequestDispatcher("/home/role/technical/files/modalCheckList.jsp").forward(request, response);
                         return;
                     default:

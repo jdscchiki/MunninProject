@@ -21,13 +21,13 @@
                    data-display="${displayResult}"
                    data-actual-state="${lastSearch}page=${page}"
                    data-url-receiver="${urlServlet}">
-                <c:forEach items="${contentTable}" var="version" >
-                    <tr data-id="${listas.getId()}" 
+                <c:forEach items="${contentTable}" var="lista" >
+                    <tr data-id="${lista.getId()}" 
                         data-data-table="${idTable}">
-                        <td>${listas.getId()}</td>
-                        <td>${listas.getNombre()}</td>
-                        <td>${listas.getDescripcion()}</td>
-                        <td>${listas.getFecha()}</td>
+                        <td>${lista.getId()}</td>
+                        <td>${lista.getNombre()}</td>
+                        <td>${lista.getDescripcion()}</td>
+                        <td>${lista.getFecha()}</td>
                     </tr>
                 </c:forEach>
             </tbody>

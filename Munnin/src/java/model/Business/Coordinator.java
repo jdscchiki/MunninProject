@@ -488,13 +488,12 @@ public class Coordinator {
     }
     
     public static ArrayList<Lista> viewCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-        ArrayList<Lista> listas;
+        ArrayList<Lista> lista;
         ListaDAO listaDAO = new ListaDAO();
-        listas = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);
-
+        lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);        
         listaDAO.cerrarConexion();
 
-        return listas;
+        return lista;
     }
     
     

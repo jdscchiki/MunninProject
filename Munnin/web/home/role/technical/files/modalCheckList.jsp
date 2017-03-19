@@ -16,6 +16,7 @@
                               action="${pageContext.request.contextPath}/home/role/technical/files/search-checkList"
                               data-ajax-form="true"
                               data-display="showCheckList">
+                            <input type="hidden" name="id" value="${version.getId()}" data-selected-item="">
                             <div class="form-group">
                                 <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                                 <div class="col-sm-5">
@@ -62,6 +63,14 @@
             ajaxLoadContent("${pageContext.request.contextPath}/home/role/technical/files/search-checkList", "showCheckList");
             $(document).on("hidden.bs.modal", "#checkList", function (event) {
                 ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFile", "fulltable");
+                $(this).remove();
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#checkList").modal();
+            $(document).on("hidden.bs.modal", "#checkList", function (event) {
                 $(this).remove();
             });
         });
