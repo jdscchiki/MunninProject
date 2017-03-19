@@ -3,6 +3,7 @@ body {
     position: relative;
     background-color: #ececec; 
 }
+/*-- imagenesTop --*/
 .top{
     margin-left: 50px; 
     height: 110px;
@@ -25,6 +26,8 @@ body {
     right: 0;
     top: 0;
 }
+/*-- /imagenesTop --*/
+/*-- navbar --*/
 .navbar{
     margin-bottom: 0;
     margin-left: 50px; 
@@ -73,6 +76,10 @@ navbar-toggle{
     position: relative;
     top: 50px;
 }
+.navbar-inverse .navbar-nav>li>a:hover{
+  background-color: red;
+}
+/*-- /navbar --*/
 textarea {
     resize: none;
 }
@@ -149,14 +156,14 @@ div.left div:hover:not(.active){
 .menu-item, .menu-open-button {
     background: #238276;
     border-radius: 100%;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     position: absolute;
     color: white;
     text-align: center;
-    line-height: 60px;
+    line-height: 40px;
     transition: transform ease-out 200ms;
-    font-size: 20px;
+    font-size: 18px;
 }
 .menu-open {
     display: none;
@@ -251,23 +258,23 @@ div.left div:hover:not(.active){
 }
 .menu-open:checked ~ .menu-item:nth-child(3) {
     transition-duration: 160ms;
-    transform: translate3d(0, -70px, 0);
+    transform: translate3d(0, -50px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(4) {
     transition-duration: 260ms;
-    transform: translate3d(0, -140px, 0);
+    transform: translate3d(0, -100px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(5) {
     transition-duration: 360ms;
-    transform: translate3d(0, -210px, 0);
+    transform: translate3d(0, -150px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(6) {
     transition-duration: 460ms;
-    transform: translate3d(0, -280px, 0);
+    transform: translate3d(0, -200px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(7) {
     transition-duration: 560ms;
-    transform: translate3d(0, -350px, 0);
+    transform: translate3d(0, -250px, 0);
 }
 .menu-open:checked ~ .menu-item:nth-child(8) {
     transition-duration: 660ms;
@@ -464,6 +471,15 @@ li>input{
         height: 80px;
         padding-top: 20px;
         padding-right: 10px;
+    }
+    .header{
+        padding: 30px 10px;
+    }
+    #myInput{
+        width: 60%;
+    }
+    .addBtn{
+        width: 40%
     }
 }
 /*--/responsive--*/

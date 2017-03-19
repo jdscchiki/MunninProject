@@ -12,7 +12,7 @@
                     <div class="container-checklist">
                         <div id="myDIV" class="header">
                             <h2 style="margin:5px">Lista de chekeo</h2>
-                            <input type="text" id="myInput" placeholder="Title...">
+                            <input type="text" id="myInput" placeholder="Nuevo Item...">
                             <span onclick="newElement()" class="addBtn">Agregar</span>
                         </div>
                         <ul id="myUL">
@@ -20,6 +20,8 @@
                             <li class="checked cl"><input type="text" name="itemchecklist" value="y quitar esto de seleccionarlos" disabled="disabled"></li>
                             
                         </ul>
+                        <br>
+                        <button type="submit" class="btn btn-success">Enviar Lista</button>
                     </div>
             </div>
         </div>
