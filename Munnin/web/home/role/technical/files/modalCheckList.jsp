@@ -46,6 +46,11 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-success" 
+                        data-panel-table="formEnableArea"
+                        data-action="">
+                    Guardar</button>
                 <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
