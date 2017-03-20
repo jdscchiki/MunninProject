@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.coordinator.functionary;
+package controller.servlet.home.role.coordinator.programs;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,16 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
-import model.bean.Funcionario;
+import model.bean.Programa;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/search-disabled"})
-public class SearchDisabled extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/programs/manage"})
+public class Manage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,29 +34,39 @@ public class SearchDisabled extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String search = request.getParameter("search");
-            String strPage = request.getParameter("page");
-            int page = 1;
-            if (strPage != null) {
-                page = Integer.parseInt(strPage);
+            String strIdProgram = request.getParameter("id");
+            int idProgram;
+            String opcion = request.getParameter("action");
+            idProgram = Integer.parseInt(strIdProgram);
+            
+            Programa programa = new Programa();
+            programa.setId(idProgram);
+            if (idProgram <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los programas");
+            } else {
+                switch (opcion) {
+                    case "disable":
+                        switch (Coordinator.disableProgram(programa)) {
+                            case 0:
+                                request.setAttribute("messageType", "danger");
+                                request.setAttribute("message", "El programa no ha podido ser inhabilitado");
+                                break;
+                            case 1:
+                                request.setAttribute("messageType", "success");
+                                request.setAttribute("message", "El programa fue inhabilitado exitosamente");
+                                break;
+                        }
+                        break;
+                    default:
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "no ha podido ser completada la accion");
+                        break;
+                }
             }
-
-            int cantXpag = 10;
-
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-
-            int totalPages = Coordinator.countPagesFunctionariesDisabledCenter(funcionario.getCentro().getId(), cantXpag, search);
-            request.setAttribute("page", page);
-            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFunctionariesDisabledCenter(funcionario.getCentro().getId(), page, cantXpag, search));
-            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "showDisabledFunctionaryTable");
-            request.setAttribute("idTable", "tableBodyFunctionariesDisabled");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/functionary/search-disabled"));
-            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }

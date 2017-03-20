@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.coordinator.functionary;
+package controller.servlet.home.role.coordinator.programs;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
 import model.bean.Funcionario;
+import model.Business.Coordinator;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/search-disabled"})
-public class SearchDisabled extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/programs/search"})
+public class Search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,6 +35,7 @@ public class SearchDisabled extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+
             String search = request.getParameter("search");
             String strPage = request.getParameter("page");
             int page = 1;
@@ -47,15 +48,15 @@ public class SearchDisabled extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesFunctionariesDisabledCenter(funcionario.getCentro().getId(), cantXpag, search);
+            int totalPages = Coordinator.countPagesProgramsCenter(funcionario.getCentro().getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFunctionariesDisabledCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Coordinator.viewProgramsCenter(funcionario.getCentro().getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "showDisabledFunctionaryTable");
-            request.setAttribute("idTable", "tableBodyFunctionariesDisabled");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/functionary/search-disabled"));
-            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
+            request.setAttribute("displayResult", "fulltable");
+            request.setAttribute("idTable", "tableBodyPrograms");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/programs/search"));
+            request.getRequestDispatcher("/home/role/coordinator/programs/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

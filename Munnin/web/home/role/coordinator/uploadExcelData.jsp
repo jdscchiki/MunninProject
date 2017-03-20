@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
-<template:basicTemplate actualPage="6"
+<template:basicTemplate actualPage="7"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
                         title="Carga Mavisa Coordinador Munnin"

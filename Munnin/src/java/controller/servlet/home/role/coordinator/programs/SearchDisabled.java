@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.coordinator.functionary;
+package controller.servlet.home.role.coordinator.programs;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -19,7 +19,7 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/search-disabled"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/programs/search-disabled"})
 public class SearchDisabled extends HttpServlet {
 
     /**
@@ -47,15 +47,15 @@ public class SearchDisabled extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesFunctionariesDisabledCenter(funcionario.getCentro().getId(), cantXpag, search);
+            int totalPages = Coordinator.countPagesProgramsDisableCenter(funcionario.getCentro().getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFunctionariesDisabledCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Coordinator.viewProgramsDisableCenter(funcionario.getCentro().getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "showDisabledFunctionaryTable");
-            request.setAttribute("idTable", "tableBodyFunctionariesDisabled");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/functionary/search-disabled"));
-            request.getRequestDispatcher("/home/role/coordinator/functionary/table.jsp").forward(request, response);
+            request.setAttribute("displayResult", "showDisabledProgramsTable");
+            request.setAttribute("idTable", "tableBodyProgramsDisabled");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/programs/search-disabled"));
+            request.getRequestDispatcher("/home/role/coordinator/programs/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

@@ -13,4 +13,5 @@
 <li ${actualPage==3 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/functionary.jsp" >Funcionarios</a></li>
 <li ${actualPage==4 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/categories.jsp" >Categorias</a></li>
 <li ${actualPage==5 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/area.jsp" >Areas</a></li>
-<li ${actualPage==6 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/uploadExcelData.jsp" >Carga Masiva</a></li>
+<li ${actualPage==6 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/programs.jsp" >Programas</a></li>
+<li ${actualPage==7 ? "class='active'":""}><a href="${pageContext.request.contextPath}/home/role/coordinator/uploadExcelData.jsp" >Carga Masiva</a></li>

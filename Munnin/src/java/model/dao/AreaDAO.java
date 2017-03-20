@@ -394,4 +394,24 @@ public class AreaDAO extends ConexionBD {
 
         return resultado;
     }
+    
+    public ArrayList<Area> selectAllCenter(String idCenter) throws SQLException{
+        ArrayList<Area> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_AREA_CENTRO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexId, idCenter);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Area area = new Area();
+            area.setId(rs.getInt(COL_ID));
+            area.setNombre(rs.getString(COL_NOMBRE));
+            result.add(area);
+        }
+        
+        return result;
+    }
 }

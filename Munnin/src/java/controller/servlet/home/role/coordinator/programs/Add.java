@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.coordinator.functionary;
+package controller.servlet.home.role.coordinator.programs;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,17 +11,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.bean.Funcionario;
 import model.Business.Coordinator;
-import model.bean.TipoDocumento;
+import model.bean.Area;
+import model.bean.Programa;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/functionary/register"})
-public class Register extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/programs/add"})
+public class Add extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,58 +35,34 @@ public class Register extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {//conversion de datos
-            String tipoDoc = request.getParameter("tipoDoc");
-            int idTipoDoc;
-            String documento = request.getParameter("documento");
-            String correo = request.getParameter("correo");
+            String strArea = request.getParameter("area");
+            int idArea;
             String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String telefono = request.getParameter("telefono");
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
-            idTipoDoc = Integer.parseInt(tipoDoc);
+            
+            idArea = Integer.parseInt(strArea);
 
-            Funcionario nuevoFuncionario = new Funcionario();
-            TipoDocumento tipoDocumento = new TipoDocumento();
-            tipoDocumento.setId(idTipoDoc);
-            nuevoFuncionario.setTipoDocumento(tipoDocumento);
-            nuevoFuncionario.setDocumento(documento);
-            nuevoFuncionario.setCorreo(correo);
-            nuevoFuncionario.setNombre(nombre);
-            nuevoFuncionario.setApellido(apellido);
-            nuevoFuncionario.setTelefono(telefono);
-            switch(Coordinator.registerFunctionary(nuevoFuncionario, idCentro)){
+            Programa programa = new Programa();
+            Area area = new Area();
+            area.setId(idArea);
+            programa.setArea(area);
+            programa.setNombre(nombre);
+            
+            switch(Coordinator.registerProgram(programa)){
                 case 0:
                     request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "no ha podido realizarse el registro");
+                    request.setAttribute("message", "ha ocurrido un error, por favor vuleve a cargar la pagina");
                     break;
                 case 1:
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "el registro se ha completado exitosamente");
-                    break;
-                case 2:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un funcionario activo con los datos ingresados");
-                    break;
-                case 3:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un funcionario inactivo con el correo ingresado");
-                    break;
-                case 4:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un funcionario inactivo con el documento ingresado");
-                    break;
-                case 5:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "No ha podido ser enviado el correo con la contraseña del nuevo funcionario");
+                    request.setAttribute("message", "Se ha agregado correctamente el programa");
                     break;
             }
+            
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

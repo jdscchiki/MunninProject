@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
 import model.bean.Funcionario;
+import model.bean.Programa;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.dao.AreaDAO;
@@ -21,6 +22,7 @@ import util.Encriptado;
 import util.PassGenerator;
 import util.Mail;
 import model.dao.FuncionarioDAO;
+import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
 
 /**
@@ -494,5 +496,102 @@ public class Coordinator {
         areaDAO.cerrarConexion();
 
         return area;
+    }
+    
+    public static int countPagesProgramsCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException{
+        int result;
+        
+        int quantityProgrms;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        quantityProgrms = programaDAO.countProgramsCenter(idCenter, search, true);
+        programaDAO.cerrarConexion();
+
+        result = quantityProgrms / resultsInPage;
+        if (quantityProgrms % resultsInPage != 0) {
+            result++;
+        }
+        
+        return result;
+    }
+    
+    public static ArrayList<Programa> viewProgramsCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
+        ArrayList<Programa> result;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        result = programaDAO.selectSomeProgramsCenter(idCenter, page, resultsInPage, search, true);
+
+        programaDAO.cerrarConexion();
+
+        return result;
+    }
+    
+    public static int countPagesProgramsDisableCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException{
+        int result;
+        
+        int quantityPrograms;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        quantityPrograms = programaDAO.countProgramsCenter(idCenter, search, false);
+        programaDAO.cerrarConexion();
+
+        result = quantityPrograms / resultsInPage;
+        if (quantityPrograms % resultsInPage != 0) {
+            result++;
+        }
+        
+        return result;
+    }
+    
+    public static ArrayList<Programa> viewProgramsDisableCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
+        ArrayList<Programa> result;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        result = programaDAO.selectSomeProgramsCenter(idCenter, page, resultsInPage, search, false);
+
+        programaDAO.cerrarConexion();
+
+        return result;
+    }
+    
+    public static ArrayList<Area> viewAllAreasCenter(String idCenter) throws NamingException, SQLException{
+        ArrayList<Area> result;
+        AreaDAO areaDAO = new AreaDAO();
+        result = areaDAO.selectAllCenter(idCenter);
+        areaDAO.cerrarConexion();
+        return result;
+    }
+    
+    public static int registerProgram (Programa programa) throws NamingException, SQLException{
+        int result = 0;
+        
+        programa.setActivo(true);
+        
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if(programaDAO.Insert(programa)){
+            result = 1;
+        }
+        programaDAO.cerrarConexion();
+        
+        return result;
+    }
+    
+    public static int disableProgram(Programa programa) throws NamingException, SQLException{
+        int result = 0;
+        
+        
+        
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if(programaDAO.disable(programa)){
+            result = 1;
+        }
+        programaDAO.cerrarConexion();
+        
+        return result;
+    }
+    
+    public static int enableProgram(Programa programa) throws NamingException, SQLException {
+        int resultado = 0;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if(programaDAO.enable(programa)){
+            resultado = 1;
+        }
+        return resultado;
     }
 }

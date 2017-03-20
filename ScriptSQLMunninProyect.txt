@@ -3001,7 +3001,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS registrar_area $$
 CREATE PROCEDURE registrar_area (
-        IN _nombre_area VARCHAR(12) ,
+        IN _nombre_area VARCHAR(100) ,
         IN _id_centro VARCHAR(10)
     )
 BEGIN
@@ -3172,6 +3172,138 @@ BEGIN
             LOWER(nombre_area) REGEXP LOWER(_filtro) OR
             LOWER(id_centro_area) REGEXP LOWER(_filtro));
     END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_PROGRAMA_CENTRO_CONTEO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_PROGRAMA_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_PROGRAMA_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(programa.id_programa) as conteo
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo);
+    ELSE 
+        SELECT COUNT(id_programa) as conteo
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo AND 
+            (LOWER(nombre_programa) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_PROGRAMA_CENTRO_PAGINADO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_PROGRAMA_CENTRO_PAGINADO $$
+CREATE PROCEDURE VER_TODOS_PROGRAMA_CENTRO_PAGINADO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _programaXpagina INT,
+        IN _search VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _programaXpagina;
+
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            programa.id_programa ,
+            programa.nombre_programa ,
+            area.nombre_area
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo
+        LIMIT _inicio, _programaXpagina );
+    ELSE
+        SELECT 
+            programa.id_programa ,
+            programa.nombre_programa ,
+            area.nombre_area
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo AND 
+            (LOWER(nombre_programa) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro))
+        LIMIT _inicio, _programaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_AREA_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_AREA_CENTRO $$
+CREATE PROCEDURE VER_TODOS_AREA_CENTRO (
+        IN _id_centro VARCHAR(10)
+    ) 
+BEGIN
+	SELECT id_area , 
+	nombre_area 
+	FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 1;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_PROGRAMA_INHABILITAR
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_PROGRAMA_INHABILITAR $$
+CREATE PROCEDURE EDITAR_PROGRAMA_INHABILITAR (
+        IN _id INT
+    )
+BEGIN
+    UPDATE programa
+    SET activo_programa = 0
+    WHERE id_programa = _id;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_PROGRAMA_HABILITAR
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_PROGRAMA_HABILITAR $$
+CREATE PROCEDURE EDITAR_PROGRAMA_HABILITAR (
+        IN _id INT
+    )
+BEGIN
+    UPDATE programa
+    SET activo_programa = 1
+    WHERE id_programa = _id;
 END $$
 
 DELIMITER ;
