@@ -6,7 +6,6 @@
 package controller.servlet.home.role.coordinator.area;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
 import model.bean.Area;
 import model.bean.Funcionario;
-import model.bean.Rol;
 
 /**
  *
@@ -43,7 +41,7 @@ public class ManageArea extends HttpServlet {
             String opcion = request.getParameter("action");
             idAre = Integer.parseInt(idArea);
             if (idAre <= 0) {
-                request.setAttribute("caseMessage", 3);
+                request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las areas");
             } else {
                 switch (opcion) {
@@ -62,7 +60,7 @@ public class ManageArea extends HttpServlet {
                                 break;
                             case 2:
                                 request.setAttribute("messageType", "danger");
-                                request.setAttribute("message", "Solo queda un area habilitado para el centro");
+                                request.setAttribute("message", "Solo queda un area habilitada para el centro");
                                 break;
                         }
                         break;

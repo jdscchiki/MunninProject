@@ -19,7 +19,7 @@ import model.bean.Area;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/area/register-area"})
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/register"})
 public class RegisterArea extends HttpServlet {
 
     /**
@@ -52,7 +52,7 @@ public class RegisterArea extends HttpServlet {
                     break;
                 case 2:
                     request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un area activo con los datos ingresados");
+                    request.setAttribute("message", "Actualmente existe un area con los datos ingresados");
                     break;
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);

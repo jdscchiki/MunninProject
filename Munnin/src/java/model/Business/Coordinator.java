@@ -137,7 +137,7 @@ public class Coordinator {
         int paginas;
         int countAreas;
         AreaDAO areaDAO = new AreaDAO();
-        countAreas = areaDAO.countAreasCenter(idCentro, search);
+        countAreas = areaDAO.countAreasCenter(idCentro, search,true);
         areaDAO.cerrarConexion();
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
@@ -162,7 +162,7 @@ public class Coordinator {
         centro.setId(idCentro);
         area.setCentro(centro);
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
+        if (areaDAO.isNameAreaOcuped(area.getNombre(), idCentro)) {
             resultado = 2;
         } else if (areaDAO.registerArea(area)) {
             resultado = 1;
@@ -176,7 +176,7 @@ public class Coordinator {
     public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
-        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search);
+        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search, true);
 
         areaDAO.cerrarConexion();
 
@@ -427,7 +427,7 @@ public class Coordinator {
         centro.setId(idCentro);
         area.setCentro(centro);
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
+        if (areaDAO.isNameAreaOcuped(area.getNombre(),idCentro)) {
             resultado = 2;
         } else if (areaDAO.updateArea(area)) {
             resultado = 1;
@@ -451,7 +451,7 @@ public class Coordinator {
     public static int disableArea(int idArea, String idCentro) throws NamingException, SQLException {
         int resultado = 0;
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isLastAreaEnableCenter(idCentro, idArea)) {
+        if (areaDAO.isLastAreaEnableArea(idCentro, idArea)) {
             resultado = 2;
         } else if (areaDAO.disableArea(idArea)) {
             resultado = 1;
@@ -477,7 +477,7 @@ public class Coordinator {
         int paginas;
         int cantArea;
         AreaDAO areaDAO = new AreaDAO();
-        cantArea = areaDAO.countAreasDisabledCenter(idCentro, search);
+        cantArea = areaDAO.countAreasCenter(idCentro, search, false);
         areaDAO.cerrarConexion();
 
         paginas = cantArea / cantXpag;
@@ -491,7 +491,7 @@ public class Coordinator {
     public static ArrayList<Area> viewAreaDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
-        area = areaDAO.selectSomeAreaDisableCenter(idCentro, pagina, cantXpag, search);
+        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search, false);
 
         areaDAO.cerrarConexion();
 

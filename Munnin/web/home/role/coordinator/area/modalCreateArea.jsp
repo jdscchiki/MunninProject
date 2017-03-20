@@ -1,7 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="registerArea" class="modal fade" role="dialog">
-    <form id="formRegisterArea" class="form-horizontal" role="form" method="POST" action="${pageContext.request.contextPath}/home/role/area/register-area" data-ajax-form="true"
-                      data-display="message_areas">
+    <form id="formRegisterArea" 
+          class="form-horizontal" 
+          role="form" 
+          method="POST" 
+          action="${pageContext.request.contextPath}/home/role/coordinator/area/register" 
+          data-display="divRegisterAreas_message"
+          data-data-table="tableBodyAreas">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,13 +21,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="divRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
+                        <div id="divRegisterAreas_message" class="col-lg-offset-3 col-lg-8">
 
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Crear</button>
+                    <button type="submit" 
+                            class="btn btn-success"
+                            data-panel-table="formRegisterArea"
+                            data-action="">Crear</button>
                     <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>

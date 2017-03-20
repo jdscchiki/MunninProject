@@ -11,7 +11,6 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Id Area</th>
                     <th>Nombre</th>
                 </tr>
             </thead>
@@ -22,7 +21,6 @@
                 <c:forEach items="${contentTable}" var="area" >
                     <tr data-id="${area.getId()}" 
                         data-data-table="${idTable}">
-                        <td>${area.getId()}</td>
                         <td>${area.getNombre()}</td>
                     </tr>
                 </c:forEach>

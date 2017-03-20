@@ -6,8 +6,8 @@
                         title="Areas Coordinador Munnin"
                         panelTitle="Administrar las areas del centro">
     <jsp:attribute name="additionalJS">
-        <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerArea", "fulltable");

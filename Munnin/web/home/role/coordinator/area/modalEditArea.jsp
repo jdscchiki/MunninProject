@@ -1,8 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <div id="editArea" class="modal fade" role="dialog">
-    <form id="formEditArea" class="form-horizontal" role="form" method="POST" action="${pageContext.request.contextPath}/home/role/coordinator/area/edit-area" data-ajax-form="true"
-          data-display="message_areas" data-data-table="tableBodyAreas">
+    <form id="formEditArea"
+          class="form-horizontal" 
+          role="form" 
+          method="POST" 
+          action="${pageContext.request.contextPath}/home/role/coordinator/area/edit-area" 
+          data-display="divEditArea_message" 
+          data-data-table="tableBodyAreas">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -24,7 +29,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formEditArea">Guardar</button>
+                    <button type="submit" 
+                            class="btn btn-success" 
+                            data-action="" 
+                            data-panel-table="formEditArea">Guardar</button>
                     <button type="reset" class="btn btn-danger">Borrar datos del formulario</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
