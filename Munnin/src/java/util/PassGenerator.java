@@ -115,6 +115,7 @@ public class PassGenerator {
         return password.length() >= 8;
     }
 
+
     /**
      * Evalua si la contraseña posee minusculas, mayusculas, numeros y
      * caracteres especiales
@@ -125,6 +126,7 @@ public class PassGenerator {
      */
     public static int evaluatePassword(String password) {
         int lvlSecurity = 0;
+
         if(hasNumber(password)){
             lvlSecurity++;
         }
@@ -137,6 +139,7 @@ public class PassGenerator {
         if(isSecureLong(password)){
             lvlSecurity++;
         }
+
         return lvlSecurity;
     }
 
@@ -149,7 +152,9 @@ public class PassGenerator {
      * @see util.PassGenerator#evaluatePassword(java.lang.String)
      */
     public static boolean isSecure(String password) {
+
         return evaluatePassword(password) >= 4;
+
     }
 
     /**
@@ -160,13 +165,15 @@ public class PassGenerator {
      */
     public static String getSecurePassword() {
         String pass = "";
+
         while (true) {
             pass = getPassword();
             if (isSecure(pass)) {
                 break;
+
             }
         }
         return pass;
     }
-    
+
 }

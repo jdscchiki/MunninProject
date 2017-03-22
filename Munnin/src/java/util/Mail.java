@@ -15,7 +15,8 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import modelo.bean.Funcionario;
+import model.bean.Funcionario;
+
 
 /**
  * clase dedicada para operaciones de envio de datos via eMail

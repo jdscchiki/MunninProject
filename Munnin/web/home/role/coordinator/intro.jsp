@@ -1,13 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page language="java" session="false"%>
-
-<%-- esto se usa en el top para dar propiedades segun la pagina--%>
-<%
-    request.setAttribute("title", "Munnin Coordinador");
-    request.setAttribute("navbar", 3);
-    request.setAttribute("mainPage", 1);
-%>
-<jsp:include page="/elements/content/top.jsp" />
-<%-- todo el contnido aqui--%>
-
-<jsp:include page="/elements/content/bot.jsp" />
+<%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<template:basicTemplate actualPage="1"
+                        actualRole="2"
+                        funcionario="${sessionScope.usuario}"
+                        title="Notificaciones Coordinador Munnin"
+                        panelTitle="Notificaciones">
+    
+</template:basicTemplate>
