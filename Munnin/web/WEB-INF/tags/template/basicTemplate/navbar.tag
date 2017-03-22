@@ -60,7 +60,8 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ${funcionario.getNombre()}</a>
                     <ul class="dropdown-menu ">
-                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+                        <li><a ><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-lock"></span> Cambiar contraseña</a></li>
                         <li><a ><span class="fa fa-question-circle-o glyphicon"></span> Preguntas Frecuentes</a></li>
                     </ul>
                 </li>

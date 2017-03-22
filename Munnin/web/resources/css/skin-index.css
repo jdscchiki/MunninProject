@@ -85,7 +85,6 @@ body {
 	transition: all 0.25s ease-out;
 }
 .login a {
-	font-size: 0.8em;
 	color: #2196F3;
 	text-decoration: none;
 }
