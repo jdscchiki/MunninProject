@@ -3169,14 +3169,14 @@ CREATE PROCEDURE VER_TODOS_PROGRAMA_CENTRO_PAGINADO (
         IN _id_centro VARCHAR(10),
         IN _pagina INT,
         IN _programaXpagina INT,
-        IN _search VARCHAR(140),
+        IN _filtro VARCHAR(140),
         IN _activo BOOLEAN
     )
 BEGIN
     DECLARE _inicio INT;
     SET _inicio = (_pagina - 1) * _programaXpagina;
 
-    IF (_search IS null OR _search = "") THEN(
+    IF (_filtro IS null OR _filtro = "") THEN(
         SELECT 
             programa.id_programa ,
             programa.nombre_programa ,
