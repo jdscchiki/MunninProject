@@ -487,6 +487,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE Notificacion (
   id_notificacion INT NOT NULL AUTO_INCREMENT,
+  activo_notificacion BIT(1) NOT NULL,
   visto_notificacion BIT(1) NOT NULL,
   id_mensaje_notificacion INT NOT NULL,
   id_version_notificacion INT(11) NOT NULL,
@@ -1748,6 +1749,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_notificacion $$
 CREATE PROCEDURE insertar_notificacion (
+        IN _activo_notificacion BIT(1) ,
 	IN _visto_notificacion BIT(1) ,
         IN _id_mensaje_notificacion INT ,
         IN _id_version_notificacion INT ,
@@ -1755,12 +1757,14 @@ CREATE PROCEDURE insertar_notificacion (
         IN _id_rol_notificacion INT )
 BEGIN
 	INSERT INTO notificacion(
+                activo_notificacion ,
 		visto_notificacion ,
                 id_mensaje_notificacion ,
                 id_version_notificacion ,
                 id_funcionario_notificacion ,
                 id_rol_notificacion )
 	VALUES (
+                _activo_notificacion ,
 		_visto_notificacion ,
                 _id_mensaje_notificacion ,
                 _id_version_notificacion ,
@@ -1773,6 +1777,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_notificacion $$
 CREATE PROCEDURE editar_notificacion (
 	IN _id_notificacion INT ,
+	IN _activo_notificacion BIT(1) ,
 	IN _visto_notificacion BIT(1) ,
         IN _id_mensaje_notificacion INT ,
         IN _id_version_notificacion INT ,
@@ -1780,7 +1785,8 @@ CREATE PROCEDURE editar_notificacion (
         IN _id_rol_notificacion INT )
 BEGIN
 	UPDATE notificacion
-	SET     visto_notificacion = _visto_notificacion,
+	SET     activo_notificacion = _activo_notificacion,
+                visto_notificacion = _visto_notificacion,
                 id_mensaje_notificacion = _id_mensaje_notificacion ,
                 id_version_notificacion = _id_version_notificacion ,
                 id_funcionario_notificacion = _id_funcionario_notificacion ,
@@ -1822,6 +1828,7 @@ CREATE PROCEDURE ver_todos_notificacion ()
 BEGIN
 	SELECT 
                 id_notificacion ,
+                activo_notificacion ,
                 visto_notificacion ,
                 id_mensaje_notificacion ,
                 id_version_notificacion ,
