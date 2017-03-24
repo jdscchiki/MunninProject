@@ -41,8 +41,13 @@
     <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
             <div class="container-fluid">
-                <div class="jumbotron">
-                    <h1>${panelTitle}</h1>      
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="panelMunnin">
+                            <h2>${panelTitle}</h2>
+                            <hr>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-9"> 
@@ -86,14 +91,17 @@
                     <span class="hamburger hamburger-2"></span>
                     <span class="hamburger hamburger-3"></span>
                 </label>
-                <a href="#" class="menu-item"> <span class="fa fa-star glyphicon"></span></a>
-                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/coord.png" alt="_icono" class="glyphicon"></a>
-                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon"></a>
-                <a href="#" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon"></a>
-                <a href="#" class="menu-item"> <span class="fa fa-user-circle glyphicon"></a>
-                <a href="#" class="menu-item"> <i class="fa fa-ellipsis-h"></i></a>
+                <a href="${pageContext.request.contextPath}/home/role/administrator/intro.jsp" class="menu-item"> <span class="fa fa-star glyphicon"></span></a>
+                <a href="${pageContext.request.contextPath}/home/role/coordinator/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/coord.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/technical/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/pedagogical/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/instructor/intro.jsp" class="menu-item"> <span class="fa fa-user-circle glyphicon"></a>
+                <a href="#" class="menu-item"> <i class="go-up fa fa-chevron-circle-up"></i></a>
             </nav>
-        </div>                        
+        </div>
+
+        <span class="ir-arriba noResponsive fa fa-chevron-circle-up"></span>
+        
         <!--aqui preloader-->
         <component:footer />
         <component:js />

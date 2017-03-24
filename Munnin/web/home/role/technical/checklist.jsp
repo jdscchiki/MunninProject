@@ -17,7 +17,7 @@
                         </div>
                         <ul id="myUL">
                             <li class="cl"><input type="text" name="itemchecklist" value="los dejo para mirar" disabled="disabled"></li>
-                            <li class="checked cl"><input type="text" name="itemchecklist" value="y quitar esto de seleccionarlos" disabled="disabled"></li>
+                            <li class="checked cl"><input type="text" name="itemchecklist" value="y quitar esto de seleccionarlos jdoasjfolasojfoisaiafsk dkpsjfa dsakfojmdaslm vlkm v lkasmsmvpkdas{s" disabled="disabled"></li>
 
                         </ul>
                     </div>

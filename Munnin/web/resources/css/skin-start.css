@@ -12,7 +12,6 @@ body {
 .topIconoM{
     height: 100px;
     padding-top: 5px;
-
     position: absolute;
     left: 50%;
     top: 0;
@@ -20,8 +19,7 @@ body {
 }
 .topIconoS{
     height: 100px;
-    padding-top: 5px;
-
+    margin: 5px 30px 0 0;
     position: absolute;
     right: 0;
     top: 0;
@@ -77,14 +75,11 @@ navbar-toggle{
     top: 50px;
 }
 .navbar-inverse .navbar-nav>li>a:hover{
-  background-color: red;
+    background-color: #3ECAB8;
 }
 /*-- /navbar --*/
 textarea {
     resize: none;
-}
-.jumbotron{
-        background-color: rgba(0, 135, 126,0.2);
 }
 /*-- tables --*/
 .table {
@@ -138,7 +133,7 @@ div.left div.active{
     background-color: #0E6257;
 }
 div.left div:hover:not(.active){
-    background-color: #3ECAB8
+    background-color: #3ECAB8;
 }
 .type{
     height: 47px;;
@@ -285,6 +280,21 @@ div.left div:hover:not(.active){
     transform: translate3d(-0.25084px, -104.9997px, 0);
 }
 /*--/left responsibe--*/
+/*-- goUp --*/
+.ir-arriba {
+    display: none;
+    padding: 20px;
+    background: #024959;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    z-index: 1;
+}
+/*-- /goUp --*/
 /*--content--*/
 #main{
     margin-left: 50px;
@@ -301,115 +311,115 @@ div.left div:hover:not(.active){
 /*-- checklist --*/
 /* Remove margins and padding from the list */
 #myUL {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 /* Style the list items */
 #myUL li {
-  cursor: pointer;
-  position: relative;
-  padding: 12px 8px 12px 40px;
-  background: #eee;
-  font-size: 18px;
-  transition: 0.2s;
-  display: block;
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px 12px 40px;
+    background: #eee;
+    font-size: 18px;
+    transition: 0.2s;
+    display: block;
 
-  /* make the list items unselectable */
-  user-select: none;
+    /* make the list items unselectable */
+    user-select: none;
 }
 /* Set all odd list items to a different color (zebra-stripes) */
 #myUL li:nth-child(odd) {
-  background: #f9f9f9;
+    background: #f9f9f9;
 }
 /* Darker background-color on hover */
 #myUL li:hover {
-  background: #ddd;
+    background: #ddd;
 }
 
 
 /* When clicked on, add a background color and strike out text */
 #myUL li.checked {
-  background: #888;
-  color: #fff;
-  text-decoration: line-through;
+    background: #888;
+    color: #fff;
+    text-decoration: line-through;
 }
 /* Add a "checked" mark when clicked on */
 #myUL li.checked::before {
-  content: '';
-  position: absolute;
-  border-color: #fff;
-  border-style: solid;
-  border-width: 0 2px 2px 0;
-  top: 10px;
-  left: 16px;
-  transform: rotate(45deg);
-  height: 15px;
-  width: 7px;
+    content: '';
+    position: absolute;
+    border-color: #fff;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 7px;
 }
 
 
 /* Style the close button */
 .closeLi {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 12px 16px 12px 16px;
-  background-color: #000;
-  color: #fff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 16px 12px 16px;
+    background-color: #000;
+    color: #fff;
 }
 .closeLi:hover {
-  background-color: #f44336;
-  color: #fff;
+    background-color: #f44336;
+    color: #fff;
 }
 /* Style the header */
 .header {
-  background-color: #60b258;
-  padding: 30px 40px;
-  color: white;
-  text-align: center;
+    background-color: #60b258;
+    padding: 30px 40px;
+    color: white;
+    text-align: center;
 }
 /* Clear floats after the header */
 .header:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 /* Style the input */
 #myInput {
-  border: none;
-  width: 75%;
-  padding: 10px;
-  float: left;
-  font-size: 16px;
-  color: #000;
+    border: none;
+    width: 75%;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+    color: #000;
 }
 
 /* Style the "Add" button */
 .addBtn {
-  padding: 10px;
-  width: 25%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
+    padding: 10px;
+    width: 25%;
+    background: #d9d9d9;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 .addBtn:hover {
-  background-color: #bbb;
+    background-color: #bbb;
 }
 .container-checklist{
-  width: 100%;
+    width: 100%;
 }
 li>input{
-  padding: 0;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-  width: 75%;
-  font-size: 16px;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    width: 75%;
+    font-size: 16px;
 }
 /*-- /checklist --*/
 /*--footer--*/
@@ -449,7 +459,7 @@ li>input{
     color: #999;
 }
 .Restricted__footer{
-    background-color: #000000 !important;
+    background-color: #bfbfbf !important;
 }
 /*--/footer--*/
 /*--responsive--*/
@@ -468,9 +478,8 @@ li>input{
         left: 0;
     }
     .topIconoS{
-        height: 80px;
-        padding-top: 20px;
-        padding-right: 10px;
+        height: 70px;
+        margin: 30px 7px 0 0;
     }
     .header{
         padding: 30px 10px;
@@ -480,6 +489,18 @@ li>input{
     }
     .addBtn{
         width: 40%
+    }
+    .noResponsive{
+        visibility: hidden;
+        z-index: 0;
+    }
+    .grp{
+        display: block;
+        width: 100%;
+        margin: 5px 0 5px 0;
+    }
+    .form-horizontal .form-group {
+        margin-left: 0px;
     }
 }
 /*--/responsive--*/

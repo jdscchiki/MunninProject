@@ -19,7 +19,7 @@
             <div class="col-md-12" id="message_functionaries">
 
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6 col-sm-12">
                 <form id="formSearchFunctionaryEnable" 
                       class="form-horizontal" 
                       method="POST" 
@@ -27,9 +27,9 @@
                       data-ajax-form="true"
                       data-display="fulltable">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="searchMunnin">Buscar Funcionario:</label>
+                        <label class="control-label col-md-6 col-sm-12" for="searchMunnin">Buscar Funcionario:</label>
 
-                        <div class="input-group col-sm-8">
+                        <div class="input-group col-md-6 col-xs-8">
                             <input type="text" class="form-control" placeholder="Buscar..." id="searchMunnin" name="search">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
@@ -41,22 +41,10 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-6">
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-toggle="modal" 
-                        data-target="#registerFunctionary">
-                    Registrar</button>
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="changeRoles">
-                    Cambiar roles</button>
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="disable">
-                    Inhabilitar</button>
+            <div class="col-md-6 col-sm-12">
+                <button type="button" class="btn btn-primary grp" data-toggle="modal" data-target="#registerFunctionary">Registrar</button>
+                <button type="button" class="btn btn-primary grp" data-panel-table="formActionFunctionaryEnable" data-action="changeRoles">Cambiar roles</button>
+                <button type="button" class="btn btn-primary grp" data-panel-table="formActionFunctionaryEnable" data-action="disable">Inhabilitar</button>
             </div>
             <div class="col-md-12" id="fulltable">
 

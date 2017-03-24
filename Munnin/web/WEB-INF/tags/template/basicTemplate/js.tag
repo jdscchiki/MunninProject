@@ -4,3 +4,4 @@
 <script src="${pageContext.request.contextPath}/resources/js/ajaxAction.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/js/checkList.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/js/inputFile.js" language="Javascript" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/goUp.js" language="Javascript" type="text/javascript"></script>
