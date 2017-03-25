@@ -98,14 +98,15 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a class="btn btn-link"
+                       href="${pageContext.request.contextPath}/home/role/coordinator/uploadExcelData.jsp">
+                        Registro masivo
+                    </a>
                     <button type="submit" 
                             class="btn btn-success"
                             data-panel-table="formRegisterFunctionary"
                             data-action="">
                         Registrar</button>
-                    <button type="reset" 
-                            class="btn btn-danger">
-                        Borrar datos del formulario</button>
                     <button type="button" 
                             class="btn btn-default" 
                             data-dismiss="modal">

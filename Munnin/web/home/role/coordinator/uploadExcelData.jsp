@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
-<template:basicTemplate actualPage="7"
+<template:basicTemplate actualPage="3"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
-                        title="Carga Mavisa Coordinador Munnin"
-                        panelTitle="Carga Masiva de Datos (Excel)">
+                        title="Registro Funcionarios Coordinador Munnin"
+                        panelTitle="Carga masiva de funcionarios">
     <jsp:attribute name="additionalJS">
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
     </jsp:attribute>
