@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 <template:basicTemplate actualPage="3"
-                        actualRole="3"
+                        actualRole="4"
                         funcionario="${sessionScope.usuario}"
                         title="Pendientes Tecnico Munnin"
                         panelTitle="Archivos por Revisar">
@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFile", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFilePedagogical", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -23,7 +23,7 @@
                 <form id="formSearchFileEnable" 
                       class="form-horizontal" 
                       method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerFile"
+                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerFilePedagogical"
                       data-ajax-form="true"
                       data-display="fulltable">                    
                     <div class="form-group">                        
@@ -53,10 +53,10 @@
         </div>
         <form id="formActionFileEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/technical/files/manage"
+              action="${pageContext.request.contextPath}/home/role/pedagogical/files/manage"
               data-display="message_file"
               data-ajax-form="true"
-              data-data-table="tableBodyFile">
+              data-data-table="tableBodyFilePedagogical">
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>

@@ -13,9 +13,9 @@
                         <form id="formCheckList" 
                               class="form-horizontal" 
                               method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/technical/files/search-checkList"
+                              action="${pageContext.request.contextPath}/home/role/pedagogical/files/search-checkList"
                               data-ajax-form="true"
-                              data-display="showCheckList">                                                        
+                              data-display="showCheckList">                            
                             <div class="form-group">
                                 <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                                 <div class="col-sm-5">
@@ -56,11 +56,11 @@
     </div>
     <form id="formActionItemEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/technical/files/manage-lista"
+              action="${pageContext.request.contextPath}/home/role/pedagogical/files/manage-lista"
               data-display="message_file"
               data-ajax-form="true"
-              data-data-table="tableBodyCheckList">
-            <input type="hidden" name="idVersion" value="${version.getId()}">
+              data-data-table="tableBodyCheckListPedagogical">
+             <input type="hidden" name="idVersion" value="${version.getId()}">
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>

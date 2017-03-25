@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.files;
+package controller.servlet.home.role.pedagogical.file;
 
+import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -24,7 +25,7 @@ import model.bean.Version;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/manage"})
+@WebServlet(urlPatterns = {"/home/role/pedagogical/files/manage"})
 public class ManageFile extends HttpServlet {
 
     /**

@@ -152,6 +152,30 @@ public class ItemDAO extends ConexionBD {
         return Item;
     }
     
+    public ArrayList<Item> selectItems(Item item) throws SQLException {
+        ArrayList<Item> result = new ArrayList<>();
+        
+        String query = "{CALL VER_ITEMS_LISTA(?)}";
+        int indexId = 1;
+        
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, item.getId());
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            item = new Item();
+            item.setId(rs.getInt(COL_ID));
+            item.setDescriptor(rs.getString(COL_DESCRIPTOR));
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_AUTOR));
+            item.setAutor(funcionario);
+            
+            result.add(item);
+        }
+
+        return result;
+    }
+    
     public ArrayList<Item> selectAll() throws SQLException {
         ArrayList<Item> result = new ArrayList<>();
         

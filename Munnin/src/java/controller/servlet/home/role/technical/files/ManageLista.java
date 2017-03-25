@@ -24,8 +24,8 @@ import model.bean.Version;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/manage"})
-public class ManageFile extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/technical/files/manage-lista"})
+public class ManageLista extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,20 +40,23 @@ public class ManageFile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVersion = request.getParameter("id");
-            int idItem;
+            String idVer = request.getParameter("idVersion");
+            String idIte = request.getParameter("id");
+            int idItem, idVersion;
             String opcion = request.getParameter("action");            
-            idItem = Integer.parseInt(idVersion);
-            
+            idVersion = Integer.parseInt(idVer);
+            idItem = Integer.parseInt(idIte);
             if (idItem <= 0) {
                 request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los archivos");
+                request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las listas");
             } else {
                 switch (opcion) {
-                    case "checkList":
-                        Version versionResult2 = Coordinator.viewAllInfoVersion(idItem);
-                        request.setAttribute("version", versionResult2);
-                        request.getRequestDispatcher("/home/role/technical/files/modalCheckList.jsp").forward(request, response);
+                    case "items":
+                        Version versionResult = Coordinator.viewAllInfoVersion(idVersion);
+                        request.setAttribute("version", versionResult);                        
+                        ArrayList<Item> items = Coordinator.viewItems(idItem);
+                        request.setAttribute("items", items);
+                        request.getRequestDispatcher("/home/role/technical/files/modalEvaluarItems.jsp").forward(request, response);
                         return;
                     default:
                         request.setAttribute("messageType", "danger");

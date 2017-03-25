@@ -137,11 +137,12 @@ public class Coordinator {
         return roles;
     }
     
-    public static ArrayList<Item> viewItems() throws NamingException, SQLException {
+    public static ArrayList<Item> viewItems(int idItem) throws NamingException, SQLException {
         ArrayList<Item> items;
-
+        Item item = new Item();
+        item.setId(idItem);
         ItemDAO itemDAO = new ItemDAO();
-        items = itemDAO.selectAll();
+        items = itemDAO.selectItems(item);
         itemDAO.cerrarConexion();
 
         return items;
