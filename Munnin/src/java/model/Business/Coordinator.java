@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
+import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 import model.bean.Item;
 import model.bean.Lista;
@@ -19,6 +20,7 @@ import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.bean.Version;
 import model.dao.AreaDAO;
+import model.dao.EvaluacionListaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
 import util.PassGenerator;
@@ -187,6 +189,20 @@ public class Coordinator {
         return paginas;
     }
     
+    public static int countPagesFilesPedagogicalCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        VersionDAO versionDAO = new VersionDAO();
+        countAreas = versionDAO.countFilesPedagocicalCenter(idCentro, search);
+        versionDAO.cerrarConexion();
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
     public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
@@ -227,6 +243,16 @@ public class Coordinator {
         ArrayList<Version> version;
         VersionDAO versionDAO = new VersionDAO();
         version = versionDAO.selectSomeFilesCenter(idCentro, pagina, cantXpag, search);
+
+        versionDAO.cerrarConexion();
+
+        return version;
+    }
+    
+    public static ArrayList<Version> viewFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Version> version;
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.selectSomeFilesPedagogicalCenter(idCentro, pagina, cantXpag, search);
 
         versionDAO.cerrarConexion();
 
@@ -373,6 +399,17 @@ public class Coordinator {
         
         return resultado;
     }
+    
+    public static Lista viewAllInfoLista(int idLista) throws NamingException, SQLException {
+        Lista resultado = new Lista();
+        ListaDAO listaDAO = new ListaDAO();
+        resultado.setId(idLista);
+        resultado = listaDAO.select(resultado);
+        
+        listaDAO.cerrarConexion();
+        
+        return resultado;
+    }
 
 
     /**
@@ -446,6 +483,29 @@ public class Coordinator {
             resultado = 1;//operacion exitosa
         }
         funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static int AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
+        int resultado = 0;
+        EvaluacionLista evaluacionLista = new EvaluacionLista();
+        evaluacionLista.setEvaluador(funcionario);
+        Lista lista = new Lista();
+        lista.setId(idList);
+        evaluacionLista.setLista(lista);
+        Version version = new Version();
+        version.setId(idVer);
+        evaluacionLista.setVersion(version);
+        evaluacionLista.setObservaciones("bueno");
+        evaluacionLista.setCalificacion(1);
+        //se realizan la operaciones en la base de datos
+        EvaluacionListaDAO evaluacionListaDAO = new EvaluacionListaDAO();
+        if (evaluacionListaDAO.agregarListaVersion(evaluacionLista))
+            resultado = 1;        
+        else
+            resultado = 2;
+        evaluacionListaDAO.cerrarConexion();
 
         return resultado;
     }

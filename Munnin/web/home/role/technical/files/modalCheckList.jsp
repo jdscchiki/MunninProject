@@ -49,8 +49,8 @@
                         class="btn btn-success" 
                         data-panel-table="formActionItemEnable"
                         data-action="items">
-                    Guardar</button>
-                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    Siguiente</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>

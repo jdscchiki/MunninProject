@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.files;
+package controller.servlet.home.role.pedagogical.file;
 
+import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -24,8 +25,8 @@ import model.bean.Version;
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/manage-lista"})
-public class ManageLista extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/pedagogical/files/manage"})
+public class ManageFilePedagogical extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,25 +41,20 @@ public class ManageLista extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVer = request.getParameter("idVersion");
-            String idIte = request.getParameter("id");
-            int idItem, idVersion;
+            String idVersion = request.getParameter("id");
+            int idItem;
             String opcion = request.getParameter("action");            
-            idVersion = Integer.parseInt(idVer);
-            idItem = Integer.parseInt(idIte);
+            idItem = Integer.parseInt(idVersion);
+            
             if (idItem <= 0) {
                 request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las listas");
+                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los archivos");
             } else {
                 switch (opcion) {
-                    case "items":
-                        Version versionResult = Coordinator.viewAllInfoVersion(idVersion);
-                        request.setAttribute("version", versionResult); 
-                        Lista lista = Coordinator.viewAllInfoLista(idItem);
-                        request.setAttribute("lista", lista);
-                        ArrayList<Item> items = Coordinator.viewItems(idItem);
-                        request.setAttribute("items", items);
-                        request.getRequestDispatcher("/home/role/technical/files/modalEvaluarItems.jsp").forward(request, response);
+                    case "checkList":
+                        Version versionResult2 = Coordinator.viewAllInfoVersion(idItem);
+                        request.setAttribute("version", versionResult2);
+                        request.getRequestDispatcher("/home/role/pedagogical/files/modalCheckList.jsp").forward(request, response);
                         return;
                     default:
                         request.setAttribute("messageType", "danger");

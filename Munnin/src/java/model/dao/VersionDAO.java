@@ -327,11 +327,66 @@ public class VersionDAO extends ConexionBD {
         return conteo;
     }
     
+    public int countFilesPedagocicalCenter(String idCentro, String search) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL CONTEO_ARCHIVOS_PEDAGOGICO_CENTRO(?,?)}";
+        int indexCentro = 1;
+        int indexFiltro = 2;
+
+        String resConteo = "conteo";//nombre de la columna del select
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setString(indexFiltro, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+    
     public ArrayList<Version> selectSomeFilesCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
         ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL VER_ARCHIVOS_CENTRO(?,?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setFecha((rs.getDate(COL_FECHA)));
+            version.setUrl(rs.getString(COL_URL));
+            Producto producto = new Producto();
+            producto.setNombre(rs.getString("nombre_producto_version"));
+            version.setProducto(producto);
+            versions.add(version);
+        }
+        return versions;
+    }
+    
+    public ArrayList<Version> selectSomeFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_ARCHIVOS_PEDAGOGICO_CENTRO(?,?,?,?)}";
         int indexCentro = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;

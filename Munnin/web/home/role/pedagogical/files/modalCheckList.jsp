@@ -49,8 +49,8 @@
                         class="btn btn-success" 
                         data-panel-table="formActionItemEnable"
                         data-action="items">
-                    Guardar</button>
-                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    Siguiente</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -60,16 +60,16 @@
               data-display="message_file"
               data-ajax-form="true"
               data-data-table="tableBodyCheckListPedagogical">
-             <input type="hidden" name="idVersion" value="${version.getId()}">
+            <input type="hidden" name="idVersion" value="${version.getId()}">
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#checkList").modal();
-            ajaxLoadContent("${pageContext.request.contextPath}/home/role/technical/files/search-checkList", "showCheckList");
+            ajaxLoadContent("${pageContext.request.contextPath}/home/role/pedagogical/files/search-checkList", "showCheckList");
             $(document).on("hidden.bs.modal", "#checkList", function (event) {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFile", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFilePedagogical", "fulltable");
                 $(this).remove();
             });
         });

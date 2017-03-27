@@ -3,7 +3,7 @@
 <template:basicTemplate actualPage="3"
                         actualRole="4"
                         funcionario="${sessionScope.usuario}"
-                        title="Pendientes Tecnico Munnin"
+                        title="Pendientes Pedagogico Munnin"
                         panelTitle="Archivos por Revisar">
     <jsp:attribute name="additionalJS">
         <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>

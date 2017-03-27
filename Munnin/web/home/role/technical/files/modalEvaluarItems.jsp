@@ -5,7 +5,7 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/assign-roles"
+          action="${pageContext.request.contextPath}/home/role/technical/files/assign-list"
           data-data-table="tableBodyFiles"
           data-display="formCalificarArchivo_message">
         <div class="modal-dialog">
@@ -26,7 +26,8 @@
                     <div class="form-group">
                         <label class="control-label col-lg-3">Items :</label>
                         <div class="col-lg-4">
-                            <input type="hidden" name="id" value="${version.getId()}">
+                            <input type="hidden" name="idVersion" value="${version.getId()}">
+                            <input type="hidden" name="idLista" value="${lista.getId()}">
                             <c:forEach items="${items}" var="item">
                                 <div class="checkbox">
                                     <label><input type="checkbox" 
@@ -45,7 +46,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formAssignRole">Guardar</button>
+                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formcalificarArchivo">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

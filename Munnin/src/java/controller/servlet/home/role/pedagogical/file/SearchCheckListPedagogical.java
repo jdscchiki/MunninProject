@@ -21,7 +21,7 @@ import model.bean.Funcionario;
  * @author Juan David Segura
  */
 @WebServlet(urlPatterns = {"/home/role/pedagogical/files/search-checkList"})
-public class SearchCheckList extends HttpServlet {
+public class SearchCheckListPedagogical extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

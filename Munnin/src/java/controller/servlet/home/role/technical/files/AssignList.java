@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.pedagogical.file;
+package controller.servlet.home.role.technical.files;
 
-import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,17 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
 import model.bean.Funcionario;
-import model.bean.Item;
-import model.bean.Lista;
-import model.bean.Rol;
-import model.bean.Version;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/pedagogical/files/manage"})
-public class ManageFile extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/technical/files/assign-list"})
+public class AssignList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,33 +37,50 @@ public class ManageFile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVersion = request.getParameter("id");
-            int idItem;
-            String opcion = request.getParameter("action");            
-            idItem = Integer.parseInt(idVersion);
-            
-            if (idItem <= 0) {
-                request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los archivos");
-            } else {
-                switch (opcion) {
-                    case "checkList":
-                        Version versionResult2 = Coordinator.viewAllInfoVersion(idItem);
-                        request.setAttribute("version", versionResult2);
-                        request.getRequestDispatcher("/home/role/technical/files/modalCheckList.jsp").forward(request, response);
-                        return;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        break;
-                }
+            ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
+            String idVersion = request.getParameter("idVersion");
+            String idLista = request.getParameter("idLista");
+            int idVer = Integer.parseInt(idVersion);
+            int idLis = Integer.parseInt(idLista);
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+            switch (Coordinator.AssignLista(idVer, idLis, funcionario)) {
+                case 1:
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "se han cambiado los roles correctamente");
+                    break;
+                case 2:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    break;
+            }
+            switch (Coordinator.AssignRoles(idFun, idItems)) {
+                case 0:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "no ha podido realizarse la operacion");
+                    break;
+                case 1:
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "se han cambiado los roles correctamente");
+                    break;
+                case 2:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    break;
+                case 3:
+                    request.setAttribute("messageType", "warning");
+                    request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
+                    break;
+                case 4:
+                    request.setAttribute("messageType", "warning");
+                    request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
+                    break;
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

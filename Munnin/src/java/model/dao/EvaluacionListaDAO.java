@@ -212,4 +212,34 @@ public class EvaluacionListaDAO extends ConexionBD {
 
         return result;
     }
+    
+    public boolean agregarListaVersion(EvaluacionLista evaluacionLista) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL ASIGNAR_EVALUACION_LISTA(?,?,?,?,?,?,?)}";
+        int indexId = 1;
+        int indexIdVersion = 2;
+        int indexIdLista = 3;
+        int indexCalificacion = 4;
+        int indexObservaciones = 5;
+        int indexFecha = 6;
+        int indexIdEvaluador = 7;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, evaluacionLista.getId());
+        statement.setInt(indexIdVersion, evaluacionLista.getVersion().getId());
+        statement.setInt(indexIdLista, evaluacionLista.getLista().getId());
+        statement.setInt(indexCalificacion, evaluacionLista.getCalificacion());
+        statement.setString(indexObservaciones, evaluacionLista.getObservaciones());
+        statement.setDate(indexFecha, (java.sql.Date) evaluacionLista.getFecha());
+        statement.setInt(indexIdEvaluador, evaluacionLista.getEvaluador().getId());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
 }
