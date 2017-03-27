@@ -9,8 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
+import model.bean.Notificacion;
 import model.bean.Rol;
 import model.dao.FuncionarioDAO;
+import model.dao.NotificacionDAO;
+import model.dao.RolDAO;
 import util.Encriptado;
 import util.PassGenerator;
 
@@ -54,7 +57,7 @@ public class General {
             }
         }
 
-        consulta.cerrarConexion();
+        consulta.closeConnection();
         return funcionarioLog;
     }
 
@@ -78,7 +81,7 @@ public class General {
                 if (consulta.changePassword(funcionario.getId(), Encriptado.createHash(newPassword))) {
                     result[0] = true;
                 }
-                consulta.cerrarConexion();
+                consulta.closeConnection();
             } else {
                 if(PassGenerator.hasNumber(newPassword)){
                     result[3]=true;
@@ -94,6 +97,48 @@ public class General {
                 }
             }
         }
+        return result;
+    }
+    
+    public static int countPagesNotifications(int idFunctionary, int resultsInPage, int idRole) throws NamingException, SQLException{
+        int result = 0;
+        
+        int quantityNotifications;
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        quantityNotifications = notificacionDAO.countNotificationFunctionary(idFunctionary, idRole);
+        notificacionDAO.closeConnection();
+
+        result = quantityNotifications / resultsInPage;
+        if (quantityNotifications % resultsInPage != 0) {
+            result++;
+        }
+        
+        return result;
+    }
+    
+    public static ArrayList<Notificacion> viewNotifications(int idFunctionary, int resultsInPage, int page, int idRole) throws NamingException, SQLException{
+        ArrayList<Notificacion> result;
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        result = notificacionDAO.selectNotificationFunctionary(idFunctionary, idRole, resultsInPage, page);
+        notificacionDAO.closeConnection();
+        
+        for (Notificacion notificacion : result) {
+            notificacion.getMensaje().setTexto(util.MessageGenerator.menssageRole(notificacion));
+        }
+
+        return result;
+    }
+    
+    public static int checkNotification(Notificacion notificacion) throws NamingException, SQLException{
+        int result = 0;
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        if(notificacionDAO.markAsSeen(notificacion)){
+            result = 1;
+        }
+        notificacionDAO.closeConnection();
+        
         return result;
     }
 }

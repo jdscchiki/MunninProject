@@ -477,7 +477,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE mensaje (
   id_mensaje INT NOT NULL AUTO_INCREMENT,
-  texto_mensaje VARCHAR(100) NOT NULL,
+  texto_mensaje VARCHAR(200) NOT NULL,
   PRIMARY KEY (id_mensaje))
 ENGINE = InnoDB;
 
@@ -1683,7 +1683,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_mensaje $$
 CREATE PROCEDURE insertar_mensaje (
-	IN _texto_mensaje VARCHAR(100) )
+	IN _texto_mensaje VARCHAR(200) )
 BEGIN
 	INSERT INTO mensaje(
 		texto_mensaje )
@@ -1696,7 +1696,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_mensaje $$
 CREATE PROCEDURE editar_mensaje (
 	IN _id_mensaje INT ,
-	IN _texto_mensaje VARCHAR(100) )
+	IN _texto_mensaje VARCHAR(200) )
 BEGIN
 	UPDATE mensaje
 	SET texto_mensaje = _texto_mensaje
@@ -3261,6 +3261,121 @@ BEGIN
     UPDATE programa
     SET activo_programa = 1
     WHERE id_programa = _id;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_NOTIFICACION_FUNCIONARIO_CONTEO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_NOTIFICACION_FUNCIONARIO_CONTEO $$
+CREATE PROCEDURE VER_NOTIFICACION_FUNCIONARIO_CONTEO (
+        IN _id_funcionario INT,
+        IN _activo BOOLEAN,
+        IN _rol INT
+    )
+BEGIN
+    
+    IF (_rol IS null OR _rol <= 0 ) THEN(
+        SELECT COUNT(id_notificacion) as conteo
+        FROM  notificacion 
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo);
+    ELSE 
+        SELECT COUNT(id_notificacion) as conteo
+        FROM  notificacion 
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo AND
+            id_rol_notificacion = _rol;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_NOTIFICACION_FUNCIONARIO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_NOTIFICACION_FUNCIONARIO $$
+CREATE PROCEDURE VER_TODOS_NOTIFICACION_FUNCIONARIO (
+        IN _id_funcionario INT,
+        IN _activo BOOLEAN,
+        IN _rol INT,
+        IN _notificacionXpagina INT,
+        IN _pagina INT
+    )
+BEGIN
+    
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _notificacionXpagina;
+
+    IF (_rol IS null OR _rol <= 0 ) THEN(
+        SELECT 
+            id_notificacion,
+            activo_notificacion,
+            visto_notificacion,
+            texto_mensaje,
+            numero_version,
+            nombre_producto,
+            id_funcionario_notificacion,
+            id_rol_notificacion
+        FROM  notificacion 
+        INNER JOIN mensaje 
+        ON id_mensaje = id_mensaje_notificacion
+        INNER JOIN version
+        ON id_version = id_version_notificacion
+        INNER JOIN producto
+        ON id_producto = id_producto_version
+
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo)
+        LIMIT _inicio, _notificacionXpagina;
+    ELSE 
+        SELECT 
+            id_notificacion,
+            activo_notificacion,
+            visto_notificacion,
+            texto_mensaje,
+            numero_version,
+            nombre_producto,
+            id_funcionario_notificacion,
+            id_rol_notificacion
+        FROM  notificacion 
+        INNER JOIN mensaje 
+        ON id_mensaje = id_mensaje_notificacion
+        INNER JOIN version
+        ON id_version = id_version_notificacion
+        INNER JOIN producto
+        ON id_producto = id_producto_version
+
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo AND
+            id_rol_notificacion = _rol
+        LIMIT _inicio, _notificacionXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_NOTIFICACION_VISTO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_NOTIFICACION_VISTO $$
+CREATE PROCEDURE EDITAR_NOTIFICACION_VISTO (
+        IN _id INT
+    )
+BEGIN
+    UPDATE notificacion
+    SET visto_notificacion = 1
+    WHERE id_notificacion = _id;
 END $$
 
 DELIMITER ;

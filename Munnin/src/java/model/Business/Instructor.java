@@ -35,7 +35,7 @@ public class Instructor {
 
         TipoObjetoAprendizajeDAO tipoObjetoAprendizajeDAO = new TipoObjetoAprendizajeDAO();
         result = tipoObjetoAprendizajeDAO.selectAll();
-        tipoObjetoAprendizajeDAO.cerrarConexion();
+        tipoObjetoAprendizajeDAO.closeConnection();
 
         return result;
     }
@@ -55,7 +55,7 @@ public class Instructor {
         //crea el registro del producto de aprendizaje en base de datos
         ProductoDAO productoDAO = new ProductoDAO();
         idProducto = productoDAO.create(producto);
-        productoDAO.cerrarConexion();
+        productoDAO.closeConnection();
         if (idProducto == 0) {
             result[0] = 2;
         } else {
@@ -72,7 +72,7 @@ public class Instructor {
 
             VersionDAO versionDAO = new VersionDAO();
             idVersion = versionDAO.create(version);
-            versionDAO.cerrarConexion();
+            versionDAO.closeConnection();
             if (idVersion == 0) {
                 result[0] = 3;
             } else {
@@ -93,7 +93,7 @@ public class Instructor {
                     } else {
                         result[0] = 5;
                     }
-                    versionDAO.cerrarConexion();
+                    versionDAO.closeConnection();
                 }
             }
         }
@@ -106,7 +106,7 @@ public class Instructor {
 
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         result = categoriaDAO.selectAllCenter(idCenter);
-        categoriaDAO.cerrarConexion();
+        categoriaDAO.closeConnection();
 
         return result;
     }
@@ -119,7 +119,7 @@ public class Instructor {
                 || producto.getCategorias() != null) {
             ProductoDAO productoDAO = new ProductoDAO();
             result = productoDAO.insertCategories(producto);
-            productoDAO.cerrarConexion();
+            productoDAO.closeConnection();
         }
 
         return result;
@@ -130,7 +130,7 @@ public class Instructor {
         
         ProgramaDAO programaDAO = new ProgramaDAO();
         result = programaDAO.selectAllCenter(idCenter);
-        programaDAO.cerrarConexion();
+        programaDAO.closeConnection();
         
         return result;
     }
@@ -143,7 +143,7 @@ public class Instructor {
                 || producto.getProgramas()!= null) {
             ProductoDAO productoDAO = new ProductoDAO();
             result = productoDAO.insertProgrammes(producto);
-            productoDAO.cerrarConexion();
+            productoDAO.closeConnection();
         }
 
         return result;

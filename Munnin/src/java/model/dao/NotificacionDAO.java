@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Mensaje;
 import model.bean.Notificacion;
+import model.bean.Producto;
 import model.bean.Rol;
 import model.bean.Version;
 import util.ConexionBD;
@@ -217,5 +218,97 @@ public class NotificacionDAO extends ConexionBD {
         }
 
         return result;
+    }
+    
+    public int countNotificationFunctionary(int idFunctionary, int role) throws SQLException{
+        int result = 0;
+        
+        String query = "{CALL VER_NOTIFICACION_FUNCIONARIO_CONTEO(?,?,?)}";
+        int indexIdFunctionary = 1;
+        int indexActive = 2;
+        int indexRole = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunctionary, idFunctionary);
+        statement.setBoolean(indexActive, true);
+        statement.setInt(indexRole, role);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            result = rs.getInt(resConteo);
+        }
+        return result;
+    }
+    
+    public ArrayList<Notificacion> selectNotificationFunctionary(int idFunctionary, int role, int resultsInPage, int page) throws SQLException{
+        ArrayList<Notificacion> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_NOTIFICACION_FUNCIONARIO(?,?,?,?,?)}";
+        int indexIdFunctionary = 1;
+        int indexActive = 2;
+        int indexRole = 3;
+        int indexResultsInPage = 4;
+        int indexPage = 5;
+        
+        String resultColMensajeTexto = "texto_mensaje";
+        String resultColNumeroVersion = "numero_version";
+        String resultColNombreProducto = "nombre_producto";
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunctionary, idFunctionary);
+        statement.setBoolean(indexActive, true);
+        statement.setInt(indexRole, role);
+        statement.setInt(indexResultsInPage, resultsInPage);
+        statement.setInt(indexPage, page);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            Notificacion notificacion = new Notificacion();
+            notificacion.setId(rs.getInt(COL_ID));
+            notificacion.setActivo(rs.getBoolean(COL_ACTIVO));
+            notificacion.setVisto(rs.getBoolean(COL_VISTO));
+            Mensaje mensaje = new Mensaje();
+            mensaje.setTexto(rs.getString(resultColMensajeTexto));
+            notificacion.setMensaje(mensaje);
+            Version version = new Version();
+            version.setNumero(rs.getInt(resultColNumeroVersion));
+            Producto producto = new Producto();
+            producto.setNombre(rs.getString(resultColNombreProducto));
+            version.setProducto(producto);
+            notificacion.setVersion(version);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_FUNCIONARIO));
+            notificacion.setFuncionario(funcionario);
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(COL_ID_ROL));
+            notificacion.setRol(rol);
+            
+            result.add(notificacion);
+        }
+        return result;
+    }
+    
+    public boolean markAsSeen(Notificacion notificacion) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL EDITAR_NOTIFICACION_VISTO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, notificacion.getId());
+        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 }

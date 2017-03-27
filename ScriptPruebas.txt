@@ -314,8 +314,21 @@ INSERT INTO area VALUES(1, "teleinformatica", 1, "9303");
 INSERT INTO programa VALUES(1, "ADSI", 1, 1);
 INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
 INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
-INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje aprovado');
-INSERT INTO notificacion VALUES(1, 0, 1, 1, 1, 1);
+
+-- mensajes de notificacion instructor
+INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje <strong>%1$s</strong> a sido aprovado en su version %2$s por el equipo técnico');
+INSERT INTO mensaje VALUES(2, 'Objeto de aprendizaje <strong>%1$s</strong> a sido aprovado en su version %2$s por el equipo pedagógico');
+INSERT INTO mensaje VALUES(3, 'Objeto de aprendizaje <strong>%1$s</strong> a sido aprovado en su version %2$s por el coordinador y ya ha sido publicado');
+INSERT INTO mensaje VALUES(4, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el equipo técnico');
+INSERT INTO mensaje VALUES(5, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el equipo pedagógico');
+INSERT INTO mensaje VALUES(6, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el coordinador');
+-- mensajes de notificacion coordinador
+INSERT INTO mensaje VALUES(7, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido aprobado por el equipo pedagógico');
+
+-- mensajes de notificacion equipos
+INSERT INTO mensaje VALUES(8, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s requiere ser calificado');
+
+INSERT INTO notificacion VALUES(1, 1, 0, 1, 1, 1, 1);
 INSERT INTO categoria VALUES(1, "programación", 1, "9303");
 INSERT INTO programa_producto VALUES(1,1);
 INSERT INTO categoria_producto VALUES(1,1);
