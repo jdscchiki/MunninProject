@@ -47,35 +47,35 @@ public class AssignList extends HttpServlet {
             switch (Coordinator.AssignLista(idVer, idLis, funcionario)) {
                 case 1:
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "se han cambiado los roles correctamente");
+                    request.setAttribute("message", "se han asignado la lista correctamente");
                     break;
                 case 2:
                     request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
             }
-            switch (Coordinator.AssignRoles(idFun, idItems)) {
-                case 0:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "no ha podido realizarse la operacion");
-                    break;
-                case 1:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "se han cambiado los roles correctamente");
-                    break;
-                case 2:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-                case 3:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
-                    break;
-                case 4:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
-                    break;
-            }
+//            switch (Coordinator.AssignRoles(idFun, idItems)) {
+//                case 0:
+//                    request.setAttribute("messageType", "danger");
+//                    request.setAttribute("message", "no ha podido realizarse la operacion");
+//                    break;
+//                case 1:
+//                    request.setAttribute("messageType", "success");
+//                    request.setAttribute("message", "se han cambiado los roles correctamente");
+//                    break;
+//                case 2:
+//                    request.setAttribute("messageType", "danger");
+//                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+//                    break;
+//                case 3:
+//                    request.setAttribute("messageType", "warning");
+//                    request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
+//                    break;
+//                case 4:
+//                    request.setAttribute("messageType", "warning");
+//                    request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
+//                    break;
+//            }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
