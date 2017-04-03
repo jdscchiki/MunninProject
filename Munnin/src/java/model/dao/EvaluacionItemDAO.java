@@ -194,4 +194,28 @@ public class EvaluacionItemDAO extends ConexionBD {
 
         return result;
     }
+    
+    public boolean AsignEvaluacionItem(EvaluacionItem evaluacionItem) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL INSERTAR_EVALUACION_ITEM(?,?,?,?)}";
+        int indexCalificacion = 1;
+        int indexObservacion = 2;
+        int indexIdEvaluacionLista = 3;
+        int indexIdItem = 4;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexCalificacion, evaluacionItem.getCalificacion());
+        statement.setString(indexObservacion, evaluacionItem.getObservarcion());
+        statement.setInt(indexIdEvaluacionLista, evaluacionItem.getEvaluacionLista().getId());
+        statement.setInt(indexIdItem, evaluacionItem.getItem().getId());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
 }

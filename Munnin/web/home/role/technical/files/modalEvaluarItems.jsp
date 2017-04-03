@@ -31,10 +31,11 @@
                             <c:forEach items="${items}" var="item">
                                 <div class="checkbox">
                                     <label><input type="checkbox" 
-                                                  name="role" 
+                                                  name="item" 
                                                   value="${item.getId()}">
                                         ${item.getDescriptor()}
                                     </label>
+                                        <textarea name="coment" maxlength="50" placeholder=" Comentario"></textarea>
                                 </div>
                             </c:forEach>
                         </div>
@@ -46,7 +47,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formcalificarArchivo">Guardar</button>
+                    <button type="submit" class="btn btn-success" data-panel-table="formcalificarArchivo">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
+import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 import model.bean.Item;
@@ -20,6 +21,7 @@ import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.bean.Version;
 import model.dao.AreaDAO;
+import model.dao.EvaluacionItemDAO;
 import model.dao.EvaluacionListaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
@@ -487,15 +489,57 @@ public class Coordinator {
         return resultado;
     }
     
-    public static int AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
+    public static int AssignItems(int idEvalucionLista, ArrayList<String> strIdItems) throws NamingException, SQLException {
         int resultado = 0;
+        int calificacion = 1;
+        String coment = "bien";
+        EvaluacionLista evList = new EvaluacionLista();
+        evList.setId(idEvalucionLista);
+        EvaluacionItem evItem;
+        Item item;
+        EvaluacionItemDAO evItemDAO = new EvaluacionItemDAO();
+        System.out.println("banderaitems");
+        for (int i = 0; i < strIdItems.size(); i++) {
+            evItem = new EvaluacionItem();
+            evItem.setCalificacion(calificacion);
+            evItem.setObservarcion(coment);
+            evItem.setEvaluacionLista(evList);
+            item = new Item();
+            item.setId(Integer.parseInt(strIdItems.get(i)));
+            evItem.setItem(item);
+            if(evItemDAO.AsignEvaluacionItem(evItem))
+                resultado = 0;
+            else
+                resultado = 1;
+        }
+        evItemDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static EvaluacionLista datosLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException{
+        Version version = new Version();
+        Lista lista = new Lista();
+        version.setId(idVer);        
+        lista.setId(idList);
         EvaluacionLista evaluacionLista = new EvaluacionLista();
         evaluacionLista.setEvaluador(funcionario);
-        Lista lista = new Lista();
-        lista.setId(idList);
         evaluacionLista.setLista(lista);
+        evaluacionLista.setVersion(version);
+        EvaluacionListaDAO evListDAO = new EvaluacionListaDAO();
+        evaluacionLista = evListDAO.selectEvList(evaluacionLista);
+        return evaluacionLista;
+    }
+    
+    public static int AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
+        int resultado = 0;
         Version version = new Version();
-        version.setId(idVer);
+        Lista lista = new Lista();
+        version.setId(idVer);        
+        lista.setId(idList);
+        EvaluacionLista evaluacionLista = new EvaluacionLista();
+        evaluacionLista.setEvaluador(funcionario);
+        evaluacionLista.setLista(lista);
         evaluacionLista.setVersion(version);
         evaluacionLista.setObservaciones("bueno");
         evaluacionLista.setCalificacion(1);

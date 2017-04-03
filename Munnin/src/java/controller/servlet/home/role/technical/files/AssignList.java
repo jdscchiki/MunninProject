@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
+import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 
 /**
@@ -38,6 +39,7 @@ public class AssignList extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
+            ArrayList<String> coments = new ArrayList<>(Arrays.asList(request.getParameterValues("coment")));
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
             int idVer = Integer.parseInt(idVersion);
@@ -47,35 +49,25 @@ public class AssignList extends HttpServlet {
             switch (Coordinator.AssignLista(idVer, idLis, funcionario)) {
                 case 1:
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "se han asignado la lista correctamente");
+                    request.setAttribute("message", "La lista se ha asignado correctamente");
                     break;
                 case 2:
                     request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
             }
-//            switch (Coordinator.AssignRoles(idFun, idItems)) {
-//                case 0:
-//                    request.setAttribute("messageType", "danger");
-//                    request.setAttribute("message", "no ha podido realizarse la operacion");
-//                    break;
-//                case 1:
-//                    request.setAttribute("messageType", "success");
-//                    request.setAttribute("message", "se han cambiado los roles correctamente");
-//                    break;
-//                case 2:
-//                    request.setAttribute("messageType", "danger");
-//                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-//                    break;
-//                case 3:
-//                    request.setAttribute("messageType", "warning");
-//                    request.setAttribute("message", "ha ocurrido un problema al agregar uno de los roles al funcionario");
-//                    break;
-//                case 4:
-//                    request.setAttribute("messageType", "warning");
-//                    request.setAttribute("message", "ha ocurrido un problema al quitar uno de los roles al funcionario");
-//                    break;
-//            }
+            EvaluacionLista result = Coordinator.datosLista(idVer, idLis, funcionario);
+            switch (Coordinator.AssignItems(result.getId(), idItems)) {
+                case 0:
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "La lista se ha asignado correctamente");
+                    break;
+                case 1:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    break;
+            }
+            System.out.println("bandera2");
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);

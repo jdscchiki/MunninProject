@@ -500,3 +500,31 @@ v.url_version,
 END $$
 
 DELIMITER ;
+
+-----------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_EVALUACION_LISTA_DATOS$$
+CREATE PROCEDURE VER_EVALUACION_LISTA_DATOS(
+	IN _id_version INT,
+	IN _id_lista INT,
+	IN _id_evaluador INT) 
+BEGIN
+	SELECT id_evaluacion_lista ,
+	id_version_evaluacion_lista ,
+	id_lista_evaluacion_lista ,
+	calificacion_evaluacion_lista ,
+	observaciones_evaluacion_lista ,
+	fecha_evaluacion_lista ,
+	id_evaluador_evaluacion_lista
+	FROM evaluacion_lista
+	WHERE id_version_evaluacion_lista = _id_version AND
+	id_lista_evaluacion_lista = _id_lista AND 
+	id_evaluador_evaluacion_lista = _id_evaluador;
+
+END $$
+
+DELIMITER ;
+
+----------------------------------------

@@ -43,7 +43,7 @@ public class ManageLista extends HttpServlet {
             String idVer = request.getParameter("idVersion");
             String idIte = request.getParameter("id");
             int idItem, idVersion;
-            String opcion = request.getParameter("action");            
+            String opcion = request.getParameter("action");
             idVersion = Integer.parseInt(idVer);
             idItem = Integer.parseInt(idIte);
             if (idItem <= 0) {
@@ -53,11 +53,11 @@ public class ManageLista extends HttpServlet {
                 switch (opcion) {
                     case "items":
                         Version versionResult = Coordinator.viewAllInfoVersion(idVersion);
-                        request.setAttribute("version", versionResult); 
+                        request.setAttribute("version", versionResult);
                         Lista lista = Coordinator.viewAllInfoLista(idItem);
                         request.setAttribute("lista", lista);
                         ArrayList<Item> items = Coordinator.viewItems(idItem);
-                        request.setAttribute("items", items);
+                        request.setAttribute("items", items);                        
                         request.getRequestDispatcher("/home/role/technical/files/modalEvaluarItems.jsp").forward(request, response);
                         return;
                     default:
