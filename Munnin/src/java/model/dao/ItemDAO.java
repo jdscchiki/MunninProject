@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Item;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

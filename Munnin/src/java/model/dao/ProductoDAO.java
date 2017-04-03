@@ -15,7 +15,7 @@ import model.bean.Categoria;
 import model.bean.Producto;
 import model.bean.Programa;
 import model.bean.TipoObjetoAprendizaje;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

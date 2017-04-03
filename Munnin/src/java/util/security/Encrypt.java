@@ -1,5 +1,5 @@
 //codigo obtenido de https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java
-package util;
+package util.security;
 
 import java.security.SecureRandom;
 import javax.crypto.spec.PBEKeySpec;
@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import javax.xml.bind.DatatypeConverter;
 
-public class Encriptado {
+public class Encrypt {
 
     @SuppressWarnings("serial")
     static public class InvalidHashException extends Exception {

@@ -22,7 +22,7 @@ import model.dao.ProductoDAO;
 import model.dao.ProgramaDAO;
 import model.dao.TipoObjetoAprendizajeDAO;
 import model.dao.VersionDAO;
-import util.FileManager;
+import util.file.FileManager;
 
 /**
  *
@@ -85,7 +85,8 @@ public class Instructor {
                 } else {
                     //guarda la ruta en la base de datos
                     version.setId(idVersion);
-                    version.setUrl(savePath);
+                    System.out.println("á bandera: " + file.getSubmittedFileName());
+                    version.setUrl(savePath+File.separator+file.getSubmittedFileName());
                     versionDAO = new VersionDAO();
                     if (versionDAO.editUrl(version)) {
                         result[0] = 1;

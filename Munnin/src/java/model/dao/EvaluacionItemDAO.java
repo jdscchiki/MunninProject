@@ -13,7 +13,7 @@ import javax.naming.NamingException;
 import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
 import model.bean.Item;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

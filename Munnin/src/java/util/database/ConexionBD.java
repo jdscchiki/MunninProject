@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package util.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +20,9 @@ import javax.naming.NamingException;
  */
 public class ConexionBD {
 
+    /**
+     * 
+     */
     private Connection conexion;
     private static final String JNDI = "jdbc/munnin";
 

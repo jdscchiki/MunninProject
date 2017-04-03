@@ -13,17 +13,15 @@ import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
 import model.bean.Funcionario;
-import model.bean.Notificacion;
 import model.bean.Programa;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.dao.AreaDAO;
 import model.dao.TipoDocumentoDAO;
-import util.Encriptado;
-import util.PassGenerator;
-import util.Mail;
+import util.security.Encrypt;
+import util.security.PassGenerator;
+import util.message.Mail;
 import model.dao.FuncionarioDAO;
-import model.dao.NotificacionDAO;
 import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
 
@@ -44,15 +42,14 @@ public class Coordinator {
      * activo con los datos ingresados. 3 existe un usuario no-activo con el
      * mismo correo. 4 existe un usuario no-activo con el mismo documento. 5 el
      * correo no pudo ser enviado.
-     * @throws util.Encriptado.CannotPerformOperationException Error al realizar
-     * la encriptacion de la contraseña, verificar la version de java
+     * @throws util.security.Encrypt.CannotPerformOperationException
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD
      * @throws java.io.UnsupportedEncodingException Problemas con los Correos de
      * origen
      * @throws javax.mail.MessagingException Problemas con el Correo de destino
      */
-    public static int registerFunctionary(Funcionario funcionario, String idCenter) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int registerFunctionary(Funcionario funcionario, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -67,9 +64,9 @@ public class Coordinator {
         centro.setId(idCenter);
         funcionario.setCentro(centro);
         String contrasena = PassGenerator.getSecurePassword();
-        funcionario.setContrasena(Encriptado.createHash(contrasena));
+        funcionario.setContrasena(Encrypt.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-
+        
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
         } else {
@@ -149,7 +146,7 @@ public class Coordinator {
         return paginas;
     }
     
-    public static int registerArea(Area area, String idCenter) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int registerArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -414,7 +411,7 @@ public class Coordinator {
     }
     
     
-    public static int updateArea(Area area, String idCenter) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int updateArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado

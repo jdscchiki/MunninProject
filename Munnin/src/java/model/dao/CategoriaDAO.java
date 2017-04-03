@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Categoria;
 import model.bean.Centro;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

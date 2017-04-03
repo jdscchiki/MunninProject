@@ -13,7 +13,7 @@ import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Ciudad;
 import model.bean.Regional;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

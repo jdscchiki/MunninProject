@@ -14,7 +14,7 @@ import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 import model.bean.Lista;
 import model.bean.Version;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

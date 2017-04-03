@@ -13,9 +13,8 @@ import model.bean.Notificacion;
 import model.bean.Rol;
 import model.dao.FuncionarioDAO;
 import model.dao.NotificacionDAO;
-import model.dao.RolDAO;
-import util.Encriptado;
-import util.PassGenerator;
+import util.security.Encrypt;
+import util.security.PassGenerator;
 
 /**
  * Clase dedicada a ejecutar las reglas de negocio de los usiarios de cualquier
@@ -41,12 +40,12 @@ public class General {
      * contraseña, revisar los datos almacenados en la base de datos y
      * comprarlos con el funcionamiento de la aplicacion
      */
-    public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
+    public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, Encrypt.InvalidHashException {
         Funcionario funcionarioLog;
         FuncionarioDAO consulta = new FuncionarioDAO();
         funcionarioLog = consulta.selectFunctionaryByMail(correo);
         if (funcionarioLog != null) {
-            if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
+            if (!Encrypt.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;
             } else {
                 ArrayList<Rol> roles = consulta.selectRolesFunctionary(funcionarioLog.getId());
@@ -61,7 +60,7 @@ public class General {
         return funcionarioLog;
     }
 
-    public static boolean[] changePassword(String email, String password, String newPassword) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
+    public static boolean[] changePassword(String email, String password, String newPassword) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, Encrypt.InvalidHashException {
         /*
         result es un arreglo de booleanos en el que cada indice significan lo siguiente:
         
@@ -78,7 +77,7 @@ public class General {
             if (PassGenerator.isSecure(newPassword)) {
                 result[2]=true;
                 FuncionarioDAO consulta = new FuncionarioDAO();
-                if (consulta.changePassword(funcionario.getId(), Encriptado.createHash(newPassword))) {
+                if (consulta.changePassword(funcionario.getId(), Encrypt.createHash(newPassword))) {
                     result[0] = true;
                 }
                 consulta.closeConnection();
@@ -124,7 +123,7 @@ public class General {
         notificacionDAO.closeConnection();
         
         for (Notificacion notificacion : result) {
-            notificacion.getMensaje().setTexto(util.MessageGenerator.menssageRole(notificacion));
+            notificacion.getMensaje().setTexto(util.message.MessageGenerator.menssageRole(notificacion));
         }
 
         return result;

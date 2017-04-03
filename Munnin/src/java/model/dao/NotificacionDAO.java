@@ -16,7 +16,7 @@ import model.bean.Notificacion;
 import model.bean.Producto;
 import model.bean.Rol;
 import model.bean.Version;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

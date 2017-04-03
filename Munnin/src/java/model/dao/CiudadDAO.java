@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Ciudad;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

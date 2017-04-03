@@ -16,7 +16,7 @@ import model.bean.Estado;
 import model.bean.Producto;
 import model.bean.TipoArchivo;
 import model.bean.Version;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

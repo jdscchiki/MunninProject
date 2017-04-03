@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
-import util.ConexionBD;
+import util.database.ConexionBD;
 import model.bean.Funcionario;
 import model.bean.Rol;
 import model.bean.TipoDocumento;

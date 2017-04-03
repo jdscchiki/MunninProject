@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
-import util.ConexionBD;
+import util.database.ConexionBD;
 import model.bean.TipoDocumento;
 
 /**

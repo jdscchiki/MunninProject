@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Lista;
 import model.bean.TipoLista;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *

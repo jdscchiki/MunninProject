@@ -14,7 +14,7 @@ import javax.naming.NamingException;
 import model.bean.Comentario;
 import model.bean.Funcionario;
 import model.bean.Producto;
-import util.ConexionBD;
+import util.database.ConexionBD;
 
 /**
  *
