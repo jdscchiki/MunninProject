@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" data-action="" data-panel-table="formAssignRole">Guardar</button>
+                    <button type="submit" class="btn btn-success" data-panel-table="formcalificarArchivo">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
