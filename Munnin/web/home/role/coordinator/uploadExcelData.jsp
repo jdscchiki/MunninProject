@@ -43,6 +43,11 @@
                                 Enviar
                             </button>
                         </div>
+                        <div class="col-lg-offset-2 col-sm-4">
+                            <button class="btn btn-success">
+                                <a href="${pageContext.request.contextPath}/resources/file/plantilla.xlsx">Plantilla</a>
+                            </button>
+                        </div>
                     </div>
 
                 </form>
