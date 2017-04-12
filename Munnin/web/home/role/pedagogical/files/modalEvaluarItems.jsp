@@ -5,7 +5,7 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/assign-roles"
+          action="${pageContext.request.contextPath}/home/role/pedagogical/files/assign-list"
           data-data-table="tableBodyFiles"
           data-display="formCalificarArchivo_message">
         <div class="modal-dialog">

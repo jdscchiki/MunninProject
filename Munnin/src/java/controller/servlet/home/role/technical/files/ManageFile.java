@@ -6,18 +6,12 @@
 package controller.servlet.home.role.technical.files;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
-import model.bean.Funcionario;
-import model.bean.Item;
-import model.bean.Lista;
-import model.bean.Rol;
+import model.Business.Technical;
 import model.bean.Version;
 
 /**
@@ -51,7 +45,7 @@ public class ManageFile extends HttpServlet {
             } else {
                 switch (opcion) {
                     case "checkList":
-                        Version versionResult2 = Coordinator.viewAllInfoVersion(idItem);
+                        Version versionResult2 = Technical.viewAllInfoVersion(idItem);
                         request.setAttribute("version", versionResult2);
                         request.getRequestDispatcher("/home/role/technical/files/modalCheckList.jsp").forward(request, response);
                         return;

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
+import model.Business.Pedagogical;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 
@@ -23,7 +24,7 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/assign-list"})
+@WebServlet(urlPatterns = {"/home/role/pedagogical/files/assign-list"})
 public class AssignListPedagogical extends HttpServlet {
 
     /**
@@ -47,7 +48,7 @@ public class AssignListPedagogical extends HttpServlet {
             int idLis = Integer.parseInt(idLista);
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            switch (Coordinator.AssignLista(idVer, idLis, funcionario)) {
+            switch (Pedagogical.AssignLista(idVer, idLis, funcionario)) {
                 case 1:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "La lista se ha asignado correctamente");
@@ -57,8 +58,8 @@ public class AssignListPedagogical extends HttpServlet {
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
             }
-            EvaluacionLista result = Coordinator.datosLista(idVer, idLis, funcionario);
-            switch (Coordinator.AssignItems(result.getId(), idItems)) {
+            EvaluacionLista result = Pedagogical.datosLista(idVer, idLis, funcionario);
+            switch (Pedagogical.AssignItems(result.getId(), idItems)) {
                 case 0:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "La lista se ha asignado correctamente");

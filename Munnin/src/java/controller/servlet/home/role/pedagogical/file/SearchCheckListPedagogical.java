@@ -5,7 +5,6 @@
  */
 package controller.servlet.home.role.pedagogical.file;
 
-import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
+import model.Business.Pedagogical;
 import model.bean.Funcionario;
 
 /**
@@ -48,10 +47,10 @@ public class SearchCheckListPedagogical extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesCheckList(funcionario.getId(), cantXpag, search);
+            int totalPages = Pedagogical.countPagesCheckList(funcionario.getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewCheckListFunctionary(funcionario.getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Pedagogical.viewCheckListFunctionary(funcionario.getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "showCheckList");
             request.setAttribute("idTable", "tableBodyCheckListPedagogical");

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
+import model.Business.Technical;
 import model.bean.Funcionario;
 
 /**
@@ -47,10 +47,10 @@ public class SearchCheckList extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesCheckList(funcionario.getId(), cantXpag, search);
+            int totalPages = Technical.countPagesCheckList(funcionario.getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewCheckListFunctionary(funcionario.getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Technical.viewCheckListFunctionary(funcionario.getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "showCheckList");
             request.setAttribute("idTable", "tableBodyCheckList");

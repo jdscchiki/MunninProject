@@ -5,7 +5,6 @@
  */
 package controller.servlet.home.role.pedagogical.file;
 
-import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
+import model.Business.Pedagogical;
 import model.bean.Funcionario;
 
 /**
@@ -47,10 +46,10 @@ public class SearchFilePedagogical extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Coordinator.countPagesFilesPedagogicalCenter(funcionario.getCentro().getId(), cantXpag, search);
+            int totalPages = Pedagogical.countPagesFilesPedagogicalCenter(funcionario.getCentro().getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFilesPedagogicalCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Pedagogical.viewFilesPedagogicalCenter(funcionario.getCentro().getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("idTable", "tableBodyFilePedagogical");

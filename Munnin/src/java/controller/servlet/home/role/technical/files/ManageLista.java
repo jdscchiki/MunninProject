@@ -12,12 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
-import model.bean.Funcionario;
+import model.Business.Technical;
 import model.bean.Item;
 import model.bean.Lista;
-import model.bean.Rol;
 import model.bean.Version;
 
 /**
@@ -52,11 +49,11 @@ public class ManageLista extends HttpServlet {
             } else {
                 switch (opcion) {
                     case "items":
-                        Version versionResult = Coordinator.viewAllInfoVersion(idVersion);
+                        Version versionResult = Technical.viewAllInfoVersion(idVersion);
                         request.setAttribute("version", versionResult);
-                        Lista lista = Coordinator.viewAllInfoLista(idItem);
+                        Lista lista = Technical.viewAllInfoLista(idItem);
                         request.setAttribute("lista", lista);
-                        ArrayList<Item> items = Coordinator.viewItems(idItem);
+                        ArrayList<Item> items = Technical.viewItems(idItem);
                         request.setAttribute("items", items);                        
                         request.getRequestDispatcher("/home/role/technical/files/modalEvaluarItems.jsp").forward(request, response);
                         return;

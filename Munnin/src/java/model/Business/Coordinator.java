@@ -140,18 +140,7 @@ public class Coordinator {
 
         return roles;
     }
-    
-    public static ArrayList<Item> viewItems(int idItem) throws NamingException, SQLException {
-        ArrayList<Item> items;
-        Item item = new Item();
-        item.setId(idItem);
-        ItemDAO itemDAO = new ItemDAO();
-        items = itemDAO.selectItems(item);
-        itemDAO.cerrarConexion();
-
-        return items;
-    }
-    
+        
     public static ArrayList<Lista> viewLista(String IdCentro) throws NamingException, SQLException {
         ArrayList<Lista> items;
         Lista lista = new Lista();
@@ -175,36 +164,8 @@ public class Coordinator {
         }
 
         return paginas;
-    }
-    
-    public static int countPagesFilesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
-        int paginas;
-        int countAreas;
-        VersionDAO versionDAO = new VersionDAO();
-        countAreas = versionDAO.countFilesCenter(idCentro, search);
-        versionDAO.cerrarConexion();
-        paginas = countAreas / cantXpag;
-        if (countAreas % cantXpag != 0) {
-            paginas++;
-        }
-
-        return paginas;
-    }
-    
-    public static int countPagesFilesPedagogicalCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
-        int paginas;
-        int countAreas;
-        VersionDAO versionDAO = new VersionDAO();
-        countAreas = versionDAO.countFilesPedagocicalCenter(idCentro, search);
-        versionDAO.cerrarConexion();
-        paginas = countAreas / cantXpag;
-        if (countAreas % cantXpag != 0) {
-            paginas++;
-        }
-
-        return paginas;
-    }
-    
+    }    
+        
     public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
@@ -241,26 +202,6 @@ public class Coordinator {
         return area;
     }
     
-    public static ArrayList<Version> viewFilesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-        ArrayList<Version> version;
-        VersionDAO versionDAO = new VersionDAO();
-        version = versionDAO.selectSomeFilesCenter(idCentro, pagina, cantXpag, search);
-
-        versionDAO.cerrarConexion();
-
-        return version;
-    }
-    
-    public static ArrayList<Version> viewFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-        ArrayList<Version> version;
-        VersionDAO versionDAO = new VersionDAO();
-        version = versionDAO.selectSomeFilesPedagogicalCenter(idCentro, pagina, cantXpag, search);
-
-        versionDAO.cerrarConexion();
-
-        return version;
-    }
-
     /**
      * Consulta la cantidad de paginas necesarias para mostrar todos los
      * funcionarios
@@ -303,20 +244,6 @@ public class Coordinator {
         return paginas;
     }
     
-    public static int countPagesCheckList(int idAutor, int cantXpag, String search) throws NamingException, SQLException {
-        int paginas;
-        int cantFuncionarios;
-        ListaDAO listaDAO = new ListaDAO();
-        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, false);
-        listaDAO.cerrarConexion();
-
-        paginas = cantFuncionarios / cantXpag;
-        if (cantFuncionarios % cantXpag != 0) {
-            paginas++;
-        }
-
-        return paginas;
-    }
 
     /**
      * Consulta los funcionarios de un centro en especifico, en una pagina
@@ -390,29 +317,6 @@ public class Coordinator {
 
         return resultado;
     }
-    
-    public static Version viewAllInfoVersion(int idVersion) throws NamingException, SQLException {
-        Version resultado = new Version();
-        VersionDAO versionDAO = new VersionDAO();
-        resultado.setId(idVersion);
-        resultado = versionDAO.select(resultado);
-        
-        versionDAO.cerrarConexion();
-        
-        return resultado;
-    }
-    
-    public static Lista viewAllInfoLista(int idLista) throws NamingException, SQLException {
-        Lista resultado = new Lista();
-        ListaDAO listaDAO = new ListaDAO();
-        resultado.setId(idLista);
-        resultado = listaDAO.select(resultado);
-        
-        listaDAO.cerrarConexion();
-        
-        return resultado;
-    }
-
 
     /**
      * Metodo para asignar roles a los funcionarios
@@ -489,71 +393,6 @@ public class Coordinator {
         return resultado;
     }
     
-    public static int AssignItems(int idEvalucionLista, ArrayList<String> strIdItems) throws NamingException, SQLException {
-        int resultado = 0;
-        int calificacion = 1;
-        String coment = "bien";
-        EvaluacionLista evList = new EvaluacionLista();
-        evList.setId(idEvalucionLista);
-        EvaluacionItem evItem;
-        Item item;
-        EvaluacionItemDAO evItemDAO = new EvaluacionItemDAO();
-        System.out.println("banderaitems");
-        for (int i = 0; i < strIdItems.size(); i++) {
-            evItem = new EvaluacionItem();
-            evItem.setCalificacion(calificacion);
-            evItem.setObservarcion(coment);
-            evItem.setEvaluacionLista(evList);
-            item = new Item();
-            item.setId(Integer.parseInt(strIdItems.get(i)));
-            evItem.setItem(item);
-            if(evItemDAO.AsignEvaluacionItem(evItem))
-                resultado = 0;
-            else
-                resultado = 1;
-        }
-        evItemDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    public static EvaluacionLista datosLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException{
-        Version version = new Version();
-        Lista lista = new Lista();
-        version.setId(idVer);        
-        lista.setId(idList);
-        EvaluacionLista evaluacionLista = new EvaluacionLista();
-        evaluacionLista.setEvaluador(funcionario);
-        evaluacionLista.setLista(lista);
-        evaluacionLista.setVersion(version);
-        EvaluacionListaDAO evListDAO = new EvaluacionListaDAO();
-        evaluacionLista = evListDAO.selectEvList(evaluacionLista);
-        return evaluacionLista;
-    }
-    
-    public static int AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
-        int resultado = 0;
-        Version version = new Version();
-        Lista lista = new Lista();
-        version.setId(idVer);        
-        lista.setId(idList);
-        EvaluacionLista evaluacionLista = new EvaluacionLista();
-        evaluacionLista.setEvaluador(funcionario);
-        evaluacionLista.setLista(lista);
-        evaluacionLista.setVersion(version);
-        evaluacionLista.setObservaciones("bueno");
-        evaluacionLista.setCalificacion(1);
-        //se realizan la operaciones en la base de datos
-        EvaluacionListaDAO evaluacionListaDAO = new EvaluacionListaDAO();
-        if (evaluacionListaDAO.agregarListaVersion(evaluacionLista))
-            resultado = 1;        
-        else
-            resultado = 2;
-        evaluacionListaDAO.cerrarConexion();
-
-        return resultado;
-    }
-
     /**
      * Verificacion para realizar un cambio de roles, solo por seguridad se
      * revisan nuevamente los roles disponibles y se comparan con los roles que
@@ -591,16 +430,6 @@ public class Coordinator {
 
         return funcionarios;
     }
-    
-    public static ArrayList<Lista> viewCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-        ArrayList<Lista> lista;
-        ListaDAO listaDAO = new ListaDAO();
-        lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);        
-        listaDAO.cerrarConexion();
-
-        return lista;
-    }
-    
     
     public static int updateArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*

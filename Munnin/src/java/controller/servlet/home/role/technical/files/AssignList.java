@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
+import model.Business.Technical;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 
@@ -46,7 +46,7 @@ public class AssignList extends HttpServlet {
             int idLis = Integer.parseInt(idLista);
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            switch (Coordinator.AssignLista(idVer, idLis, funcionario)) {
+            switch (Technical.AssignLista(idVer, idLis, funcionario)) {
                 case 1:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "La lista se ha asignado correctamente");
@@ -56,8 +56,8 @@ public class AssignList extends HttpServlet {
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
             }
-            EvaluacionLista result = Coordinator.datosLista(idVer, idLis, funcionario);
-            switch (Coordinator.AssignItems(result.getId(), idItems)) {
+            EvaluacionLista result = Technical.datosLista(idVer, idLis, funcionario);
+            switch (Technical.AssignItems(result.getId(), idItems)) {
                 case 0:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "La lista se ha asignado correctamente");
