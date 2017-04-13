@@ -12,23 +12,17 @@ import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
-import model.bean.EvaluacionItem;
-import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
-import model.bean.Item;
 import model.bean.Lista;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.bean.Version;
 import model.dao.AreaDAO;
-import model.dao.EvaluacionItemDAO;
-import model.dao.EvaluacionListaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
 import util.PassGenerator;
 import util.Mail;
 import model.dao.FuncionarioDAO;
-import model.dao.ItemDAO;
 import model.dao.ListaDAO;
 import model.dao.RolDAO;
 import model.dao.VersionDAO;
@@ -516,4 +510,28 @@ public class Coordinator {
 
         return area;
     }
+    
+    public static int countPagesFilesCoordinatorCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        VersionDAO versionDAO = new VersionDAO();
+        countAreas = versionDAO.countFilesCoordinatorCenter(idCentro, search);
+        versionDAO.cerrarConexion();
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+    
+    public static ArrayList<Version> viewFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Version> version;
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.selectSomeFilesCoordinatorCenter(idCentro, pagina, cantXpag, search);
+
+        versionDAO.cerrarConexion();
+
+        return version;
+    } 
 }

@@ -69,7 +69,10 @@ public class AssignListPedagogical extends HttpServlet {
                     request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     break;
             }
-            System.out.println("bandera2");
+            if(Pedagogical.cambioEstado(idVer)){
+                request.setAttribute("messageType", "success");
+                request.setAttribute("message", "La lista se ha asignado correctamente");
+            }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);

@@ -8,6 +8,7 @@ package model.Business;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
+import model.bean.Estado;
 import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
@@ -169,6 +170,20 @@ public class Technical {
         }
         evItemDAO.cerrarConexion();
 
+        return resultado;
+    }
+    
+    public static boolean cambioEstado(int idVer) throws NamingException, SQLException{
+        VersionDAO versionDAO = new VersionDAO();
+        Estado estado = new Estado();
+        estado.setId(5);
+        Version version = new Version();
+        version.setId(idVer);
+        version.setEstado(estado);
+        boolean resultado=false;
+        if (versionDAO.updateEstado(version)) {
+            resultado = true;
+        }
         return resultado;
     }
 }

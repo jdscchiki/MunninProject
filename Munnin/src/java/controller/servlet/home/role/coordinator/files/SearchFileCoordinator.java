@@ -3,27 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.files;
+package controller.servlet.home.role.coordinator.files;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Technical;
-import model.bean.EvaluacionLista;
+import model.Business.Coordinator;
+import model.Business.Pedagogical;
 import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/assign-list"})
-public class AssignList extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/pagerFileCoordinator"})
+public class SearchFileCoordinator extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,42 +36,28 @@ public class AssignList extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
-            ArrayList<String> coments = new ArrayList<>(Arrays.asList(request.getParameterValues("coment")));
-            String idVersion = request.getParameter("idVersion");
-            String idLista = request.getParameter("idLista");
-            int idVer = Integer.parseInt(idVersion);
-            int idLis = Integer.parseInt(idLista);
+            String search = request.getParameter("search");
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if (strPage != null) {
+                page = Integer.parseInt(strPage);
+            }
+            int cantXpag = 10;
+
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            switch (Technical.AssignLista(idVer, idLis, funcionario)) {
-                case 1:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
-                    break;
-                case 2:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-            }
-            EvaluacionLista result = Technical.datosLista(idVer, idLis, funcionario);
-            switch (Technical.AssignItems(result.getId(), idItems)) {
-                case 0:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
-                    break;
-                case 1:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-            }
-            if(Technical.cambioEstado(idVer)){
-                request.setAttribute("messageType", "success");
-                request.setAttribute("message", "La lista se ha asignado correctamente");
-            }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+
+            int totalPages = Coordinator.countPagesFilesCoordinatorCenter(funcionario.getCentro().getId(), cantXpag, search);
+            request.setAttribute("page", page);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Pedagogical.viewFilesPedagogicalCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("displayResult", "fulltable");
+            request.setAttribute("idTable", "tableBodyFilePedagogical");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerFileCoordinator"));
+            request.getRequestDispatcher("/home/role/coordinator/files/tableFiles.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
