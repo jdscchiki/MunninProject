@@ -7,6 +7,7 @@ package model.Business;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.naming.NamingException;
 import model.bean.Estado;
 import model.bean.EvaluacionItem;
@@ -110,6 +111,7 @@ public class Pedagogical {
     
     public static boolean AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
         boolean resultado = false;
+        System.out.println("bandera");
         Version version = new Version();
         Lista lista = new Lista();
         version.setId(idVer);        
@@ -142,20 +144,29 @@ public class Pedagogical {
         return evaluacionLista;
     }
     
-    public static boolean AssignItems(int idEvalucionLista, ArrayList<String> strIdItems) throws NamingException, SQLException {
+    public static boolean AssignItems(int idEvalucionLista, ArrayList<String> strIdItems, ArrayList<String> strComents) throws NamingException, SQLException {
         boolean resultado = false;
-        int calificacion = 1;
-        String coment = "bien";
+        int calificacion = 1,d=0;
+        ArrayList<String> comentarios = new ArrayList<>();
+        for (int i = 0; i < strComents.size(); i++) {
+            if ("coment".equals(strComents.get(i).substring(0, 6))) {
+                if ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 7))) {
+                    StringTokenizer tokens = new StringTokenizer(strComents.get(i), "=");
+                    System.out.println(tokens.nextToken());
+                    comentarios.add(tokens.nextToken());
+                }
+                d++;
+            }
+        }
         EvaluacionLista evList = new EvaluacionLista();
         evList.setId(idEvalucionLista);
         EvaluacionItem evItem;
         Item item;
         EvaluacionItemDAO evItemDAO = new EvaluacionItemDAO();
-        System.out.println("banderaitems");
         for (int i = 0; i < strIdItems.size(); i++) {
             evItem = new EvaluacionItem();
             evItem.setCalificacion(calificacion);
-            evItem.setObservarcion(coment);
+            evItem.setObservarcion(comentarios.get(i));
             evItem.setEvaluacionLista(evList);
             item = new Item();
             item.setId(Integer.parseInt(strIdItems.get(i)));

@@ -146,14 +146,16 @@ public class Technical {
     public static boolean AssignItems(int idEvalucionLista, ArrayList<String> strIdItems, ArrayList<String> strComents) throws NamingException, SQLException {
         boolean resultado = false;
         int calificacion = 1, d=0;
-        ArrayList<String> comentarios = new ArrayList<>();        
-        for (String strComent : strComents) {            
-            if ((strIdItems.get(d)).equals(strComent.substring(6, 7))) {
-                StringTokenizer tokens = new StringTokenizer(strComent,"=");
-                tokens.nextToken();
-                comentarios.add(tokens.nextToken());
+        ArrayList<String> comentarios = new ArrayList<>();
+        for (int i = 0; i < strComents.size(); i++) {
+            if ("coment".equals(strComents.get(i).substring(0, 6))) {
+                if ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 7))) {
+                    StringTokenizer tokens = new StringTokenizer(strComents.get(i), "=");
+                    System.out.println(tokens.nextToken());
+                    comentarios.add(tokens.nextToken());
+                }
+                d++;
             }
-            d++;
         }
         EvaluacionLista evList = new EvaluacionLista();
         evList.setId(idEvalucionLista);

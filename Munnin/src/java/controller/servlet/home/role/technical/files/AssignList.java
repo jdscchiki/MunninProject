@@ -56,10 +56,8 @@ public class AssignList extends HttpServlet {
                         coments.add(parameterName + "=" + parameterValue);
                     }
                 }
-            }
-            
+            }            
             String opcion = request.getParameter("action");
-            System.out.println(opcion);
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
             int idVer = Integer.parseInt(idVersion);
@@ -87,8 +85,7 @@ public class AssignList extends HttpServlet {
                     if (Technical.cambioEstado(idVer)) {
                         request.setAttribute("messageType", "success");
                         request.setAttribute("message", "La lista se ha asignado correctamente");
-                    }
-                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+                    }                    
                     break;
                 case "rechazar":
                     if (Technical.AssignLista(idVer, idLis, funcionario)) {
@@ -110,9 +107,9 @@ public class AssignList extends HttpServlet {
                         request.setAttribute("messageType", "success");
                         request.setAttribute("message", "La lista se ha asignado correctamente");
                     }
-                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
                     break;
             }
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

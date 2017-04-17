@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="formAssignRole_message" class="col-lg-offset-3 col-lg-8">
+                        <div id="message_file" class="col-lg-offset-3 col-lg-8">
 
                         </div>
                     </div>
@@ -50,10 +50,11 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-panel-table="formcalificarArchivo" data-action="rechazar">Rechazar</button>
                     <button type="button" class="btn btn-primary" data-panel-table="formcalificarArchivo" data-action="aprobar">Aprobar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                    
                 </div>
             </div>
         </div>
+        <input type="hidden" name="action" data-action="">
     </form>
     <script type="text/javascript">
         $(document).ready(function () {

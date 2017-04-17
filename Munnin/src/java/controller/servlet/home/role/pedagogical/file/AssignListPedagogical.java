@@ -9,6 +9,7 @@ import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,12 +42,27 @@ public class AssignListPedagogical extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
-            ArrayList<String> coments = new ArrayList<>(Arrays.asList(request.getParameterValues("coment")));
+            ArrayList<String> coments = new ArrayList<>();
+            
+            Enumeration<String> parameterNames = request.getParameterNames();
+
+            while (parameterNames.hasMoreElements()) {
+                String parameterName = parameterNames.nextElement();
+                if (!"item".equals(parameterName)) {
+                    String[] parameterValues = request.getParameterValues(parameterName);
+                    for (String parameterValue : parameterValues) {
+                        coments.add(parameterName + "=" + parameterValue);
+                    }
+                }
+            }  
             String opcion = request.getParameter("action");
+            System.out.println(opcion);
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
+            System.out.println("bandera 4");
+            System.out.println(idLista);
             int idVer = Integer.parseInt(idVersion);
-            int idLis = Integer.parseInt(idLista);
+            int idLis = Integer.parseInt(idLista);            
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
             EvaluacionLista result;
@@ -61,7 +77,7 @@ public class AssignListPedagogical extends HttpServlet {
                             request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     }
                     result = Pedagogical.datosLista(idVer, idLis, funcionario);
-                    if (Pedagogical.AssignItems(result.getId(), idItems)) {
+                    if (Pedagogical.AssignItems(result.getId(), idItems, coments)) {
                         request.setAttribute("messageType", "success");
                         request.setAttribute("message", "La lista se ha asignado correctamente");
                     } else {
@@ -84,7 +100,7 @@ public class AssignListPedagogical extends HttpServlet {
                             request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
                     }
                     result = Pedagogical.datosLista(idVer, idLis, funcionario);
-                    if (Pedagogical.AssignItems(result.getId(), idItems)) {
+                    if (Pedagogical.AssignItems(result.getId(), idItems, coments)) {
                         request.setAttribute("messageType", "success");
                         request.setAttribute("message", "La lista se ha asignado correctamente");
                     } else {
