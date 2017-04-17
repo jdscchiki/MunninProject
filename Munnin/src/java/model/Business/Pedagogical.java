@@ -108,8 +108,8 @@ public class Pedagogical {
         return items;
     }
     
-    public static int AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
-        int resultado = 0;
+    public static boolean AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
+        boolean resultado = false;
         Version version = new Version();
         Lista lista = new Lista();
         version.setId(idVer);        
@@ -122,10 +122,7 @@ public class Pedagogical {
         evaluacionLista.setCalificacion(1);
         //se realizan la operaciones en la base de datos
         EvaluacionListaDAO evaluacionListaDAO = new EvaluacionListaDAO();
-        if (evaluacionListaDAO.agregarListaVersion(evaluacionLista))
-            resultado = 1;        
-        else
-            resultado = 2;
+        resultado = evaluacionListaDAO.agregarListaVersion(evaluacionLista);
         evaluacionListaDAO.cerrarConexion();
 
         return resultado;
@@ -145,8 +142,8 @@ public class Pedagogical {
         return evaluacionLista;
     }
     
-    public static int AssignItems(int idEvalucionLista, ArrayList<String> strIdItems) throws NamingException, SQLException {
-        int resultado = 0;
+    public static boolean AssignItems(int idEvalucionLista, ArrayList<String> strIdItems) throws NamingException, SQLException {
+        boolean resultado = false;
         int calificacion = 1;
         String coment = "bien";
         EvaluacionLista evList = new EvaluacionLista();
@@ -163,10 +160,7 @@ public class Pedagogical {
             item = new Item();
             item.setId(Integer.parseInt(strIdItems.get(i)));
             evItem.setItem(item);
-            if(evItemDAO.AsignEvaluacionItem(evItem))
-                resultado = 0;
-            else
-                resultado = 1;
+            resultado = evItemDAO.AsignEvaluacionItem(evItem);
         }
         evItemDAO.cerrarConexion();
 
@@ -177,6 +171,20 @@ public class Pedagogical {
         VersionDAO versionDAO = new VersionDAO();
         Estado estado = new Estado();
         estado.setId(5);
+        Version version = new Version();
+        version.setId(idVer);
+        version.setEstado(estado);
+        boolean resultado=false;
+        if (versionDAO.updateEstado(version)) {
+            resultado = true;
+        }
+        return resultado;
+    }
+    
+    public static boolean cambioEstadoRechazado(int idVer) throws NamingException, SQLException{
+        VersionDAO versionDAO = new VersionDAO();
+        Estado estado = new Estado();
+        estado.setId(1);
         Version version = new Version();
         version.setId(idVer);
         version.setEstado(estado);

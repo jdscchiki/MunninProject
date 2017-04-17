@@ -6,8 +6,13 @@
 package controller.servlet.home.role.technical.files;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,43 +40,79 @@ public class AssignList extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NamingException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try {
             ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
-            ArrayList<String> coments = new ArrayList<>(Arrays.asList(request.getParameterValues("coment")));
+            ArrayList<String> coments = new ArrayList<>();
+            
+            Enumeration<String> parameterNames = request.getParameterNames();
+
+            while (parameterNames.hasMoreElements()) {
+                String parameterName = parameterNames.nextElement();
+                if (!"item".equals(parameterName)) {
+                    String[] parameterValues = request.getParameterValues(parameterName);
+                    for (String parameterValue : parameterValues) {
+                        coments.add(parameterName + "=" + parameterValue);
+                    }
+                }
+            }
+            
+            String opcion = request.getParameter("action");
+            System.out.println(opcion);
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
             int idVer = Integer.parseInt(idVersion);
             int idLis = Integer.parseInt(idLista);
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            switch (Technical.AssignLista(idVer, idLis, funcionario)) {
-                case 1:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
+            EvaluacionLista result;
+            switch (opcion) {
+                case "aprobar":
+                    if (Technical.AssignLista(idVer, idLis, funcionario)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    result = Technical.datosLista(idVer, idLis, funcionario);
+                    if (Technical.AssignItems(result.getId(), idItems, coments)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    if (Technical.cambioEstado(idVer)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
                     break;
-                case 2:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                case "rechazar":
+                    if (Technical.AssignLista(idVer, idLis, funcionario)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    result = Technical.datosLista(idVer, idLis, funcionario);
+                    if (Technical.AssignItems(result.getId(), idItems, coments)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    if (Technical.cambioEstadoRechazado(idVer)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
                     break;
             }
-            EvaluacionLista result = Technical.datosLista(idVer, idLis, funcionario);
-            switch (Technical.AssignItems(result.getId(), idItems)) {
-                case 0:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
-                    break;
-                case 1:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-            }
-            if(Technical.cambioEstado(idVer)){
-                request.setAttribute("messageType", "success");
-                request.setAttribute("message", "La lista se ha asignado correctamente");
-            }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
@@ -90,7 +131,13 @@ public class AssignList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(AssignList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -104,7 +151,13 @@ public class AssignList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(AssignList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

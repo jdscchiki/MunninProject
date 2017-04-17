@@ -9,10 +9,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.naming.NamingException;
-import static javax.print.attribute.Size2DSyntax.MM;
 import model.bean.Centro;
 import model.bean.Estado;
 import model.bean.Producto;
@@ -473,7 +471,7 @@ public class VersionDAO extends ConexionBD {
     public boolean updateEstado(Version version) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_VERSION(?,?)}";
+        String query = "{CALL CAMBIO_ESTADO(?,?)}";
         int indexId = 1;
         int indexIdEstado = 2;
 

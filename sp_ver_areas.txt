@@ -536,9 +536,9 @@ CREATE PROCEDURE cambio_estado (
 	IN _id_version INT , 
 	IN _estado INT) 
 BEGIN
-	UPDATE area 
+	UPDATE version
 	SET id_estado_version = _estado 
-	WHERE id_version = _id_version 
+	WHERE id_version = _id_version; 
 
 END $$
 

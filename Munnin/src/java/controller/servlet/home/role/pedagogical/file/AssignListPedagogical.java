@@ -42,38 +42,62 @@ public class AssignListPedagogical extends HttpServlet {
         try {
             ArrayList<String> idItems = new ArrayList<>(Arrays.asList(request.getParameterValues("item")));
             ArrayList<String> coments = new ArrayList<>(Arrays.asList(request.getParameterValues("coment")));
+            String opcion = request.getParameter("action");
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
             int idVer = Integer.parseInt(idVersion);
             int idLis = Integer.parseInt(idLista);
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            switch (Pedagogical.AssignLista(idVer, idLis, funcionario)) {
-                case 1:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
+            EvaluacionLista result;
+            switch (opcion) {
+                case "aprobar":
+                    if (Pedagogical.AssignLista(idVer, idLis, funcionario)) {
+                            request.setAttribute("messageType", "success");
+                            request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    else{
+                            request.setAttribute("messageType", "danger");
+                            request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    result = Pedagogical.datosLista(idVer, idLis, funcionario);
+                    if (Pedagogical.AssignItems(result.getId(), idItems)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    if (Pedagogical.cambioEstado(idVer)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
                     break;
-                case 2:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                case "rechazar":
+                    if (Pedagogical.AssignLista(idVer, idLis, funcionario)) {
+                            request.setAttribute("messageType", "success");
+                            request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    else{
+                            request.setAttribute("messageType", "danger");
+                            request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    result = Pedagogical.datosLista(idVer, idLis, funcionario);
+                    if (Pedagogical.AssignItems(result.getId(), idItems)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    } else {
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
+                    }
+                    if (Pedagogical.cambioEstadoRechazado(idVer)) {
+                        request.setAttribute("messageType", "success");
+                        request.setAttribute("message", "La lista se ha asignado correctamente");
+                    }
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
                     break;
             }
-            EvaluacionLista result = Pedagogical.datosLista(idVer, idLis, funcionario);
-            switch (Pedagogical.AssignItems(result.getId(), idItems)) {
-                case 0:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "La lista se ha asignado correctamente");
-                    break;
-                case 1:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "ha ocurrido un error al realizar la operacion, por favor volver a cargar la pagina");
-                    break;
-            }
-            if(Pedagogical.cambioEstado(idVer)){
-                request.setAttribute("messageType", "success");
-                request.setAttribute("message", "La lista se ha asignado correctamente");
-            }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
