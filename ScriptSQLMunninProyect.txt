@@ -12,20 +12,6 @@
 -- VER_(nombre de la tabla)
 -- VER_TODOS_(nombre de la tabla)
 -- -----------------------------------------------------
--- VER_FUNCIONARIOS_CENTRO
--- REGISTRAR_FUNCIONARIO
--- INGRESO
--- VER_ROLES_FUNCIONARIO
--- CONTEO_FUNCIONARIOS_CENTRO
--- INHABILITAR_FUNCIONARIO
--- CAMBIO_CONTRASENA
--- VER_FUNCIONARIO_CORREO
--- VER_FUNCIONARIO_DOCUMENTO
--- VER_FUNCIONARIO_ACTIVO
--- VER_FUNCIONARIOS_INHABILITADOS_CENTRO
--- HABILITAR_FUNCIONARIO
--- ES_ULTIMO_COORDINADOR_CENTRO
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- DATABASE name:        MunninProject
@@ -512,6 +498,42 @@ CREATE TABLE Notificacion (
     REFERENCES rol (id_rol))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- VISTAS
+-- -----------------------------------------------------
+
+create or replace view versionesAprobadas as
+	Select * 
+	from version
+	where id_estado_version = 2;
+
+create or replace view ultimasVersionesAprobadas as
+	select o.*
+	from versionesAprobadas o
+	left join versionesAprobadas b
+	on o.id_producto_version = b.id_producto_version and o.numero_version < b.numero_version
+	where b.numero_version is null;
+
+create or replace view productosAprobados as
+	select 
+		id_producto, 
+		nombre_producto, 
+		descripcion_producto, 
+		palabras_clave_producto,
+		id_version,
+		numero_version,
+		url_version,
+		fecha_version,
+		fecha_caducidad_version,
+		fecha_aprobacion_version,
+		id_estado_version,
+		id_tipo_archivo_version,
+		id_producto_version,
+		id_centro_version
+	from ultimasVersionesAprobadas
+	inner join producto
+	on id_producto = id_producto_version;
 
 -- -----------------------------------------------------
 -- PROCEDIMIENTOS ALMACENADOS
@@ -3319,6 +3341,7 @@ BEGIN
             id_notificacion,
             activo_notificacion,
             visto_notificacion,
+            id_mensaje,
             texto_mensaje,
             numero_version,
             nombre_producto,
@@ -3334,12 +3357,14 @@ BEGIN
 
         WHERE id_funcionario_notificacion = _id_funcionario AND 
             activo_notificacion = _activo)
+        ORDER BY id_notificacion DESC
         LIMIT _inicio, _notificacionXpagina;
     ELSE 
         SELECT 
             id_notificacion,
             activo_notificacion,
             visto_notificacion,
+            id_mensaje,
             texto_mensaje,
             numero_version,
             nombre_producto,
@@ -3379,3 +3404,307 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP INSERTAR_NOTIFICACION_GRUPO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS INSERTAR_NOTIFICACION_GRUPO $$
+CREATE PROCEDURE INSERTAR_NOTIFICACION_GRUPO (
+        IN _message_case INT ,
+        IN _id_version INT
+    )
+BEGIN
+
+    DECLARE _conteo_receptores INT DEFAULT 1;
+    DECLARE _id_receptor int DEFAULT 0;
+    DECLARE _offset int DEFAULT 0;
+
+    CASE _message_case 
+    -- enviar notificaciones a los integrantes del equipo tecnico
+    WHEN 1 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 3
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 3
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,8,_id_version,_id_receptor,3);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los integrantes del equipo pedagogico
+    WHEN 2 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 4
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 4
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,8,_id_version,_id_receptor,4);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los coordinadores del centro
+    WHEN 3 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 2
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 2
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,7,_id_version,_id_receptor,2);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el equipo tecnico
+    WHEN 4 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,1,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el equipo pedagogico
+    WHEN 5 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,2,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el coordinador
+    WHEN 6 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,3,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el equipo tecnico
+    WHEN 7 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,4,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el equipo pedagogico
+    WHEN 8 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,5,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el coordinador
+    WHEN 9 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,6,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    ELSE 
+        BEGIN
+        END;
+    END CASE;
+END $$
+
+DELIMITER ;
+
+

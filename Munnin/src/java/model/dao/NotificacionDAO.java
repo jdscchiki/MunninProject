@@ -254,6 +254,7 @@ public class NotificacionDAO extends ConexionBD {
         int indexResultsInPage = 4;
         int indexPage = 5;
         
+        String resultColMensajeId = "id_mensaje";
         String resultColMensajeTexto = "texto_mensaje";
         String resultColNumeroVersion = "numero_version";
         String resultColNombreProducto = "nombre_producto";
@@ -273,6 +274,7 @@ public class NotificacionDAO extends ConexionBD {
             notificacion.setActivo(rs.getBoolean(COL_ACTIVO));
             notificacion.setVisto(rs.getBoolean(COL_VISTO));
             Mensaje mensaje = new Mensaje();
+            mensaje.setId(rs.getInt(resultColMensajeId));
             mensaje.setTexto(rs.getString(resultColMensajeTexto));
             notificacion.setMensaje(mensaje);
             Version version = new Version();
@@ -293,6 +295,13 @@ public class NotificacionDAO extends ConexionBD {
         return result;
     }
     
+    /**
+     * 
+     * @deprecated 
+     * @param notificacion
+     * @return
+     * @throws SQLException 
+     */
     public boolean markAsSeen(Notificacion notificacion) throws SQLException {
         boolean resultado;
 
@@ -310,5 +319,27 @@ public class NotificacionDAO extends ConexionBD {
             resultado = false;
         }
         return resultado;
+    }
+    
+    public boolean sendNotification(int notificationCase, int idVersion) throws SQLException{
+        boolean result = false;
+        System.out.println("start");
+        String query = "{CALL INSERTAR_NOTIFICACION_GRUPO(?,?)}";
+        int indexNotificationCase = 1;
+        int indexIdVersion = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexNotificationCase, notificationCase);
+        statement.setInt(indexIdVersion, idVersion);
+        
+        if (statement.executeUpdate() >= 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
+        System.out.println("end");
+        return result;
     }
 }

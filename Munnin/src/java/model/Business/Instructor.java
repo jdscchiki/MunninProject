@@ -18,6 +18,7 @@ import model.bean.TipoArchivo;
 import model.bean.TipoObjetoAprendizaje;
 import model.bean.Version;
 import model.dao.CategoriaDAO;
+import model.dao.NotificacionDAO;
 import model.dao.ProductoDAO;
 import model.dao.ProgramaDAO;
 import model.dao.TipoObjetoAprendizajeDAO;
@@ -85,7 +86,6 @@ public class Instructor {
                 } else {
                     //guarda la ruta en la base de datos
                     version.setId(idVersion);
-                    System.out.println("á bandera: " + file.getSubmittedFileName());
                     version.setUrl(savePath+File.separator+file.getSubmittedFileName());
                     versionDAO = new VersionDAO();
                     if (versionDAO.editUrl(version)) {
@@ -98,7 +98,11 @@ public class Instructor {
                 }
             }
         }
-
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(1, idVersion);
+        notificacionDAO.closeConnection();
+        
         return result;
     }
 

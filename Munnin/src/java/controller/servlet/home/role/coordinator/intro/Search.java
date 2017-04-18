@@ -56,7 +56,7 @@ public class Search extends HttpServlet {
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
             request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/intro/search"));
-            request.getRequestDispatcher("/home/role/coordinator/intro/table.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/model/listNotifications.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

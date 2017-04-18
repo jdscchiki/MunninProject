@@ -5,5 +5,20 @@
                         funcionario="${sessionScope.usuario}"
                         title="Notificaciones E. Pedagógico Munnin"
                         panelTitle="Notificaciones">
-    
+    <jsp:attribute name="additionalJS">
+        <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/pedagogical/intro/search", "fulltable");
+            });
+        </script>
+    </jsp:attribute>
+    <jsp:body>
+        <div class="row">
+            <div class="col-lg-12" id="fulltable">
+
+            </div>
+        </div>
+    </jsp:body>
 </template:basicTemplate>

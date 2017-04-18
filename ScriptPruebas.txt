@@ -322,6 +322,7 @@ INSERT INTO mensaje VALUES(3, 'Objeto de aprendizaje <strong>%1$s</strong> a sid
 INSERT INTO mensaje VALUES(4, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el equipo técnico');
 INSERT INTO mensaje VALUES(5, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el equipo pedagógico');
 INSERT INTO mensaje VALUES(6, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido rechazado por el coordinador');
+
 -- mensajes de notificacion coordinador
 INSERT INTO mensaje VALUES(7, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido aprobado por el equipo pedagógico');
 

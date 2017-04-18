@@ -184,7 +184,7 @@ public class ProductoDAO extends ConexionBD {
             TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
             tipoObjetoAprendizaje.setId(rs.getInt(COL_ID_TIPO_APRENDIZAJE));
             producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
-
+            
             result.add(producto);
         }
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.instructor.intro;
+package controller.servlet.home.role.technical.intro;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ import model.dao.RolDAO;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/intructor/intro/search"})
+@WebServlet(urlPatterns = {"/home/role/technical/intro/search"})
 public class Search extends HttpServlet {
 
     /**
@@ -49,13 +49,13 @@ public class Search extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = General.countPagesNotifications(funcionario.getId(), cantXpag, RolDAO.ID_INSTRUCTOR);
+            int totalPages = General.countPagesNotifications(funcionario.getId(), cantXpag, RolDAO.ID_E_TECNICO);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", General.viewNotifications(funcionario.getId(), cantXpag, page, RolDAO.ID_INSTRUCTOR));
+            request.setAttribute("contentTable", General.viewNotifications(funcionario.getId(), cantXpag, page, RolDAO.ID_E_TECNICO));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/instructor/intro/search"));
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/technical/intro/search"));
             request.getRequestDispatcher("/WEB-INF/model/listNotifications.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
