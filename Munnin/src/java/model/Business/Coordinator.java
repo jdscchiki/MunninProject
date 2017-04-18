@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
+import model.bean.Estado;
 import model.bean.Funcionario;
 import model.bean.Lista;
 import model.bean.Rol;
@@ -295,6 +296,20 @@ public class Coordinator {
         resultado = funcionarioDAO.enableFunctionary(idFuncionario);
 
         funcionarioDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static boolean approveVersion(int idVersion) throws NamingException, SQLException {
+        boolean resultado;
+        Version version = new Version();
+        VersionDAO versionDAO = new VersionDAO();        
+        Estado estado = new Estado();
+        estado.setId(2);
+        version.setId(idVersion);
+        version.setEstado(estado);
+        resultado = versionDAO.updateEstado(version);
+        versionDAO.cerrarConexion();
 
         return resultado;
     }

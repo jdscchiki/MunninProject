@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
-<template:basicTemplate actualPage="3"
-                        actualRole="3"
+<template:basicTemplate actualPage="7"
+                        actualRole="2"
                         funcionario="${sessionScope.usuario}"
                         title="Pendientes Coordinador Munnin"
                         panelTitle="Archivos por Revisar">
@@ -49,14 +49,14 @@
                         class="btn btn-primary btn-block" 
                         data-panel-table="formActionFileEnable"
                         data-action="checkList">
-                    Lista de Chequeo</button>
+                    Aprobar</button>
         </div>
         <form id="formActionFileEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/technical/files/manage"
+              action="${pageContext.request.contextPath}/home/role/coordinator/files/approve"
               data-display="message_file"
               data-ajax-form="true"
-              data-data-table="tableBodyFile">
+              data-data-table="tableBodyFileCoordinator">
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>

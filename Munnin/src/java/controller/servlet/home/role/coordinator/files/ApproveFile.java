@@ -11,17 +11,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.Business.Coordinator;
-import model.Business.Pedagogical;
-import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerFileCoordinator"})
-public class SearchFileCoordinator extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/files/approve"})
+public class ApproveFile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,28 +33,23 @@ public class SearchFileCoordinator extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String search = request.getParameter("search");
-            String strPage = request.getParameter("page");
-            int page = 1;
-            if (strPage != null) {
-                page = Integer.parseInt(strPage);
+            String stringId = request.getParameter("id");
+            int id = Integer.parseInt(stringId);
+            if (id <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Seleciona una version para realizar el proceso");
+            } else {
+                if (Coordinator.approveVersion(id)) {
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "Se ha aprobado correctamente la version del funcionario");
+                } else {
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "No se ha podido aprobar la version del funcionario");
+                }
             }
-            int cantXpag = 10;
-
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-
-            int totalPages = Coordinator.countPagesFilesCoordinatorCenter(funcionario.getCentro().getId(), cantXpag, search);
-            request.setAttribute("page", page);
-            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewFilesCoordinatorCenter(funcionario.getCentro().getId(), page, cantXpag, search));
-            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyFileCoordinator");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerFileCoordinator"));
-            request.getRequestDispatcher("/home/role/coordinator/files/tableFiles.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
