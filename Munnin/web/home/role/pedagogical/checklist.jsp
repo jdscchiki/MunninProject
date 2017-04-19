@@ -16,16 +16,15 @@
                             <span onclick="newElement()" class="addBtn">Agregar</span>
                         </div>
                         <ul id="myUL">
-                            <li class="cl"><input type="text" name="itemchecklist" value="los dejo para mirar" disabled="disabled"></li>
-                            <li class="checked cl"><input type="text" name="itemchecklist" value="y quitar esto de seleccionarlos" disabled="disabled"></li>
-                            
+                            <li class="cl"><input type="text" name="itemchecklist" value="Este es un ejemplo de un item en la lista de chequeo" disabled="disabled"></li>
+
                         </ul>
                         <br>
                         <button type="submit" class="btn btn-success">Enviar Lista</button>
+                </form>
                     </div>
             </div>
         </div>
-    </form>
 </jsp:body>
 
 </template:basicTemplate>

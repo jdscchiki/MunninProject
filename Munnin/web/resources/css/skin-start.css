@@ -198,12 +198,11 @@ div.left div:hover:not(.active){
 .menu {
     right: 0px;
     bottom: 0px;
-    margin-top: 100px;
     position: fixed;
     padding-top: 40px;
     padding-left: 190px;
-    width: 270px;
-    height: 110px;
+    width: 240px;
+    height: 90px;
     box-sizing: border-box;
     text-align: left;
     z-index: 1;
@@ -291,13 +290,14 @@ div.left div:hover:not(.active){
     position: fixed;
     bottom: 20px;
     right: 20px;
-    border-radius: 50%;
+    border-radius: 50% 50% 0 0;
     z-index: 1;
 }
 /*-- /goUp --*/
 /*--content--*/
 #main{
     margin-left: 50px;
+    margin-bottom: 110px;
     padding: 20px 0;
 }
 .panelMunnin {
@@ -306,7 +306,6 @@ div.left div:hover:not(.active){
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
     margin-bottom: 20px;
 }
-
 /*--/content--*/
 /*-- checklist --*/
 /* Remove margins and padding from the list */
@@ -437,8 +436,6 @@ li>input{
     line-height: 20px;
 }
 .Footer {
-    position: relative;
-    padding: 20px 0;
     text-align: center;
 }
 .Footer__topMenu {
@@ -460,6 +457,9 @@ li>input{
 }
 .Restricted__footer{
     background-color: #bfbfbf !important;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 /*--/footer--*/
 /*--responsive--*/
