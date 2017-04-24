@@ -482,7 +482,7 @@ INSERT INTO producto VALUES(
         1,
         7, 
         "9303");
-        INSERT INTO autor VALUES(12,14);
+        INSERT INTO autor VALUES(12,15);
 
 INSERT INTO producto VALUES(
     8, 
