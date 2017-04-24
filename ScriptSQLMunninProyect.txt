@@ -129,7 +129,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE tipo_archivo (
   id_tipo_archivo INT(11) NOT NULL AUTO_INCREMENT,
-  extension_tipo_archivo VARCHAR(7) NOT NULL,
+  nombre_tipo_archivo VARCHAR(30) NOT NULL,
   PRIMARY KEY (id_tipo_archivo))
 ENGINE = InnoDB;
 
@@ -410,7 +410,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE programa (
   id_programa INT(11) NOT NULL AUTO_INCREMENT,
-  nombre_programa VARCHAR(50) NOT NULL,
+  nombre_programa VARCHAR(150) NOT NULL,
   activo_programa BIT(1) NOT NULL,
   id_area_programa INT(11) NOT NULL,
   PRIMARY KEY (id_programa),
@@ -1956,7 +1956,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_programa $$
 CREATE PROCEDURE insertar_programa (
-	IN _nombre_programa VARCHAR(50) ,
+	IN _nombre_programa VARCHAR(150) ,
         IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
@@ -1975,7 +1975,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_programa $$
 CREATE PROCEDURE editar_programa (
 	IN _id_programa INT ,
-	IN _nombre_programa VARCHAR(50) ,
+	IN _nombre_programa VARCHAR(150) ,
         IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
@@ -2219,12 +2219,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_tipo_archivo $$
 CREATE PROCEDURE insertar_tipo_archivo (
-	IN _extension_tipo_archivo VARCHAR(7) ) 
+	IN _nombre_tipo_archivo VARCHAR(30) ) 
 BEGIN
 	INSERT INTO tipo_archivo (
-		extension_tipo_archivo )
+		nombre_tipo_archivo )
 	VALUES (
-		_extension_tipo_archivo );
+		_nombre_tipo_archivo );
 END $$
 
 -- editar tipo_archivo
@@ -2232,10 +2232,10 @@ END $$
 DROP PROCEDURE IF EXISTS editar_tipo_archivo $$
 CREATE PROCEDURE editar_tipo_archivo (
 	IN _id_tipo_archivo INT , 
-	IN _extension_tipo_archivo VARCHAR(7) ) 
+	IN _nombre_tipo_archivo VARCHAR(30) ) 
 BEGIN
 	UPDATE tipo_archivo 
-	SET extension_tipo_archivo = _extension_tipo_archivo
+	SET nombre_tipo_archivo = _nombre_tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
 
@@ -2256,7 +2256,7 @@ CREATE PROCEDURE ver_tipo_archivo (
 	IN _id_tipo_archivo INT ) 
 BEGIN
 	SELECT id_tipo_archivo , 
-	extension_tipo_archivo 
+	nombre_tipo_archivo 
 	FROM tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
@@ -2267,7 +2267,7 @@ DROP PROCEDURE IF EXISTS ver_todos_tipo_archivo $$
 CREATE PROCEDURE ver_todos_tipo_archivo () 
 BEGIN
 	SELECT id_tipo_archivo , 
-	extension_tipo_archivo 
+	nombre_tipo_archivo 
 	FROM tipo_archivo;
 END $$
 
