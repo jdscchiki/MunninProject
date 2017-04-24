@@ -20,7 +20,7 @@ import util.database.ConexionBD;
 public class TipoArchivoDAO extends ConexionBD {
 
     private static final String COL_ID = "id_tipo_archivo";
-    private static final String COL_EXTENSION = "extension_tipo_archivo";
+    private static final String COL_NOMBRE = "nombre_tipo_archivo";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
@@ -44,10 +44,10 @@ public class TipoArchivoDAO extends ConexionBD {
         boolean resultado;
 
         String query = "{CALL INSERTAR_TIPO_ARCHIVO(?)}";
-        int indexExtencion = 1;
+        int indexNombre = 1;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setString(indexExtencion, tipoArchivo.getExtension());
+        statement.setString(indexNombre, tipoArchivo.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -71,11 +71,11 @@ public class TipoArchivoDAO extends ConexionBD {
 
         String query = "{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
         int indexId = 1;
-        int indexExtencion = 2;
+        int indexNombre = 2;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
         statement.setInt(indexId, tipoArchivo.getId());
-        statement.setString(indexExtencion, tipoArchivo.getExtension());
+        statement.setString(indexNombre, tipoArchivo.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
             resultado = true;
@@ -135,7 +135,7 @@ public class TipoArchivoDAO extends ConexionBD {
         while (rs.next()) {
             encontrado = true;
             tipoArchivo.setId(rs.getInt(COL_ID));
-            tipoArchivo.setExtension(rs.getString(COL_EXTENSION));
+            tipoArchivo.setNombre(rs.getString(COL_NOMBRE));
         }
         if (!encontrado) {
             tipoArchivo = null;
@@ -155,7 +155,7 @@ public class TipoArchivoDAO extends ConexionBD {
         while (rs.next()) {
             TipoArchivo tipoArchivo = new TipoArchivo();
             tipoArchivo.setId(rs.getInt(COL_ID));
-            tipoArchivo.setExtension(rs.getString(COL_EXTENSION));
+            tipoArchivo.setNombre(rs.getString(COL_NOMBRE));
             
             result.add(tipoArchivo);
         }

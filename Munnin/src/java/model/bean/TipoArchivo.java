@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class TipoArchivo implements java.io.Serializable {
     private int id;
-    private String extension;
+    private String nombre;
     private ArrayList<Version> versiones;
 
     public ArrayList<Version> getVersiones() {
@@ -32,12 +32,12 @@ public class TipoArchivo implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getExtension() {
-        return extension;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public TipoArchivo() {
