@@ -28,14 +28,14 @@
     <c:if test="${funcionario.isTecnico()}">
         <a href="${pageContext.request.contextPath}/home/role/technical/intro.jsp" >
             <div class="item ${activeRole==3?"active":""}">
-                <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon">E. Técnico
+                <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon">Equipo Técnico
             </div>
         </a>
     </c:if>
     <c:if test="${funcionario.isPedagogico()}">
         <a href="${pageContext.request.contextPath}/home/role/pedagogical/intro.jsp" >
             <div class="item ${activeRole==4?"active":""}">
-                <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon">E. Pedagógico
+                <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon">Equipo Pedagógico
             </div>
         </a>
     </c:if>

@@ -11,19 +11,11 @@ body {
 .topIconoM{
     height: 100px;
     padding-top: 5px;
-
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translate(-50%,0%);
 }
 .topIconoS{
     height: 100px;
     padding-top: 5px;
-
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-left: 20px;
 }
 .navbar{
     margin-bottom: 0;

@@ -14,8 +14,11 @@
 <%@attribute name="actualPage" required="true" type="Integer"%>
 
 <div class="container-fluid top">
-    <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIconoS">
-    <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="topIconoM">
+    <div >
+        <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIconoS">
+        <div style="display: inline-block;border-left: 0.5px black solid;height: 80px;vertical-align: middle;margin-right: 30px;margin-left: 30px;margin-top: 10px;"></div>
+        <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="topIconoM">
+    </div>
 </div>
 <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="112">
     <div class="container-fluid">
