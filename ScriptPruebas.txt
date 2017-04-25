@@ -490,112 +490,128 @@ INSERT INTO producto VALUES(
     "Guía media de php, con temas como: encapsulamiento, herencia, cohesión, abstracción, polimorfismo, acoplamiento, lectura de archivos planos y aplicaciones básicas stand alone.", 
     "programación;php;programación orientada a objetos;stand alone;", 
     1);
-INSERT INTO version VALUES(
-    NULL, 
-    1, 
-    "No Disponible", 
-    '2017-04-20', 
-    '2017-06-20', 
-    NULL, 
-    6, 
-    1,
-    8, 
-    "9303");
+    INSERT INTO version VALUES(
+        16, 
+        1, 
+        "No Disponible", 
+        '2017-04-20', 
+        '2017-06-20', 
+        NULL, 
+        6, 
+        1,
+        8, 
+        "9303");
+        INSERT INTO autor VALUES(12,16);
+
 INSERT INTO producto VALUES(
     9, 
     "Guía php avanzado", 
     "Guía php avanzado para desarrollo para aplicaciones web, con temas como: consulta a bases de datos, MVC, tecnologías para desarrollo de interfaz gráfica y mejores prácticas para desarrollo.", 
     "programación;php;web;", 
     1);
-INSERT INTO version VALUES(
-    NULL, 
-    1, 
-    "No Disponible", 
-    '2017-04-22', 
-    '2018-04-22', 
-    '2017-04-30', 
-    2, 
-    1,
-    9, 
-    "9303");
-INSERT INTO version VALUES(
-    NULL, 
-    2, 
-    "No Disponible", 
-    '2017-04-21', 
-    NULL, 
-    NULL, 
-    1, 
-    1,
-    9, 
-    "9303");
+    INSERT INTO version VALUES(
+        17, 
+        1, 
+        "No Disponible", 
+        '2017-04-22', 
+        '2018-04-22', 
+        '2017-04-30', 
+        2, 
+        1,
+        9, 
+        "9303");
+        INSERT INTO autor VALUES(12,17);
+
+    INSERT INTO version VALUES(
+        18, 
+        2, 
+        "No Disponible", 
+        '2017-04-21', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        9, 
+        "9303");
+        INSERT INTO autor VALUES(12,18);
+
 INSERT INTO producto VALUES(
     10, 
     "taller php", 
     "Quisque vitae iaculis mi. Maecenas blandit auctor ex quis dictum. Aliquam eu sem ligula. Praesent consequat nisl nec diam pretium.", 
     "programación;php;web;", 
     2);
-INSERT INTO version VALUES(
-    NULL, 
-    1, 
-    "No Disponible", 
-    '2017-04-30', 
-    '2017-07-30', 
-    NULL, 
-    6, 
-    1,
-    10, 
-    "9303");
-INSERT INTO version VALUES(
-    NULL, 
-    2, 
-    "No Disponible", 
-    '2017-04-26', 
-    NULL, 
-    NULL, 
-    4, 
-    1,
-    10, 
-    "9303");
+    INSERT INTO version VALUES(
+        19, 
+        1, 
+        "No Disponible", 
+        '2017-04-30', 
+        NULL, 
+        NULL, 
+        2, 
+        1,
+        10, 
+        "9303");
+        INSERT INTO autor VALUES(13,19);
+
+    INSERT INTO version VALUES(
+        20, 
+        2, 
+        "No Disponible", 
+        '2017-04-26', 
+        '2017-07-30', 
+        NULL, 
+        6, 
+        1,
+        10, 
+        "9303");
+        INSERT INTO autor VALUES(13,20);
+
 INSERT INTO producto VALUES(
     11, 
     "taller java", 
     "Cras nec aliquet nisl. Fusce aliquet pellentesque diam at ultrices. Maecenas ornare dolor sed arcu mattis, vel placerat velit lacinia.", 
     "programación;java;web;", 
     2);
-INSERT INTO version VALUES(
-    NULL, 
-    1, 
-    "No Disponible", 
-    '2017-05-03', 
-    NULL, 
-    NULL, 
-    4, 
-    1,
-    11, 
-    "9303");
-INSERT INTO version VALUES(
-    NULL, 
-    2, 
-    "No Disponible", 
-    '2017-04-30', 
-    NULL, 
-    NULL, 
-    1, 
-    1,
-    11, 
-    "9303");
-INSERT INTO version VALUES(
-    NULL, 
-    3, 
-    "No Disponible", 
-    '2017-05-01', 
-    NULL, 
-    NULL, 
-    1, 
-    1,
-    11, 
-    "9303");
+    INSERT INTO version VALUES(
+        21, 
+        1, 
+        "No Disponible", 
+        '2017-05-03', 
+        NULL, 
+        NULL, 
+        4, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,21);
+
+    INSERT INTO version VALUES(
+        22, 
+        2, 
+        "No Disponible", 
+        '2017-04-30', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,22);
+
+    INSERT INTO version VALUES(
+        23, 
+        3, 
+        "No Disponible", 
+        '2017-05-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,23);
+
 INSERT INTO producto VALUES(
     12, 
     "taller .net", 
