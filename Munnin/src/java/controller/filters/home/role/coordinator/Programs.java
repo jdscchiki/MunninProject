@@ -120,8 +120,8 @@ public class Programs implements Filter {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
             try {
-                ArrayList<Area> tiposDoc = Coordinator.viewAllAreasCenter(funcionario.getCentro().getId());
-                request.setAttribute("areas", tiposDoc);
+                ArrayList<Area> areas = Coordinator.viewAllAreasCenter(funcionario.getCentro().getId());
+                request.setAttribute("areas", areas);
             } catch (NamingException e) {
                 //redireccion
             } catch (SQLException e) {

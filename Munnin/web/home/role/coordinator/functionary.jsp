@@ -78,6 +78,6 @@
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>
-        <jsp:include page="/home/role/coordinator/functionary/modalRegisterFunctionary.jsp" />
+        <jsp:include page="/home/role/coordinator/functionary/modalRegister.jsp" />
     </jsp:body>
 </template:basicTemplate>
