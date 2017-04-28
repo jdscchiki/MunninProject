@@ -1,0 +1,248 @@
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_CATEGORIA_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140) ,
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = " ") THEN(
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo);
+    ELSE 
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo AND 
+            (LOWER(nombre_categoria) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+---------------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_CATEGORIA_CENTRO_PAGINADO $$
+CREATE PROCEDURE VER_TODOS_CATEGORIA_CENTRO_PAGINADO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _categoriaXpagina INT,
+        IN _search VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _categoriaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_categoria,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo
+        LIMIT _inicio, _categoriaXpagina );
+    ELSE
+        SELECT 
+            id_categoria,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo AND
+        (LOWER(nombre_categoria) REGEXP LOWER(_search))
+        LIMIT _inicio, _categoriaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_NOMBRE $$
+CREATE PROCEDURE VER_CATEGORIA_NOMBRE(
+    in _nombre VARCHAR(100),
+    IN _id_centro VARCHAR(10)) 
+BEGIN
+    SELECT *
+    FROM categoria
+    WHERE nombre_categoria = _nombre AND
+        id_centro_categoria = _id_centro;
+END $$
+DELIMITER ;
+
+-.--------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS INSERTAR_CATEGORIA_NUEVA $$
+CREATE PROCEDURE INSERTAR_CATEGORIA_NUEVA (
+        IN _nombre_categoria VARCHAR(100) ,
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    CALL insertar_categoria(
+        _nombre_categoria ,
+	1 ,
+        _id_centro);
+END $$
+
+DELIMITER ;
+-------------------------------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_ES_ULTIMO $$
+CREATE PROCEDURE VER_CATEGORIA_ES_ULTIMO (
+        IN _id_centro VARCHAR(10),
+        IN _id_categoria INT
+    )
+BEGIN
+    SELECT IF(COUNT(id_categoria)=0, TRUE, FALSE) as resultado
+    FROM area
+    WHERE activo_categoria = 1 AND 
+        id_centro_categoria = _id_centro AND
+        id_categoria <> _id_categoria;
+END $$
+
+DELIMITER ;
+
+
+-------------------------------------------------------
+ EDITAR_CATEGORIA_INHABILITAR
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_INHABILITAR $$
+CREATE PROCEDURE EDITAR_CATEGORIA_INHABILITAR (
+        IN _id_categoria INT
+    )
+BEGIN
+    UPDATE categoria
+    SET activo_categoria = 0
+    WHERE id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+----------------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_NOMBRE$$
+CREATE PROCEDURE EDITAR_CATEGORIA_NOMBRE(
+        IN _nombre_categoria VARCHAR(12) ,
+    	IN _id_categoria int
+    )
+BEGIN
+    UPDATE categoria
+	set nombre_categoria = _nombre_categoria
+	where id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+------------------------------------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_ES_ULTIMO $$
+CREATE PROCEDURE VER_CATEGORIA_ES_ULTIMO (
+        IN _id_centro VARCHAR(10),
+        IN _id_categoria INT
+    )
+BEGIN
+    SELECT IF(COUNT(id_categoria)=0, TRUE, FALSE) as resultado
+    FROM categoria
+    WHERE activo_categoria = 1 AND 
+        id_centro_categoria = _id_centro AND
+        id_categoria <> _id_categoria;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_INHABILITADO_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_CATEGORIA_INHABILITADO_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = " ") THEN(
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0);
+    ELSE 
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0 AND 
+            (LOWER(id_categoria) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_categoria) REGEXP LOWER(_filtro) OR
+            LOWER(id_centro_categoria) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+----------------------------------------------------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_CATEGORIA_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE VER_TODOS_CATEGORIA_INHABILITADOS_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _categoriaXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _categoriaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_categoria ,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0
+        LIMIT _inicio, _categoriaXpagina );
+    ELSE
+        SELECT 
+            id_categoria ,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0 AND
+        (LOWER(id_categoria) REGEXP LOWER(_search) OR
+        LOWER(nombre_categoria) REGEXP LOWER(_search) OR
+        LOWER(id_centro_categoria) REGEXP LOWER(_search))
+        LIMIT _inicio, _categoriaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+------------------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_HABILITAR $$
+CREATE PROCEDURE EDITAR_CATEGORIA_HABILITAR (
+        IN _id_categoria INT
+    )
+BEGIN
+    UPDATE categoria
+    SET activo_categoria = 1
+    WHERE id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
