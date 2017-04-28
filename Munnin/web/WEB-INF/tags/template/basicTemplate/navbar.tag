@@ -1,9 +1,3 @@
-<%-- 
-    Document   : navbar
-    Created on : 22/02/2017, 07:54:37 PM
-    Author     : Juan David Segura
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="navbar of basicTemplate" pageEncoding="UTF-8"%>
 <%@tag import="model.bean.Funcionario" %>
@@ -24,11 +18,9 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <div class="containerBtn" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-                </div>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
             </button>
             <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp">Inicio</a>
         </div>

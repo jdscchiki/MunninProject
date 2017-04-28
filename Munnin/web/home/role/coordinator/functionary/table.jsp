@@ -2,15 +2,8 @@
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 
 <div class="col-lg-12">
-    <template:paginate actualPage="${page}"
-                       pages="${pages}"
-                       search="${lastSearch}"
-                       servlet="${urlServlet}"
-                       displayResult="${displayResult}"/>
-</div>
-<div class="col-lg-12">
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Documento</th>
@@ -35,4 +28,11 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="col-lg-12">
+    <template:paginate actualPage="${page}"
+                       pages="${pages}"
+                       search="${lastSearch}"
+                       servlet="${urlServlet}"
+                       displayResult="${displayResult}"/>
 </div>

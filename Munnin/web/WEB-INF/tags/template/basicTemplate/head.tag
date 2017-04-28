@@ -1,9 +1,3 @@
-<%-- 
-    Document   : head
-    Created on : 22/02/2017, 07:50:52 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="head of basic template" pageEncoding="UTF-8"%>
 <%@attribute name="title" required="true"%>
 <%@taglib prefix="component" tagdir="/WEB-INF/tags/template/ba"%>

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : coordinator
-    Created on : 22/02/2017, 10:15:42 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="Links for pedagogical team role" pageEncoding="UTF-8"%>
 
 <%@attribute name="actualPage" required="true"%>

@@ -72,6 +72,7 @@ body {
 	opacity: 0;
 	left: 0;
 	transition: all 0.1s ease-in;
+        font-size: 20px;
 }
 .login input:focus {
 	outline: none;
@@ -85,6 +86,7 @@ body {
 	transition: all 0.25s ease-out;
 }
 .login a {
+        font-size: 0.8em;
 	color: #2196F3;
 	text-decoration: none;
 }
@@ -146,7 +148,7 @@ body {
 }
 .background {
   background: linear-gradient(90deg, #eee2ca, #c7b8a2);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
@@ -154,7 +156,7 @@ body {
 }
 .overlay {
   background: linear-gradient(90deg, rgba(238, 226, 202, 0.1), rgba(199, 184, 162, 0)), rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
@@ -219,20 +221,15 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  background: linear-gradient(transparent 88%, white 88%, white 92%, transparent 92%);
-}
-.disclaimer {
-  font-size: 15px;
 }
 /*-- /backGround --*/
 footer {
-	display: block;
 	padding-top: 50px;
 	text-align: center;
 	color: #ddd;
 	font-weight: normal;
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-	font-size: 0.8em;
+	z-index: 10;
 }
 footer a, footer a:link {
 	color: #fff;

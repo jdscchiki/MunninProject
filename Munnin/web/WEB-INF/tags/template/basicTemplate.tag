@@ -1,9 +1,3 @@
-<%-- 
-    Document   : basicTemplate
-    Created on : 22/02/2017, 07:10:28 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="Template for most of the application" pageEncoding="UTF-8"%>
 <%@taglib prefix="component" tagdir="/WEB-INF/tags/template/basicTemplate/"%>
 <%@tag import="model.bean.Funcionario" %>
@@ -50,7 +44,7 @@
                 <div class="row">
                     <div class="col-md-9"> 
                         <div class="panelMunnin">
-                            <h3>${panelTitle}</h3>
+                            <h2>${panelTitle}</h2>
                             <hr>
                             <jsp:doBody />
                         </div>
@@ -82,6 +76,25 @@
                 </div>
             </div>
         </div>
+        <div class="leftS">
+            <nav class="menu">
+                <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
+                <label class="menu-open-button" for="menu-open">
+                    <span class="hamburger hamburger-1"></span>
+                    <span class="hamburger hamburger-2"></span>
+                    <span class="hamburger hamburger-3"></span>
+                </label>
+                <a href="${pageContext.request.contextPath}/home/role/administrator/intro.jsp" class="menu-item"> <span class="fa fa-star glyphicon"></span></a>
+                <a href="${pageContext.request.contextPath}/home/role/coordinator/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/coord.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/technical/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/eTecnico.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/pedagogical/intro.jsp" class="menu-item"> <img src="${pageContext.request.contextPath}/resources/img/ePedagogico.png" alt="_icono" class="glyphicon"></a>
+                <a href="${pageContext.request.contextPath}/home/role/instructor/intro.jsp" class="menu-item"> <span class="fa fa-user-circle glyphicon"></a>
+                <a href="#" class="menu-item"> <i class="go-up fa fa-chevron-circle-up"></i></a>
+            </nav>
+        </div>
+
+        <span class="ir-arriba noResponsive fa fa-chevron-circle-up"></span>
+
         <!--aqui preloader-->
         <component:footer />
         <component:js />

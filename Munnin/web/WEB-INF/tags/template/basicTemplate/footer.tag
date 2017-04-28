@@ -1,9 +1,3 @@
-<%-- 
-    Document   : footer
-    Created on : 22/02/2017, 08:35:24 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="footer of basicTemplate" pageEncoding="UTF-8"%>
 <div class="Restricted__footer">
     <div class="Footer">

@@ -4,7 +4,7 @@
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
                         title="Areas Coordinador Munnin"
-                        panelTitle="Administrar las areas del centro">
+                        panelTitle="Administrar las áreas del centro">
     <jsp:attribute name="additionalJS">
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
@@ -30,7 +30,7 @@
                         <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-5">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar area" id="searchMunnin" name="search">
+                                <input type="text" class="form-control" placeholder="Buscar área" id="searchMunnin" name="search">
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
                                         <i class="glyphicon glyphicon-search"></i>
@@ -46,27 +46,27 @@
             </div>
             <div class="col-lg-2">
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-success btn-block" 
                         data-toggle="modal" 
                         data-target="#registerArea">
-                    Crear Area</button>
+                    <span class="glyphicon glyphicon-plus"></span> Crear</button>
                 <button type="button" 
                         class="btn btn-primary btn-block" 
                         data-panel-table="formActionAreaEnable"
                         data-action="editArea">
-                    Editar Area</button>
+                    <span class="glyphicon glyphicon-edit"></span> Editar</button>
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-danger btn-block" 
                         data-panel-table="formActionAreaEnable"
                         data-action="disable">
-                    Inhabilitar</button>
+                    <span class="glyphicon glyphicon-minus"></span> Inhabilitar</button>
             </div>
             <div class="col-lg-12">
                 <button type="button" 
                         class="btn btn-link" 
                         data-servlet="${pageContext.request.contextPath}/home/role/coordinator/area/modalShowDisableArea.jsp"
                         data-display="message_areas">
-                    Ver Area Inhabilitadas 
+                    Ver Áreas Inhabilitadas 
                 </button>
             </div>
         </div>

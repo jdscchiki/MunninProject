@@ -15,6 +15,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/img/logo.png">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/skin-index.css">
 
 
@@ -104,13 +105,13 @@
 
         <form class="login" role="form" method="POST" action="${pageContext.request.contextPath}/login">
             <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="full-logo">
-            <h1 class="title"> Inicia sesión en Munnin </h1>
+            <h1 class="title"> Iniciar sesión </h1>
             <label for="email"> Correo </label>
             <input type="email" id="email" maxlength="40" placeholder="Tu correo" name="textCorreo" required>
-            <i class="fa fa-user"><span class="glyphicon glyphicon-user"></span></i>
+            <i class="fa fa-user"></i>
             <label for="pwd"> Contraseña </label>
             <input type="password" maxlength="16" id="pwd" placeholder="Tu contraseña" name="textContr" required>
-            <i class="fa fa-key"><span class="glyphicon glyphicon-lock"></span></i>
+            <i class="fa fa-key"></span></i>
 
             <c:if test="${message !=null}">
                 <jsp:include page="/WEB-INF/model/message.jsp" />
@@ -126,7 +127,6 @@
     </div>
 
     <script src="${pageContext.request.contextPath}/resources/js/loginAnimation.js" type="text/javascript"></script>
-    <!--<script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>-->
     <script src="${pageContext.request.contextPath}/resources/js/prefixfree.min.js" type="text/javascript"></script>
 </body>
 </html>

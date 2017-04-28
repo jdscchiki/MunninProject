@@ -1,9 +1,3 @@
-<%-- 
-    Document   : message
-    Created on : 22/02/2017, 09:48:43 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="usual message model of the application" pageEncoding="UTF-8"%>
 
 <%@attribute name="message" required="true"%>

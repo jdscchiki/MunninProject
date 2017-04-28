@@ -1,15 +1,8 @@
-<%-- 
-    Document   : modalPassword
-    Created on : 22/02/2017, 08:30:58 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="modal to change password on basicTemplate" pageEncoding="UTF-8"%>
 
 <div id="changePassword" class="modal fade" role="dialog">
     <form id="formChangePassword" class="form-horizontal" action="${pageContext.request.contextPath}/home/change-password" method="POST">
         <div class="modal-dialog">
-
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>

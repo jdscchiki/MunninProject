@@ -1,9 +1,3 @@
-<%-- 
-    Document   : htmlMessage
-    Created on : 22/02/2017, 09:59:06 PM
-    Author     : Juan David Segura
---%>
-
 <%@tag description="message with html content" pageEncoding="UTF-8"%>
 
 <%-- The list of normal or fragment attributes can be specified here: --%>
