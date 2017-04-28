@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.coordinator.category;
+package controller.servlet.home.role.coordinator.categories;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Business.Coordinator;
 
 /**
  *
- * @author Juan David Segura
+ * @author Monica
  */
-@WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
-public class NewServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/categories/enable-categories"})
+public class EnableCategories extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +33,25 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            String stringId = request.getParameter("id");
+            int id = Integer.parseInt(stringId);
+            if (id <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Seleciona una categoria para realizar el proceso");
+            } else {
+                if (Coordinator.enableCategories(id)) {
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "Se ha habilitado correctamente la categoria");
+                } else {
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "No se ha podido habilitar la categoria");
+                }
+            }
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

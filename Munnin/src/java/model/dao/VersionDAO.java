@@ -30,7 +30,7 @@ public class VersionDAO extends ConexionBD {
     private static final String COL_NOTIFICACION = "notificacion_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
-    private static final String COL_FECHA_APROVACION = "fecha_aprovacion_version";
+    private static final String COL_FECHA_APROBACION = "fecha_aprobacion_version";
     private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
@@ -75,7 +75,7 @@ public class VersionDAO extends ConexionBD {
         statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
-        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
+        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprobacion());
         statement.setInt(indexIdEstado, version.getEstado().getId());
         statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
         statement.setInt(indexIdProducto, version.getProducto().getId());
@@ -121,7 +121,7 @@ public class VersionDAO extends ConexionBD {
         statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
-        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
+        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprobacion());
         statement.setInt(indexIdEstado, version.getEstado().getId());
         statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
         statement.setInt(indexIdProducto, version.getProducto().getId());
@@ -189,7 +189,7 @@ public class VersionDAO extends ConexionBD {
             version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);
@@ -226,7 +226,7 @@ public class VersionDAO extends ConexionBD {
             version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);

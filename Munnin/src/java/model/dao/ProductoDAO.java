@@ -12,8 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Categoria;
+import model.bean.Centro;
+import model.bean.Estado;
 import model.bean.Producto;
+import model.bean.Version;
 import model.bean.Programa;
+import model.bean.Funcionario;
+import model.bean.TipoArchivo;
 import model.bean.TipoObjetoAprendizaje;
 import util.ConexionBD;
 
@@ -242,7 +247,7 @@ public class ProductoDAO extends ConexionBD {
 
         return result;
     }
-    
+
     public int insertProgrammes(Producto producto) throws SQLException {
         int result = 0;
 
@@ -264,4 +269,106 @@ public class ProductoDAO extends ConexionBD {
 
         return result;
     }
+
+    public int countProductoApproved(int filter, String search) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_PRODUCTO_APROBADO_CONTEO(?,?)}";
+        int indexFiltro = 1;
+        int indexSearch = 2;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexFiltro, filter);
+        statement.setString(indexSearch, search);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+
+    public ArrayList<Producto> selectSomeProductoAprobado(int filter, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Producto> productos = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_TODOS_PRODUCTOS_APROBADOS_PAGINADO(?,?,?,?)}";
+        int indexFilter = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexFilter, filter);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID));
+            producto.setNombre(rs.getString(COL_NOMBRE));
+            producto.setDescripcion(rs.getString(COL_DESCRIPCION));
+            producto.setPalabrasClave(rs.getString(COL_PALABRAS_CLAVE));
+            Version version = new Version();
+            version.setId(rs.getInt("id_version"));
+            version.setNumero(rs.getInt("numero_version"));
+            version.setUrl(rs.getString("url_version"));
+            version.setFecha(rs.getDate("fecha_version"));
+            version.setFechaCaducidad(rs.getDate("fecha_caducidad_version"));
+            version.setFechaAprobacion(rs.getDate("fecha_aprobacion_version"));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt("id_estado_version"));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt("id_tipo_archivo_version"));
+            version.setTipoArchivo(tipoArchivo);
+            producto.setId(rs.getInt("id_producto_version"));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString("id_centro_version"));
+            version.setCentro(centro);
+
+            ArrayList<Version> versiones = new ArrayList<>();
+            versiones.add(version);
+            producto.setVersiones(versiones);
+            productos.add(producto);
+        }
+
+        return productos;
+    }
+    
+     public int countPagesProducto(Funcionario funcionario, int filter, String search) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_PRODUCTO_CONTEO(?,?,?)}";
+        int indexId =1;
+        int indexFiltro = 2;
+        int indexSearch = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, funcionario.getId());
+        statement.setInt(indexFiltro, filter);
+        statement.setString(indexSearch, search);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+    
+    
+
 }

@@ -148,4 +148,64 @@ public class Instructor {
 
         return result;
     }
+
+    public static Producto viewAllInfoProducto(int idProduct) throws NamingException, SQLException {
+        Producto resultado = new Producto();
+        ProductoDAO productoDAO = new ProductoDAO();
+        resultado.setId(idProduct);
+        resultado = productoDAO.select(resultado);
+
+        productoDAO.cerrarConexion();
+
+        return resultado;
+    }
+    
+    public static int countPagesProductoApproved(int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countProductoApproved(filter, search);
+        productoDAO.cerrarConexion();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+  
+        public static ArrayList<Producto> viewObjetApproved(int filter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Producto> producto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        producto = productoDAO.selectSomeProductoAprobado(filter, pagina, cantXpag, search);
+
+        productoDAO.cerrarConexion();
+
+        return producto;
+    }
+
+    public static int countPagesProducto(int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countProductoApproved(filter, search);
+        productoDAO.cerrarConexion();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static ArrayList<Producto>  viewObjet(int filter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Producto> producto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        producto = productoDAO.selectSomeProductoAprobado(filter, pagina, cantXpag, search);
+
+        productoDAO.cerrarConexion();
+
+        return producto;
+    }
 }

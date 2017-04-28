@@ -11,17 +11,21 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
+import model.bean.Categoria;
 import model.bean.Centro;
 import model.bean.Funcionario;
+import model.bean.Producto;
 import model.bean.Programa;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.dao.AreaDAO;
+import model.dao.CategoriaDAO;
 import model.dao.TipoDocumentoDAO;
 import util.Encriptado;
 import util.PassGenerator;
 import util.Mail;
 import model.dao.FuncionarioDAO;
+import model.dao.ProductoDAO;
 import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
 
@@ -594,4 +598,136 @@ public class Coordinator {
         }
         return resultado;
     }
+
+    public static int updateCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
+        int resultado = 0;
+      
+
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        categoria.setCentro(centro);
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isNameCategoryOcuped(categoria.getNombre(),idCentro)) {
+            resultado = 2;
+        } else if (categoriaDAO.updateCategory(categoria)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    public static boolean enableCategories(int idFuncionario) throws NamingException, SQLException {
+        boolean resultado;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        resultado = categoriaDAO.enableCategory(idFuncionario);
+
+        categoriaDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    public static Categoria viewAllInfoCategories(int idCate) throws NamingException, SQLException {
+       Categoria resultado = new Categoria();
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        resultado.setId(idCate);
+        resultado = categoriaDAO.select(resultado);
+
+        categoriaDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    public static int registerCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
+         /*
+        0. fallo
+        1. completado
+        2. existe un usuario activo con los datos ingresados
+        3. existe un usuario no-activo con el mismo correo
+        4. existe un usuario no-activo con el mismo documento
+        5. el correo no pudo ser enviado
+         */
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        categoria.setCentro(centro); 
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isNameCategoriesOcuped(categoria.getNombre(), idCentro)) {
+            resultado = 2;
+        } else if (categoriaDAO.registerCategories(categoria)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    public static int countPagesCategoriesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+       int paginas;
+        int countCategorias;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        countCategorias = categoriaDAO.countCategoriesCenter(idCentro, search,true);
+        categoriaDAO.cerrarConexion();
+        paginas = countCategorias / cantXpag;
+        if (countCategorias % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static Object viewCategoriesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Categoria> categoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoria = categoriaDAO.selectSomeCategoriesCenter(idCentro, pagina, cantXpag, search, true);
+
+        categoriaDAO.cerrarConexion();
+
+        return categoria;
+    }
+
+    public static int countPagesCategoriesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantCategoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        cantCategoria = categoriaDAO.countCategoriesCenter(idCentro, search, false);
+        categoriaDAO.cerrarConexion();
+
+        paginas = cantCategoria / cantXpag;
+        if (cantCategoria % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static Object viewCategoriesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+     ArrayList<Categoria> categoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoria = categoriaDAO.selectSomeCategoriesCenter(idCentro, pagina, cantXpag, search, false);
+
+        categoriaDAO.cerrarConexion();
+
+        return categoria;
+    }
+
+    public static int disableCategories(int idCate, String idCentro) throws SQLException, NamingException {
+        int resultado = 0;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isLastCategoriesEnableArea(idCentro, idCate)) {
+            resultado = 2;
+        } else if (categoriaDAO.disableCategories(idCate)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.cerrarConexion();
+
+        return resultado;
+    }
+
+    
+
 }
