@@ -18,10 +18,10 @@ import model.bean.Funcionario;
 
 /**
  *
- * @author Juan David Segura
+ * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerArea"})
-public class SearchArea extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/manage"})
+public class Manage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,32 +36,51 @@ public class SearchArea extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-
-            String search = request.getParameter("search");
-            String strPage = request.getParameter("page");
-            int page = 1;
-            if (strPage != null) {
-                page = Integer.parseInt(strPage);
+            String idArea = request.getParameter("id");
+            int idAre;
+            String opcion = request.getParameter("action");
+            idAre = Integer.parseInt(idArea);
+            if (idAre <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las areas");
+            } else {
+                switch (opcion) {
+                    case "disable":
+                        HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+                        Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+                        String idCentro = funcionario.getCentro().getId();
+                        switch (Coordinator.disableArea(idAre, idCentro)) {
+                            case 0:
+                                request.setAttribute("messageType", "danger");
+                                request.setAttribute("message", "El area no ha podido ser inhabilitada");
+                                break;
+                            case 1:
+                                request.setAttribute("messageType", "success");
+                                request.setAttribute("message", "El area fue inhabilitada exitosamente");
+                                break;
+                            case 2:
+                                request.setAttribute("messageType", "danger");
+                                request.setAttribute("message", "Solo queda un area habilitada para el centro");
+                                break;
+                        }
+                        break;
+                    case "editArea":
+                        Area areaResult = Coordinator.viewAllInfoArea(idAre);
+                        request.setAttribute("area", areaResult);
+                        request.getRequestDispatcher("/home/role/coordinator/area/modalEdit.jsp").forward(request, response);
+                        return;
+                    default:
+                        request.setAttribute("messageType", "danger");
+                        request.setAttribute("message", "no ha podido ser completada la accion");
+                        break;
+                }
             }
-
-            int cantXpag = 10;
-
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-
-            int totalPages = Coordinator.countPagesAreasCenter(funcionario.getCentro().getId(), cantXpag, search);
-            request.setAttribute("page", page);
-            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Coordinator.viewAreasCenter(funcionario.getCentro().getId(), page, cantXpag, search));
-            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyAreas");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerArea"));
-            request.getRequestDispatcher("/home/role/coordinator/area/tableArea.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

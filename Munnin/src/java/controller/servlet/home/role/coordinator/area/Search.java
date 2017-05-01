@@ -20,8 +20,8 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/area/edit-area"})
-public class EditArea extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/search"})
+public class Search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,32 +36,28 @@ public class EditArea extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String nombre = request.getParameter("nombre");
-            String id = request.getParameter("id");
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
 
-            Area edit = new Area();
-            edit.setNombre(nombre);
-            edit.setId(Integer.parseInt(id));
-            switch(Coordinator.updateArea(edit, idCentro)){
-                case 0:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "no ha podido realizarse la edicion");
-                    break;
-                case 1:
-                    request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "la edicion se ha completado exitosamente");
-                    break;
-                case 2:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un area con los datos ingresados");
-                    break;
+            String search = request.getParameter("search");
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if (strPage != null) {
+                page = Integer.parseInt(strPage);
             }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+
+            int cantXpag = 10;
+
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
+            int totalPages = Coordinator.countPagesAreasCenter(funcionario.getCentro().getId(), cantXpag, search);
+            request.setAttribute("page", page);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Coordinator.viewAreasCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("displayResult", "fulltable");
+            request.setAttribute("idTable", "tableBodyAreas");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/area/search"));
+            request.getRequestDispatcher("/home/role/coordinator/area/table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

@@ -5,7 +5,7 @@
           class="form-horizontal" 
           role="form" 
           method="POST" 
-          action="${pageContext.request.contextPath}/home/role/coordinator/area/edit-area" 
+          action="${pageContext.request.contextPath}/home/role/coordinator/area/edit" 
           data-display="divEditArea_message" 
           data-data-table="tableBodyAreas">
         <div class="modal-dialog">

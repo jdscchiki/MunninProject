@@ -4,21 +4,29 @@ body {
     background-color: #ececec; 
 }
 /*-- imagenesTop --*/
-.top{
+.topBackgroud{
     margin-left: 50px; 
     height: 110px;
     background-color: #FFFFFF;
 }
-.topIconoM{
-    height: 100px;
-    padding-top: 5px;
+.topContainer{
+    height: 70px;
+    margin: 20px;
 }
-.topIconoS{
-    height: 100px;
-    padding-top: 5px;
-    margin-left: 20px;
+.topContainer a:hover,.topContainer a:focus{
+    text-decoration: none;
 }
-/*-- /imagenesTop --*/
+.topIcon{
+    max-height: 100%;
+}
+.topSeparator{
+    display: inline-block;
+    border-left: 0.5px black solid;
+    height: 50px;
+    vertical-align: middle;
+    margin: 0 30px;
+}
+
 /*-- navbar --*/
 .navbar{
     margin-bottom: 0;
@@ -64,9 +72,8 @@ navbar-toggle{
 .affix .navbar-right {
     padding-right: 50px;
 }
-.affix ~ .container-fluid {
-    position: relative;
-    top: 50px;
+.affix + #main {
+    padding-top: 70px;
 }
 .navbar-inverse .navbar-nav>li>a:hover{
     background-color: #3ECAB8;
@@ -458,22 +465,11 @@ li>input{
 /*--/footer--*/
 /*--responsive--*/
 @media(max-width:1024px){
-    .navbar, #main, .top{
+    .navbar, #main, .topBackgroud{
         margin-left: 0px;
     }
     .leftS{
         visibility: visible;
-    }
-    .topIconoM{
-        height: 100px;
-        padding-top: 20px;
-        padding-left: 10px;
-        transform: translate(0,0);
-        left: 0;
-    }
-    .topIconoS{
-        height: 70px;
-        margin: 30px 7px 0 0;
     }
     .header{
         padding: 30px 10px;
@@ -495,6 +491,18 @@ li>input{
     }
     .form-horizontal .form-group {
         margin-left: 0px;
+    }
+}
+@media only screen and (max-width: 550px) {
+    .topBackgroud{
+        height: 90px;
+    }
+    .topContainer{
+        margin: 10px;
+    }
+    .topSeparator{
+        height: 50px;
+        margin: 0 10px;
     }
 }
 /*--/responsive--*/
@@ -525,3 +533,8 @@ tr.selected {
     background-color: #ececec;
 }
 /*--/tables--*/
+/*--/button-tables--*/
+button.tableButton{
+    margin: 10px 1px;
+}
+/*--/button-tables--*/

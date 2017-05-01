@@ -26,8 +26,7 @@
                       action="${pageContext.request.contextPath}/home/role/coordinator/categories/search"
                       data-ajax-form="true"
                       data-display="fulltable">                    
-                    <div class="form-group">                        
-                        <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
+                    <div class="form-group">
                         <div class="col-sm-5">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Buscar Categorias" id="searchMunnin" name="search">

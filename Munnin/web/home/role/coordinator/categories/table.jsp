@@ -7,14 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 
-<template:paginate actualPage="${page}"
-                   pages="${pages}"
-                   search="${lastSearch}"
-                   servlet="${urlServlet}"
-                   displayResult="${displayResult}"/>
-<div class="container-fluid">
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -33,4 +27,8 @@
             </tbody>
         </table>
     </div>
-</div>
+<template:paginate actualPage="${page}"
+                   pages="${pages}"
+                   search="${lastSearch}"
+                   servlet="${urlServlet}"
+                   displayResult="${displayResult}"/>

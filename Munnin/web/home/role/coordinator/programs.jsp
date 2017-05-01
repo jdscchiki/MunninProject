@@ -27,7 +27,6 @@
                       data-ajax-form="true"
                       data-display="fulltable">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="searchPrograms">Buscar:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Buscar programa" id="searchPrograms" name="search">

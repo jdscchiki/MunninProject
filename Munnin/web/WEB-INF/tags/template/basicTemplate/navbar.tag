@@ -7,14 +7,18 @@
 <%@attribute name="actualRole" required="true" type="Integer"%>
 <%@attribute name="actualPage" required="true" type="Integer"%>
 
-<div class="container-fluid top">
-    <div >
-        <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIconoS">
-        <div style="display: inline-block;border-left: 0.5px black solid;height: 80px;vertical-align: middle;margin-right: 30px;margin-left: 30px;margin-top: 10px;"></div>
-        <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="topIconoM">
+<div class="container-fluid topBackgroud">
+    <div class="topContainer">
+        <a href="http://oferta.senasofiaplus.edu.co/" target="_blank">
+            <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIcon">
+        </a>
+        <div class="topSeparator"></div>
+        <a href="${pageContext.request.contextPath}/home/intro.jsp">
+            <img src="${pageContext.request.contextPath}/resources/img/LogoNavbar.png" alt="munnin_icono" class="topIcon">
+        </a>
     </div>
 </div>
-<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="112">
+<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="110">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -22,7 +26,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp">Inicio</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">

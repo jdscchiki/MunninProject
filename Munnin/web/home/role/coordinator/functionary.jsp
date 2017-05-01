@@ -10,15 +10,30 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-               ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/functionary/search", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/functionary/search", "fulltable");
             });
         </script>
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_functionaries">
-
+            <div class="col-lg-12">
+                <button type="button" 
+                        class="btn btn-primary tableButton" 
+                        data-toggle="modal" 
+                        data-target="#registerFunctionary">
+                    Registrar</button>
+                <button type="button" 
+                        class="btn btn-primary tableButton" 
+                        data-panel-table="formActionFunctionaryEnable"
+                        data-action="changeRoles">
+                    Cambiar roles</button>
+                <button type="button" 
+                        class="btn btn-primary tableButton" 
+                        data-panel-table="formActionFunctionaryEnable"
+                        data-action="disable">
+                    Inhabilitar</button>
             </div>
+            <div class="col-lg-12" id="message_functionaries"></div>
             <div class="col-lg-6">
                 <form id="formSearchFunctionaryEnable" 
                       class="form-horizontal" 
@@ -27,7 +42,6 @@
                       data-ajax-form="true"
                       data-display="fulltable">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="searchMunnin">Buscar:</label>
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Buscar funcionario" id="searchMunnin" name="search">
@@ -41,26 +55,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-6">
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-toggle="modal" 
-                        data-target="#registerFunctionary">
-                    Registrar</button>
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="changeRoles">
-                    Cambiar roles</button>
-                <button type="button" 
-                        class="btn btn-primary" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="disable">
-                    Inhabilitar</button>
-            </div>
-            <div class="col-lg-12" id="fulltable">
-                
-            </div>
+            <div  class="col-lg-12" id="fulltable"></div>
             <div class="col-lg-12">
                 <button type="button" 
                         class="btn btn-link" 

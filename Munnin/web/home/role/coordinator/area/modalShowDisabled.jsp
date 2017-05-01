@@ -11,7 +11,7 @@
                         <form id="formSearchAreaEnable" 
                               class="form-horizontal" 
                               method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/coordinator/area/refresh-disabled-area"
+                              action="${pageContext.request.contextPath}/home/role/coordinator/area/search-disabled"
                               data-ajax-form="true"
                               data-display="showDisabledAreaTable">
                             <div class="form-group">
@@ -54,7 +54,7 @@
     </div>
     <form id="formEnableArea"
           method="POST"
-          action="${pageContext.request.contextPath}/home/role/coordinator/area/enable-area"
+          action="${pageContext.request.contextPath}/home/role/coordinator/area/enable"
           data-display="showDisabledAreaMessage"
           data-data-table="tableBodyAreaDisabled">
         <input type="hidden" name="id" value="-1" data-selected-item="">
@@ -62,9 +62,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#disabledArea").modal();
-            ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/area/refresh-disabled-area", "showDisabledAreaTable");
+            ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/area/search-disabled", "showDisabledAreaTable");
             $(document).on("hidden.bs.modal", "#disabledArea", function (event) {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerArea", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/area/search", "fulltable");
                 $(this).remove();
             });
         });

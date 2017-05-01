@@ -10,7 +10,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerArea", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/area/search", "fulltable");
             });
         </script>
     </jsp:attribute>
@@ -23,11 +23,10 @@
                 <form id="formSearchAreaEnable" 
                       class="form-horizontal" 
                       method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerArea"
+                      action="${pageContext.request.contextPath}/home/role/coordinator/area/search"
                       data-ajax-form="true"
                       data-display="fulltable">                    
-                    <div class="form-group">                        
-                        <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
+                    <div class="form-group">
                         <div class="col-sm-5">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Buscar área" id="searchMunnin" name="search">
@@ -64,7 +63,7 @@
             <div class="col-lg-12">
                 <button type="button" 
                         class="btn btn-link" 
-                        data-servlet="${pageContext.request.contextPath}/home/role/coordinator/area/modalShowDisableArea.jsp"
+                        data-servlet="${pageContext.request.contextPath}/home/role/coordinator/area/modalShowDisabled.jsp"
                         data-display="message_areas">
                     Ver Áreas Inhabilitadas 
                 </button>
@@ -79,6 +78,6 @@
             <input type="hidden" name="id" value="-1" data-selected-item="">
             <input type="hidden" name="action" data-action="">
         </form>
-        <jsp:include page="/home/role/coordinator/area/modalCreateArea.jsp" />
+        <jsp:include page="/home/role/coordinator/area/modalCreate.jsp" />
     </jsp:body>
 </template:basicTemplate>

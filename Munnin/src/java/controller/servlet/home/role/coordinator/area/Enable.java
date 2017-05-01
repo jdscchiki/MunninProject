@@ -4,23 +4,21 @@
  * and open the template in the editor.
  */
 package controller.servlet.home.role.coordinator.area;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.bean.Funcionario;
 import model.Business.Coordinator;
-import model.bean.Area;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/area/register"})
-public class RegisterArea extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/area/enable"})
+public class Enable extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,36 +32,26 @@ public class RegisterArea extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {//conversion de datos
-            String nombre = request.getParameter("nombre");
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
-
-            Area nuevoArea = new Area();
-            nuevoArea.setNombre(nombre);
-            switch(Coordinator.registerArea(nuevoArea, idCentro)){
-                case 0:
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "no ha podido realizarse el registro");
-                    break;
-                case 1:
+        try {
+            String stringId = request.getParameter("id");
+            int id = Integer.parseInt(stringId);
+            if (id <= 0) {
+                request.setAttribute("messageType", "warning");
+                request.setAttribute("message", "Seleciona un area para realizar el proceso");
+            } else {
+                if (Coordinator.enableArea(id)) {
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "el registro se ha completado exitosamente");
-                    break;
-                case 2:
-                    request.setAttribute("messageType", "warning");
-                    request.setAttribute("message", "Actualmente existe un area con los datos ingresados");
-                    break;
+                    request.setAttribute("message", "Se ha habilitado correctamente el area");
+                } else {
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "No se ha podido habilitar el area");
+                }
             }
             request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (NumberFormatException e) {
-            request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (Exception ex) {
-            request.setAttribute("mensaje", ex);
+        } catch (Exception e) {
+            request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

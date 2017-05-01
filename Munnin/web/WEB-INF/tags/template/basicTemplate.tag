@@ -30,15 +30,13 @@
 <html lang="es">
     <head>
         <component:head title="${title}" />
+    </head>
+    <body>
+        <component:sidebar funcionario="${funcionario}"
+                           activeRole="${actualRole}" />
         <component:navbar funcionario="${funcionario}" 
                           actualRole="${actualRole}" 
                           actualPage="${actualPage}"/>
-        <component:sidebar funcionario="${funcionario}"
-                           activeRole="${actualRole}" />
-        <component:modalLogOut />
-        <component:modalPassword />
-    </head>
-    <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
             <div class="container-fluid">
                 <div class="row">
@@ -96,6 +94,8 @@
         <span class="ir-arriba noResponsive fa fa-chevron-circle-up"></span>
 
         <!--aqui preloader-->
+        <component:modalLogOut />
+        <component:modalPassword />
         <component:footer />
         <component:js />
         <jsp:invoke fragment="additionalJS" />
