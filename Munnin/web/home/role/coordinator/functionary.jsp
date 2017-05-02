@@ -16,44 +16,48 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12">
-                <button type="button" 
-                        class="btn btn-primary tableButton" 
-                        data-toggle="modal" 
-                        data-target="#registerFunctionary">
-                    Registrar</button>
-                <button type="button" 
-                        class="btn btn-primary tableButton" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="changeRoles">
-                    Cambiar roles</button>
-                <button type="button" 
-                        class="btn btn-primary tableButton" 
-                        data-panel-table="formActionFunctionaryEnable"
-                        data-action="disable">
-                    Inhabilitar</button>
-            </div>
             <div class="col-lg-12" id="message_functionaries"></div>
-            <div class="col-lg-6">
-                <form id="formSearchFunctionaryEnable" 
-                      class="form-horizontal" 
-                      method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/functionary/search"
-                      data-ajax-form="true"
-                      data-display="fulltable">
-                    <div class="form-group">
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar funcionario" id="searchMunnin" name="search">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form id="formSearchFunctionaryEnable" 
+                              class="form-horizontal" 
+                              method="POST" 
+                              action="${pageContext.request.contextPath}/home/role/coordinator/functionary/search"
+                              data-ajax-form="true"
+                              data-display="fulltable">
+                            <div class="form-group">
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Buscar funcionario" id="searchMunnin" name="search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="col-lg-6">
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-toggle="modal" 
+                                data-target="#registerFunctionary">
+                            <span class="glyphicon glyphicon-plus"></span> Registrar</button>
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-panel-table="formActionFunctionaryEnable"
+                                data-action="changeRoles">
+                            <span class="glyphicon glyphicon-pencil"></span> Cambiar roles</button>
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-panel-table="formActionFunctionaryEnable"
+                                data-action="disable">
+                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                    </div>
+                </div>
             </div>
             <div  class="col-lg-12" id="fulltable"></div>
             <div class="col-lg-12">

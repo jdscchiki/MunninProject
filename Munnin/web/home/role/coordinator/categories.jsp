@@ -16,50 +16,50 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_categories">
-
-            </div>
+            <div class="col-lg-12" id="message_categories"></div>
             <div class="col-lg-12">
-                <form id="formSearchCategoriesEnable" 
-                      class="form-horizontal" 
-                      method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/categories/search"
-                      data-ajax-form="true"
-                      data-display="fulltable">                    
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar Categorias" id="searchMunnin" name="search">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form id="formSearchCategoriesEnable" 
+                              class="form-horizontal" 
+                              method="POST" 
+                              action="${pageContext.request.contextPath}/home/role/coordinator/categories/search"
+                              data-ajax-form="true"
+                              data-display="fulltable">
+                            <div class="form-group">
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Buscar Categorias" id="searchMunnin" name="search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="col-lg-6">
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-toggle="modal" 
+                                data-target="#registerCategories">
+                            <span class="glyphicon glyphicon-plus"></span> Crear</button>
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-panel-table="formActionCategoriesEnable"
+                                data-action="editCategories">
+                            <span class="glyphicon glyphicon-pencil"></span> Editar</button>
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-panel-table="formActionCategoriesEnable"
+                                data-action="disable">
+                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-8" id="fulltable">
-
-            </div>
-            <div class="col-lg-2">
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-toggle="modal" 
-                        data-target="#registerCategories">
-                    Crear</button>
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionCategoriesEnable"
-                        data-action="editCategories">
-                    Editar</button>
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionCategoriesEnable"
-                        data-action="disable">
-                    Inhabilitar</button>
-            </div>
+            <div class="col-lg-12" id="fulltable"></div>
             <div class="col-lg-12">
                 <button type="button" 
                         class="btn btn-link" 

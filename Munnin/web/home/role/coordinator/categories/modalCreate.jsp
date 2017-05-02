@@ -27,9 +27,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="divRegisterCategories_message" class="col-lg-offset-3 col-lg-8">
-
-                        </div>
+                        <div id="divRegisterCategories_message" class="col-lg-offset-3 col-lg-8"></div>
                     </div>
                 </div>
                 <div class="modal-footer">

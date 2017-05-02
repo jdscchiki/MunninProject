@@ -1,9 +1,3 @@
-<%-- 
-    Document   : tableCategories
-    Created on : 25/03/2017, 12:44:42 PM
-    Author     : Monica
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 

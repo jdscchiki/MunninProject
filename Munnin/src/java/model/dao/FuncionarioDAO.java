@@ -358,7 +358,6 @@ public class FuncionarioDAO extends ConexionBD {
      */
     public boolean isActiveFunctionary(String correo, int documentType, String document) throws SQLException {
         boolean result = false;
-
         String query = "{CALL VER_FUNCIONARIO_ACTIVO(?,?,?)}";
         int indexCorreo = 1;
         int indexDocumentType = 2;

@@ -2,7 +2,7 @@
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 
 <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table">
         <thead>
             <tr>
                 <th>Nombre</th>

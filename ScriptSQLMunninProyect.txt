@@ -99,7 +99,7 @@ CREATE TABLE funcionario (
   contrasena_funcionario VARCHAR(255) NOT NULL,
   nombre_funcionario VARCHAR(70) NOT NULL,
   apellido_funcionario VARCHAR(70) NOT NULL,
-  telefono_funcionario VARCHAR(10) NULL DEFAULT NULL,
+  telefono_funcionario VARCHAR(20) NULL DEFAULT NULL,
   id_centro_funcionario VARCHAR(10) NOT NULL,
   PRIMARY KEY (id_funcionario),
   UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
@@ -1362,7 +1362,7 @@ CREATE PROCEDURE insertar_funcionario (
     IN _contrasena_funcionario VARCHAR(255) ,
     IN _nombre_funcionario VARCHAR(70) ,
     IN _apellido_funcionario VARCHAR(70) ,
-    IN _telefono_funcionario VARCHAR(10) ,
+    IN _telefono_funcionario VARCHAR(20) ,
     IN _id_centro_funcionario VARCHAR(10) 
     )
 BEGIN
@@ -1401,7 +1401,7 @@ CREATE PROCEDURE editar_funcionario (
 	IN _contrasena_funcionario VARCHAR(255) ,
 	IN _nombre_funcionario VARCHAR(70) ,
 	IN _apellido_funcionario VARCHAR(70) ,
-	IN _telefono_funcionario VARCHAR(10) ,
+	IN _telefono_funcionario VARCHAR(20) ,
 	IN _id_centro_funcionario VARCHAR(10) )
 BEGIN
 	UPDATE funcionario
@@ -2717,7 +2717,7 @@ CREATE PROCEDURE INSERTAR_FUNCIONARIO_REGISTRO (
         IN _contrasena_funcionario VARCHAR(255) ,
         IN _nombre_funcionario VARCHAR(70) ,
         IN _apellido_funcionario VARCHAR(70) ,
-        IN _telefono_funcionario VARCHAR(10) ,
+        IN _telefono_funcionario VARCHAR(20) ,
         IN _id_centro VARCHAR(10)
     )
 BEGIN

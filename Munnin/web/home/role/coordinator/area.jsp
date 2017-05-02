@@ -16,50 +16,50 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_areas">
-
-            </div>
+            <div class="col-lg-12" id="message_areas"></div>
             <div class="col-lg-12">
-                <form id="formSearchAreaEnable" 
-                      class="form-horizontal" 
-                      method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/area/search"
-                      data-ajax-form="true"
-                      data-display="fulltable">                    
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar área" id="searchMunnin" name="search">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form id="formSearchAreaEnable" 
+                              class="form-horizontal" 
+                              method="POST" 
+                              action="${pageContext.request.contextPath}/home/role/coordinator/area/search"
+                              data-ajax-form="true"
+                              data-display="fulltable">                    
+                            <div class="form-group">
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Buscar área" id="searchMunnin" name="search">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <div class="col-lg-6">
+                        <button type="button" 
+                                class="btn btn-success tableButton" 
+                                data-toggle="modal" 
+                                data-target="#registerArea">
+                            <span class="glyphicon glyphicon-plus"></span> Crear</button>
+                        <button type="button" 
+                                class="btn btn-primary tableButton" 
+                                data-panel-table="formActionAreaEnable"
+                                data-action="editArea">
+                            <span class="glyphicon glyphicon-edit"></span> Editar</button>
+                        <button type="button" 
+                                class="btn btn-danger tableButton" 
+                                data-panel-table="formActionAreaEnable"
+                                data-action="disable">
+                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-8" id="fulltable">
-
-            </div>
-            <div class="col-lg-2">
-                <button type="button" 
-                        class="btn btn-success btn-block" 
-                        data-toggle="modal" 
-                        data-target="#registerArea">
-                    <span class="glyphicon glyphicon-plus"></span> Crear</button>
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionAreaEnable"
-                        data-action="editArea">
-                    <span class="glyphicon glyphicon-edit"></span> Editar</button>
-                <button type="button" 
-                        class="btn btn-danger btn-block" 
-                        data-panel-table="formActionAreaEnable"
-                        data-action="disable">
-                    <span class="glyphicon glyphicon-minus"></span> Inhabilitar</button>
-            </div>
+            <div class="col-lg-12" id="fulltable"></div>
             <div class="col-lg-12">
                 <button type="button" 
                         class="btn btn-link" 

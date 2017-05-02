@@ -15,9 +15,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <div class="col-lg-offset-4 col-lg-9">
+                            <spam class="help-block">Los campos con * son obligatorios</spam>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="formRegisterFunctionaryTipoDoc" 
-                               class="control-label col-lg-3">
-                            Tipo de documento:</label>
+                               class="control-label col-lg-4">
+                            * Tipo de documento :</label>
                         <div class="col-lg-4">
                             <select id="formRegisterFunctionaryTipoDoc" 
                                     class="form-control" 
@@ -29,7 +34,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formRegisterFunctionaryDocumento" class="control-label col-lg-3">Documento :</label>
+                        <label for="formRegisterFunctionaryDocumento" 
+                               class="control-label col-lg-4">
+                            * Documento :</label>
                         <div class="col-lg-4">
                             <input type="text" 
                                    class="form-control" 
@@ -41,8 +48,8 @@
                     </div>
                     <div class="form-group">
                         <label for="formRegisterFunctionaryCorreo" 
-                               class="control-label col-lg-3">
-                            Correo : </label>
+                               class="control-label col-lg-4">
+                            * Correo : </label>
                         <div class="col-lg-6">
                             <input type="email" 
                                    class="form-control" 
@@ -54,8 +61,8 @@
                     </div>
                     <div class="form-group">
                         <label for="formRegisterFunctionaryNombre" 
-                               class="control-label col-lg-3">
-                            Nombres : </label>
+                               class="control-label col-lg-4">
+                            * Nombres : </label>
                         <div class="col-lg-6">
                             <input type="text" 
                                    class="form-control" 
@@ -67,8 +74,8 @@
                     </div>
                     <div class="form-group">
                         <label for="formRegisterFunctionaryApellido" 
-                               class="control-label col-lg-3">
-                            Apellidos : </label>
+                               class="control-label col-lg-4">
+                            * Apellidos : </label>
                         <div class="col-lg-6">
                             <input type="text" 
                                    class="form-control" 
@@ -80,8 +87,8 @@
                     </div>
                     <div class="form-group">
                         <label for="formRegisterFunctionaryTelefono" 
-                               class="control-label col-lg-3">
-                            Telefono:</label>
+                               class="control-label col-lg-4">
+                            Telefono :</label>
                         <div class="col-lg-4">
                             <input type="text" 
                                    class="form-control" 
@@ -92,9 +99,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="divRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8">
-
-                        </div>
+                        <div id="divRegisterFunctionary_message" class="col-lg-offset-3 col-lg-8"></div>
                     </div>
                 </div>
                 <div class="modal-footer">

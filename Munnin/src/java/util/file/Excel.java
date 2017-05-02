@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,6 +41,14 @@ public class Excel {
         mapDocTypes.put("c.c.", 1);
         mapDocTypes.put("cedula", 1);
         mapDocTypes.put("cédula", 1);
+        mapDocTypes.put("ti", 2);
+        mapDocTypes.put("t.i.", 2);
+        mapDocTypes.put("tarjeta identidad", 2);
+        mapDocTypes.put("tarjeta de identidad", 2);
+        mapDocTypes.put("ce", 3);
+        mapDocTypes.put("c.e.", 3);
+        mapDocTypes.put("cedula extranjeria", 3);
+        mapDocTypes.put("cédula de extranjería", 3);
 
         int countRows = 0;
         File fileInput = null;
@@ -75,12 +84,14 @@ public class Excel {
                     // Obtenemos el iterator que permite recorrer todas las celdas de una fila
                     Iterator<Cell> cellIterator = row.cellIterator();
                     Cell cell;
-                    
-                    if(!cellIterator.hasNext()){
+                    if (!cellIterator.hasNext()) {
                         errorOnCell = 1;
-                    }else if(errorOnCell == 0){
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         String doc = cell.getStringCellValue().toLowerCase();
+                        if (doc.equals("tipo de documento")) {
+                            continue;
+                        }
                         TipoDocumento tipoDocumento = new TipoDocumento();
                         if (mapDocTypes.containsKey(doc)) {
                             tipoDocumento.setId(mapDocTypes.get(doc));
@@ -93,20 +104,21 @@ public class Excel {
                             errorOnCell = 1;
                         }
                     }
-                    if(!cellIterator.hasNext()){
+                    if (!cellIterator.hasNext()) {
                         errorOnCell = 2;
-                    }else if(errorOnCell == 0){
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         try {
-                            funcionario.setDocumento(Double.toString(cell.getNumericCellValue()));
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            funcionario.setDocumento(cell.getStringCellValue());
                         } catch (Exception e) {
                             errorOnCell = 2;
                         }
                     }
-                    
-                    if(!cellIterator.hasNext()){
+
+                    if (!cellIterator.hasNext()) {
                         errorOnCell = 3;
-                    }else if(errorOnCell == 0){
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         try {
                             funcionario.setCorreo(cell.getStringCellValue());
@@ -114,9 +126,9 @@ public class Excel {
                             errorOnCell = 3;
                         }
                     }
-                    if(!cellIterator.hasNext()){
+                    if (!cellIterator.hasNext()) {
                         errorOnCell = 4;
-                    }else if(errorOnCell == 0){
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         try {
                             funcionario.setNombre(cell.getStringCellValue());
@@ -124,9 +136,9 @@ public class Excel {
                             errorOnCell = 4;
                         }
                     }
-                    if(!cellIterator.hasNext()){
+                    if (!cellIterator.hasNext()) {
                         errorOnCell = 5;
-                    }else if(errorOnCell == 0){
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         try {
                             funcionario.setApellido(cell.getStringCellValue());
@@ -134,9 +146,11 @@ public class Excel {
                             errorOnCell = 5;
                         }
                     }
-                    if(errorOnCell == 0){
+                    if (!cellIterator.hasNext()) {
+                    } else if (errorOnCell == 0) {
                         cell = cellIterator.next();
                         try {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
                             funcionario.setTelefono(cell.getStringCellValue());
                         } catch (Exception e) {
                             errorOnCell = 6;
@@ -185,9 +199,8 @@ public class Excel {
             file.close();
         }
         fileInput = null;
-        
-        errorsRowCol.remove(errorsRowCol.size()-1);
 
+        //errorsRowCol.remove(errorsRowCol.size()-1);
         ArrayList[] d = {errorsRowCol, correctRegisterRow};
         return d;
     }
