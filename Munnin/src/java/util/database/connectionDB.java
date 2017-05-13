@@ -18,7 +18,7 @@ import javax.naming.NamingException;
  *
  * @author Juan David
  */
-public class ConexionBD {
+public class connectionDB {
 
     /**
      * 
@@ -32,7 +32,7 @@ public class ConexionBD {
      * @throws NamingException si la JNDI no es la correcta
      * @throws SQLException No se puede estableser la conexion con la base de datos
      */
-    public ConexionBD() throws NamingException, SQLException {
+    public connectionDB() throws NamingException, SQLException {
         conectar();
     }
 

@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Rol;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class RolDAO extends ConexionBD {
+public class RolDAO extends connectionDB {
 
     public static final int ID_ADMINISTRADOR = 1;
     public static final int ID_COORDINADOR = 2;
@@ -31,8 +31,8 @@ public class RolDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public RolDAO() throws NamingException, SQLException {
         super();

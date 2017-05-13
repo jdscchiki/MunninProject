@@ -13,13 +13,13 @@ import javax.naming.NamingException;
 import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
 import model.bean.Item;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class EvaluacionItemDAO extends ConexionBD {
+public class EvaluacionItemDAO extends connectionDB {
 
     private static final String COL_ID = "id_evaluacion_item";
     private static final String COL_CALIFICACION = "calificacion_evaluacion_item";
@@ -30,8 +30,8 @@ public class EvaluacionItemDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public EvaluacionItemDAO() throws NamingException, SQLException {
         super();
@@ -193,5 +193,29 @@ public class EvaluacionItemDAO extends ConexionBD {
         }
 
         return result;
+    }
+    
+    public boolean AsignEvaluacionItem(EvaluacionItem evaluacionItem) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL INSERTAR_EVALUACION_ITEM(?,?,?,?)}";
+        int indexCalificacion = 1;
+        int indexObservacion = 2;
+        int indexIdEvaluacionLista = 3;
+        int indexIdItem = 4;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexCalificacion, evaluacionItem.getCalificacion());
+        statement.setString(indexObservacion, evaluacionItem.getObservarcion());
+        statement.setInt(indexIdEvaluacionLista, evaluacionItem.getEvaluacionLista().getId());
+        statement.setInt(indexIdItem, evaluacionItem.getItem().getId());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
     }
 }

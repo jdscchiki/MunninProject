@@ -13,10 +13,13 @@ import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Categoria;
 import model.bean.Centro;
+import model.bean.Estado;
 import model.bean.Funcionario;
+import model.bean.Lista;
 import model.bean.Programa;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
+import model.bean.Version;
 import model.dao.AreaDAO;
 import model.dao.CategoriaDAO;
 import model.dao.TipoDocumentoDAO;
@@ -24,8 +27,10 @@ import util.security.Encrypt;
 import util.security.PassGenerator;
 import util.message.Mail;
 import model.dao.FuncionarioDAO;
+import model.dao.ListaDAO;
 import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
+import model.dao.VersionDAO;
 
 /**
  * clase dedicada a la logica de negocio usada por el rol de coordinador
@@ -68,7 +73,7 @@ public class Coordinator {
         String contrasena = PassGenerator.getSecurePassword();
         funcionario.setContrasena(Encrypt.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        
+
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
             resultado = 2;
         } else {
@@ -133,12 +138,12 @@ public class Coordinator {
 
         return roles;
     }
-    
+
     public static int countPagesAreasCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int countAreas;
         AreaDAO areaDAO = new AreaDAO();
-        countAreas = areaDAO.countAreasCenter(idCenter, search,true);
+        countAreas = areaDAO.countAreasCenter(idCenter, search, true);
         areaDAO.closeConnection();
         paginas = countAreas / resultsInPage;
         if (countAreas % resultsInPage != 0) {
@@ -147,7 +152,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static int registerArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
@@ -173,7 +178,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static ArrayList<Area> viewAreasCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
@@ -210,7 +215,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static int countPagesFunctionariesDisabledCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
@@ -263,7 +268,7 @@ public class Coordinator {
     public static int disableFunctionary(int idFuncionario, String idCenter) throws NamingException, SQLException {
         int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCenter,idFuncionario)) {
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCenter, idFuncionario)) {
             resultado = 2;
         } else {
             if (funcionarioDAO.disableFunctionary(idFuncionario)) {
@@ -411,8 +416,7 @@ public class Coordinator {
 
         return funcionarios;
     }
-    
-    
+
     public static int updateArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
@@ -428,7 +432,7 @@ public class Coordinator {
         centro.setId(idCenter);
         area.setCentro(centro);
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isNameAreaOcuped(area.getNombre(),idCenter)) {
+        if (areaDAO.isNameAreaOcuped(area.getNombre(), idCenter)) {
             resultado = 2;
         } else if (areaDAO.updateArea(area)) {
             resultado = 1;
@@ -438,7 +442,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static boolean enableArea(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
         AreaDAO areaDAO = new AreaDAO();
@@ -448,7 +452,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static int disableArea(int idArea, String idCenter) throws NamingException, SQLException {
         int resultado = 0;
         AreaDAO areaDAO = new AreaDAO();
@@ -462,7 +466,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static Area viewAllInfoArea(int idArea) throws NamingException, SQLException {
         Area resultado = new Area();
         AreaDAO areaDAO = new AreaDAO();
@@ -473,7 +477,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static int countPagesAreaDisabledCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int cantArea;
@@ -488,7 +492,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static ArrayList<Area> viewAreaDisabledCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
@@ -498,10 +502,10 @@ public class Coordinator {
 
         return area;
     }
-    
-    public static int countPagesProgramsCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException{
+
+    public static int countPagesProgramsCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int result;
-        
+
         int quantityProgrms;
         ProgramaDAO programaDAO = new ProgramaDAO();
         quantityProgrms = programaDAO.countProgramsCenter(idCenter, search, true);
@@ -511,10 +515,10 @@ public class Coordinator {
         if (quantityProgrms % resultsInPage != 0) {
             result++;
         }
-        
+
         return result;
     }
-    
+
     public static ArrayList<Programa> viewProgramsCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
         ArrayList<Programa> result;
         ProgramaDAO programaDAO = new ProgramaDAO();
@@ -524,10 +528,10 @@ public class Coordinator {
 
         return result;
     }
-    
-    public static int countPagesProgramsDisableCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException{
+
+    public static int countPagesProgramsDisableCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int result;
-        
+
         int quantityPrograms;
         ProgramaDAO programaDAO = new ProgramaDAO();
         quantityPrograms = programaDAO.countProgramsCenter(idCenter, search, false);
@@ -537,10 +541,10 @@ public class Coordinator {
         if (quantityPrograms % resultsInPage != 0) {
             result++;
         }
-        
+
         return result;
     }
-    
+
     public static ArrayList<Programa> viewProgramsDisableCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
         ArrayList<Programa> result;
         ProgramaDAO programaDAO = new ProgramaDAO();
@@ -550,52 +554,50 @@ public class Coordinator {
 
         return result;
     }
-    
-    public static ArrayList<Area> viewAllAreasCenter(String idCenter) throws NamingException, SQLException{
+
+    public static ArrayList<Area> viewAllAreasCenter(String idCenter) throws NamingException, SQLException {
         ArrayList<Area> result;
         AreaDAO areaDAO = new AreaDAO();
         result = areaDAO.selectAllCenter(idCenter);
         areaDAO.closeConnection();
         return result;
     }
-    
-    public static int registerProgram (Programa programa) throws NamingException, SQLException{
+
+    public static int registerProgram(Programa programa) throws NamingException, SQLException {
         int result = 0;
-        
+
         programa.setActivo(true);
-        
+
         ProgramaDAO programaDAO = new ProgramaDAO();
-        if(programaDAO.Insert(programa)){
+        if (programaDAO.Insert(programa)) {
             result = 1;
         }
         programaDAO.closeConnection();
-        
+
         return result;
     }
-    
-    public static int disableProgram(Programa programa) throws NamingException, SQLException{
+
+    public static int disableProgram(Programa programa) throws NamingException, SQLException {
         int result = 0;
-        
-        
-        
+
         ProgramaDAO programaDAO = new ProgramaDAO();
-        if(programaDAO.disable(programa)){
+        if (programaDAO.disable(programa)) {
             result = 1;
         }
         programaDAO.closeConnection();
-        
+
         return result;
     }
-    
+
     public static int enableProgram(Programa programa) throws NamingException, SQLException {
         int resultado = 0;
         ProgramaDAO programaDAO = new ProgramaDAO();
-        if(programaDAO.enable(programa)){
+        if (programaDAO.enable(programa)) {
             resultado = 1;
         }
         return resultado;
     }
-    
+
     public static boolean enableCategories(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
         CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -605,16 +607,15 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static int updateCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
         int resultado = 0;
-      
 
         Centro centro = new Centro();
         centro.setId(idCentro);
         categoria.setCentro(centro);
         CategoriaDAO categoriaDAO = new CategoriaDAO();
-        if (categoriaDAO.isNameCategoryOcuped(categoria.getNombre(),idCentro)) {
+        if (categoriaDAO.isNameCategoryOcuped(categoria.getNombre(), idCentro)) {
             resultado = 2;
         } else if (categoriaDAO.updateCategory(categoria)) {
             resultado = 1;
@@ -624,13 +625,13 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static int registerCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
 
         int resultado = 0;
         Centro centro = new Centro();
         centro.setId(idCentro);
-        categoria.setCentro(centro); 
+        categoria.setCentro(centro);
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         if (categoriaDAO.isNameCategoriesOcuped(categoria.getNombre(), idCentro)) {
             resultado = 2;
@@ -642,7 +643,7 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static int countPagesCategoriesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int cantCategoria;
@@ -657,9 +658,9 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static Object viewCategoriesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
-     ArrayList<Categoria> categoria;
+        ArrayList<Categoria> categoria;
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         categoria = categoriaDAO.selectSomeCategoriesCenter(idCentro, pagina, cantXpag, search, false);
 
@@ -667,12 +668,12 @@ public class Coordinator {
 
         return categoria;
     }
-    
+
     public static int countPagesCategoriesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
-       int paginas;
+        int paginas;
         int countCategorias;
         CategoriaDAO categoriaDAO = new CategoriaDAO();
-        countCategorias = categoriaDAO.countCategoriesCenter(idCentro, search,true);
+        countCategorias = categoriaDAO.countCategoriesCenter(idCentro, search, true);
         categoriaDAO.closeConnection();
         paginas = countCategorias / cantXpag;
         if (countCategorias % cantXpag != 0) {
@@ -681,7 +682,7 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static Object viewCategoriesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Categoria> categoria;
         CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -691,7 +692,7 @@ public class Coordinator {
 
         return categoria;
     }
-    
+
     public static int disableCategories(int idCate, String idCentro) throws SQLException, NamingException {
         int resultado = 0;
         CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -705,9 +706,9 @@ public class Coordinator {
 
         return resultado;
     }
-    
+
     public static Categoria viewAllInfoCategories(int idCate) throws NamingException, SQLException {
-       Categoria resultado = new Categoria();
+        Categoria resultado = new Categoria();
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         resultado.setId(idCate);
         resultado = categoriaDAO.select(resultado);
@@ -715,5 +716,55 @@ public class Coordinator {
         categoriaDAO.closeConnection();
 
         return resultado;
+    }
+
+    public static ArrayList<Lista> viewLista(String IdCentro) throws NamingException, SQLException {
+        ArrayList<Lista> items;
+        Lista lista = new Lista();
+        lista.setIdAutor(Integer.parseInt(IdCentro));
+        ListaDAO listaDAO = new ListaDAO();
+        items = listaDAO.selectListas(lista);
+        listaDAO.closeConnection();
+
+        return items;
+    }
+
+    public static boolean approveVersion(int idVersion) throws NamingException, SQLException {
+        boolean resultado;
+        Version version = new Version();
+        Estado estado = new Estado();
+        estado.setId(2);
+        version.setId(idVersion);
+        version.setEstado(estado);
+        VersionDAO versionDAO = new VersionDAO();
+        resultado = versionDAO.updateEstado(version);
+        versionDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int countPagesFilesCoordinatorCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countAreas;
+        VersionDAO versionDAO = new VersionDAO();
+        countAreas = versionDAO.countFilesCoordinatorCenter(idCentro, search);
+        versionDAO.closeConnection();
+        
+        paginas = countAreas / cantXpag;
+        if (countAreas % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static ArrayList<Version> viewFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Version> version;
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.selectSomeFilesCoordinatorCenter(idCentro, pagina, cantXpag, search);
+
+        versionDAO.closeConnection();
+
+        return version;
     }
 }

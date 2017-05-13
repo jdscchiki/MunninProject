@@ -17,8 +17,10 @@ import model.bean.Area;
 import model.bean.Funcionario;
 
 /**
+ * Servlet encargado de editar los valores guardados en base de datos sobre las
+ * áreas de un centro
  *
- * @author Juan David Segura
+ * @version 1.0
  */
 @WebServlet(urlPatterns = {"/home/role/coordinator/area/edit"})
 public class Edit extends HttpServlet {
@@ -44,7 +46,7 @@ public class Edit extends HttpServlet {
             Area edit = new Area();
             edit.setNombre(nombre);
             edit.setId(Integer.parseInt(id));
-            switch(Coordinator.updateArea(edit, idCentro)){
+            switch (Coordinator.updateArea(edit, idCentro)) {
                 case 0:
                     request.setAttribute("messageType", "danger");
                     request.setAttribute("message", "no ha podido realizarse la edicion");

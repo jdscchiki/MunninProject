@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Estado;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class EstadoDAO extends ConexionBD {
+public class EstadoDAO extends connectionDB {
 
     private static final String COL_ID = "id_estado";
     private static final String COL_NOMBRE = "nombre_estado";
@@ -25,8 +25,8 @@ public class EstadoDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public EstadoDAO() throws NamingException, SQLException {
         super();

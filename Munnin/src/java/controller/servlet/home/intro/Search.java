@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.General;
 import model.bean.Funcionario;
-import model.dao.RolDAO;
 
 /**
+ * Servlet encargado de mostrar las notificaciones de todos los roles
  *
- * @author Juan David Segura
+ * @version 1.0
  */
 @WebServlet(urlPatterns = {"/home/intro/search"})
 public class Search extends HttpServlet {
@@ -43,7 +43,6 @@ public class Search extends HttpServlet {
                 page = Integer.parseInt(strPage);
             }
 
-            
             int cantXpag = 10;
 
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
@@ -55,7 +54,7 @@ public class Search extends HttpServlet {
             request.setAttribute("contentTable", General.viewNotifications(funcionario.getId(), cantXpag, page, 0));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/intro/search"));
+            request.setAttribute("urlServlet", (request.getContextPath() + "/home/intro/search"));
             request.getRequestDispatcher("/WEB-INF/model/listNotifications.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);

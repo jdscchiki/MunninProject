@@ -3978,3 +3978,422 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_CENTRO 
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_centro $$
+CREATE PROCEDURE conteo_archivos_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 3);
+    ELSE 
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 3 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_CENTRO 
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_centro $$
+CREATE PROCEDURE ver_archivos_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 3
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 3 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_VERSION
+-- ----------------------------------------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ver_version $$
+CREATE PROCEDURE ver_version (
+	IN _id_version INT ) 
+BEGIN
+	SELECT v.id_version , 
+		v.numero_version ,
+        v.url_version ,
+        v.fecha_version ,
+        v.fecha_caducidad_version ,
+        v.fecha_aprobacion_version ,
+        v.id_estado_version ,
+        v.id_tipo_archivo_version ,
+        v.id_producto_version ,
+        v.id_centro_version,
+        p.nombre_producto nombre_producto_version
+	FROM version v
+    INNER JOIN producto p
+    ON v.id_producto_version = p.id_producto
+	WHERE v.id_version = _id_version ;
+END $$
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIO
+-- ----------------------------------------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ver_listas_funcionario $$
+CREATE PROCEDURE ver_listas_funcionario (
+	IN _id_autor INT )
+BEGIN
+	SELECT id_lista ,
+	nombre_lista ,
+	descripcion_lista ,
+	fecha_lista 
+	FROM lista
+	WHERE id_autor_lista = _id_autor AND activo_lista = 1;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIO_CONTEO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_LISTAS_FUNCIONARIO_CONTEO $$
+CREATE PROCEDURE VER_LISTAS_FUNCIONARIO_CONTEO (
+        IN _id_autor VARCHAR(10),
+        IN _filtro VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_lista) as conteo
+        FROM  lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = _activo);
+    ELSE 
+        SELECT COUNT(id_lista) as conteo
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = _activo AND 
+            (LOWER(id_lista) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_lista) REGEXP LOWER(_filtro) OR
+            LOWER(descripcion_lista) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIOS
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_listas_funcionarios $$
+CREATE PROCEDURE ver_listas_funcionarios (
+        IN _id_autor VARCHAR(10),
+        IN _pagina INT,
+        IN _listasXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _listasXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_lista,
+            nombre_lista,
+            descripcion_lista,
+        	fecha_lista
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = 1
+        LIMIT _inicio, _listasXpagina );
+    ELSE
+        SELECT 
+            id_lista,
+            nombre_lista,
+            descripcion_lista,
+        	fecha_lista
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = 1
+
+AND
+        (LOWER(id_lista) REGEXP LOWER(_search) OR
+        LOWER(nombre_lista) REGEXP LOWER(_search) OR
+        LOWER(descripcion_lista) REGEXP LOWER(_search))
+        LIMIT _inicio, _listasXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ITEMS_LISTA
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_items_lista $$
+CREATE PROCEDURE ver_items_lista (
+	IN _id_lista_item_lista INT)
+BEGIN
+	SELECT
+		id_item,
+		descriptor_item,
+		id_autor_item
+	FROM item
+	WHERE id_item = (
+	SELECT
+            id_item_item_lista
+	FROM item_lista
+	WHERE id_lista_item_lista = _id_lista_item_lista);
+	
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_PEDAGOGICO_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_pedagogico_centro $$
+CREATE PROCEDURE conteo_archivos_pedagogico_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 4);
+    ELSE 
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 4 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_PEDAGOGICO_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_pedagogico_centro $$
+CREATE PROCEDURE ver_archivos_pedagogico_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 4
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 4 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_EVALUACION_LISTA_DATOS
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_EVALUACION_LISTA_DATOS$$
+CREATE PROCEDURE VER_EVALUACION_LISTA_DATOS(
+	IN _id_version INT,
+	IN _id_lista INT,
+	IN _id_evaluador INT) 
+BEGIN
+	SELECT id_evaluacion_lista ,
+	id_version_evaluacion_lista ,
+	id_lista_evaluacion_lista ,
+	calificacion_evaluacion_lista ,
+	observaciones_evaluacion_lista ,
+	fecha_evaluacion_lista ,
+	id_evaluador_evaluacion_lista
+	FROM evaluacion_lista
+	WHERE id_version_evaluacion_lista = _id_version AND
+	id_lista_evaluacion_lista = _id_lista AND 
+	id_evaluador_evaluacion_lista = _id_evaluador;
+
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CAMBIO_ESTADO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS cambio_estado $$
+CREATE PROCEDURE cambio_estado (
+	IN _id_version INT , 
+	IN _estado INT) 
+BEGIN
+	UPDATE version
+	SET id_estado_version = _estado 
+	WHERE id_version = _id_version; 
+
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_COORDINADOR_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_coordinador_centro $$
+CREATE PROCEDURE conteo_archivos_coordinador_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 5);
+    ELSE 
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 5 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_COORDINADOR_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_coordinador_centro $$
+CREATE PROCEDURE ver_archivos_coordinador_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 5
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 5 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
+    END IF;
+END $$
+
+DELIMITER ;

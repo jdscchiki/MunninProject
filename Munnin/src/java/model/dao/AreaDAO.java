@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Centro;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class AreaDAO extends ConexionBD {
+public class AreaDAO extends connectionDB {
 
     private static final String COL_ID = "id_area";
     private static final String COL_NOMBRE = "nombre_area";
@@ -28,8 +28,8 @@ public class AreaDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public AreaDAO() throws NamingException, SQLException {
         super();

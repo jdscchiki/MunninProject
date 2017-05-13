@@ -15,13 +15,13 @@ import model.bean.Categoria;
 import model.bean.Producto;
 import model.bean.Programa;
 import model.bean.TipoObjetoAprendizaje;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ProductoDAO extends ConexionBD {
+public class ProductoDAO extends connectionDB {
 
     private static final String COL_ID = "id_producto";
     private static final String COL_NOMBRE = "nombre_producto";
@@ -32,8 +32,8 @@ public class ProductoDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public ProductoDAO() throws NamingException, SQLException {
         super();

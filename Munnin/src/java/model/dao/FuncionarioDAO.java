@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 import model.bean.Funcionario;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
@@ -23,7 +23,7 @@ import model.bean.TipoDocumento;
  * @version 1.2
  * @author Juan David Segura Castro
  */
-public class FuncionarioDAO extends ConexionBD {
+public class FuncionarioDAO extends connectionDB {
 
     private static final String COL_ID = "id_funcionario";
     private static final String COL_ACTIVO = "activo_funcionario";
@@ -39,8 +39,8 @@ public class FuncionarioDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public FuncionarioDAO() throws NamingException, SQLException {
         super();

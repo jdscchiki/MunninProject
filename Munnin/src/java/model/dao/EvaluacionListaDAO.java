@@ -14,13 +14,13 @@ import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 import model.bean.Lista;
 import model.bean.Version;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class EvaluacionListaDAO extends ConexionBD {
+public class EvaluacionListaDAO extends connectionDB {
 
     private static final String COL_ID = "id_evaluacion_lista";
     private static final String COL_ID_VERSION = "id_version_evaluacion_lista";
@@ -33,8 +33,8 @@ public class EvaluacionListaDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public EvaluacionListaDAO() throws NamingException, SQLException {
         super();
@@ -211,5 +211,70 @@ public class EvaluacionListaDAO extends ConexionBD {
         }
 
         return result;
+    }
+    
+    public boolean agregarListaVersion(EvaluacionLista evaluacionLista) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL INSERTAR_EVALUACION_LISTA(?,?,?,?,?,?)}";
+        int indexIdVersion = 1;
+        int indexIdLista = 2;
+        int indexCalificacion = 3;
+        int indexObservaciones = 4;
+        int indexFecha = 5;
+        int indexIdEvaluador = 6;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdVersion, evaluacionLista.getVersion().getId());
+        statement.setInt(indexIdLista, evaluacionLista.getLista().getId());
+        statement.setInt(indexCalificacion, evaluacionLista.getCalificacion());
+        statement.setString(indexObservaciones, evaluacionLista.getObservaciones());
+        statement.setDate(indexFecha, (java.sql.Date) evaluacionLista.getFecha());
+        statement.setInt(indexIdEvaluador, evaluacionLista.getEvaluador().getId());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+    
+    public EvaluacionLista selectEvList(EvaluacionLista evaluacionLista) throws SQLException {
+
+        String query = "{CALL VER_EVALUACION_LISTA_DATOS(?,?,?)}";
+        int indexIdVer = 1;
+        int indexIdList = 2;
+        int indexIdFunc = 3;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexIdVer, evaluacionLista.getVersion().getId());
+        statement.setInt(indexIdList, evaluacionLista.getLista().getId());
+        statement.setInt(indexIdFunc, evaluacionLista.getEvaluador().getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            evaluacionLista.setId(rs.getInt(COL_ID));
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID_VERSION));
+            evaluacionLista.setVersion(version);
+            Lista lista = new Lista();
+            lista.setId(rs.getInt(COL_ID_LISTA));
+            evaluacionLista.setLista(lista);
+            evaluacionLista.setCalificacion(rs.getInt(COL_CALIFICACION));
+            evaluacionLista.setObservaciones(rs.getString(COL_OBSERVACION));
+            evaluacionLista.setFecha(rs.getDate(COL_FECHA));
+            Funcionario evaluador = new Funcionario();
+            evaluador.setId(rs.getInt(COL_ID_EVALUADOR));
+            evaluacionLista.setEvaluador(evaluador);
+        }
+        if (!encontrado) {
+            evaluacionLista = null;
+        }
+
+        return evaluacionLista;
     }
 }

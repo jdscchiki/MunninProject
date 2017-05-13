@@ -17,11 +17,10 @@ import model.Business.General;
 
 /**
  *
- * Se encarga de administrar la solicitudes realizadas desde el login de la
+ * Servlet encargado de administrar la solicitudes realizadas desde el login de la
  * aplicación
  *
  * @version 1.0
- * @author Juan David Segura Castro
  */
 @WebServlet(urlPatterns = {"/login"})
 public class Login extends HttpServlet {

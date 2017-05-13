@@ -16,13 +16,13 @@ import model.bean.Notificacion;
 import model.bean.Producto;
 import model.bean.Rol;
 import model.bean.Version;
-import util.database.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class NotificacionDAO extends ConexionBD {
+public class NotificacionDAO extends connectionDB {
 
     private static final String COL_ID = "id_notificacion";
     private static final String COL_ACTIVO = "activo_notificacion";
@@ -35,8 +35,8 @@ public class NotificacionDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public NotificacionDAO() throws NamingException, SQLException {
         super();
