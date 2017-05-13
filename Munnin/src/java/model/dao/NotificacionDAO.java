@@ -323,7 +323,6 @@ public class NotificacionDAO extends ConexionBD {
     
     public boolean sendNotification(int notificationCase, int idVersion) throws SQLException{
         boolean result = false;
-        System.out.println("start");
         String query = "{CALL INSERTAR_NOTIFICACION_GRUPO(?,?)}";
         int indexNotificationCase = 1;
         int indexIdVersion = 2;
@@ -339,7 +338,6 @@ public class NotificacionDAO extends ConexionBD {
             this.getConexion().rollback();
             result = false;
         }
-        System.out.println("end");
         return result;
     }
 }
