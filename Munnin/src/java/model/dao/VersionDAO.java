@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Estado;
+import model.bean.Funcionario;
 import model.bean.Producto;
 import model.bean.TipoArchivo;
 import model.bean.Version;
@@ -488,5 +489,30 @@ public class VersionDAO extends connectionDB {
             versions.add(version);
         }
         return versions;
+    }
+    
+    public boolean setAutores(Version version) throws SQLException{
+        boolean result = false;
+        
+        String query = "{CALL INSERTAR_AUTOR(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdVersion = 2;
+        
+        boolean commit = true;
+        for (Funcionario funcionario : version.getFuncionarios()) {
+            CallableStatement statement = this.getConexion().prepareCall(query);
+            statement.setInt(indexIdFuncionario, funcionario.getId());
+            statement.setInt(indexIdVersion, version.getId());
+            if(statement.executeUpdate()!=1){
+                this.getConexion().rollback();
+                commit = false;
+                break;
+            }
+        }
+        if (commit) {
+            this.getConexion().commit();
+        }
+        
+        return result;
     }
 }

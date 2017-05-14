@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import javax.servlet.http.Part;
 import model.bean.Categoria;
 import model.bean.Centro;
+import model.bean.Funcionario;
 import model.bean.Producto;
 import model.bean.Programa;
 import model.bean.TipoArchivo;
@@ -41,7 +42,7 @@ public class Instructor {
         return result;
     }
 
-    public static int[] uploadNewLearningObject(Part file, Producto producto, String idCentro) throws NamingException, SQLException {
+    public static int[] uploadNewLearningObject(Part file, Producto producto, String idCentro, int idAutor) throws NamingException, SQLException {
         //0. error inesperado
         //1. exito
         //2. error al Insertar Objeto en la base de datos
@@ -91,6 +92,12 @@ public class Instructor {
                     if (versionDAO.editUrl(version)) {
                         result[0] = 1;
                         result[1] = idProducto;
+                        ArrayList<Funcionario> autores = new ArrayList<>();
+                        Funcionario funcionario = new Funcionario();
+                        funcionario.setId(idAutor);
+                        autores.add(funcionario);
+                        version.setFuncionarios(autores);
+                        versionDAO.setAutores(version);
                     } else {
                         result[0] = 5;
                     }
