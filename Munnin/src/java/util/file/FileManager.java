@@ -23,6 +23,10 @@ public class FileManager {
         return saveFile(file, SAVE_FOLDER);
     }
 
+    public static String getSAVE_FOLDER() {
+        return SAVE_FOLDER;
+    }
+
     public static boolean saveFile(Part file, String savePath) {
         boolean result = false;
 

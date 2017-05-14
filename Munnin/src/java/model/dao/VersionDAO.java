@@ -28,10 +28,9 @@ public class VersionDAO extends connectionDB {
     private static final String COL_ID = "id_version";
     private static final String COL_NUMERO = "numero_version";
     private static final String COL_URL = "url_version";
-    private static final String COL_NOTIFICACION = "notificacion_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
-    private static final String COL_FECHA_APROVACION = "fecha_aprovacion_version";
+    private static final String COL_FECHA_APROVACION = "fecha_aprobacion_version";
     private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
@@ -187,7 +186,6 @@ public class VersionDAO extends connectionDB {
             version.setId(rs.getInt(COL_ID));
             version.setNumero(rs.getInt(COL_NUMERO));
             version.setUrl(rs.getString(COL_URL));
-            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
@@ -224,7 +222,6 @@ public class VersionDAO extends connectionDB {
             version.setId(rs.getInt(COL_ID));
             version.setNumero(rs.getInt(COL_NUMERO));
             version.setUrl(rs.getString(COL_URL));
-            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));

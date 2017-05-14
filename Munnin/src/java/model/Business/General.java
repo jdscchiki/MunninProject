@@ -14,6 +14,8 @@ import model.bean.Rol;
 import model.bean.Version;
 import model.dao.FuncionarioDAO;
 import model.dao.NotificacionDAO;
+import model.dao.VersionDAO;
+import util.file.FileManager;
 import util.security.Encrypt;
 import util.security.PassGenerator;
 
@@ -139,6 +141,20 @@ public class General {
         }
         notificacionDAO.closeConnection();
 
+        return result;
+    }
+    
+    public static String viewUrlVersion(Version version) throws NamingException, SQLException{
+        String result;
+        
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.select(version);
+        if(version == null){
+            result = null;
+        }else{
+            result = FileManager.getSAVE_FOLDER() + version.getUrl();
+        }
+        versionDAO.closeConnection();
         return result;
     }
 }
