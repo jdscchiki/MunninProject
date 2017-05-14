@@ -28,6 +28,7 @@ import util.security.PassGenerator;
 import util.message.Mail;
 import model.dao.FuncionarioDAO;
 import model.dao.ListaDAO;
+import model.dao.NotificacionDAO;
 import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
 import model.dao.VersionDAO;
@@ -739,7 +740,11 @@ public class Coordinator {
         VersionDAO versionDAO = new VersionDAO();
         resultado = versionDAO.updateEstado(version);
         versionDAO.closeConnection();
-
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(6, idVersion);
+        notificacionDAO.closeConnection();
+        
         return resultado;
     }
 

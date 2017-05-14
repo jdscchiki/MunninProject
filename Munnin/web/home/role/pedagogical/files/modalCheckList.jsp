@@ -31,20 +31,18 @@
                             </div>
                         </form>
                     </div>
-
                     <div class="col-lg-12">
-                        <div id="showCheckList">
-
-                        </div>
+                        <div id="showCheckList"></div>
                     </div>
-
-                    <div id="showDisabledAreaMessage" class="col-lg-offset-1 col-lg-10">
-
-                    </div>
-
+                    <div id="showDisabledAreaMessage" class="col-lg-offset-1 col-lg-10"></div>
                 </div>
             </div>
             <div class="modal-footer">
+                <a href="${pageContext.request.contextPath}/home/download?idVersion=${version.getId()}" 
+                   class="btn btn-primary pull-left"
+                   target="_blank">
+                    descargar
+                </a>
                 <button type="button" 
                         class="btn btn-success" 
                         data-panel-table="formActionItemEnable"

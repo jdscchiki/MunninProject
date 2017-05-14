@@ -48,6 +48,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="${pageContext.request.contextPath}/home/download?idVersion=${version.getId()}" 
+                       class="btn btn-primary pull-left"
+                       target="_blank">
+                        descargar
+                    </a>
                     <button type="button" class="btn btn-primary" data-panel-table="formcalificarArchivo" data-action="rechazar">Rechazar</button>
                     <button type="button" class="btn btn-primary" data-panel-table="formcalificarArchivo" data-action="aprobar">Aprobar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                    

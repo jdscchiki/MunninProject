@@ -5,7 +5,6 @@
  */
 package controller.servlet.home.role.pedagogical.files;
 
-import controller.servlet.home.role.technical.files.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Coordinator;
 import model.Business.Pedagogical;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;

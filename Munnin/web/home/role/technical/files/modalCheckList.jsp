@@ -45,6 +45,10 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a href="${pageContext.request.contextPath}/home/download?idVersion=${version.getId()}" 
+                   class="btn btn-primary pull-left">
+                    descargar
+                </a>
                 <button type="button" 
                         class="btn btn-success" 
                         data-panel-table="formActionItemEnable"

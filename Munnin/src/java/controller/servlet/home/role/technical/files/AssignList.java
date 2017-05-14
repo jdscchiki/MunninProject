@@ -85,7 +85,7 @@ public class AssignList extends HttpServlet {
                     if (Technical.cambioEstado(idVer)) {
                         request.setAttribute("messageType", "success");
                         request.setAttribute("message", "La lista se ha asignado correctamente");
-                    }                    
+                    }
                     break;
                 case "rechazar":
                     if (Technical.AssignLista(idVer, idLis, funcionario)) {
