@@ -30,28 +30,20 @@
 <html lang="es">
     <head>
         <component:head title="${title}" />
+    </head>
+    <body>
+        <component:sidebar funcionario="${funcionario}"
+                           activeRole="${actualRole}" />
         <component:navbar funcionario="${funcionario}" 
                           actualRole="${actualRole}" 
                           actualPage="${actualPage}"/>
-        <component:sidebar funcionario="${funcionario}"
-                           activeRole="${actualRole}" />
-        <component:modalLogOut />
-        <component:modalPassword />
-    </head>
-    <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12"> 
+                    <div class="col-md-9"> 
                         <div class="panelMunnin">
                             <h2>${panelTitle}</h2>
                             <hr>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-9"> 
-                        <div class="panelMunnin">
                             <jsp:doBody />
                         </div>
                     </div>
@@ -82,7 +74,6 @@
                 </div>
             </div>
         </div>
-
         <div class="leftS">
             <nav class="menu">
                 <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open"/>
@@ -101,8 +92,10 @@
         </div>
 
         <span class="ir-arriba noResponsive fa fa-chevron-circle-up"></span>
-        
+
         <!--aqui preloader-->
+        <component:modalLogOut />
+        <component:modalPassword />
         <component:footer />
         <component:js />
         <jsp:invoke fragment="additionalJS" />

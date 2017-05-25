@@ -11,7 +11,7 @@
                         <form id="formSearchFunctionaryEnable" 
                               class="form-horizontal" 
                               method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/coordinator/refresh-disabled-functionary"
+                              action="${pageContext.request.contextPath}/home/role/coordinator/functionary/search-disabled"
                               data-ajax-form="true"
                               data-display="showDisabledFunctionaryTable">
                             <div class="form-group">
@@ -48,13 +48,13 @@
                         data-panel-table="formEnableFunctionary"
                         data-action="">
                     Habilitar</button>
-                <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
     <form id="formEnableFunctionary"
           method="POST"
-          action="${pageContext.request.contextPath}/home/role/coordinator/enable-functionary"
+          action="${pageContext.request.contextPath}/home/role/coordinator/functionary/enable"
           data-display="showDisabledFunctionaryMessage"
           data-data-table="tableBodyFunctionariesDisabled">
         <input type="hidden" name="id" value="-1" data-selected-item="">
@@ -62,9 +62,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#disabledFunctionary").modal();
-            ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/refresh-disabled-functionary", "showDisabledFunctionaryTable");
+            ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/functionary/search-disabled", "showDisabledFunctionaryTable");
             $(document).on("hidden.bs.modal", "#disabledFunctionary", function (event) {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFunctionary", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/functionary/search", "fulltable");
                 $(this).remove();
             });
         });

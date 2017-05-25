@@ -57,8 +57,6 @@ $(document).ready(function () {
                 refreshDataTable($dataTable);
             }
         });
-        
-        refreshDataTable($dataTable);
     }
 
     function selectItem($item) {
