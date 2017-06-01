@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.pedagogical.files;
+package controller.servlet.home.role.pedagogical.check;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -19,8 +19,8 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/pedagogical/files/search-checkList"})
-public class SearchCheckListPedagogical extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/pedagogical/check/search-checklist"})
+public class SearchList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,8 +54,8 @@ public class SearchCheckListPedagogical extends HttpServlet {
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "showCheckList");
             request.setAttribute("idTable", "tableBodyCheckListPedagogical");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/pedagogical/files/search-checkList"));
-            request.getRequestDispatcher("/home/role/pedagogical/files/tableCheckList.jsp").forward(request, response);
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/pedagogical/check/search-checklist"));
+            request.getRequestDispatcher("/home/role/pedagogical/check/tableCheckList.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

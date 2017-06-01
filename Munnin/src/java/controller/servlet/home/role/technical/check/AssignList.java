@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.files;
+package controller.servlet.home.role.technical.check;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,7 +27,7 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/assign-list"})
+@WebServlet(urlPatterns = {"/home/role/technical/check/assign-list"})
 public class AssignList extends HttpServlet {
 
     /**

@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package controller.servlet.home.role.pedagogical.files;
+package controller.servlet.home.role.pedagogical.check;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,15 +6,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Business.Pedagogical;
-import model.bean.Version;
+import model.bean.Funcionario;
 
-/**
- *
- * @author Juan David Segura Castro
- */
-@WebServlet(urlPatterns = {"/home/role/pedagogical/files/manage"})
-public class ManageFilePedagogical extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/pedagogical/check/search"})
+public class Search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,33 +26,30 @@ public class ManageFilePedagogical extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVersion = request.getParameter("id");
-            int idItem;
-            String opcion = request.getParameter("action");            
-            idItem = Integer.parseInt(idVersion);
-            
-            if (idItem <= 0) {
-                request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los archivos");
-            } else {
-                switch (opcion) {
-                    case "checkList":
-                        Version versionResult2 = Pedagogical.viewAllInfoVersion(idItem);
-                        request.setAttribute("version", versionResult2);
-                        request.getRequestDispatcher("/home/role/pedagogical/files/modalCheckList.jsp").forward(request, response);
-                        return;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        break;
-                }
+            String search = request.getParameter("search");
+            String strPage = request.getParameter("page");
+            int page = 1;
+            if (strPage != null) {
+                page = Integer.parseInt(strPage);
             }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+            int cantXpag = 10;
+
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
+            int totalPages = Pedagogical.countPagesFilesPedagogicalCenter(funcionario.getCentro().getId(), cantXpag, search);
+            request.setAttribute("page", page);
+            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
+            request.setAttribute("contentTable", Pedagogical.viewFilesPedagogicalCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
+            request.setAttribute("displayResult", "fulltable");
+            request.setAttribute("idTable", "tableBodyFilePedagogical");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/pedagogical/check/search"));
+            request.getRequestDispatcher("/home/role/pedagogical/check/tableFiles.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

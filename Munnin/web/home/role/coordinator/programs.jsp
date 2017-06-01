@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<%@taglib prefix="tables" tagdir="/WEB-INF/tags/template/basicTemplate/tables/" %>
 <template:basicTemplate actualPage="6"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
@@ -20,37 +21,24 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <form id="formSearchProgramEnable" 
-                              class="form-horizontal" 
-                              method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/coordinator/programs/search"
-                              data-ajax-form="true"
-                              data-display="fulltable">
-                            <div class="form-group">
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar programa" id="searchPrograms" name="search">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit">
-                                                <i class="glyphicon glyphicon-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <tables:dataTableSearch id="formSearchFunctionaryEnable"
+                                                urlServlet="${pageContext.request.contextPath}/home/role/coordinator/programs/search"
+                                                placeholder="Buscar programa"
+                                                display="fulltable"
+                                                width="8"/>
                     </div>
                     <div class="col-lg-6">
                         <button type="button" 
                                 class="btn btn-primary tableButton" 
                                 data-toggle="modal" 
                                 data-target="#addProgram">
-                            <span class="glyphicon glyphicon-plus"></span> Agregar</button>
-                        <button type="button" 
-                                class="btn btn-primary tableButton" 
-                                data-panel-table="formActionProgramsEnable"
-                                data-action="disable">
-                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                            <span class="glyphicon glyphicon-plus"></span> Agregar
+                        </button>
+                        <tables:dataTableActionButton action="disable"
+                                                      panelTable="formActionProgramsEnable"
+                                                      icon="glyphicon glyphicon-remove">
+                            Inhabilitar
+                        </tables:dataTableActionButton>
                     </div>
                 </div>
             </div>
@@ -64,14 +52,10 @@
                 </button>
             </div>
         </div>
-        <form id="formActionProgramsEnable"
-              method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/programs/manage"
-              data-display="message_programs"
-              data-data-table="tableBodyPrograms">
-            <input type="hidden" name="id" value="-1" data-selected-item="">
-            <input type="hidden" name="action" data-action="">
-        </form>
+        <tables:dataTableSelectForm id="formActionProgramsEnable"
+                                    dataTable="tableBodyPrograms"
+                                    display="message_programs"
+                                    urlServlet="${pageContext.request.contextPath}/home/role/coordinator/programs/manage" />
         <jsp:include page="/home/role/coordinator/programs/modalAdd.jsp" />
     </jsp:body>
 </template:basicTemplate>

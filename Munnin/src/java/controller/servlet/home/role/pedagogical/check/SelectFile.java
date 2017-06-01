@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.files;
+package controller.servlet.home.role.pedagogical.check;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,15 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Business.Technical;
+import model.Business.Pedagogical;
 import model.bean.Version;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-@WebServlet(urlPatterns = {"/home/role/technical/files/manage"})
-public class ManageFile extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/pedagogical/check/select"})
+public class SelectFile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,26 +36,17 @@ public class ManageFile extends HttpServlet {
         try {
             String idVersion = request.getParameter("id");
             int idItem;
-            String opcion = request.getParameter("action");            
             idItem = Integer.parseInt(idVersion);
-            
+
             if (idItem <= 0) {
                 request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los archivos");
+                request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
             } else {
-                switch (opcion) {
-                    case "checkList":
-                        Version versionResult2 = Technical.viewAllInfoVersion(idItem);
-                        request.setAttribute("version", versionResult2);
-                        request.getRequestDispatcher("/home/role/technical/files/modalCheckList.jsp").forward(request, response);
-                        return;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        break;
-                }
+                Version versionResult2 = Pedagogical.viewAllInfoVersion(idItem);
+                request.setAttribute("version", versionResult2);
+                request.getRequestDispatcher("/home/role/pedagogical/check/modalCheckList.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

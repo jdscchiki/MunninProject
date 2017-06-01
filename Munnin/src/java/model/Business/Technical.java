@@ -56,7 +56,7 @@ public class Technical {
         int paginas;
         int cantFuncionarios;
         ListaDAO listaDAO = new ListaDAO();
-        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, false);
+        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, true);
         listaDAO.closeConnection();
 
         paginas = cantFuncionarios / cantXpag;

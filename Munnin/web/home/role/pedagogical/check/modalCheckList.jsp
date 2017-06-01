@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="tables" tagdir="/WEB-INF/tags/template/basicTemplate/tables" %>
 <%@page import="java.util.ArrayList"%>
 <div id="checkList" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -10,26 +11,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form id="formCheckList" 
-                              class="form-horizontal" 
-                              method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/pedagogical/files/search-checkList"
-                              data-ajax-form="true"
-                              data-display="showCheckList">                            
-                            <div class="form-group">
-                                <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
-                                <div class="col-sm-5">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar lista" id="searchMunnin" name="search">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit">
-                                                <i class="glyphicon glyphicon-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <tables:dataTableSearch id="formCheckList"
+                                                urlServlet="${pageContext.request.contextPath}/home/role/pedagogical/check/search-checklist"
+                                                placeholder="Buscar lista"
+                                                display="showCheckList"
+                                                width="6"/>
                     </div>
                     <div class="col-lg-12">
                         <div id="showCheckList"></div>
@@ -46,7 +32,7 @@
                 <button type="button" 
                         class="btn btn-success" 
                         data-panel-table="formActionItemEnable"
-                        data-action="items">
+                        data-action="">
                     Siguiente</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
@@ -54,26 +40,21 @@
     </div>
     <form id="formActionItemEnable"
               method="POST"
-              action="${pageContext.request.contextPath}/home/role/pedagogical/files/manage-lista"
+              action="${pageContext.request.contextPath}/home/role/pedagogical/check/select-list"
               data-display="message_file"
               data-ajax-form="true"
               data-data-table="tableBodyCheckListPedagogical">
             <input type="hidden" name="idVersion" value="${version.getId()}">
             <input type="hidden" name="id" value="-1" data-selected-item="">
-            <input type="hidden" name="action" data-action="">
         </form>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#checkList").modal();
-            ajaxLoadContent("${pageContext.request.contextPath}/home/role/pedagogical/files/search-checkList", "showCheckList");
+            ajaxLoadContent("${pageContext.request.contextPath}/home/role/pedagogical/check/search-checklist", "showCheckList");
             $(document).on("hidden.bs.modal", "#checkList", function (event) {
-                ajaxLoadContent("${pageContext.request.contextPath}/home/role/coordinator/pagerFilePedagogical", "fulltable");
+                ajaxLoadContent("${pageContext.request.contextPath}/home/role/pedagogical/check/search", "fulltable");
                 $(this).remove();
             });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
             $("#checkList").modal();
             $(document).on("hidden.bs.modal", "#checkList", function (event) {
                 $(this).remove();

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<%@taglib prefix="tables" tagdir="/WEB-INF/tags/template/basicTemplate/tables/" %>
 <template:basicTemplate actualPage="4"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
@@ -20,42 +21,29 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <form id="formSearchCategoriesEnable" 
-                              class="form-horizontal" 
-                              method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/coordinator/categories/search"
-                              data-ajax-form="true"
-                              data-display="fulltable">
-                            <div class="form-group">
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar Categorias" id="searchMunnin" name="search">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit">
-                                                <i class="glyphicon glyphicon-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <tables:dataTableSearch id="formSearchCategoriesEnable"
+                                                urlServlet="${pageContext.request.contextPath}/home/role/coordinator/categories/search"
+                                                placeholder="Buscar Categorias"
+                                                display="fulltable"
+                                                width="8"/>
                     </div>
                     <div class="col-lg-6">
                         <button type="button" 
                                 class="btn btn-primary tableButton" 
                                 data-toggle="modal" 
                                 data-target="#registerCategories">
-                            <span class="glyphicon glyphicon-plus"></span> Crear</button>
-                        <button type="button" 
-                                class="btn btn-primary tableButton" 
-                                data-panel-table="formActionCategoriesEnable"
-                                data-action="editCategories">
-                            <span class="glyphicon glyphicon-pencil"></span> Editar</button>
-                        <button type="button" 
-                                class="btn btn-primary tableButton" 
-                                data-panel-table="formActionCategoriesEnable"
-                                data-action="disable">
-                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                            <span class="glyphicon glyphicon-plus"></span> Crear
+                        </button>
+                        <tables:dataTableActionButton action="editCategories"
+                                                      panelTable="formActionCategoriesEnable"
+                                                      icon="glyphicon glyphicon-pencil">
+                            Editar
+                        </tables:dataTableActionButton>
+                        <tables:dataTableActionButton action="disable"
+                                                      panelTable="formActionCategoriesEnable"
+                                                      icon="glyphicon glyphicon-remove">
+                            Inhabilitar
+                        </tables:dataTableActionButton>
                     </div>
                 </div>
             </div>
@@ -69,15 +57,10 @@
                 </button>
             </div>
         </div>
-        <form id="formActionCategoriesEnable"
-              method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/categories/manage"
-              data-display="message_categories"
-              data-ajax-form="true"
-              data-data-table="tableBodyCategories">
-            <input type="hidden" name="id" value="-1" data-selected-item="">
-            <input type="hidden" name="action" data-action="">
-        </form>
+        <tables:dataTableSelectForm id="formActionCategoriesEnable"
+                                    dataTable="tableBodyCategories"
+                                    display="message_categories"
+                                    urlServlet="${pageContext.request.contextPath}/home/role/coordinator/categories/manage" />
         <jsp:include page="/home/role/coordinator/categories/modalCreate.jsp" />
     </jsp:body>
 </template:basicTemplate>

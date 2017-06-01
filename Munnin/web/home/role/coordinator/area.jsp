@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<%@taglib prefix="tables" tagdir="/WEB-INF/tags/template/basicTemplate/tables" %>
 <template:basicTemplate actualPage="5"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
@@ -20,42 +21,29 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <form id="formSearchAreaEnable" 
-                              class="form-horizontal" 
-                              method="POST" 
-                              action="${pageContext.request.contextPath}/home/role/coordinator/area/search"
-                              data-ajax-form="true"
-                              data-display="fulltable">                    
-                            <div class="form-group">
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar área" id="searchMunnin" name="search">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit">
-                                                <i class="glyphicon glyphicon-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <tables:dataTableSearch id="formSearchAreaEnable"
+                                                urlServlet="${pageContext.request.contextPath}/home/role/coordinator/area/search"
+                                                placeholder="Buscar área"
+                                                display="fulltable"
+                                                width="8"/>
                     </div>
                     <div class="col-lg-6">
                         <button type="button" 
-                                class="btn btn-success tableButton" 
+                                class="btn btn-primary tableButton" 
                                 data-toggle="modal" 
                                 data-target="#registerArea">
-                            <span class="glyphicon glyphicon-plus"></span> Crear</button>
-                        <button type="button" 
-                                class="btn btn-primary tableButton" 
-                                data-panel-table="formActionAreaEnable"
-                                data-action="editArea">
-                            <span class="glyphicon glyphicon-edit"></span> Editar</button>
-                        <button type="button" 
-                                class="btn btn-danger tableButton" 
-                                data-panel-table="formActionAreaEnable"
-                                data-action="disable">
-                            <span class="glyphicon glyphicon-remove"></span> Inhabilitar</button>
+                            <span class="glyphicon glyphicon-plus"></span> Crear
+                        </button>
+                        <tables:dataTableActionButton action="editArea"
+                                                      panelTable="formActionAreaEnable"
+                                                      icon="glyphicon glyphicon-edit">
+                            Editar
+                        </tables:dataTableActionButton>
+                        <tables:dataTableActionButton action="disable"
+                                                      panelTable="formActionAreaEnable"
+                                                      icon="glyphicon glyphicon-remove">
+                            Inhabilitar
+                        </tables:dataTableActionButton>
                     </div>
                 </div>
             </div>
@@ -69,15 +57,10 @@
                 </button>
             </div>
         </div>
-        <form id="formActionAreaEnable"
-              method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/area/manage"
-              data-display="message_areas"
-              data-ajax-form="true"
-              data-data-table="tableBodyAreas">
-            <input type="hidden" name="id" value="-1" data-selected-item="">
-            <input type="hidden" name="action" data-action="">
-        </form>
+        <tables:dataTableSelectForm id="formActionAreaEnable"
+                                    dataTable="tableBodyAreas"
+                                    display="message_areas"
+                                    urlServlet="${pageContext.request.contextPath}/home/role/coordinator/area/manage" />
         <jsp:include page="/home/role/coordinator/area/modalCreate.jsp" />
     </jsp:body>
 </template:basicTemplate>

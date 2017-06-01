@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.pedagogical.files;
+package controller.servlet.home.role.pedagogical.check;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ import model.bean.Funcionario;
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/pedagogical/files/assign-list"})
-public class AssignListPedagogical extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/pedagogical/check/assign-list"})
+public class AssignList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

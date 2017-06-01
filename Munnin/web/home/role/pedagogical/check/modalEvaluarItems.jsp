@@ -6,7 +6,7 @@
           role="form" 
           method="POST" 
           data-ajax-form="true"
-          action="${pageContext.request.contextPath}/home/role/pedagogical/files/assign-list"
+          action="${pageContext.request.contextPath}/home/role/pedagogical/check/assign-list"
           data-data-table="tableBodyFiles"
           data-display="formCalificarArchivo_message">
         <div class="modal-dialog">

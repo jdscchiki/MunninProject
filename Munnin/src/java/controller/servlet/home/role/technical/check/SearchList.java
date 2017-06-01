@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.pedagogical.files;
+package controller.servlet.home.role.technical.check;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Business.Pedagogical;
+import model.Business.Technical;
 import model.bean.Funcionario;
 
 /**
  *
  * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/pagerFilePedagogical"})
-public class SearchFilePedagogical extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/technical/check/search-checklist"})
+public class SearchList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,20 +41,21 @@ public class SearchFilePedagogical extends HttpServlet {
             if (strPage != null) {
                 page = Integer.parseInt(strPage);
             }
+
             int cantXpag = 10;
 
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Pedagogical.countPagesFilesPedagogicalCenter(funcionario.getCentro().getId(), cantXpag, search);
+            int totalPages = Technical.countPagesCheckList(funcionario.getId(), cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Pedagogical.viewFilesPedagogicalCenter(funcionario.getCentro().getId(), page, cantXpag, search));
+            request.setAttribute("contentTable", Technical.viewCheckListFunctionary(funcionario.getId(), page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyFilePedagogical");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/coordinator/pagerFilePedagogical"));
-            request.getRequestDispatcher("/home/role/pedagogical/files/tableFiles.jsp").forward(request, response);
+            request.setAttribute("displayResult", "showCheckList");
+            request.setAttribute("idTable", "tableBodyCheckList");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/technical/check/search-checklist"));
+            request.getRequestDispatcher("/home/role/technical/check/tableCheckList.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
