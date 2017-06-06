@@ -11,7 +11,6 @@
                 <form action="" method="POST">
                     <div class="container-checklist">
                         <div id="myDIV" class="header">
-                            <h2 style="margin:5px">Lista de chekeo</h2>
                             <input type="text" id="myInput" placeholder="Nuevo Item...">
                             <span onclick="newElement()" class="addBtn">Agregar</span>
                         </div>
