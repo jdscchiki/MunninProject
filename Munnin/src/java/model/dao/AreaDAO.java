@@ -44,7 +44,7 @@ public class AreaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean insert(Area area) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_AREA(?,?,?)}";
         int indexNombre = 1;
@@ -58,12 +58,12 @@ public class AreaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -75,7 +75,7 @@ public class AreaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Area area) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_AREA(?,?,?,?)}";
         int indexId = 1;
@@ -91,12 +91,12 @@ public class AreaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -108,7 +108,7 @@ public class AreaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Area area) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_AREA(?)}";
         int indexId = 1;
@@ -118,12 +118,12 @@ public class AreaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

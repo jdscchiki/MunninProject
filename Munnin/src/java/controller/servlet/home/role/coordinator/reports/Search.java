@@ -3,26 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.technical.check;
+package controller.servlet.home.role.coordinator.reports;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Business.Technical;
-import model.bean.Item;
-import model.bean.Lista;
-import model.bean.Version;
+import javax.servlet.http.HttpSession;
+import model.bean.Funcionario;
+import util.database.Chart;
+import util.database.ChartDAO;
 
 /**
  *
- * @author Juan David Segura Castro
+ * @author Juan David Segura
  */
-@WebServlet(urlPatterns = {"/home/role/technical/check/select-list"})
-public class SelectLista extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/reports/search"})
+public class Search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,29 +37,19 @@ public class SelectLista extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVer = request.getParameter("idVersion");
-            String idIte = request.getParameter("id");
-            int idItem, idVersion;
-            idVersion = Integer.parseInt(idVer);
-            idItem = Integer.parseInt(idIte);
-            if (idItem <= 0) {
-                request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar una de las listas");
-                request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-            } else {
-                Version versionResult = Technical.viewAllInfoVersion(idVersion);
-                request.setAttribute("version", versionResult);
-                Lista lista = Technical.viewAllInfoLista(idItem);
-                request.setAttribute("lista", lista);
-                ArrayList<Item> items = Technical.viewItems(idItem);
-                request.setAttribute("items", items);
-                request.getRequestDispatcher("/home/role/technical/check/modalEvaluarItems.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
+
+            String idCentro = funcionario.getCentro().getId();
+
+            ChartDAO chartDAO = new ChartDAO();
+            Chart chart = chartDAO.getChartAprovedVersionsCenter(idCentro, 12);
+            request.setAttribute("chart", chart);
+            request.getRequestDispatcher("/home/role/coordinator/reports/charts.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
