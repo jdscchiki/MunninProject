@@ -45,7 +45,7 @@ public class CentroDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Centro centro) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_CENTRO(?,?,?,?)}";
         int indexId = 1;
@@ -61,12 +61,12 @@ public class CentroDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -78,7 +78,7 @@ public class CentroDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Centro centro) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_CENTRO(?,?,?,?)}";
         int indexId = 1;
@@ -94,12 +94,12 @@ public class CentroDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -111,7 +111,7 @@ public class CentroDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Centro centro) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_CENTRO(?)}";
         int indexId = 1;
@@ -121,12 +121,12 @@ public class CentroDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -173,7 +173,6 @@ public class CentroDAO extends connectionDB {
         CallableStatement statement = this.getConexion().prepareCall(query);
         ResultSet rs = statement.executeQuery();
 
-        boolean encontrado = false;
         while (rs.next()) {
             Centro centro = new Centro();
             centro.setId(rs.getString(COL_ID));

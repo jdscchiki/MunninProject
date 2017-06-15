@@ -49,7 +49,7 @@ public class EvaluacionListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(EvaluacionLista evaluacionLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_EVALUACION_LISTA(?,?,?,?,?,?)}";
         int indexIdVersion = 1;
@@ -68,12 +68,12 @@ public class EvaluacionListaDAO extends connectionDB {
         statement.setInt(indexIdEvaluador, evaluacionLista.getEvaluador().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -85,7 +85,7 @@ public class EvaluacionListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(EvaluacionLista evaluacionLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_EVALUACION_LISTA(?,?,?)}";
         int indexId = 1;
@@ -106,12 +106,12 @@ public class EvaluacionListaDAO extends connectionDB {
         statement.setInt(indexIdEvaluador, evaluacionLista.getEvaluador().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -123,7 +123,7 @@ public class EvaluacionListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(EvaluacionLista evaluacionLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_EVALUACION_LISTA(?)}";
         int indexId = 1;
@@ -133,12 +133,12 @@ public class EvaluacionListaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -214,7 +214,7 @@ public class EvaluacionListaDAO extends connectionDB {
     }
     
     public boolean agregarListaVersion(EvaluacionLista evaluacionLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_EVALUACION_LISTA(?,?,?,?,?,?)}";
         int indexIdVersion = 1;
@@ -233,12 +233,12 @@ public class EvaluacionListaDAO extends connectionDB {
         statement.setInt(indexIdEvaluador, evaluacionLista.getEvaluador().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
     
     public EvaluacionLista selectEvList(EvaluacionLista evaluacionLista) throws SQLException {

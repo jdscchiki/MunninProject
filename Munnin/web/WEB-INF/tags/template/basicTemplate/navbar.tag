@@ -14,7 +14,7 @@
         </a>
         <div class="topSeparator"></div>
         <a href="${pageContext.request.contextPath}/home/intro.jsp">
-            <img src="${pageContext.request.contextPath}/resources/img/LogoNavbar.png" alt="munnin_icono" class="topIcon">
+            <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="topIcon">
         </a>
     </div>
 </div>

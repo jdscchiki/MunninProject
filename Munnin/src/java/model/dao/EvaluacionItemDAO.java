@@ -46,7 +46,7 @@ public class EvaluacionItemDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(EvaluacionItem evaluacionItem) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_EVALUACION_ITEM(?,?,?,?)}";
         int indexCalificacion = 1;
@@ -61,12 +61,12 @@ public class EvaluacionItemDAO extends connectionDB {
         statement.setInt(indexIdItem, evaluacionItem.getItem().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -80,7 +80,7 @@ public class EvaluacionItemDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(EvaluacionItem evaluacionItem) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_EVALUACION_ITEM(?,?,?,?,?)}";
         int indexId = 1;
@@ -97,12 +97,12 @@ public class EvaluacionItemDAO extends connectionDB {
         statement.setInt(indexIdItem, evaluacionItem.getItem().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -114,7 +114,7 @@ public class EvaluacionItemDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(EvaluacionItem evaluacionItem) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_EVALUACION_ITEM(?)}";
         int indexId = 1;
@@ -124,12 +124,12 @@ public class EvaluacionItemDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -196,7 +196,7 @@ public class EvaluacionItemDAO extends connectionDB {
     }
     
     public boolean AsignEvaluacionItem(EvaluacionItem evaluacionItem) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_EVALUACION_ITEM(?,?,?,?)}";
         int indexCalificacion = 1;
@@ -211,11 +211,11 @@ public class EvaluacionItemDAO extends connectionDB {
         statement.setInt(indexIdItem, evaluacionItem.getItem().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 }

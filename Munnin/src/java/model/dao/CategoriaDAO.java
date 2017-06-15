@@ -44,7 +44,7 @@ public class CategoriaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Categoria categoria) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_CATEGORIA(?,?,?)}";
         int indexNombre = 1;
@@ -57,12 +57,12 @@ public class CategoriaDAO extends connectionDB {
         statement.setString(indexIdCentro, categoria.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -74,7 +74,7 @@ public class CategoriaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Categoria categoria) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_CATEGORIA(?,?,?,?)}";
         int indexId = 1;
@@ -90,12 +90,12 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -107,7 +107,7 @@ public class CategoriaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Categoria categoria) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_CATEGORIA(?)}";
         int indexId = 1;
@@ -117,12 +117,12 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -225,7 +225,7 @@ public class CategoriaDAO extends connectionDB {
     }
 
     public boolean updateCategory(Categoria categoria) throws SQLException {
-         boolean resultado;//esta es la futura respuesta
+         boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_CATEGORIA_NOMBRE(?,?)}";
@@ -238,17 +238,17 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     public boolean enableCategory(int idCategoria) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_CATEGORIA_HABILITAR(?)}";
@@ -259,13 +259,13 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     public boolean isNameCategoriesOcuped(String nombre, String idCentro) throws SQLException {
@@ -288,7 +288,7 @@ public class CategoriaDAO extends connectionDB {
     }
     
      public boolean registerCategories(Categoria categoria) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL INSERTAR_CATEGORIA_NUEVA(?,?)}";
@@ -301,13 +301,13 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     public int countCategoriesCenter(String idCentro, String search, boolean activo) throws SQLException {
@@ -390,7 +390,7 @@ public class CategoriaDAO extends connectionDB {
     }
 
     public boolean disableCategories(int idCate) throws SQLException {
-         boolean resultado;//esta es la futura respuesta
+         boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_CATEGORIA_INHABILITAR(?)}";
@@ -401,12 +401,12 @@ public class CategoriaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 }

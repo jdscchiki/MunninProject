@@ -80,7 +80,7 @@ public class ProductoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Producto producto) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_PRODUCTO(?,?,?,?,?)}";
         int indexId = 1;
@@ -97,12 +97,12 @@ public class ProductoDAO extends connectionDB {
         statement.setInt(indexIdTipoObjetoAprendizaj, producto.getTipoObjetoAprendizaje().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -114,7 +114,7 @@ public class ProductoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Producto producto) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_PRODUCTO(?)}";
         int indexId = 1;
@@ -124,12 +124,12 @@ public class ProductoDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

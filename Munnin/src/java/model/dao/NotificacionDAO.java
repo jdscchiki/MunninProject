@@ -51,7 +51,7 @@ public class NotificacionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Notificacion notificacion) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_NOTIFICACION(?,?,?,?,?,?)}";
         int indexActivo = 1;
@@ -70,12 +70,12 @@ public class NotificacionDAO extends connectionDB {
         statement.setInt(indexIdRol, notificacion.getRol().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -87,7 +87,7 @@ public class NotificacionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Notificacion notificacion) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_NOTIFICACION(?,?,?,?,?,?,?)}";
         int indexId = 1;
@@ -109,12 +109,12 @@ public class NotificacionDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -126,7 +126,7 @@ public class NotificacionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Notificacion notificacion) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_NOTIFICACION(?)}";
         int indexId = 1;
@@ -136,12 +136,12 @@ public class NotificacionDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -303,7 +303,7 @@ public class NotificacionDAO extends connectionDB {
      * @throws SQLException 
      */
     public boolean markAsSeen(Notificacion notificacion) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_NOTIFICACION_VISTO(?)}";
         int indexId = 1;
@@ -313,12 +313,12 @@ public class NotificacionDAO extends connectionDB {
         
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
     
     public boolean sendNotification(int notificationCase, int idVersion) throws SQLException{

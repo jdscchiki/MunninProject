@@ -42,7 +42,7 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(TipoObjetoAprendizaje tipoObjetoAprendizaje) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_TIPO_OBJETO_APRENDIZAJE(?)}";
         int indexNombre = 1;
@@ -51,12 +51,12 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
         statement.setString(indexNombre, tipoObjetoAprendizaje.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -70,7 +70,7 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(TipoObjetoAprendizaje tipoObjetoAprendizaje) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_TIPO_OBJETO_APRENDIZAJE(?,?)}";
         int indexId = 1;
@@ -81,12 +81,12 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
         statement.setString(indexNombre, tipoObjetoAprendizaje.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -98,7 +98,7 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(TipoObjetoAprendizaje tipoObjetoAprendizaje) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_TIPO_OBJETO_APRENDIZAJE(?)}";
         int indexId = 1;
@@ -108,12 +108,12 @@ public class TipoObjetoAprendizajeDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

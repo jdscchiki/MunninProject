@@ -55,7 +55,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Funcionario funcionario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_FUNCIONARIO(?,?,?,?,?,?,?,?,?)}";
         int indexActivo = 1;
@@ -80,12 +80,12 @@ public class FuncionarioDAO extends connectionDB {
         statement.setString(indexIdCentro, funcionario.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -97,7 +97,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Funcionario funcionario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_FUNCIONARIO(?,?,?,?,?,?,?)}";
         int indexId = 1;
@@ -124,12 +124,12 @@ public class FuncionarioDAO extends connectionDB {
         statement.setString(indexIdCentro, funcionario.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -141,7 +141,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Funcionario funcionario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_FUNCIONARIO(?)}";
         int indexId = 1;
@@ -151,12 +151,12 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -286,7 +286,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException existe un priblema en la consulta
      */
     public boolean registerFunctionary(Funcionario funcionario) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL INSERTAR_FUNCIONARIO_REGISTRO(?,?,?,?,?,?,?,?)}";
@@ -311,13 +311,13 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     /**
@@ -532,7 +532,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean disableFunctionary(int idFuncionario) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_FUNCIONARIO_INHABILITAR(?)}";
@@ -543,17 +543,17 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     public boolean enableFunctionary(int idFuncionario) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_FUNCIONARIO_HABILITAR(?)}";
@@ -564,13 +564,13 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     /**
@@ -583,7 +583,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean changePassword(int id, String password) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_FUNCIONARIO_CONTRASENA(?,?)}";
@@ -596,13 +596,13 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     /**
@@ -614,7 +614,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean addFunctionaryRole(int idFuncionario, int idRol) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL INSERTAR_FUNCIONARIO_ROL(?,?)}";
@@ -627,13 +627,13 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     /**
@@ -646,7 +646,7 @@ public class FuncionarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean deleteFunctionaryRole(int idFuncionario, int idRol) throws SQLException {
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL ELIMINAR_FUNCIONARIO_ROL(?,?)}";
@@ -659,13 +659,13 @@ public class FuncionarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el registro se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el registro cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 
     public boolean isLastCoordinatorEnableCenter(String idCentro, int idFuncionario) throws SQLException {

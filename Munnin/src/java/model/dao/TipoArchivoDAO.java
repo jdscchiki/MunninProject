@@ -41,7 +41,7 @@ public class TipoArchivoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(TipoArchivo tipoArchivo) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_TIPO_ARCHIVO(?)}";
         int indexNombre = 1;
@@ -50,12 +50,12 @@ public class TipoArchivoDAO extends connectionDB {
         statement.setString(indexNombre, tipoArchivo.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -67,7 +67,7 @@ public class TipoArchivoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(TipoArchivo tipoArchivo) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_TIPO_ARCHIVO(?,?)}";
         int indexId = 1;
@@ -78,12 +78,12 @@ public class TipoArchivoDAO extends connectionDB {
         statement.setString(indexNombre, tipoArchivo.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -95,7 +95,7 @@ public class TipoArchivoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(TipoArchivo tipoArchivo) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_TIPO_ARCHIVO(?)}";
         int indexId = 1;
@@ -105,12 +105,12 @@ public class TipoArchivoDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

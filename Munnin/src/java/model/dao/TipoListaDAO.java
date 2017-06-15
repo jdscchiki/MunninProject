@@ -41,7 +41,7 @@ public class TipoListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(TipoLista tipoLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_TIPO_LISTA(?)}";
         int indexNombre = 1;
@@ -50,12 +50,12 @@ public class TipoListaDAO extends connectionDB {
         statement.setString(indexNombre, tipoLista.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -67,7 +67,7 @@ public class TipoListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(TipoLista tipoLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_TIPO_LISTA(?,?)}";
         int indexId = 1;
@@ -78,12 +78,12 @@ public class TipoListaDAO extends connectionDB {
         statement.setString(indexNombre, tipoLista.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -95,7 +95,7 @@ public class TipoListaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(TipoLista tipoLista) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_TIPO_LISTA(?)}";
         int indexId = 1;
@@ -105,12 +105,12 @@ public class TipoListaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

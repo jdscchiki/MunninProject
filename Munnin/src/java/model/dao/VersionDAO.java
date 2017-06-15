@@ -55,7 +55,7 @@ public class VersionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Version version) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_VERSION(?,?,?,?,?,?,?,?,?,?)}";
         int indexNumero = 1;
@@ -82,12 +82,12 @@ public class VersionDAO extends connectionDB {
         statement.setString(indexIdCentro, version.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -99,7 +99,7 @@ public class VersionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Version version) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_VERSION(?,?,?,?,?,?,?,?,?,?,?)}";
         int indexId = 1;
@@ -128,12 +128,12 @@ public class VersionDAO extends connectionDB {
         statement.setString(indexIdCentro, version.getCentro().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -145,7 +145,7 @@ public class VersionDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Version version) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_VERSION(?)}";
         int indexId = 1;
@@ -155,12 +155,12 @@ public class VersionDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -304,7 +304,7 @@ public class VersionDAO extends connectionDB {
     }
 
     public boolean updateEstado(Version version) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL CAMBIO_ESTADO(?,?)}";
         int indexId = 1;
@@ -315,12 +315,12 @@ public class VersionDAO extends connectionDB {
         statement.setInt(indexIdEstado, version.getEstado().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
     
     public int countFilesCoordinatorCenter(String idCentro, String search) throws SQLException {

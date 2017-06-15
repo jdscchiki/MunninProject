@@ -44,7 +44,7 @@ public class ProgramaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Programa programa) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_PROGRAMA(?,?,?)}";
         int indexNombre = 1;
@@ -57,12 +57,12 @@ public class ProgramaDAO extends connectionDB {
         statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -74,7 +74,7 @@ public class ProgramaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Programa programa) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_PROGRAMA(?,?,?,?)}";
         int indexId = 1;
@@ -89,12 +89,12 @@ public class ProgramaDAO extends connectionDB {
         statement.setInt(indexIdArea, programa.getArea().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -106,7 +106,7 @@ public class ProgramaDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Programa programa) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_PROGRAMA(?)}";
         int indexId = 1;
@@ -116,12 +116,12 @@ public class ProgramaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -260,7 +260,7 @@ public class ProgramaDAO extends connectionDB {
     }
     
     public boolean disable(Programa programa) throws SQLException{
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_PROGRAMA_INHABILITAR(?)}";
@@ -271,17 +271,17 @@ public class ProgramaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
     
     public boolean enable(Programa programa) throws SQLException{
-        boolean resultado;//esta es la futura respuesta
+        boolean result;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL EDITAR_PROGRAMA_HABILITAR(?)}";
@@ -292,12 +292,12 @@ public class ProgramaDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
 
-        return resultado;
+        return result;
     }
 }

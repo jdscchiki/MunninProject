@@ -160,6 +160,29 @@ public class AreaDAO extends connectionDB {
         return area;
     }
     
+    public ArrayList<Area> selectAll() throws SQLException {
+        ArrayList<Area> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_AREA()}";
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        ResultSet rs = statement.executeQuery();
+
+        while (rs.next()) {
+            Area area = new Area();
+            area.setId(rs.getInt(COL_ID));
+            area.setNombre(rs.getString(COL_NOMBRE));
+            area.setActivo(rs.getBoolean(COL_ACTIVO));
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            area.setCentro(centro);
+            
+            result.add(area);
+        }
+
+        return result;
+    }
+    
     public ArrayList<Area> selectSomeAreasCenter(String idCentro, int pagina, int cantXpag, String search, boolean activo) throws SQLException {
         ArrayList<Area> areas = new ArrayList<>();//esta es la futura respuesta
 

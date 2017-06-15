@@ -41,7 +41,7 @@ public class EstadoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Estado estado) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_ESTADO(?)}";
         int indexNombre = 2;
@@ -50,12 +50,12 @@ public class EstadoDAO extends connectionDB {
         statement.setString(indexNombre, estado.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -67,7 +67,7 @@ public class EstadoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Estado estado) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_ESTADO(?,?)}";
         int indexId = 1;
@@ -78,12 +78,12 @@ public class EstadoDAO extends connectionDB {
         statement.setString(indexNombre, estado.getNombre());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -95,7 +95,7 @@ public class EstadoDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Estado estado) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_ESTADO(?)}";
         int indexId = 1;
@@ -105,12 +105,12 @@ public class EstadoDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**

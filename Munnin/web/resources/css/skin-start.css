@@ -3,15 +3,23 @@ body {
     position: relative;
     background-color: #ececec; 
 }
-/*-- imagenesTop --*/
+@font-face {
+    font-family: Alpaca;
+    src: url(fonts/AlpacaDemo.ttf);
+}
+h2{
+    font-family: Alpaca;
+    text-transform: uppercase;
+}
+/*-- imgTop --*/
 .topBackgroud{
     margin-left: 50px; 
-    height: 110px;
+    height: 120px;
     background-color: #FFFFFF;
 }
 .topContainer{
-    height: 70px;
-    margin: 20px;
+    height: 100px;
+    margin: 10px;
 }
 .topContainer a:hover,.topContainer a:focus{
     text-decoration: none;
@@ -22,11 +30,17 @@ body {
 .topSeparator{
     display: inline-block;
     border-left: 0.5px black solid;
-    height: 50px;
+    height: 80px;
     vertical-align: middle;
-    margin: 0 30px;
+    margin: 0 25px;
 }
-
+/*--/imgTop--*/
+.grp{
+    width: 32%;
+}
+.correction-frmgrp{
+    padding: 0 15px 0 15px;
+}
 /*-- navbar --*/
 .navbar{
     margin-bottom: 0;
@@ -45,6 +59,7 @@ body {
 }
 .navbar-inverse .navbar-nav>li>a {
     color: #ffffff;
+    font-weight: bold;
 }
 navbar-toggle{
     padding-top: 1px;
@@ -76,7 +91,7 @@ navbar-toggle{
     padding-top: 70px;
 }
 .navbar-inverse .navbar-nav>li>a:hover{
-    background-color: #3ECAB8;
+    background-color: #00a59a;
 }
 /*-- /navbar --*/
 textarea {
@@ -128,13 +143,14 @@ thead {
     height:50px;
     overflow:hidden;
     color:#fff;
+    font-weight: bold;
     cursor: pointer;
 }
 div.left div.active{
     background-color: #0E6257;
 }
 div.left div:hover:not(.active){
-    background-color: #0E6257
+    background-color: #00a59a
 }
 .type{
     height: 47px;;
@@ -197,8 +213,8 @@ div.left div:hover:not(.active){
     transform: translate3d(0, 0, 0) rotate(-45deg);
 }
 .menu {
-    right: 0px;
-    bottom: 0px;
+    right: 0;
+    bottom: 20px;
     position: fixed;
     padding-top: 40px;
     padding-left: 190px;
@@ -206,7 +222,7 @@ div.left div:hover:not(.active){
     height: 90px;
     box-sizing: border-box;
     text-align: left;
-    z-index: 1;
+    z-index: 10;
 }
 .menu-item:hover {
     background: #0E6257;
@@ -234,7 +250,7 @@ div.left div:hover:not(.active){
     transition-duration: 180ms;
 }
 .menu-open-button {
-    z-index: 2;
+    z-index: 10;
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition-duration: 400ms;
     transform: scale(1.1, 1.1) translate3d(0, 0, 0);
@@ -364,8 +380,8 @@ div.left div:hover:not(.active){
     right: 0;
     top: 0;
     padding: 12px 16px 12px 16px;
-    background-color: #000;
-    color: #fff;
+    /*background-color: #000;*/
+    color: #000;
 }
 .closeLi:hover {
     background-color: #f44336;
@@ -399,16 +415,17 @@ div.left div:hover:not(.active){
 .addBtn {
     padding: 10px;
     width: 25%;
-    background: #d9d9d9;
-    color: #555;
+    background: #ec883a;
+    color: #fff;
     float: left;
     text-align: center;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
+    font-weight: bold;
 }
 .addBtn:hover {
-    background-color: #bbb;
+    background-color: #f3b381;
 }
 .container-checklist{
     width: 100%;
@@ -423,11 +440,6 @@ li>input{
 }
 /*-- /checklist --*/
 /*--footer--*/
-.Footer__topMenu__item__link,
-.Footer__topMenu__item__link:visited,
-.Footer__copyrightText {
-    font-weight: 400;
-}
 .Footer__topMenu__item__link,
 .Footer__topMenu__item__link:visited {
     font-size: 13px;
@@ -461,6 +473,8 @@ li>input{
     position: fixed;
     bottom: 0;
     width: 100%;
+    height: 20px;
+    z-index: 9;
 }
 /*--/footer--*/
 /*--responsive--*/
@@ -492,13 +506,19 @@ li>input{
     .form-horizontal .form-group {
         margin-left: 0px;
     }
+    .topIcon{
+        max-height: 70%;
+    }
+    .correction-frmgrp{
+        padding: 0;
+    }
 }
 @media only screen and (max-width: 550px) {
     .topBackgroud{
-        height: 90px;
+        height: 100%;
     }
     .topContainer{
-        margin: 10px;
+        margin: 20px 0 0 0;
     }
     .topSeparator{
         height: 50px;
@@ -523,7 +543,14 @@ ul.pagination li a.active {
     background-color: #4CAF50;
     color: white;
 }
-ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+ul.pagination li a:hover:not(.active) {background-color: #f3b381;}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: pointer;
+    background-color: #ec883a;
+    border-color: #ec883a;
+}
 /*--/pagination--*/
 /*-- Tables --*/
 td {
@@ -533,10 +560,7 @@ tr.selected {
     background-color: #ececec;
 }
 /*--/tables--*/
-/*--/button-tables--*/
-button.tableButton{
-    margin: 0 1px;
-}
+/*--button-tables--*/
 button.tableButton span.glyphicon{
     font-size: 12px;
 }
@@ -559,35 +583,19 @@ button.tableButton span.glyphicon{
     cursor: inherit;
     display: block;
 }
+
 /*--/button-tables--*/
-/*--/keyword bubbles--*/
-.tagcloud ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.tagcloud ul li  {
-    position: relative;
-    display: inline-flex;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 .75em 0 .75em;
-    background-color: #ec883a;
-    border-radius: 15px 15px 15px 15px;
+/*-- buttons color --*/
+.btn-munnin{
     color: #fff;
-    margin: 0 1px 5px 1px;
+    background-color: #00877e;
+    border-color: #00877e;
 }
-.tagcloud ul li div{
-    max-width: 100px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-right: 4px;
-}
-.tagcloud ul li a{
-    text-decoration: none;
+.btn-munnin:hover {
     color: #fff;
-    cursor: pointer;
-    font-size: 1.5em;
+    background-color: #006760;
+    border-color: #00877e;
 }
-/*--/keyword bubbles--*/
+/*-- ??? --*/
+
+/*--/???--*/

@@ -48,7 +48,7 @@ public class ComentarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean Insert(Comentario comentario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL INSERTAR_COMENTARIO(?,?,?,?,?)}";
         int indexValoracion = 1;
@@ -65,12 +65,12 @@ public class ComentarioDAO extends connectionDB {
         statement.setInt(indexIdFuncionario, comentario.getFuncionario().getId());
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -82,7 +82,7 @@ public class ComentarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean update(Comentario comentario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL EDITAR_COMENTARIO(?,?,?,?,?,?)}";
         int indexId = 1;
@@ -102,12 +102,12 @@ public class ComentarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
@@ -119,7 +119,7 @@ public class ComentarioDAO extends connectionDB {
      * @throws SQLException
      */
     public boolean delete(Comentario comentario) throws SQLException {
-        boolean resultado;
+        boolean result;
 
         String query = "{CALL ELIMINAR_COMENTARIO(?)}";
         int indexId = 1;
@@ -129,12 +129,12 @@ public class ComentarioDAO extends connectionDB {
 
         if (statement.executeUpdate() == 1) {
             this.getConexion().commit();
-            resultado = true;
+            result = true;
         } else {
             this.getConexion().rollback();
-            resultado = false;
+            result = false;
         }
-        return resultado;
+        return result;
     }
 
     /**
