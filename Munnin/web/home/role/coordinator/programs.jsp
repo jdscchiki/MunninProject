@@ -34,6 +34,11 @@
                                 data-target="#addProgram">
                             <span class="glyphicon glyphicon-plus"></span> Agregar
                         </button>
+                        <tables:dataTableActionButton action="edit"
+                                                      panelTable="formActionProgramsEnable"
+                                                      icon="glyphicon glyphicon-edit">
+                            Editar
+                        </tables:dataTableActionButton>
                         <tables:dataTableActionButton action="disable"
                                                       panelTable="formActionProgramsEnable"
                                                       icon="glyphicon glyphicon-remove">

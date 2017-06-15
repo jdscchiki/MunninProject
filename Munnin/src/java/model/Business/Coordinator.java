@@ -305,6 +305,17 @@ public class Coordinator {
         return resultado;
     }
 
+    public static Programa viewAllInfoProgram(int idProgram) throws NamingException, SQLException {
+        Programa resultado = new Programa();
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        resultado.setId(idProgram);
+        resultado = programaDAO.select(resultado);
+
+        programaDAO.closeConnection();
+
+        return resultado;
+    }
+
     /**
      * Metodo para asignar roles a los funcionarios
      *
@@ -418,14 +429,10 @@ public class Coordinator {
         return funcionarios;
     }
 
-    public static int updateArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int updateArea(Area area, String idCenter) throws NamingException, SQLException {
         /*
         0. fallo
         1. completado
-        2. existe un usuario activo con los datos ingresados
-        3. existe un usuario no-activo con el mismo correo
-        4. existe un usuario no-activo con el mismo documento
-        5. el correo no pudo ser enviado
          */
 
         int resultado = 0;
@@ -440,6 +447,23 @@ public class Coordinator {
         }
 
         areaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int updateProgram(Programa programa) throws NamingException, SQLException {
+        /*
+        0. fallo
+        1. completado
+         */
+
+        int resultado = 0;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if (programaDAO.updateName(programa)) {
+            resultado = 1;
+        } 
+
+        programaDAO.closeConnection();
 
         return resultado;
     }
@@ -740,11 +764,11 @@ public class Coordinator {
         VersionDAO versionDAO = new VersionDAO();
         resultado = versionDAO.updateEstado(version);
         versionDAO.closeConnection();
-        
+
         NotificacionDAO notificacionDAO = new NotificacionDAO();
         notificacionDAO.sendNotification(6, idVersion);
         notificacionDAO.closeConnection();
-        
+
         return resultado;
     }
 
@@ -754,7 +778,7 @@ public class Coordinator {
         VersionDAO versionDAO = new VersionDAO();
         countAreas = versionDAO.countFilesCoordinatorCenter(idCentro, search);
         versionDAO.closeConnection();
-        
+
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
             paginas++;

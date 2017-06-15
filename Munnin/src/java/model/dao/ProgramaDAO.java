@@ -181,6 +181,26 @@ public class ProgramaDAO extends connectionDB {
         return result;
     }
     
+    public boolean updateName(Programa programa) throws SQLException {
+        boolean result;
+
+        String query = "{CALL EDITAR_PROGRAMA_NOMBRE(?,?)}";
+        int indexId = 1;
+        int indexNombre = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, programa.getId());
+        statement.setString(indexNombre, programa.getNombre());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
+        return result;
+    }
+    
     public ArrayList<Programa> selectAllCenter(String idCenter) throws SQLException{
         ArrayList<Programa> result = new ArrayList<>();
         

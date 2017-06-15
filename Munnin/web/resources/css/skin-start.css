@@ -2,6 +2,7 @@ body {
     font-family: calibri;/*alpaca */  
     position: relative;
     background-color: #ececec; 
+    min-width: 340px;
 }
 @font-face {
     font-family: Alpaca;
@@ -106,7 +107,7 @@ textarea {
 }
 @media screen and (max-width: 580px) {
     .table {
-        display: block;
+        display: table;
     }
 }
 thead {

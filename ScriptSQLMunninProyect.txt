@@ -4397,3 +4397,21 @@ v.url_version,
 END $$
 
 DELIMITER ;
+
+-- ----------------------------------------------------
+-- EDITAR_PROGRAMA_NOMBRE
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS editar_programa_nombre $$
+CREATE PROCEDURE editar_programa_nombre (
+	IN _id_programa INT ,
+	IN _nombre_programa VARCHAR(150))
+BEGIN
+	UPDATE programa
+	SET nombre_programa = _nombre_programa 
+	WHERE id_programa = _id_programa ;
+END $$
+
+DELIMITER ;

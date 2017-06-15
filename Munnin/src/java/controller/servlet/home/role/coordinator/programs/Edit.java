@@ -15,11 +15,13 @@ import model.Business.Coordinator;
 import model.bean.Programa;
 
 /**
+ * Servlet encargado de editar los valores guardados en base de datos sobre las
+ * áreas de un centro
  *
- * @author Juan David Segura
+ * @version 1.0
  */
-@WebServlet(urlPatterns = {"/home/role/coordinator/programs/manage"})
-public class Manage extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/coordinator/programs/edit"})
+public class Edit extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,46 +36,28 @@ public class Manage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String strIdProgram = request.getParameter("id");
-            int idProgram;
-            String opcion = request.getParameter("action");
-            idProgram = Integer.parseInt(strIdProgram);
+            String nombre = request.getParameter("nombre");
+            String id = request.getParameter("id");
 
-            Programa programa = new Programa();
-            programa.setId(idProgram);
-            if (idProgram <= 0) {
-                request.setAttribute("messageType", "warning");
-                request.setAttribute("message", "Para realizar la operación es necesario seleccionar uno de los programas");
-                request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-            } else {
-                switch (opcion) {
-                    case "disable":
-                        switch (Coordinator.disableProgram(programa)) {
-                            case 0:
-                                request.setAttribute("messageType", "danger");
-                                request.setAttribute("message", "El programa no ha podido ser inhabilitado");
-                                break;
-                            case 1:
-                                request.setAttribute("messageType", "success");
-                                request.setAttribute("message", "El programa fue inhabilitado exitosamente");
-                                break;
-                        }
-                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-                        break;
-                    case "edit":
-                        Programa programaResult = Coordinator.viewAllInfoProgram(idProgram);
-                        request.setAttribute("program", programaResult);
-                        request.getRequestDispatcher("/home/role/coordinator/programs/modalEdit.jsp").forward(request, response);
-                        break;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-                        break;
-                }
+            Programa edit = new Programa();
+            edit.setNombre(nombre);
+            edit.setId(Integer.parseInt(id));
+            switch (Coordinator.updateProgram(edit)) {
+                case 0:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "no ha podido realizarse la edicion");
+                    break;
+                case 1:
+                    request.setAttribute("messageType", "success");
+                    request.setAttribute("message", "la edicion se ha completado exitosamente");
+                    break;
             }
-        } catch (Exception e) {
-            request.setAttribute("mensaje", e);
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "ha ocurrido un problema, por favor vuelva a cargar la pagina");
+            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
