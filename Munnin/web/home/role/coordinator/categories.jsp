@@ -46,20 +46,20 @@
             </div>
             <div class="col-lg-2">
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-success btn-block"
                         data-toggle="modal" 
                         data-target="#registerCategories">
-                    Crear Categoria</button>
+                    <span class="glyphicon glyphicon-plus"></span> Crear</button>
                 <button type="button" 
                         class="btn btn-primary btn-block" 
                         data-panel-table="formActionCategoriesEnable"
                         data-action="editCategories">
-                    Editar Categoria</button>
+                    <span class="glyphicon glyphicon-edit"></span>Editar</button>
                 <button type="button" 
-                        class="btn btn-primary btn-block" 
+                        class="btn btn-danger btn-block" 
                         data-panel-table="formActionCategoriesEnable"
                         data-action="disable">
-                    Inhabilitar</button>
+                    <span class="glyphicon glyphicon-minus"></span>Inhabilitar</button>
             </div>
             <div class="col-lg-12">
                 <button type="button" 

@@ -17,6 +17,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Número Version</th>
+                    <th>Estado Version</th>
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Palabras clave</th>
@@ -26,12 +28,15 @@
                    data-display="${displayResult}"
                    data-actual-state="${lastSearch}page=${page}"
                    data-url-receiver="${urlServlet}">
-                <c:forEach items="${contentTable}" var="version" >
-                    <tr data-id="${version.getId()}" 
+                <c:forEach items="${contentTable}" var="producto" >
+                    <tr data-id="${producto.getVersiones().get(0).getId()}" 
                         data-data-table="${idTable}">
+                        <td>${producto.getVersiones().get(0).getNumero()}</td>
+                        <td>${producto.getVersiones().get(0).getEstado().getNombre()}</td>
                         <td>${producto.getNombre()}</td>
                         <td>${producto.getDescripcion()}</td>
                         <td>${producto.getPalabrasClave()}</td>
+                        
                     </tr>
                 </c:forEach>
             </tbody>

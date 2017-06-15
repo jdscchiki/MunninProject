@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Instructor;
-import model.bean.Producto;
+import model.bean.Version;
 
 /**
  *
@@ -36,19 +36,19 @@ public class ManageProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idProducto = request.getParameter("id");
-            int idProduct;
+            String idVersion = request.getParameter("id");
+            int idVersionI;
             String opcion = request.getParameter("action");
-            idProduct = Integer.parseInt(idProducto);
-            if (idProduct <= 0) {
+            idVersionI = Integer.parseInt(idVersion);
+            if (idVersionI <= 0) {
                 request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar el objeto");
             } else {
                 switch (opcion) {
 
                     case "verObjeto":
-                        Producto prodResult = Instructor.viewAllInfoProducto(idProduct);
-                        request.setAttribute("search", prodResult);
+                        Version verResult = Instructor.viewAllInfoVersion(idVersionI);
+                        request.setAttribute("verResult", verResult);
                         request.getRequestDispatcher("/home/role/instructor/search/modalVerObjeto.jsp").forward(request, response);
                         return;
                     default:

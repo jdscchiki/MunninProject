@@ -49,13 +49,13 @@ public class SeeProduct extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Instructor.countPagesProducto(filter, cantXpag, search);
+            int totalPages = Instructor.countPagesSeeProducto(filter, cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
             request.setAttribute("contentTable",Instructor.viewObjet(filter, page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodySearch");
+            request.setAttribute("idTable", "tableBodyVer");
             request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/instructor/pagerSearch"));
             request.getRequestDispatcher("/home/role/instructor/search/tablaSearch.jsp").forward(request, response);
         } catch (Exception ex) {

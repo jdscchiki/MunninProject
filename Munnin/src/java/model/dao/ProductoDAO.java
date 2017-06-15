@@ -344,21 +344,91 @@ public class ProductoDAO extends ConexionBD {
 
         return productos;
     }
-    
-     public int countPagesProducto(Funcionario funcionario, int filter, String search) throws SQLException {
+
+    public int countProduct(Funcionario funcionario, int filter, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
         String query = "{CALL VER_PRODUCTO_CONTEO(?,?,?)}";
-        int indexId =1;
+        int indexId = 1;
         int indexFiltro = 2;
-        int indexSearch = 3;
+        int indexBuscar = 3;
 
         String resConteo = "conteo";//nombre de la columna del select
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, funcionario.getId());
+        statement.setInt(indexFiltro, filter);
+        statement.setString(indexBuscar, search);
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+
+    public ArrayList<Producto> selectSomeProducto(Funcionario funcionario, int filter, int page, int cantXpag, String search) throws SQLException {
+        ArrayList<Producto> productos = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_PRODUCTO_PAGINADO(?,?,?,?,?)}";
+        int indexId =1;
+        int indexFilter = 2;
+        int indexPagina = 3;
+        int indexCantXPag = 4;
+        int indexSearch = 5;
+        
+        
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId,funcionario.getId());
+        statement.setInt(indexFilter, filter);
+        statement.setInt(indexPagina, page);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID));
+            producto.setNombre(rs.getString(COL_NOMBRE));
+            producto.setDescripcion(rs.getString(COL_DESCRIPCION));
+            producto.setPalabrasClave(rs.getString(COL_PALABRAS_CLAVE));
+            Version version = new Version();
+            version.setId(rs.getInt("id_version"));
+            version.setNumero(rs.getInt("numero_version"));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt("id_estado_version"));
+            estado.setNombre(rs.getString("nombre_estado"));
+            version.setEstado(estado);
+            
+            ArrayList<Version> versiones = new ArrayList<>();
+            versiones.add(version);
+            producto.setVersiones(versiones);
+            productos.add(producto);
+            
+        }
+
+        return productos;
+
+    }
+
+    public int countCorrectionProducto(int filter, String search) throws SQLException {
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_PRODUCTO_CORRECCION_CONTEO(?,?)}";
+        int indexFiltro = 1;
+        int indexSearch = 2;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexFiltro, filter);
         statement.setString(indexSearch, search);
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
@@ -368,7 +438,5 @@ public class ProductoDAO extends ConexionBD {
         }
         return conteo;
     }
-    
-    
 
 }

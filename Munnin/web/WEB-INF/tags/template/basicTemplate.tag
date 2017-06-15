@@ -46,39 +46,16 @@
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="50">
         <div id="main" class="contain">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-9"> 
+                    <div class="col-md-12"> 
                         <div class="panelMunnin">
                             <h3>${panelTitle}</h3>
                             <hr>
                             <jsp:doBody />
                         </div>
                     </div>
-                    <div class="col-md-3"> 
-                        <div class="panelMunnin">
-                            <div class="media">
-                                <div class="media-left media-middle">
-                                    <img src="${pageContext.request.contextPath}/resources/img/img_avatar2.png" class="media-object" style="width:60px">
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Media Middle</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="media">
-                                <div class="media-left media-middle">
-                                    <img src="${pageContext.request.contextPath}/resources/img/img_avatar2.png" class="media-object" style="width:60px">
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Media Middle</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

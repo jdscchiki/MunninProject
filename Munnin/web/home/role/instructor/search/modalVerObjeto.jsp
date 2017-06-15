@@ -22,13 +22,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="formVerObjetoNombre" class="control-label col-lg-3">Nombre : ${prodResult.getId()}</label>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" id="formVerObjetoNombre" name="nombre" placeholder="Nombre Objeto" maxlength="70">
+                        <label for="formVerObjetoNombre" class="control-label col-xs-4">Nombre:</label>
+                        <div class="col-xs-8">
+                            <label class="fontL control-label">${verResult.getProducto().getNombre()}</label>            
                         </div>
                     </div>
+                    <div class="form-group">    
+                        <label for="formVerObjetoDescripcion" class="control-label col-xs-4">Descripción:</label>
+                        <div class="col-xs-8">
+                            <label class="fontL control-label">${verResult.getProducto().getDescripcion()}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">    
+                        <label for="formVerObjetoPalabra" class="control-label col-xs-4">Palabras Clave:</label>
+                        <div class="col-xs-8">
+                            <label class="fontL control-label">${verResult.getProducto().getPalabrasClave()}"</label> 
+                        </div>
+                    </div>    
                     <div class="form-group">
-                        <div id="divVerObjeto_message" class="col-lg-offset-3 col-lg-8">
+                        <div id="divVerObjeto_message" class="col-xs-offset-3 col-xs-8">
 
                         </div>
                     </div>
@@ -42,12 +54,14 @@
 
         </div>
     </form>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#verObjeto").modal();
-            $(document).on("hidden.bs.modal", "#verObjeto", function (event) {
-                $(this).remove();
-            });
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#verObjeto").modal();
+        $(document).on("hidden.bs.modal", "#verObjeto", function (event) {
+            ajaxLoadContent("${pageContext.request.contextPath}/home/role/instructor/search", "fulltable");
+            $(this).remove();
         });
-    </script>
+    });
+</script>
 </div>

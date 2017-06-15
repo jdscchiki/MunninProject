@@ -374,13 +374,13 @@ public class CategoriaDAO extends ConexionBD {
         //datos de la consulta en base de datos
         String query = "{CALL VER_CATEGORIA_ES_ULTIMO(?,?)}";
         int indexIdCentro = 1;
-        int indexIdArea = 2;
+        int indexIdCategoria = 2;
         String colAnswer = "RESULTADO";
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setString(indexIdCentro, idCentro);
-        statement.setInt(indexIdArea, idcate);
+        statement.setInt(indexIdCategoria, idcate);
 
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {

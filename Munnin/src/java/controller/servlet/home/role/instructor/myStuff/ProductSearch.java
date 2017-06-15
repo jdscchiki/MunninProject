@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.servlet.home.role.instructor.search;
+package controller.servlet.home.role.instructor.myStuff;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -13,17 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Business.Instructor;
-import model.bean.Producto;
 import model.bean.Funcionario;
 
 /**
  *
  * @author Monica
  */
-@WebServlet(urlPatterns = {"/home/role/instructor/search/pagerSearch"})
-public class SearchProduct extends HttpServlet {
+@WebServlet(urlPatterns = {"/home/role/instructor/mystuff/pagerMystuff"})
+public class ProductSearch extends HttpServlet {
 
-     /**
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -36,12 +35,7 @@ public class SearchProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String filtro = request.getParameter("filtro");
-            int filter;
-            if (filtro == null) 
-                filter = 0;            
-            else                
-            filter = Integer.parseInt(filtro);
+            int filter = 0;
             String search = request.getParameter("search");
             String strPage = request.getParameter("page");
             int page = 1;
@@ -54,20 +48,21 @@ public class SearchProduct extends HttpServlet {
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
-            int totalPages = Instructor.countPagesProductoApproved(filter, cantXpag, search);
+            int totalPages = Instructor.countPagesProduct(funcionario,filter, cantXpag, search);
             request.setAttribute("page", page);
             request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable", Instructor.viewObjetApproved(filter, page, cantXpag, search));
+            request.setAttribute("contentTable", Instructor.viewObjetProduct(funcionario,filter, page, cantXpag, search));
             request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
             request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyVer");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/instructor/search/pagerSearch"));
-            request.getRequestDispatcher("/home/role/instructor/search/tablaSearch.jsp").forward(request, response);
+            request.setAttribute("idTable", "tableBodySubir");
+            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/instructor/mystuff/pagerMystuff"));
+            request.getRequestDispatcher("/home/role/instructor/mystuff/tableMystuff.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

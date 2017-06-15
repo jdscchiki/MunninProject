@@ -27,7 +27,6 @@ public class VersionDAO extends ConexionBD {
     private static final String COL_ID = "id_version";
     private static final String COL_NUMERO = "numero_version";
     private static final String COL_URL = "url_version";
-    private static final String COL_NOTIFICACION = "notificacion_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
     private static final String COL_FECHA_APROBACION = "fecha_aprobacion_version";
@@ -186,7 +185,6 @@ public class VersionDAO extends ConexionBD {
             version.setId(rs.getInt(COL_ID));
             version.setNumero(rs.getInt(COL_NUMERO));
             version.setUrl(rs.getString(COL_URL));
-            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
@@ -209,7 +207,7 @@ public class VersionDAO extends ConexionBD {
 
         return version;
     }
-    
+
     public ArrayList<Version> selectAll() throws SQLException {
         ArrayList<Version> result = new ArrayList<>();
 
@@ -223,7 +221,6 @@ public class VersionDAO extends ConexionBD {
             version.setId(rs.getInt(COL_ID));
             version.setNumero(rs.getInt(COL_NUMERO));
             version.setUrl(rs.getString(COL_URL));
-            version.setNotificacion(rs.getBoolean(COL_NOTIFICACION));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
             version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
@@ -235,28 +232,31 @@ public class VersionDAO extends ConexionBD {
             version.setTipoArchivo(tipoArchivo);
             Producto producto = new Producto();
             producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            producto.setNombre(rs.getString("nombre_producto"));
+            producto.setDescripcion(rs.getString("descripcion_producto"));
+            producto.setPalabrasClave(rs.getString("palabras_clave"));
             version.setProducto(producto);
             Centro centro = new Centro();
             centro.setId(rs.getString(COL_ID_CENTRO));
             version.setCentro(centro);
-            
+
             result.add(version);
         }
 
         return result;
     }
-    
-    public int create(Version version) throws SQLException{
+
+    public int create(Version version) throws SQLException {
         int result = 0;
 
         String query = "INSERT INTO version ("
-                +COL_NUMERO+","
-                +COL_URL+","
-                +COL_FECHA+","
-                +COL_ID_ESTADO+","
-                +COL_ID_TIPO_ARCHIVO+","
-                +COL_ID_PRODUCTO+","
-                +COL_ID_CENTRO+") "
+                + COL_NUMERO + ","
+                + COL_URL + ","
+                + COL_FECHA + ","
+                + COL_ID_ESTADO + ","
+                + COL_ID_TIPO_ARCHIVO + ","
+                + COL_ID_PRODUCTO + ","
+                + COL_ID_CENTRO + ") "
                 + "VALUES(?,'',CURRENT_DATE,3,?,?,?)";
         int indexNumero = 1;
         int indexIdTipoArchivo = 2;
@@ -282,13 +282,13 @@ public class VersionDAO extends ConexionBD {
 
         return result;
     }
-    
-    public boolean editUrl(Version version) throws SQLException{
+
+    public boolean editUrl(Version version) throws SQLException {
         boolean result = false;
-        
+
         String query = "UPDATE version SET "
-                + COL_URL +"=? "
-                + "WHERE "+COL_ID +"=?";
+                + COL_URL + "=? "
+                + "WHERE " + COL_ID + "=?";
         int indexURL = 1;
         int indexId = 2;
 
@@ -301,7 +301,51 @@ public class VersionDAO extends ConexionBD {
             this.getConexion().commit();
             result = true;
         }
-        
+
         return result;
+    }
+
+    public Version selectInfo(Version version) throws SQLException {
+
+        String query = "{CALL VER_VERSION_COMPLETA(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, version.getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setUrl(rs.getString(COL_URL));
+            version.setFecha(rs.getDate(COL_FECHA));
+            version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID_ESTADO));
+            estado.setNombre(rs.getString("nombre_estado"));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
+            version.setTipoArchivo(tipoArchivo);
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            producto.setNombre(rs.getString("nombre_producto"));
+            producto.setDescripcion(rs.getString("descripcion_producto"));
+            producto.setPalabrasClave(rs.getString("palabras_clave_producto"));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            version.setCentro(centro);
+
+            if (!encontrado) {
+                version = null;
+            }
+
+        }
+        return version;
+
     }
 }
