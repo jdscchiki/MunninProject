@@ -6,7 +6,6 @@
 package controller.servlet.home.role.coordinator.reports;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,8 +42,17 @@ public class Search extends HttpServlet {
             String idCentro = funcionario.getCentro().getId();
 
             ChartDAO chartDAO = new ChartDAO();
-            Chart chart = chartDAO.getChartAprovedVersionsCenter(idCentro, 12);
-            request.setAttribute("chart", chart);
+            Chart chart1 = chartDAO.getChartAprovedVersionsCenter(idCentro, 12);
+            Chart chart2 = chartDAO.getChartVersionsUploadCenter(idCentro, 12);
+            Chart chart3 = chartDAO.getChartCategoryCenter(idCentro);
+            Chart chart4 = chartDAO.getChartProgramsCenter(idCentro);
+            Chart chart5 = chartDAO.getChartViewsCenter(idCentro,12);
+            chartDAO.closeConnection();
+            request.setAttribute("chart1", chart1);
+            request.setAttribute("chart2", chart2);
+            request.setAttribute("chart3", chart3);
+            request.setAttribute("chart4", chart4);
+            request.setAttribute("chart5", chart5);
             request.getRequestDispatcher("/home/role/coordinator/reports/charts.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
