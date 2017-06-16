@@ -19,7 +19,7 @@ public class Version implements java.io.Serializable {
     private boolean notificacion;
     private Date fecha;
     private Date fechaCaducidad;
-    private Date fechaAprovacion;
+    private Date fechaAprobacion;
     private Estado estado;
     private TipoArchivo tipoArchivo;
     private Producto producto;
@@ -100,12 +100,12 @@ public class Version implements java.io.Serializable {
         this.fechaCaducidad = fechaCaducidad;
     }
 
-    public Date getFechaAprovacion() {
-        return fechaAprovacion;
+    public Date getFechaAprobacion() {
+        return fechaAprobacion;
     }
 
-    public void setFechaAprovacion(Date fechaAprovacion) {
-        this.fechaAprovacion = fechaAprovacion;
+    public void setFechaAprobacion(Date fechaAprovacion) {
+        this.fechaAprobacion = fechaAprovacion;
     }
 
     public Estado getEstado() {

@@ -87,7 +87,7 @@ public class Instructor {
                 } else {
                     //guarda la ruta en la base de datos
                     version.setId(idVersion);
-                    version.setUrl(savePath+File.separator+file.getSubmittedFileName());
+                    version.setUrl(savePath + File.separator + file.getSubmittedFileName());
                     versionDAO = new VersionDAO();
                     if (versionDAO.editUrl(version)) {
                         result[0] = 1;
@@ -105,11 +105,11 @@ public class Instructor {
                 }
             }
         }
-        
+
         NotificacionDAO notificacionDAO = new NotificacionDAO();
         notificacionDAO.sendNotification(1, idVersion);
         notificacionDAO.closeConnection();
-        
+
         return result;
     }
 
@@ -125,7 +125,7 @@ public class Instructor {
 
     public static int setCategoriesProduct(Producto producto) throws NamingException, SQLException {
         int result = 0;
-        
+
         if (producto == null
                 || producto.getId() <= 0
                 || producto.getCategorias() != null) {
@@ -136,28 +136,172 @@ public class Instructor {
 
         return result;
     }
-    
-    public static ArrayList<Programa> viewAllProgrammes(String idCenter) throws NamingException, SQLException{
+
+    public static ArrayList<Programa> viewAllProgrammes(String idCenter) throws NamingException, SQLException {
         ArrayList<Programa> result;
-        
+
         ProgramaDAO programaDAO = new ProgramaDAO();
         result = programaDAO.selectAllCenter(idCenter);
         programaDAO.closeConnection();
-        
+
         return result;
     }
-    
+
     public static int setProgrammesProduct(Producto producto) throws NamingException, SQLException {
         int result = 0;
-        
+
         if (producto == null
                 || producto.getId() <= 0
-                || producto.getProgramas()!= null) {
+                || producto.getProgramas() != null) {
             ProductoDAO productoDAO = new ProductoDAO();
             result = productoDAO.insertProgrammes(producto);
             productoDAO.closeConnection();
         }
 
+        return result;
+    }
+
+    public static Version viewAllInfoVersion(int idVersionI) throws NamingException, SQLException {
+        Version resultado = new Version();
+        VersionDAO versionDAO = new VersionDAO();
+        resultado.setId(idVersionI);
+        resultado = versionDAO.selectInfo(resultado);
+
+        versionDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int countPagesProductoApproved(int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countProductoApproved(filter, search);
+        productoDAO.closeConnection();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static ArrayList<Producto> viewObjetApproved(int filter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Producto> producto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        producto = productoDAO.selectSomeProductoAprobado(filter, pagina, cantXpag, search);
+
+        productoDAO.closeConnection();
+
+        return producto;
+    }
+
+    public static int countPagesSeeProducto(int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countProductoApproved(filter, search);
+        productoDAO.closeConnection();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static ArrayList<Producto> viewObjet(int filter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Producto> producto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        producto = productoDAO.selectSomeProductoAprobado(filter, pagina, cantXpag, search);
+
+        productoDAO.closeConnection();
+
+        return producto;
+    }
+
+    public static Object viewObjetProduct(Funcionario funcionario, int filter, int page, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Producto> producto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        producto = productoDAO.selectSomeProducto(funcionario, filter, page, cantXpag, search);
+        productoDAO.closeConnection();
+
+        return producto;
+    }
+
+    public static int countPagesProduct(Funcionario funcionario, int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countProduct(funcionario, filter, search);
+        productoDAO.closeConnection();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static int countPagesCorrectionProducto(int filter, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countProducto;
+        ProductoDAO productoDAO = new ProductoDAO();
+        countProducto = productoDAO.countCorrectionProducto(filter, search);
+        productoDAO.closeConnection();
+        paginas = countProducto / cantXpag;
+        if (countProducto % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static int[] uploadNewVersion(Part file, Producto producto, String idCentro, int idAutor) throws NamingException, SQLException {
+        int[] result = {0, 0};
+        int idVersion = 0;
+        //crea el registro de la version en la base de datos
+        Version version = new Version();
+        version.setNumero(1);
+        version.setCentro(new Centro());
+        version.getCentro().setId(idCentro);
+        version.setProducto(producto);
+        version.setTipoArchivo(new TipoArchivo());
+        version.getTipoArchivo().setId(1);
+
+        VersionDAO versionDAO = new VersionDAO();
+        idVersion = versionDAO.create(version);
+        versionDAO.closeConnection();
+        if (idVersion == 0) {
+            result[0] = 3;
+        } else {
+            //calcula la ruta en donde se guardara el archivo con el id del centro, id producto y id version
+            String savePath = File.separator + "c" + idCentro + File.separator + "p" + producto.getId() + File.separator + "v" + idVersion;
+
+            //guarda el archivo
+            if (!FileManager.saveFileMunninServer(file, savePath)) {
+                result[0] = 4;
+            } else {
+                //guarda la ruta en la base de datos
+                version.setId(idVersion);
+                version.setUrl(savePath + File.separator + file.getSubmittedFileName());
+                versionDAO = new VersionDAO();
+                if (versionDAO.editUrl(version)) {
+                    result[0] = 1;
+                    result[1] = producto.getId();
+                    ArrayList<Funcionario> autores = new ArrayList<>();
+                    Funcionario funcionario = new Funcionario();
+                    funcionario.setId(idAutor);
+                    autores.add(funcionario);
+                    version.setFuncionarios(autores);
+                    //versionDAO.setAutores(version);
+                } else {
+                    result[0] = 5;
+                }
+                versionDAO.closeConnection();
+            }
+
+        }
         return result;
     }
 }

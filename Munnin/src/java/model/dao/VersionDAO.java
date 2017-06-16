@@ -30,7 +30,7 @@ public class VersionDAO extends connectionDB {
     private static final String COL_URL = "url_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
-    private static final String COL_FECHA_APROVACION = "fecha_aprobacion_version";
+    private static final String COL_FECHA_APROBACION = "fecha_aprobacion_version";
     private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
@@ -75,7 +75,7 @@ public class VersionDAO extends connectionDB {
         statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
-        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
+        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprobacion());
         statement.setInt(indexIdEstado, version.getEstado().getId());
         statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
         statement.setInt(indexIdProducto, version.getProducto().getId());
@@ -121,7 +121,7 @@ public class VersionDAO extends connectionDB {
         statement.setBoolean(indexNotificacion, version.isNotificacion());
         statement.setDate(indexFecha, (java.sql.Date) version.getFecha());
         statement.setDate(indexFechaCaducidad, (java.sql.Date) version.getFechaCaducidad());
-        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprovacion());
+        statement.setDate(indexfechaAprovacion, (java.sql.Date) version.getFechaAprobacion());
         statement.setInt(indexIdEstado, version.getEstado().getId());
         statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
         statement.setInt(indexIdProducto, version.getProducto().getId());
@@ -188,7 +188,7 @@ public class VersionDAO extends connectionDB {
             version.setUrl(rs.getString(COL_URL));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);
@@ -224,7 +224,7 @@ public class VersionDAO extends connectionDB {
             version.setUrl(rs.getString(COL_URL));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);
@@ -233,6 +233,9 @@ public class VersionDAO extends connectionDB {
             version.setTipoArchivo(tipoArchivo);
             Producto producto = new Producto();
             producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            producto.setNombre(rs.getString("nombre_producto"));
+            producto.setDescripcion(rs.getString("descripcion_producto"));
+            producto.setPalabrasClave(rs.getString("palabras_clave"));
             version.setProducto(producto);
             Centro centro = new Centro();
             centro.setId(rs.getString(COL_ID_CENTRO));
@@ -511,5 +514,49 @@ public class VersionDAO extends connectionDB {
         }
         
         return result;
+    }
+    
+    public Version selectInfo(Version version) throws SQLException {
+
+        String query = "{CALL VER_VERSION_COMPLETA(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, version.getId());
+        ResultSet rs = statement.executeQuery();
+
+        boolean encontrado = false;
+        while (rs.next()) {
+            encontrado = true;
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setUrl(rs.getString(COL_URL));
+            version.setFecha(rs.getDate(COL_FECHA));
+            version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
+            version.setFechaAprobacion(rs.getDate(COL_FECHA_APROBACION));
+            Estado estado = new Estado();
+            estado.setId(rs.getInt(COL_ID_ESTADO));
+            estado.setNombre(rs.getString("nombre_estado"));
+            version.setEstado(estado);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
+            version.setTipoArchivo(tipoArchivo);
+            Producto producto = new Producto();
+            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            producto.setNombre(rs.getString("nombre_producto"));
+            producto.setDescripcion(rs.getString("descripcion_producto"));
+            producto.setPalabrasClave(rs.getString("palabras_clave_producto"));
+            version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
+            version.setCentro(centro);
+
+            if (!encontrado) {
+                version = null;
+            }
+
+        }
+        return version;
+
     }
 }
