@@ -116,8 +116,7 @@
             <c:if test="${message !=null}">
                 <jsp:include page="/WEB-INF/model/message.jsp" />
             </c:if>
-            <!--aun falta crear la pagina para esto-->
-            <a href="#">¡He olvidado mi contraseña! </a>
+            <a href="${pageContext.request.contextPath}/recoverPassword.jsp">¡He olvidado mi contraseña! </a>
             <button>
                 <!--<i class="spinner"></i>-->
                 <span class="state" style="font-size: 25px;"> Ingresar </span>

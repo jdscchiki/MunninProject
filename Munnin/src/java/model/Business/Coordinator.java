@@ -85,7 +85,7 @@ public class Coordinator {
             } else {
                 if (funcionarioDAO.registerFunctionary(funcionario)) {
                     funcionario.setContrasena(null);
-                    if (Mail.enviarPrimeraContrasena(funcionario, contrasena)) {
+                    if (Mail.sendFirstPassword(funcionario, contrasena)) {
                         resultado = 1;
                     } else {
                         resultado = 5;

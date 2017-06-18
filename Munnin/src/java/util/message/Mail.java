@@ -39,30 +39,72 @@ public class Mail {
      * Metodo dedicado al envio de correos con la contraseña para ingresar a la
      * plataforma
      *
-     * @param destinatario Funcionario al cual se le envia el correo
-     * @param Contrasena Contraseña sin encriptar que sera enviada al correo
+     * @param funcionario Funcionario al cual se le envia el correo
+     * @param password Contraseña sin encriptar que sera enviada al correo
      * @return True si se envio correctamente la contraseña, False en caso
      * contrario
      * @throws java.io.UnsupportedEncodingException Problemas con los Correos de origen
      * @throws javax.mail.internet.AddressException Problemas con el Correo de destino
      */
-    public static boolean enviarPrimeraContrasena(Funcionario destinatario, String Contrasena) throws UnsupportedEncodingException, AddressException, MessagingException {
+    public static boolean sendFirstPassword(Funcionario funcionario, String password) throws UnsupportedEncodingException, AddressException, MessagingException {
         boolean resultado = true;
 
-        String nombreCompleto = destinatario.getNombre() + " " + destinatario.getApellido();
+        String nombreCompleto = funcionario.getNombre() + " " + funcionario.getApellido();
 
         String mensajeT = "<p>Bienvenido al aplicativo Munnin</p>"
                 + "<p>Su correo ha sido registrado en nuestro sistema con los siguientes datos</p>"
                 + "<p>Nombre Completo: " + nombreCompleto + "</p>"
-                + "<p>Documento: " + destinatario.getDocumento() + "</p>"
-                + "<p>Contraseña: " + Contrasena + "</p>";
+                + "<p>Documento: " + funcionario.getDocumento() + "</p>"
+                + "<p>Contraseña: " + password + "</p>";
         Properties properties = new Properties();
         Session session = Session.getInstance(properties);
         MimeMessage msg = new MimeMessage(session);
 
         Transport t = null;
         Address origen = new InternetAddress(CORREO_DE, NOMBRE_DE);
-        Address destino = new InternetAddress(destinatario.getCorreo());
+        Address destino = new InternetAddress(funcionario.getCorreo());
+
+        msg.setText(mensajeT, "utf-8", "html");
+        msg.setFrom(origen);
+        msg.setRecipient(Message.RecipientType.TO, destino);
+        msg.setSubject(MENSAJE_ASUNTO);
+
+        t = session.getTransport(PROTOCOLO);
+        t.connect(HOST, USUARIO, CONTRASENA);
+        t.sendMessage(msg, msg.getAllRecipients());
+        resultado = true;
+
+        if (t != null) {
+            try {
+                t.close();
+            } catch (MessagingException ex) {
+                System.out.println("Error al cerrar la conexion con el correo");
+            }
+        }
+
+        return resultado;
+    }
+    
+    public static boolean sendGeneratedPassword(Funcionario funcionario, String password) throws UnsupportedEncodingException, AddressException, MessagingException {
+        boolean resultado = true;
+
+        String completeName = funcionario.getNombre() + " " + funcionario.getApellido();
+
+        String mensajeT = "<p>Recuperacion de cuenta Munnin</p>"
+                + "<p>hemos actualizado la contraseña en el aplicativo, por favor"
+                + " ingrese con la siguiente contraseña, al iniciar sesion puede"
+                + " dirigirse a la esquina superior derecha, seleccionar su perfil,"
+                + " y seleccionar la opcion \"cambiar contraseña\"</p>"
+                + "<p>Nombre Completo: " + completeName + "</p>"
+                + "<p>Documento: " + funcionario.getDocumento() + "</p>"
+                + "<p>Contraseña: " + password + "</p>";
+        Properties properties = new Properties();
+        Session session = Session.getInstance(properties);
+        MimeMessage msg = new MimeMessage(session);
+
+        Transport t = null;
+        Address origen = new InternetAddress(CORREO_DE, NOMBRE_DE);
+        Address destino = new InternetAddress(funcionario.getCorreo());
 
         msg.setText(mensajeT, "utf-8", "html");
         msg.setFrom(origen);

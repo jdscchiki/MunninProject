@@ -5,8 +5,10 @@
  */
 package model.Business;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Notificacion;
@@ -16,6 +18,7 @@ import model.dao.FuncionarioDAO;
 import model.dao.NotificacionDAO;
 import model.dao.VersionDAO;
 import util.file.FileManager;
+import util.message.Mail;
 import util.security.Encrypt;
 import util.security.PassGenerator;
 
@@ -61,6 +64,41 @@ public class General {
 
         consulta.closeConnection();
         return funcionarioLog;
+    }
+    /**
+     * Metodo para realizar la recuperacion de contraseña
+     * @param email correo del funcionario
+     * @return retorna un valor entero con valor de :
+     * <p> 0. si ha ocurrido un error.
+     * <p> 1. si se ha compleado correctamente todo.
+     * <p> 2. si no se ha podido actualizar la contraseña en base de datos.
+     * <p> 3. si no se encuentra el correo del funcionario en base de datos.
+     * @throws NamingException
+     * @throws SQLException
+     * @throws util.security.Encrypt.CannotPerformOperationException
+     * @throws UnsupportedEncodingException
+     * @throws MessagingException 
+     */
+    public static int recoverPassword(String email) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, UnsupportedEncodingException, MessagingException {
+        int result = 0;
+
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        Funcionario funcionario = funcionarioDAO.selectFunctionaryByMail(email);
+        if (funcionario != null) {
+            String password = PassGenerator.getSecurePassword();
+            String encryptedPassword = Encrypt.createHash(password);
+            if (funcionarioDAO.changePassword(funcionario.getId(), encryptedPassword)) {
+                Mail.sendGeneratedPassword(funcionario, password);
+                result = 1;
+            }else{
+                result = 2;
+            }
+        }else{
+            result = 3;
+        }
+        funcionarioDAO.closeConnection();
+
+        return result;
     }
 
     public static boolean[] changePassword(String email, String password, String newPassword) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, Encrypt.InvalidHashException {
@@ -143,15 +181,15 @@ public class General {
 
         return result;
     }
-    
-    public static String viewUrlVersion(Version version) throws NamingException, SQLException{
+
+    public static String viewUrlVersion(Version version) throws NamingException, SQLException {
         String result;
-        
+
         VersionDAO versionDAO = new VersionDAO();
         version = versionDAO.select(version);
-        if(version == null){
+        if (version == null) {
             result = null;
-        }else{
+        } else {
             result = FileManager.getSAVE_FOLDER() + version.getUrl();
         }
         versionDAO.closeConnection();
