@@ -13,13 +13,13 @@ import javax.naming.NamingException;
 import model.bean.EvaluacionItem;
 import model.bean.EvaluacionLista;
 import model.bean.Item;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class EvaluacionItemDAO extends ConexionBD {
+public class EvaluacionItemDAO extends connectionDB {
 
     private static final String COL_ID = "id_evaluacion_item";
     private static final String COL_CALIFICACION = "calificacion_evaluacion_item";
@@ -30,8 +30,8 @@ public class EvaluacionItemDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public EvaluacionItemDAO() throws NamingException, SQLException {
         super();

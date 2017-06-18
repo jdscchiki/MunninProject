@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Lista;
 import model.bean.TipoLista;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ListaDAO extends ConexionBD {
+public class ListaDAO extends connectionDB {
 
     private static final String COL_ID = "id_lista";
     private static final String COL_NOMBRE = "nombre_lista";
@@ -30,8 +30,8 @@ public class ListaDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public ListaDAO() throws NamingException, SQLException {
         super();

@@ -12,20 +12,6 @@
 -- VER_(nombre de la tabla)
 -- VER_TODOS_(nombre de la tabla)
 -- -----------------------------------------------------
--- VER_FUNCIONARIOS_CENTRO
--- REGISTRAR_FUNCIONARIO
--- INGRESO
--- VER_ROLES_FUNCIONARIO
--- CONTEO_FUNCIONARIOS_CENTRO
--- INHABILITAR_FUNCIONARIO
--- CAMBIO_CONTRASENA
--- VER_FUNCIONARIO_CORREO
--- VER_FUNCIONARIO_DOCUMENTO
--- VER_FUNCIONARIO_ACTIVO
--- VER_FUNCIONARIOS_INHABILITADOS_CENTRO
--- HABILITAR_FUNCIONARIO
--- ES_ULTIMO_COORDINADOR_CENTRO
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- DATABASE name:        MunninProject
@@ -113,7 +99,7 @@ CREATE TABLE funcionario (
   contrasena_funcionario VARCHAR(255) NOT NULL,
   nombre_funcionario VARCHAR(70) NOT NULL,
   apellido_funcionario VARCHAR(70) NOT NULL,
-  telefono_funcionario VARCHAR(10) NULL DEFAULT NULL,
+  telefono_funcionario VARCHAR(20) NULL DEFAULT NULL,
   id_centro_funcionario VARCHAR(10) NOT NULL,
   PRIMARY KEY (id_funcionario),
   UNIQUE INDEX correo_funcionario_UNIQUE (correo_funcionario ASC),
@@ -143,7 +129,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE tipo_archivo (
   id_tipo_archivo INT(11) NOT NULL AUTO_INCREMENT,
-  extension_tipo_archivo VARCHAR(7) NOT NULL,
+  nombre_tipo_archivo VARCHAR(30) NOT NULL,
   PRIMARY KEY (id_tipo_archivo))
 ENGINE = InnoDB;
 
@@ -424,7 +410,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE programa (
   id_programa INT(11) NOT NULL AUTO_INCREMENT,
-  nombre_programa VARCHAR(50) NOT NULL,
+  nombre_programa VARCHAR(150) NOT NULL,
   activo_programa BIT(1) NOT NULL,
   id_area_programa INT(11) NOT NULL,
   PRIMARY KEY (id_programa),
@@ -477,7 +463,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE mensaje (
   id_mensaje INT NOT NULL AUTO_INCREMENT,
-  texto_mensaje VARCHAR(100) NOT NULL,
+  texto_mensaje VARCHAR(200) NOT NULL,
   PRIMARY KEY (id_mensaje))
 ENGINE = InnoDB;
 
@@ -487,6 +473,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE Notificacion (
   id_notificacion INT NOT NULL AUTO_INCREMENT,
+  activo_notificacion BIT(1) NOT NULL,
   visto_notificacion BIT(1) NOT NULL,
   id_mensaje_notificacion INT NOT NULL,
   id_version_notificacion INT(11) NOT NULL,
@@ -511,6 +498,42 @@ CREATE TABLE Notificacion (
     REFERENCES rol (id_rol))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- VISTAS
+-- -----------------------------------------------------
+
+create or replace view versionesAprobadas as
+	Select * 
+	from version
+	where id_estado_version = 2;
+
+create or replace view ultimasVersionesAprobadas as
+	select o.*
+	from versionesAprobadas o
+	left join versionesAprobadas b
+	on o.id_producto_version = b.id_producto_version and o.numero_version < b.numero_version
+	where b.numero_version is null;
+
+create or replace view productosAprobados as
+	select 
+		id_producto, 
+		nombre_producto, 
+		descripcion_producto, 
+		palabras_clave_producto,
+		id_version,
+		numero_version,
+		url_version,
+		fecha_version,
+		fecha_caducidad_version,
+		fecha_aprobacion_version,
+		id_estado_version,
+		id_tipo_archivo_version,
+		id_producto_version,
+		id_centro_version
+	from ultimasVersionesAprobadas
+	inner join producto
+	on id_producto = id_producto_version;
 
 -- -----------------------------------------------------
 -- PROCEDIMIENTOS ALMACENADOS
@@ -1339,7 +1362,7 @@ CREATE PROCEDURE insertar_funcionario (
     IN _contrasena_funcionario VARCHAR(255) ,
     IN _nombre_funcionario VARCHAR(70) ,
     IN _apellido_funcionario VARCHAR(70) ,
-    IN _telefono_funcionario VARCHAR(10) ,
+    IN _telefono_funcionario VARCHAR(20) ,
     IN _id_centro_funcionario VARCHAR(10) 
     )
 BEGIN
@@ -1378,7 +1401,7 @@ CREATE PROCEDURE editar_funcionario (
 	IN _contrasena_funcionario VARCHAR(255) ,
 	IN _nombre_funcionario VARCHAR(70) ,
 	IN _apellido_funcionario VARCHAR(70) ,
-	IN _telefono_funcionario VARCHAR(10) ,
+	IN _telefono_funcionario VARCHAR(20) ,
 	IN _id_centro_funcionario VARCHAR(10) )
 BEGIN
 	UPDATE funcionario
@@ -1682,7 +1705,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_mensaje $$
 CREATE PROCEDURE insertar_mensaje (
-	IN _texto_mensaje VARCHAR(100) )
+	IN _texto_mensaje VARCHAR(200) )
 BEGIN
 	INSERT INTO mensaje(
 		texto_mensaje )
@@ -1695,7 +1718,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_mensaje $$
 CREATE PROCEDURE editar_mensaje (
 	IN _id_mensaje INT ,
-	IN _texto_mensaje VARCHAR(100) )
+	IN _texto_mensaje VARCHAR(200) )
 BEGIN
 	UPDATE mensaje
 	SET texto_mensaje = _texto_mensaje
@@ -1748,6 +1771,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_notificacion $$
 CREATE PROCEDURE insertar_notificacion (
+        IN _activo_notificacion BIT(1) ,
 	IN _visto_notificacion BIT(1) ,
         IN _id_mensaje_notificacion INT ,
         IN _id_version_notificacion INT ,
@@ -1755,12 +1779,14 @@ CREATE PROCEDURE insertar_notificacion (
         IN _id_rol_notificacion INT )
 BEGIN
 	INSERT INTO notificacion(
+                activo_notificacion ,
 		visto_notificacion ,
                 id_mensaje_notificacion ,
                 id_version_notificacion ,
                 id_funcionario_notificacion ,
                 id_rol_notificacion )
 	VALUES (
+                _activo_notificacion ,
 		_visto_notificacion ,
                 _id_mensaje_notificacion ,
                 _id_version_notificacion ,
@@ -1773,6 +1799,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_notificacion $$
 CREATE PROCEDURE editar_notificacion (
 	IN _id_notificacion INT ,
+	IN _activo_notificacion BIT(1) ,
 	IN _visto_notificacion BIT(1) ,
         IN _id_mensaje_notificacion INT ,
         IN _id_version_notificacion INT ,
@@ -1780,7 +1807,8 @@ CREATE PROCEDURE editar_notificacion (
         IN _id_rol_notificacion INT )
 BEGIN
 	UPDATE notificacion
-	SET     visto_notificacion = _visto_notificacion,
+	SET     activo_notificacion = _activo_notificacion,
+                visto_notificacion = _visto_notificacion,
                 id_mensaje_notificacion = _id_mensaje_notificacion ,
                 id_version_notificacion = _id_version_notificacion ,
                 id_funcionario_notificacion = _id_funcionario_notificacion ,
@@ -1822,6 +1850,7 @@ CREATE PROCEDURE ver_todos_notificacion ()
 BEGIN
 	SELECT 
                 id_notificacion ,
+                activo_notificacion ,
                 visto_notificacion ,
                 id_mensaje_notificacion ,
                 id_version_notificacion ,
@@ -1927,7 +1956,7 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_programa $$
 CREATE PROCEDURE insertar_programa (
-	IN _nombre_programa VARCHAR(50) ,
+	IN _nombre_programa VARCHAR(150) ,
         IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
@@ -1946,7 +1975,7 @@ END $$
 DROP PROCEDURE IF EXISTS editar_programa $$
 CREATE PROCEDURE editar_programa (
 	IN _id_programa INT ,
-	IN _nombre_programa VARCHAR(50) ,
+	IN _nombre_programa VARCHAR(150) ,
         IN _activo_programa BOOLEAN ,
 	IN _id_area_programa INT )
 BEGIN
@@ -2190,12 +2219,12 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS insertar_tipo_archivo $$
 CREATE PROCEDURE insertar_tipo_archivo (
-	IN _extension_tipo_archivo VARCHAR(7) ) 
+	IN _nombre_tipo_archivo VARCHAR(30) ) 
 BEGIN
 	INSERT INTO tipo_archivo (
-		extension_tipo_archivo )
+		nombre_tipo_archivo )
 	VALUES (
-		_extension_tipo_archivo );
+		_nombre_tipo_archivo );
 END $$
 
 -- editar tipo_archivo
@@ -2203,10 +2232,10 @@ END $$
 DROP PROCEDURE IF EXISTS editar_tipo_archivo $$
 CREATE PROCEDURE editar_tipo_archivo (
 	IN _id_tipo_archivo INT , 
-	IN _extension_tipo_archivo VARCHAR(7) ) 
+	IN _nombre_tipo_archivo VARCHAR(30) ) 
 BEGIN
 	UPDATE tipo_archivo 
-	SET extension_tipo_archivo = _extension_tipo_archivo
+	SET nombre_tipo_archivo = _nombre_tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
 
@@ -2227,7 +2256,7 @@ CREATE PROCEDURE ver_tipo_archivo (
 	IN _id_tipo_archivo INT ) 
 BEGIN
 	SELECT id_tipo_archivo , 
-	extension_tipo_archivo 
+	nombre_tipo_archivo 
 	FROM tipo_archivo
 	WHERE id_tipo_archivo = _id_tipo_archivo ;
 END $$
@@ -2238,7 +2267,7 @@ DROP PROCEDURE IF EXISTS ver_todos_tipo_archivo $$
 CREATE PROCEDURE ver_todos_tipo_archivo () 
 BEGIN
 	SELECT id_tipo_archivo , 
-	extension_tipo_archivo 
+	nombre_tipo_archivo 
 	FROM tipo_archivo;
 END $$
 
@@ -2688,7 +2717,7 @@ CREATE PROCEDURE INSERTAR_FUNCIONARIO_REGISTRO (
         IN _contrasena_funcionario VARCHAR(255) ,
         IN _nombre_funcionario VARCHAR(70) ,
         IN _apellido_funcionario VARCHAR(70) ,
-        IN _telefono_funcionario VARCHAR(10) ,
+        IN _telefono_funcionario VARCHAR(20) ,
         IN _id_centro VARCHAR(10)
     )
 BEGIN
@@ -2945,16 +2974,19 @@ END $$
 
 DELIMITER ;
 
-----------------------------
+-- -----------------------------------------------------
+-- SP VER_TODOS_AREA_CENTRO_PAGINADO
+-- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_areas_centro $$
-CREATE PROCEDURE ver_areas_centro (
+DROP PROCEDURE IF EXISTS VER_TODOS_AREA_CENTRO_PAGINADO $$
+CREATE PROCEDURE VER_TODOS_AREA_CENTRO_PAGINADO (
         IN _id_centro VARCHAR(10),
         IN _pagina INT,
         IN _areaXpagina INT,
-        IN _search VARCHAR(140)
+        IN _search VARCHAR(140),
+        IN _activo BOOLEAN
     )
 BEGIN
     DECLARE _inicio INT;
@@ -2965,7 +2997,7 @@ BEGIN
             nombre_area,
             id_centro_area
         FROM area
-        WHERE id_centro_area = _id_centro AND activo_area = 1
+        WHERE id_centro_area = _id_centro AND activo_area = _activo
         LIMIT _inicio, _areaXpagina );
     ELSE
         SELECT 
@@ -2973,35 +3005,41 @@ BEGIN
             nombre_area,
             id_centro_area
         FROM area
-        WHERE id_centro_area = _id_centro AND activo_area = 1 AND
-        (LOWER(id_area) REGEXP LOWER(_search) OR
-        LOWER(nombre_area) REGEXP LOWER(_search) OR
-        LOWER(id_centro_area) REGEXP LOWER(_search))
+        WHERE id_centro_area = _id_centro AND activo_area = _activo AND
+        (LOWER(nombre_area) REGEXP LOWER(_search))
         LIMIT _inicio, _areaXpagina;
     END IF;
 END $$
 
 DELIMITER ;
 
--------------------------------------------
+-- -----------------------------------------------------
+-- SP VER_AREA_NOMBRE
+-- -----------------------------------------------------
+
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS ver_area_activo $$
-CREATE PROCEDURE ver_area_activo(
-    in _nombre VARCHAR(100)) 
+DROP PROCEDURE IF EXISTS VER_AREA_NOMBRE $$
+CREATE PROCEDURE VER_AREA_NOMBRE(
+    in _nombre VARCHAR(100),
+    IN _id_centro VARCHAR(10)) 
 BEGIN
     SELECT *
     FROM area
-    WHERE activo_area = 1 AND nombre_area = _nombre;
+    WHERE nombre_area = _nombre AND
+        id_centro_area = _id_centro;
 END $$
 DELIMITER ;
 
----------------------------------------
+-- -----------------------------------------------------
+-- SP INSERTAR_AREA_NUEVA
+-- -----------------------------------------------------
+
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS registrar_area $$
-CREATE PROCEDURE registrar_area (
-        IN _nombre_area VARCHAR(12) ,
+DROP PROCEDURE IF EXISTS INSERTAR_AREA_NUEVA $$
+CREATE PROCEDURE INSERTAR_AREA_NUEVA (
+        IN _nombre_area VARCHAR(100) ,
         IN _id_centro VARCHAR(10)
     )
 BEGIN
@@ -3014,12 +3052,14 @@ END $$
 DELIMITER ;
 
 
----------------------------------------------
+-- -----------------------------------------------------
+-- SP VER_AREA_ES_ULTIMO
+-- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS VER_AREA_ES_ULTIMO_AREA $$
-CREATE PROCEDURE VER_AREA_ES_ULTIMO_AREA (
+DROP PROCEDURE IF EXISTS VER_AREA_ES_ULTIMO $$
+CREATE PROCEDURE VER_AREA_ES_ULTIMO (
         IN _id_centro VARCHAR(10),
         IN _id_area INT
     )
@@ -3033,7 +3073,9 @@ END $$
 
 DELIMITER ;
 
-----------------------------------
+-- -----------------------------------------------------
+-- SP EDITAR_AREA_INHABILITAR
+-- -----------------------------------------------------
 
 DELIMITER $$
 
@@ -3049,70 +3091,36 @@ END $$
 
 DELIMITER ;
 
------------------
+-- -----------------------------------------------------
+-- SP VER_AREA_CENTRO_CONTEO
+-- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS VER_AREA_INHABILITADO_CENTRO_CONTEO $$
-CREATE PROCEDURE VER_AREA_INHABILITADO_CENTRO_CONTEO (
+DROP PROCEDURE IF EXISTS VER_AREA_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_AREA_CENTRO_CONTEO (
         IN _id_centro VARCHAR(10),
-        IN _filtro VARCHAR(140)
+        IN _filtro VARCHAR(140) ,
+        IN _activo BOOLEAN
     )
 BEGIN
     IF (_filtro IS null OR _filtro = " ") THEN(
         SELECT COUNT(id_area) as conteo
         FROM  area
-        WHERE id_centro_area = _id_centro AND activo_area = 0);
+        WHERE id_centro_area = _id_centro AND activo_area = _activo);
     ELSE 
         SELECT COUNT(id_area) as conteo
         FROM  area
-        WHERE id_centro_area = _id_centro AND activo_area = 0 AND 
-            (LOWER(id_area) REGEXP LOWER(_filtro) OR
-            LOWER(nombre_area) REGEXP LOWER(_filtro) OR
-            LOWER(id_centro_area) REGEXP LOWER(_filtro));
+        WHERE id_centro_area = _id_centro AND activo_area = _activo AND 
+            (LOWER(nombre_area) REGEXP LOWER(_filtro));
     END IF;
 END $$
 
 DELIMITER ;
 
---------------------------------------
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS VER_TODOS_AREA_INHABILITADOS_CENTRO $$
-CREATE PROCEDURE VER_TODOS_AREA_INHABILITADOS_CENTRO (
-        IN _id_centro VARCHAR(10),
-        IN _pagina INT,
-        IN _areaXpagina INT,
-        IN _search VARCHAR(140)
-    )
-BEGIN
-    DECLARE _inicio INT;
-    SET _inicio = (_pagina - 1) * _areaXpagina;
-    IF (_search IS null OR _search = "") THEN(
-        SELECT 
-            id_area ,
-            nombre_area,
-            id_centro_area
-        FROM area
-        WHERE id_centro_area = _id_centro AND activo_area = 0
-        LIMIT _inicio, _areaXpagina );
-    ELSE
-        SELECT 
-            id_area ,
-            nombre_area,
-            id_centro_area
-        FROM area
-        WHERE id_centro_area = _id_centro AND activo_area = 0 AND
-        (LOWER(id_area) REGEXP LOWER(_search) OR
-        LOWER(nombre_areao) REGEXP LOWER(_search) OR
-        LOWER(id_centro_area) REGEXP LOWER(_search))
-        LIMIT _inicio, _areaXpagina;
-    END IF;
-END $$
-
-DELIMITER ;
-
------------------
+-- -----------------------------------------------------
+-- SP EDITAR_AREA_HABILITAR
+-- -----------------------------------------------------
 
 DELIMITER $$
 
@@ -3128,49 +3136,1263 @@ END $$
 
 DELIMITER ;
 
---------------------
+-- -----------------------------------------------------
+-- SP EDITAR_AREA_NOMBRE
+-- -----------------------------------------------------
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS update_area $$
-CREATE PROCEDURE update_area (
-        IN _nombre_area VARCHAR(12) ,
-        IN _id_centro VARCHAR(10),
+DROP PROCEDURE IF EXISTS EDITAR_AREA_NOMBRE $$
+CREATE PROCEDURE EDITAR_AREA_NOMBRE (
+        IN _nombre_area VARCHAR(100) ,
     	IN _id_area int
     )
 BEGIN
-    CALL editar_area(
-        _id_area,
-        _nombre_area ,
-		1 ,
+    UPDATE area
+    SET nombre_area = _nombre_area
+    WHERE id_area = _id_area;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_PROGRAMA_CENTRO_CONTEO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_PROGRAMA_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_PROGRAMA_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(programa.id_programa) as conteo
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo);
+    ELSE 
+        SELECT COUNT(id_programa) as conteo
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo AND 
+            (LOWER(nombre_programa) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_PROGRAMA_CENTRO_PAGINADO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_PROGRAMA_CENTRO_PAGINADO $$
+CREATE PROCEDURE VER_TODOS_PROGRAMA_CENTRO_PAGINADO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _programaXpagina INT,
+        IN _filtro VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _programaXpagina;
+
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT 
+            programa.id_programa ,
+            programa.nombre_programa ,
+            area.nombre_area
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo
+        LIMIT _inicio, _programaXpagina );
+    ELSE
+        SELECT 
+            programa.id_programa ,
+            programa.nombre_programa ,
+            area.nombre_area
+        FROM  programa
+        INNER JOIN area
+        ON id_area_programa = id_area
+        WHERE id_centro_area = _id_centro AND activo_programa = _activo AND 
+            (LOWER(nombre_programa) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_area) REGEXP LOWER(_filtro))
+        LIMIT _inicio, _programaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_AREA_CENTRO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_AREA_CENTRO $$
+CREATE PROCEDURE VER_TODOS_AREA_CENTRO (
+        IN _id_centro VARCHAR(10)
+    ) 
+BEGIN
+	SELECT id_area , 
+	nombre_area 
+	FROM area
+        WHERE id_centro_area = _id_centro AND activo_area = 1;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_PROGRAMA_INHABILITAR
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_PROGRAMA_INHABILITAR $$
+CREATE PROCEDURE EDITAR_PROGRAMA_INHABILITAR (
+        IN _id INT
+    )
+BEGIN
+    UPDATE programa
+    SET activo_programa = 0
+    WHERE id_programa = _id;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_PROGRAMA_HABILITAR
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_PROGRAMA_HABILITAR $$
+CREATE PROCEDURE EDITAR_PROGRAMA_HABILITAR (
+        IN _id INT
+    )
+BEGIN
+    UPDATE programa
+    SET activo_programa = 1
+    WHERE id_programa = _id;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_NOTIFICACION_FUNCIONARIO_CONTEO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_NOTIFICACION_FUNCIONARIO_CONTEO $$
+CREATE PROCEDURE VER_NOTIFICACION_FUNCIONARIO_CONTEO (
+        IN _id_funcionario INT,
+        IN _activo BOOLEAN,
+        IN _rol INT
+    )
+BEGIN
+    
+    IF (_rol IS null OR _rol <= 0 ) THEN(
+        SELECT COUNT(id_notificacion) as conteo
+        FROM  notificacion 
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo);
+    ELSE 
+        SELECT COUNT(id_notificacion) as conteo
+        FROM  notificacion 
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo AND
+            id_rol_notificacion = _rol;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_NOTIFICACION_FUNCIONARIO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_NOTIFICACION_FUNCIONARIO $$
+CREATE PROCEDURE VER_TODOS_NOTIFICACION_FUNCIONARIO (
+        IN _id_funcionario INT,
+        IN _activo BOOLEAN,
+        IN _rol INT,
+        IN _notificacionXpagina INT,
+        IN _pagina INT
+    )
+BEGIN
+    
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _notificacionXpagina;
+
+    IF (_rol IS null OR _rol <= 0 ) THEN(
+        SELECT 
+            id_notificacion,
+            activo_notificacion,
+            visto_notificacion,
+            id_mensaje,
+            texto_mensaje,
+            numero_version,
+            nombre_producto,
+            id_funcionario_notificacion,
+            id_rol_notificacion
+        FROM  notificacion 
+        INNER JOIN mensaje 
+        ON id_mensaje = id_mensaje_notificacion
+        INNER JOIN version
+        ON id_version = id_version_notificacion
+        INNER JOIN producto
+        ON id_producto = id_producto_version
+
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo)
+        ORDER BY id_notificacion DESC
+        LIMIT _inicio, _notificacionXpagina;
+    ELSE 
+        SELECT 
+            id_notificacion,
+            activo_notificacion,
+            visto_notificacion,
+            id_mensaje,
+            texto_mensaje,
+            numero_version,
+            nombre_producto,
+            id_funcionario_notificacion,
+            id_rol_notificacion
+        FROM  notificacion 
+        INNER JOIN mensaje 
+        ON id_mensaje = id_mensaje_notificacion
+        INNER JOIN version
+        ON id_version = id_version_notificacion
+        INNER JOIN producto
+        ON id_producto = id_producto_version
+
+        WHERE id_funcionario_notificacion = _id_funcionario AND 
+            activo_notificacion = _activo AND
+            id_rol_notificacion = _rol
+        LIMIT _inicio, _notificacionXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP EDITAR_NOTIFICACION_VISTO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_NOTIFICACION_VISTO $$
+CREATE PROCEDURE EDITAR_NOTIFICACION_VISTO (
+        IN _id INT
+    )
+BEGIN
+    UPDATE notificacion
+    SET visto_notificacion = 1
+    WHERE id_notificacion = _id;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP INSERTAR_NOTIFICACION_GRUPO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS INSERTAR_NOTIFICACION_GRUPO $$
+CREATE PROCEDURE INSERTAR_NOTIFICACION_GRUPO (
+        IN _message_case INT ,
+        IN _id_version INT
+    )
+BEGIN
+
+    DECLARE _conteo_receptores INT DEFAULT 1;
+    DECLARE _id_receptor int DEFAULT 0;
+    DECLARE _offset int DEFAULT 0;
+
+    CASE _message_case 
+    -- enviar notificaciones a los integrantes del equipo tecnico
+    WHEN 1 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 3
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 3
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,8,_id_version,_id_receptor,3);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los integrantes del equipo pedagogico
+    WHEN 2 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 4
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 4
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,8,_id_version,_id_receptor,4);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los coordinadores del centro
+    WHEN 3 THEN
+        BEGIN
+            DECLARE _id_centro INT DEFAULT 0;
+            SET _id_centro = (SELECT id_centro_version FROM version WHERE id_version = _id_version);
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM funcionario 
+                INNER JOIN funcionario_rol
+                ON id_funcionario_funcionario_rol = id_funcionario
+                WHERE id_centro_funcionario = _id_centro AND
+                id_rol_funcionario_rol = 2
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario
+                    FROM funcionario 
+                    INNER JOIN funcionario_rol
+                    ON id_funcionario_funcionario_rol = id_funcionario
+                    WHERE id_centro_funcionario = _id_centro AND
+                    id_rol_funcionario_rol = 2
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,7,_id_version,_id_receptor,2);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el equipo tecnico
+    WHEN 4 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,1,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el equipo pedagogico
+    WHEN 5 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,2,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores de la aprovacion de la version por el coordinador
+    WHEN 6 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,3,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el equipo tecnico
+    WHEN 7 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,4,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el equipo pedagogico
+    WHEN 8 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,5,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    -- enviar notificaciones a los autores del rechazo de la version por el coordinador
+    WHEN 9 THEN
+        BEGIN
+            SET _conteo_receptores = (
+                SELECT COUNT(*) 
+                FROM autor
+                WHERE id_version_autor = _id_version
+            );
+
+            WHILE _conteo_receptores > 0 DO
+                SET _offset = _conteo_receptores - 1;
+                SET _id_receptor = (
+                    SELECT id_funcionario_autor
+                    FROM autor
+                    WHERE id_version_autor = _id_version
+                    LIMIT _offset, 1
+                );
+                INSERT INTO Notificacion (
+                    activo_notificacion,
+                    visto_notificacion,
+                    id_mensaje_notificacion,
+                    id_version_notificacion,
+                    id_funcionario_notificacion,
+                    id_rol_notificacion)
+                VALUES (1,0,6,_id_version,_id_receptor,5);
+                SET _conteo_receptores = _conteo_receptores - 1;
+            END WHILE;
+        END;
+    ELSE 
+        BEGIN
+        END;
+    END CASE;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_CATEGORIA_CENTRO_CONTEO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_CATEGORIA_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140) ,
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = " ") THEN(
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo);
+    ELSE 
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo AND 
+            (LOWER(nombre_categoria) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_TODOS_CATEGORIA_CENTRO_PAGINADO
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_CATEGORIA_CENTRO_PAGINADO $$
+CREATE PROCEDURE VER_TODOS_CATEGORIA_CENTRO_PAGINADO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _categoriaXpagina INT,
+        IN _search VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _categoriaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_categoria,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo
+        LIMIT _inicio, _categoriaXpagina );
+    ELSE
+        SELECT 
+            id_categoria,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = _activo AND
+        (LOWER(nombre_categoria) REGEXP LOWER(_search))
+        LIMIT _inicio, _categoriaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP VER_CATEGORIA_NOMBRE
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_NOMBRE $$
+CREATE PROCEDURE VER_CATEGORIA_NOMBRE(
+    in _nombre VARCHAR(100),
+    IN _id_centro VARCHAR(10)) 
+BEGIN
+    SELECT *
+    FROM categoria
+    WHERE nombre_categoria = _nombre AND
+        id_centro_categoria = _id_centro;
+END $$
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- SP INSERTAR_CATEGORIA_NUEVA
+-- -----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS INSERTAR_CATEGORIA_NUEVA $$
+CREATE PROCEDURE INSERTAR_CATEGORIA_NUEVA (
+        IN _nombre_categoria VARCHAR(100) ,
+        IN _id_centro VARCHAR(10)
+    )
+BEGIN
+    CALL insertar_categoria(
+        _nombre_categoria ,
+	1 ,
         _id_centro);
 END $$
 
 DELIMITER ;
 
-
-------------------------
+-- -----------------------------------------------------
+-- SP INSERTAR_CATEGORIA_NUEVA
+-- -----------------------------------------------------
 
 
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS conteo_areas_centro $$
-CREATE PROCEDURE conteo_areas_centro (
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_ES_ULTIMO $$
+CREATE PROCEDURE VER_CATEGORIA_ES_ULTIMO (
+        IN _id_centro VARCHAR(10),
+        IN _id_categoria INT
+    )
+BEGIN
+    SELECT IF(COUNT(id_categoria)=0, TRUE, FALSE) as resultado
+    FROM area
+    WHERE activo_categoria = 1 AND 
+        id_centro_categoria = _id_centro AND
+        id_categoria <> _id_categoria;
+END $$
+
+DELIMITER ;
+
+
+-------------------------------------------------------
+-- EDITAR_CATEGORIA_INHABILITAR
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_INHABILITAR $$
+CREATE PROCEDURE EDITAR_CATEGORIA_INHABILITAR (
+        IN _id_categoria INT
+    )
+BEGIN
+    UPDATE categoria
+    SET activo_categoria = 0
+    WHERE id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------------------
+-- EDITAR_CATEGORIA_NOMBRE
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_NOMBRE$$
+CREATE PROCEDURE EDITAR_CATEGORIA_NOMBRE(
+        IN _nombre_categoria VARCHAR(12) ,
+    	IN _id_categoria int
+    )
+BEGIN
+    UPDATE categoria
+	set nombre_categoria = _nombre_categoria
+	where id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------------------
+-- VER_CATEGORIA_ES_ULTIMO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_ES_ULTIMO $$
+CREATE PROCEDURE VER_CATEGORIA_ES_ULTIMO (
+        IN _id_centro VARCHAR(10),
+        IN _id_categoria INT
+    )
+BEGIN
+    SELECT IF(COUNT(id_categoria)=0, TRUE, FALSE) as resultado
+    FROM categoria
+    WHERE activo_categoria = 1 AND 
+        id_centro_categoria = _id_centro AND
+        id_categoria <> _id_categoria;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------------------
+-- VER_CATEGORIA_INHABILITADO_CENTRO_CONTEO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_CATEGORIA_INHABILITADO_CENTRO_CONTEO $$
+CREATE PROCEDURE VER_CATEGORIA_INHABILITADO_CENTRO_CONTEO (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = " ") THEN(
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0);
+    ELSE 
+        SELECT COUNT(id_categoria) as conteo
+        FROM  categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0 AND 
+            (LOWER(id_categoria) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_categoria) REGEXP LOWER(_filtro) OR
+            LOWER(id_centro_categoria) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-------------------------------------------------------
+-- VER_TODOS_CATEGORIA_INHABILITADOS_CENTRO
+-- ----------------------------------------------------
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_TODOS_CATEGORIA_INHABILITADOS_CENTRO $$
+CREATE PROCEDURE VER_TODOS_CATEGORIA_INHABILITADOS_CENTRO (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _categoriaXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _categoriaXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_categoria ,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0
+        LIMIT _inicio, _categoriaXpagina );
+    ELSE
+        SELECT 
+            id_categoria ,
+            nombre_categoria,
+            id_centro_categoria
+        FROM categoria
+        WHERE id_centro_categoria = _id_centro AND activo_categoria = 0 AND
+        (LOWER(id_categoria) REGEXP LOWER(_search) OR
+        LOWER(nombre_categoria) REGEXP LOWER(_search) OR
+        LOWER(id_centro_categoria) REGEXP LOWER(_search))
+        LIMIT _inicio, _categoriaXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- EDITAR_CATEGORIA_HABILITAR
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_CATEGORIA_HABILITAR $$
+CREATE PROCEDURE EDITAR_CATEGORIA_HABILITAR (
+        IN _id_categoria INT
+    )
+BEGIN
+    UPDATE categoria
+    SET activo_categoria = 1
+    WHERE id_categoria = _id_categoria;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_CENTRO 
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_centro $$
+CREATE PROCEDURE conteo_archivos_centro (
         IN _id_centro VARCHAR(10),
         IN _filtro VARCHAR(140)
     )
 BEGIN
     IF (_filtro IS null OR _filtro = "") THEN(
-        SELECT COUNT(id_area) as conteo
-        FROM  area
-        WHERE id_centro_area = _id_centro AND activo_area = 1);
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 3);
     ELSE 
-        SELECT COUNT(id_area) as conteo
-        FROM  area
-        WHERE id_centro_area = _id_centro AND activo_area = 1 AND 
-            (LOWER(id_area) REGEXP LOWER(_filtro) OR
-            LOWER(nombre_area) REGEXP LOWER(_filtro) OR
-            LOWER(id_centro_area) REGEXP LOWER(_filtro));
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 3 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_CENTRO 
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_centro $$
+CREATE PROCEDURE ver_archivos_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 3
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 3 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_VERSION
+-- ----------------------------------------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ver_version $$
+CREATE PROCEDURE ver_version (
+	IN _id_version INT ) 
+BEGIN
+	SELECT v.id_version , 
+		v.numero_version ,
+        v.url_version ,
+        v.fecha_version ,
+        v.fecha_caducidad_version ,
+        v.fecha_aprobacion_version ,
+        v.id_estado_version ,
+        v.id_tipo_archivo_version ,
+        v.id_producto_version ,
+        v.id_centro_version,
+        p.nombre_producto nombre_producto_version
+	FROM version v
+    INNER JOIN producto p
+    ON v.id_producto_version = p.id_producto
+	WHERE v.id_version = _id_version ;
+END $$
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIO
+-- ----------------------------------------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ver_listas_funcionario $$
+CREATE PROCEDURE ver_listas_funcionario (
+	IN _id_autor INT )
+BEGIN
+	SELECT id_lista ,
+	nombre_lista ,
+	descripcion_lista ,
+	fecha_lista 
+	FROM lista
+	WHERE id_autor_lista = _id_autor AND activo_lista = 1;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIO_CONTEO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_LISTAS_FUNCIONARIO_CONTEO $$
+CREATE PROCEDURE VER_LISTAS_FUNCIONARIO_CONTEO (
+        IN _id_autor VARCHAR(10),
+        IN _filtro VARCHAR(140),
+        IN _activo BOOLEAN
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_lista) as conteo
+        FROM  lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = _activo);
+    ELSE 
+        SELECT COUNT(id_lista) as conteo
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = _activo AND 
+            (LOWER(id_lista) REGEXP LOWER(_filtro) OR
+            LOWER(nombre_lista) REGEXP LOWER(_filtro) OR
+            LOWER(descripcion_lista) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_LISTAS_FUNCIONARIOS
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_listas_funcionarios $$
+CREATE PROCEDURE ver_listas_funcionarios (
+        IN _id_autor VARCHAR(10),
+        IN _pagina INT,
+        IN _listasXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _listasXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            id_lista,
+            nombre_lista,
+            descripcion_lista,
+        	fecha_lista
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = 1
+        LIMIT _inicio, _listasXpagina );
+    ELSE
+        SELECT 
+            id_lista,
+            nombre_lista,
+            descripcion_lista,
+        	fecha_lista
+        FROM lista
+        WHERE id_autor_lista = _id_autor AND activo_lista = 1
+
+AND
+        (LOWER(id_lista) REGEXP LOWER(_search) OR
+        LOWER(nombre_lista) REGEXP LOWER(_search) OR
+        LOWER(descripcion_lista) REGEXP LOWER(_search))
+        LIMIT _inicio, _listasXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ITEMS_LISTA
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_items_lista $$
+CREATE PROCEDURE ver_items_lista (
+	IN _id_lista_item_lista INT)
+BEGIN
+	SELECT
+		id_item,
+		descriptor_item,
+		id_autor_item
+	FROM item
+	WHERE id_item = (
+	SELECT
+            id_item_item_lista
+	FROM item_lista
+	WHERE id_lista_item_lista = _id_lista_item_lista);
+	
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_PEDAGOGICO_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_pedagogico_centro $$
+CREATE PROCEDURE conteo_archivos_pedagogico_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 4);
+    ELSE 
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 4 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_PEDAGOGICO_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_pedagogico_centro $$
+CREATE PROCEDURE ver_archivos_pedagogico_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 4
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 4 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_EVALUACION_LISTA_DATOS
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS VER_EVALUACION_LISTA_DATOS$$
+CREATE PROCEDURE VER_EVALUACION_LISTA_DATOS(
+	IN _id_version INT,
+	IN _id_lista INT,
+	IN _id_evaluador INT) 
+BEGIN
+	SELECT id_evaluacion_lista ,
+	id_version_evaluacion_lista ,
+	id_lista_evaluacion_lista ,
+	calificacion_evaluacion_lista ,
+	observaciones_evaluacion_lista ,
+	fecha_evaluacion_lista ,
+	id_evaluador_evaluacion_lista
+	FROM evaluacion_lista
+	WHERE id_version_evaluacion_lista = _id_version AND
+	id_lista_evaluacion_lista = _id_lista AND 
+	id_evaluador_evaluacion_lista = _id_evaluador;
+
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CAMBIO_ESTADO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS cambio_estado $$
+CREATE PROCEDURE cambio_estado (
+	IN _id_version INT , 
+	IN _estado INT) 
+BEGIN
+	UPDATE version
+	SET id_estado_version = _estado 
+	WHERE id_version = _id_version; 
+
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- CONTEO_ARCHIVOS_COORDINADOR_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS conteo_archivos_coordinador_centro $$
+CREATE PROCEDURE conteo_archivos_coordinador_centro (
+        IN _id_centro VARCHAR(10),
+        IN _filtro VARCHAR(140)
+    )
+BEGIN
+    IF (_filtro IS null OR _filtro = "") THEN(
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 5);
+    ELSE 
+        SELECT COUNT(id_version) as conteo
+        FROM  version
+        WHERE id_centro_version = _id_centro AND id_estado_version = 5 AND 
+            (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(id_producto_version) REGEXP LOWER(_filtro));
+    END IF;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- VER_ARCHIVOS_COORDINADOR_CENTRO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS ver_archivos_coordinador_centro $$
+CREATE PROCEDURE ver_archivos_coordinador_centro (
+        IN _id_centro VARCHAR(10),
+        IN _pagina INT,
+        IN _archivosXpagina INT,
+        IN _search VARCHAR(140)
+    )
+BEGIN
+    DECLARE _inicio INT;
+    SET _inicio = (_pagina - 1) * _archivosXpagina;
+    IF (_search IS null OR _search = "") THEN(
+        SELECT 
+            v.id_version,
+            v.numero_version,
+        	v.fecha_version,
+		v.url_version,
+        	p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 5
+        LIMIT _inicio, _archivosXpagina );
+    ELSE
+        SELECT 
+            v.id_version,
+            v.numero_version,
+            v.fecha_version,
+v.url_version,
+            p.nombre_producto nombre_producto_version
+        FROM version v
+        INNER JOIN producto p
+        ON v.id_producto_version = p.id_producto
+        WHERE v.id_centro_version = _id_centro AND v.id_estado_version = 5 AND
+       (LOWER(id_version) REGEXP LOWER(_filtro) OR
+            LOWER(numero_version) REGEXP LOWER(_filtro) OR
+            LOWER(url_version) REGEXP LOWER(_search))
+        LIMIT _inicio, _archivosXpagina;
     END IF;
 END $$
 

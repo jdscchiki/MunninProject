@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Area;
 import model.bean.Programa;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ProgramaDAO extends ConexionBD {
+public class ProgramaDAO extends connectionDB {
 
     private static final String COL_ID = "id_programa";
     private static final String COL_NOMBRE = "nombre_programa";
@@ -28,8 +28,8 @@ public class ProgramaDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public ProgramaDAO() throws NamingException, SQLException {
         super();
@@ -201,5 +201,103 @@ public class ProgramaDAO extends ConexionBD {
         }
         
         return result;
+    }
+    
+    public int countProgramsCenter(String idCenter, String search, boolean active) throws SQLException{
+        int result = 0;
+        
+        String query = "{CALL VER_PROGRAMA_CENTRO_CONTEO(?,?,?)}";
+        int indexIdCentro = 1;
+        int indexSearch = 2;
+        int indexActive = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexIdCentro, idCenter);
+        statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            result = rs.getInt(resConteo);
+        }
+        return result;
+    }
+    
+    public ArrayList<Programa> selectSomeProgramsCenter(String idCenter, int page, int resultsInPage, String search, boolean active) throws SQLException {
+        ArrayList<Programa> result = new ArrayList<>();
+
+        String query = "{CALL VER_TODOS_PROGRAMA_CENTRO_PAGINADO(?,?,?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+        int indexActive = 5;
+        
+        String resultNombreArea = "nombre_area";
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCenter);
+        statement.setInt(indexPagina, page);
+        statement.setInt(indexCantXPag, resultsInPage);
+        statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
+
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Programa programa = new Programa();
+            programa.setId(rs.getInt(COL_ID));
+            programa.setNombre(rs.getString(COL_NOMBRE));
+            Area area = new Area();
+            area.setNombre(rs.getString(resultNombreArea));
+            programa.setArea(area);
+            result.add(programa);
+        }
+        return result;
+    }
+    
+    public boolean disable(Programa programa) throws SQLException{
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_PROGRAMA_INHABILITAR(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, programa.getId());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    public boolean enable(Programa programa) throws SQLException{
+        boolean resultado;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL EDITAR_PROGRAMA_HABILITAR(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, programa.getId());
+
+        if (statement.executeUpdate() == 1) {//si solo modifico una fila el update se completa
+            this.getConexion().commit();
+            resultado = true;
+        } else {//se cancela el update cuando se agrega mas o menos de 1 una fila
+            this.getConexion().rollback();
+            resultado = false;
+        }
+
+        return resultado;
     }
 }

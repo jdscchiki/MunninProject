@@ -9,10 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
+import model.bean.Notificacion;
 import model.bean.Rol;
+import model.bean.Version;
 import model.dao.FuncionarioDAO;
-import util.Encriptado;
-import util.PassGenerator;
+import model.dao.NotificacionDAO;
+import model.dao.VersionDAO;
+import util.file.FileManager;
+import util.security.Encrypt;
+import util.security.PassGenerator;
 
 /**
  * Clase dedicada a ejecutar las reglas de negocio de los usiarios de cualquier
@@ -38,12 +43,12 @@ public class General {
      * contraseña, revisar los datos almacenados en la base de datos y
      * comprarlos con el funcionamiento de la aplicacion
      */
-    public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
+    public static Funcionario verifyFunctionary(String correo, String contrasena) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, Encrypt.InvalidHashException {
         Funcionario funcionarioLog;
         FuncionarioDAO consulta = new FuncionarioDAO();
         funcionarioLog = consulta.selectFunctionaryByMail(correo);
         if (funcionarioLog != null) {
-            if (!Encriptado.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
+            if (!Encrypt.verifyPassword(contrasena, funcionarioLog.getContrasena())) {
                 funcionarioLog = null;
             } else {
                 ArrayList<Rol> roles = consulta.selectRolesFunctionary(funcionarioLog.getId());
@@ -54,11 +59,11 @@ public class General {
             }
         }
 
-        consulta.cerrarConexion();
+        consulta.closeConnection();
         return funcionarioLog;
     }
 
-    public static boolean[] changePassword(String email, String password, String newPassword) throws NamingException, SQLException, Encriptado.CannotPerformOperationException, Encriptado.InvalidHashException {
+    public static boolean[] changePassword(String email, String password, String newPassword) throws NamingException, SQLException, Encrypt.CannotPerformOperationException, Encrypt.InvalidHashException {
         /*
         result es un arreglo de booleanos en el que cada indice significan lo siguiente:
         
@@ -73,27 +78,83 @@ public class General {
         if (funcionario != null) {
             result[1] = true;
             if (PassGenerator.isSecure(newPassword)) {
-                result[2]=true;
+                result[2] = true;
                 FuncionarioDAO consulta = new FuncionarioDAO();
-                if (consulta.changePassword(funcionario.getId(), Encriptado.createHash(newPassword))) {
+                if (consulta.changePassword(funcionario.getId(), Encrypt.createHash(newPassword))) {
                     result[0] = true;
                 }
-                consulta.cerrarConexion();
+                consulta.closeConnection();
             } else {
-                if(PassGenerator.hasNumber(newPassword)){
-                    result[3]=true;
+                if (PassGenerator.hasNumber(newPassword)) {
+                    result[3] = true;
                 }
-                if(PassGenerator.hasLowercase(newPassword)){
-                    result[4]=true;
+                if (PassGenerator.hasLowercase(newPassword)) {
+                    result[4] = true;
                 }
-                if(PassGenerator.hasUppercase(newPassword)){
-                    result[5]=true;
+                if (PassGenerator.hasUppercase(newPassword)) {
+                    result[5] = true;
                 }
-                if(PassGenerator.isSecureLong(newPassword)){
-                    result[6]=true;
+                if (PassGenerator.isSecureLong(newPassword)) {
+                    result[6] = true;
                 }
             }
         }
+        return result;
+    }
+
+    public static int countPagesNotifications(int idFunctionary, int resultsInPage, int idRole) throws NamingException, SQLException {
+        int result = 0;
+
+        int quantityNotifications;
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        quantityNotifications = notificacionDAO.countNotificationFunctionary(idFunctionary, idRole);
+        notificacionDAO.closeConnection();
+
+        result = quantityNotifications / resultsInPage;
+        if (quantityNotifications % resultsInPage != 0) {
+            result++;
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Notificacion> viewNotifications(int idFunctionary, int resultsInPage, int page, int idRole) throws NamingException, SQLException {
+        ArrayList<Notificacion> result;
+
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        result = notificacionDAO.selectNotificationFunctionary(idFunctionary, idRole, resultsInPage, page);
+        notificacionDAO.closeConnection();
+
+        for (Notificacion notificacion : result) {
+            notificacion.getMensaje().setTexto(util.message.MessageGenerator.menssageRole(notificacion));
+        }
+
+        return result;
+    }
+
+    public static int checkNotification(Notificacion notificacion) throws NamingException, SQLException {
+        int result = 0;
+
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        if (notificacionDAO.markAsSeen(notificacion)) {
+            result = 1;
+        }
+        notificacionDAO.closeConnection();
+
+        return result;
+    }
+    
+    public static String viewUrlVersion(Version version) throws NamingException, SQLException{
+        String result;
+        
+        VersionDAO versionDAO = new VersionDAO();
+        version = versionDAO.select(version);
+        if(version == null){
+            result = null;
+        }else{
+            result = FileManager.getSAVE_FOLDER() + version.getUrl();
+        }
+        versionDAO.closeConnection();
         return result;
     }
 }

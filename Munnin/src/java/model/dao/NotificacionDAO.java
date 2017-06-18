@@ -13,18 +13,20 @@ import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Mensaje;
 import model.bean.Notificacion;
+import model.bean.Producto;
 import model.bean.Rol;
 import model.bean.Version;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class NotificacionDAO extends ConexionBD {
+public class NotificacionDAO extends connectionDB {
 
     private static final String COL_ID = "id_notificacion";
     private static final String COL_ACTIVO = "activo_notificacion";
+    private static final String COL_VISTO = "visto_notificacion";
     private static final String COL_ID_MENSAJE = "id_mensaje_notificacion";
     private static final String COL_ID_VERSION = "id_version_notificacion";
     private static final String COL_ID_FUNCIONARIO = "id_funcionario_notificacion";
@@ -33,8 +35,8 @@ public class NotificacionDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public NotificacionDAO() throws NamingException, SQLException {
         super();
@@ -51,14 +53,16 @@ public class NotificacionDAO extends ConexionBD {
     public boolean Insert(Notificacion notificacion) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL INSERTAR_NOTIFICACION(?,?,?,?,?)}";
-        int indexVisto = 1;
-        int indexIdMensaje = 2;
-        int indexIdVersion = 3;
-        int indexIdFuncionario = 4;
-        int indexIdRol = 5;
+        String query = "{CALL INSERTAR_NOTIFICACION(?,?,?,?,?,?)}";
+        int indexActivo = 1;
+        int indexVisto = 2;
+        int indexIdMensaje = 3;
+        int indexIdVersion = 4;
+        int indexIdFuncionario = 5;
+        int indexIdRol = 6;
 
         CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setBoolean(indexActivo, notificacion.isActivo());
         statement.setBoolean(indexVisto, notificacion.isVisto());
         statement.setInt(indexIdMensaje, notificacion.getMensaje().getId());
         statement.setInt(indexIdVersion, notificacion.getVersion().getId());
@@ -85,16 +89,18 @@ public class NotificacionDAO extends ConexionBD {
     public boolean update(Notificacion notificacion) throws SQLException {
         boolean resultado;
 
-        String query = "{CALL EDITAR_NOTIFICACION(?,?,?,?,?,?)}";
+        String query = "{CALL EDITAR_NOTIFICACION(?,?,?,?,?,?,?)}";
         int indexId = 1;
-        int indexVisto = 2;
-        int indexIdMensaje = 3;
-        int indexIdVersion = 4;
-        int indexIdFuncionario = 5;
-        int indexIdRol = 6;
+        int indexActivo = 2;
+        int indexVisto = 3;
+        int indexIdMensaje = 4;
+        int indexIdVersion = 5;
+        int indexIdFuncionario = 6;
+        int indexIdRol = 7;
 
         CallableStatement statement = getConexion().prepareCall(query);
         statement.setInt(indexId, notificacion.getId());
+        statement.setBoolean(indexActivo, notificacion.isActivo());
         statement.setBoolean(indexVisto, notificacion.isVisto());
         statement.setInt(indexIdMensaje, notificacion.getMensaje().getId());
         statement.setInt(indexIdVersion, notificacion.getVersion().getId());
@@ -160,7 +166,8 @@ public class NotificacionDAO extends ConexionBD {
         while (rs.next()) {
             encontrado = true;
             notificacion.setId(rs.getInt(COL_ID));
-            notificacion.setVisto(rs.getBoolean(COL_ACTIVO));
+            notificacion.setActivo(rs.getBoolean(COL_ACTIVO));
+            notificacion.setVisto(rs.getBoolean(COL_VISTO));
             Mensaje mensaje = new Mensaje();
             mensaje.setId(rs.getInt(COL_ID_MENSAJE));
             notificacion.setMensaje(mensaje);
@@ -192,7 +199,8 @@ public class NotificacionDAO extends ConexionBD {
         while (rs.next()) {
             Notificacion notificacion = new Notificacion();
             notificacion.setId(rs.getInt(COL_ID));
-            notificacion.setVisto(rs.getBoolean(COL_ACTIVO));
+            notificacion.setActivo(rs.getBoolean(COL_ACTIVO));
+            notificacion.setVisto(rs.getBoolean(COL_VISTO));
             Mensaje mensaje = new Mensaje();
             mensaje.setId(rs.getInt(COL_ID_MENSAJE));
             notificacion.setMensaje(mensaje);
@@ -209,6 +217,127 @@ public class NotificacionDAO extends ConexionBD {
             result.add(notificacion);
         }
 
+        return result;
+    }
+    
+    public int countNotificationFunctionary(int idFunctionary, int role) throws SQLException{
+        int result = 0;
+        
+        String query = "{CALL VER_NOTIFICACION_FUNCIONARIO_CONTEO(?,?,?)}";
+        int indexIdFunctionary = 1;
+        int indexActive = 2;
+        int indexRole = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunctionary, idFunctionary);
+        statement.setBoolean(indexActive, true);
+        statement.setInt(indexRole, role);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            result = rs.getInt(resConteo);
+        }
+        return result;
+    }
+    
+    public ArrayList<Notificacion> selectNotificationFunctionary(int idFunctionary, int role, int resultsInPage, int page) throws SQLException{
+        ArrayList<Notificacion> result = new ArrayList<>();
+        
+        String query = "{CALL VER_TODOS_NOTIFICACION_FUNCIONARIO(?,?,?,?,?)}";
+        int indexIdFunctionary = 1;
+        int indexActive = 2;
+        int indexRole = 3;
+        int indexResultsInPage = 4;
+        int indexPage = 5;
+        
+        String resultColMensajeId = "id_mensaje";
+        String resultColMensajeTexto = "texto_mensaje";
+        String resultColNumeroVersion = "numero_version";
+        String resultColNombreProducto = "nombre_producto";
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFunctionary, idFunctionary);
+        statement.setBoolean(indexActive, true);
+        statement.setInt(indexRole, role);
+        statement.setInt(indexResultsInPage, resultsInPage);
+        statement.setInt(indexPage, page);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            Notificacion notificacion = new Notificacion();
+            notificacion.setId(rs.getInt(COL_ID));
+            notificacion.setActivo(rs.getBoolean(COL_ACTIVO));
+            notificacion.setVisto(rs.getBoolean(COL_VISTO));
+            Mensaje mensaje = new Mensaje();
+            mensaje.setId(rs.getInt(resultColMensajeId));
+            mensaje.setTexto(rs.getString(resultColMensajeTexto));
+            notificacion.setMensaje(mensaje);
+            Version version = new Version();
+            version.setNumero(rs.getInt(resultColNumeroVersion));
+            Producto producto = new Producto();
+            producto.setNombre(rs.getString(resultColNombreProducto));
+            version.setProducto(producto);
+            notificacion.setVersion(version);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt(COL_ID_FUNCIONARIO));
+            notificacion.setFuncionario(funcionario);
+            Rol rol = new Rol();
+            rol.setId(rs.getInt(COL_ID_ROL));
+            notificacion.setRol(rol);
+            
+            result.add(notificacion);
+        }
+        return result;
+    }
+    
+    /**
+     * 
+     * @deprecated 
+     * @param notificacion
+     * @return
+     * @throws SQLException 
+     */
+    public boolean markAsSeen(Notificacion notificacion) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL EDITAR_NOTIFICACION_VISTO(?)}";
+        int indexId = 1;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, notificacion.getId());
+        
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
+    
+    public boolean sendNotification(int notificationCase, int idVersion) throws SQLException{
+        boolean result = false;
+        String query = "{CALL INSERTAR_NOTIFICACION_GRUPO(?,?)}";
+        int indexNotificationCase = 1;
+        int indexIdVersion = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexNotificationCase, notificationCase);
+        statement.setInt(indexIdVersion, idVersion);
+        
+        if (statement.executeUpdate() >= 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
         return result;
     }
 }

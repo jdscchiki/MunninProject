@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 /**
- *
- * @author Juan David Segura Castro
+ * Servlet encargado de cerrar la sesión de usuario 
+ * 
+ * @version 1.0
  */
 @WebServlet(urlPatterns = {"/exit"})
 public class LogOut extends HttpServlet {

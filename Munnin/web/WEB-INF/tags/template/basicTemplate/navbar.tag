@@ -1,9 +1,3 @@
-<%-- 
-    Document   : navbar
-    Created on : 22/02/2017, 07:54:37 PM
-    Author     : Juan David Segura
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@tag description="navbar of basicTemplate" pageEncoding="UTF-8"%>
 <%@tag import="model.bean.Funcionario" %>
@@ -13,21 +7,26 @@
 <%@attribute name="actualRole" required="true" type="Integer"%>
 <%@attribute name="actualPage" required="true" type="Integer"%>
 
-<div class="container-fluid top">
-    <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIconoS">
-    <img src="${pageContext.request.contextPath}/resources/img/logo-completo.png" alt="munnin_icono" class="topIconoM">
+<div class="container-fluid topBackgroud">
+    <div class="topContainer">
+        <a href="http://oferta.senasofiaplus.edu.co/" target="_blank">
+            <img src="${pageContext.request.contextPath}/resources/img/logo_sena.png" alt="sena_icono" class="topIcon">
+        </a>
+        <div class="topSeparator"></div>
+        <a href="${pageContext.request.contextPath}/home/intro.jsp">
+            <img src="${pageContext.request.contextPath}/resources/img/LogoNavbar.png" alt="munnin_icono" class="topIcon">
+        </a>
+    </div>
 </div>
-<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="112">
+<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="110">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <div class="containerBtn" onclick="myFunction(this)" style="padding-right: 0px;padding-left: 0px;">
-                    <div class="bar1"></div>
-                    <div class="bar2"></div>
-                    <div class="bar3"></div>
-                </div>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp">Inicio</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home/intro.jsp"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
@@ -60,7 +59,8 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ${funcionario.getNombre()}</a>
                     <ul class="dropdown-menu ">
-                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+                        <li><a ><span class="glyphicon glyphicon-cog"></span> Editar Perfil</a></li>
+                        <li><a data-toggle="modal" data-target="#changePassword"><span class="glyphicon glyphicon-lock"></span> Cambiar contraseña</a></li>
                         <li><a ><span class="fa fa-question-circle-o glyphicon"></span> Preguntas Frecuentes</a></li>
                     </ul>
                 </li>

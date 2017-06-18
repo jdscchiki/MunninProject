@@ -10,7 +10,7 @@
           method="POST" 
           action="${pageContext.request.contextPath}/home/role/instructor/uploadobject/addprogrammes"
           data-ajax-form="true"
-          data-display="message_uploadobject">
+          data-display="divModalProgram_message">
         <input type="hidden" name="learningObject" value="${learningObject}">
         <div class="modal-dialog">
             <div class="modal-content">

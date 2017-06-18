@@ -1,9 +1,4 @@
-<%-- 
-    Document   : error
-    Created on : 30/10/2016, 10:57:13 PM
-    Author     : Juan David Segura Castro <JBadCode>
---%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java" session="false"%>
 <!DOCTYPE html>
@@ -13,16 +8,12 @@
         <meta charset="utf-8">
     </head>
     <body>
-            <h1>Munnin</h1>
-            <p>Lo sentimos, a ocurrido un error</p>
+        <h1>Munnin</h1>
+        <p>Lo sentimos, a ocurrido un error</p>
+        <c:if test="${initParam['debug']}">
             <p>
-            <%
-                    if (request.getAttribute("mensaje") != null) {
-            %>
-            ${mensaje}
-            <%
-                }
-            %>
-        </p>
+                ${mensaje}
+            </p>
+        </c:if>
     </body>
 </html>

@@ -10,14 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
-import util.ConexionBD;
+import util.database.connectionDB;
 import model.bean.TipoDocumento;
 
 /**
  *
  * @author Juan David Segura Castro
  */
-public class TipoDocumentoDAO extends ConexionBD {
+public class TipoDocumentoDAO extends connectionDB {
 
     private static final String COL_ID = "id_tipo_documento";
     private static final String COL_NOMBRE = "nombre_tipo_documento";
@@ -25,8 +25,8 @@ public class TipoDocumentoDAO extends ConexionBD {
     /**
      * Establece conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public TipoDocumentoDAO() throws NamingException, SQLException {
         super();

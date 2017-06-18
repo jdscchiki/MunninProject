@@ -11,11 +11,20 @@ package model.bean;
  */
 public class Notificacion implements java.io.Serializable {
     private int id;
+    private boolean activo;
     private boolean visto;
     private Mensaje mensaje;
     private Version version;
     private Funcionario funcionario;
     private Rol rol;
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 
     public int getId() {
         return id;

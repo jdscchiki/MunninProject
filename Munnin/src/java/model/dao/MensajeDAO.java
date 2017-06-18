@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Mensaje;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class MensajeDAO extends ConexionBD {
+public class MensajeDAO extends connectionDB {
 
     private static final String COL_ID = "id_mensaje";
     private static final String COL_TEXTO = "texto_mensaje";
@@ -25,8 +25,8 @@ public class MensajeDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public MensajeDAO() throws NamingException, SQLException {
         super();

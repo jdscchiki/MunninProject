@@ -59,263 +59,1127 @@ ALTER TABLE tipo_objeto_aprendizaje AUTO_INCREMENT = 1;
 ALTER TABLE tipo_archivo AUTO_INCREMENT = 1;
 ALTER TABLE estado AUTO_INCREMENT = 1;
 
--- -----------------------------------------------------
--- pruebas de integridad de la base de datos
--- -----------------------------------------------------
 
 INSERT INTO estado VALUES(1, "Rechazado");
-INSERT INTO tipo_archivo VALUES(1, ".doc");
-INSERT INTO tipo_objeto_aprendizaje VALUES(1, "Guia");
-INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
-INSERT INTO regional VALUES("11", "Regional Distrito Capital");
-INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
-INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
-INSERT INTO version VALUES(1, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-INSERT INTO tipo_documento VALUES (1, "CEDULA");
-/*pass= admin */
-INSERT INTO funcionario VALUES(1, 1, 1,"111111111111", "funcionario@misena.edu.co", "sha512:64000:153:f+wOQwSiGRIkzKqQ5xMIVuo97vr6N7Zq:3lZ91iyvH7omaY6i4FLBo5LLXR2552pkh11ag/+WSOVHi9yZUSme8zbd/kjAQF4FCAf6StzOfZITWpnLNefqZ4UFdWbanZ1oQDyWS+90OPyPINQhjOSkPS3fqDGUuCjkUX6CnMWG5E+XTWuLlWRz67ds/Cqco+wjkfEu+QLZXr2cwqiV1NKcY146klqF/+qtZenknRSfwy2M", "funcionario", "voluntario", NULL, "9303");
-INSERT INTO autor VALUES(1,1);
-INSERT INTO tipo_lista VALUES(1,'lista Equipo Pedagógico');
-INSERT INTO lista VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', 1, 1, 1);
-INSERT INTO item VALUES(1, "item pedagogico", 1);
-INSERT INTO item_lista VALUES(1,1);
-INSERT INTO evaluacion_lista VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
-INSERT INTO evaluacion_item VALUES(1, 1, "bueno", 1, 1);
-INSERT INTO rol VALUES(1, "coordinador");
-INSERT INTO area VALUES(1, "teleinformatica", 1, "9303");
-INSERT INTO programa VALUES(1, "ADSI", 1, 1);
-INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
-INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
-INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje aprovado');
-INSERT INTO notificacion VALUES(1, 0, 1, 1, 1, 1);
-INSERT INTO categoria VALUES(1, "programación", 1, "9303");
-INSERT INTO programa_producto VALUES(1,1);
-INSERT INTO categoria_producto VALUES(1,1);
-INSERT INTO funcionario_rol VALUES(1,1);
+INSERT INTO estado VALUES(2, "Aprobado");
+INSERT INTO estado VALUES(3, "Revisión equipo técnico");
+INSERT INTO estado VALUES(4, "Revisión equipo pedagógico");
+INSERT INTO estado VALUES(5, "Revisión de coordinación");
+INSERT INTO estado VALUES(6, "Correcciones pendientes");
 
+INSERT INTO tipo_archivo VALUES(1, "Documento");
+INSERT INTO tipo_archivo VALUES(2, "Hoja de cálculo");
+INSERT INTO tipo_archivo VALUES(3, "Presentación");
+INSERT INTO tipo_archivo VALUES(4, "Imagen");
+INSERT INTO tipo_archivo VALUES(5, "Video");
+INSERT INTO tipo_archivo VALUES(6, "Audio");
+INSERT INTO tipo_archivo VALUES(7, "Comprimido");
+INSERT INTO tipo_archivo VALUES(8, "Ejecutable");
+INSERT INTO tipo_archivo VALUES(9, "Otro");
 
+INSERT INTO tipo_objeto_aprendizaje VALUES(1, "Guía");
+INSERT INTO tipo_objeto_aprendizaje VALUES(2, "Taller");
+INSERT INTO tipo_objeto_aprendizaje VALUES(3, "Lectura");
+INSERT INTO tipo_objeto_aprendizaje VALUES(4, "Evaluación");
+INSERT INTO tipo_objeto_aprendizaje VALUES(5, "Multimedia");
 
--- INSERT INTO rol VALUES(2, "Equipo Tecnico");
--- INSERT INTO rol VALUES(3, "Equipo Pedagogico");
--- INSERT INTO rol VALUES(4, "Instructor");
--- INSERT INTO rol VALUES(5, "Admin");
--- INSERT INTO funcionario_rol VALUES(1,2);
--- INSERT INTO funcionario_rol VALUES(1,3);
--- INSERT INTO funcionario_rol VALUES(1,4);
--- INSERT INTO funcionario_rol VALUES(1,5);
+INSERT INTO tipo_documento VALUES (1, "CÉDULA");
+INSERT INTO tipo_documento VALUES (2, "TARJETA DE IDENTIDAD");
+INSERT INTO tipo_documento VALUES (3, "CÉDULA DE EXTRANJERÍA");
 
--- -----------------------------------------------------
--- SP INSERTAR
--- -----------------------------------------------------
+INSERT INTO rol VALUES(1, "Administrador");
+INSERT INTO rol VALUES(2, "Coordinador");
+INSERT INTO rol VALUES(3, "Equipo técnico");
+INSERT INTO rol VALUES(4, "Equipo pedagógico");
+INSERT INTO rol VALUES(5, "Instructor");
 
-CALL insertar_estado("Aprobado");
-CALL insertar_tipo_archivo(".rar");
-CALL insertar_tipo_objeto_aprendizaje("Presentación");
-CALL insertar_producto("GUIA PHP", "mucho php", "java", 2);
-CALL insertar_regional("1", "Direccion General");
-CALL insertar_ciudad("05001", "Medellín");
-CALL insertar_centro("9214", "Centro Metalmecanico", "11", "11001");
-CALL insertar_version(1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
-CALL insertar_tipo_documento("tarjeta de identidad");
-CALL insertar_funcionario(1, 2, "01", "funcionario2@misena.edu.co", "pass", "funcionario2", "voluntario2", NULL, "9303");
-CALL insertar_autor(2,2);
-CALL insertar_tipo_lista('lista Equipo Tecnico');
-CALL insertar_lista("Lista para Presentaciones", '01-01-01', "lista Equipo Pedagofico", 1, 1 ,1);
-CALL insertar_item("item pedagogico 2", 1);
-CALL insertar_item_lista(2,2);
-CALL insertar_evaluacion_lista(2, 2, NULL, NULL, NULL, 1);
-CALL insertar_evaluacion_item(NULL, NULL, 2, 2);
-CALL insertar_rol("Equipo Tecnico");
-CALL insertar_area("Mercadeo", TRUE, "9303");
-CALL insertar_programa("Redes", 1, 1);
-CALL insertar_comentario("muy bonito x2", 4, '2016-08-13', 1, 2);
-CALL insertar_visita('2016-12-13', 1, 2);
-CALL insertar_mensaje('objeto de aprendizaje rechazado');
-CALL insertar_notificacion(0, 1, 1, 1, 1);
-CALL insertar_categoria("Infraestructura", TRUE, "9303");
-CALL insertar_programa_producto(2,1);
-CALL insertar_categoria_producto(1,2);
-CALL insertar_funcionario_rol(2,1);
+INSERT INTO tipo_lista VALUES(1,'lista Equipo Técnico');
+INSERT INTO tipo_lista VALUES(2,'lista Equipo Pedagógico');
 
--- -----------------------------------------------------
--- SP EDITAR
--- -----------------------------------------------------
+-- aprobacion de una version para instructores
+-- -- por el equipo tecnico
+    INSERT INTO mensaje VALUES(1, 'El objeto de aprendizaje <strong>%1$s</strong> ha sido aprobado en su versión %2$s por el equipo técnico');
+-- -- por el equipo pedagogico
+    INSERT INTO mensaje VALUES(2, 'El objeto de aprendizaje <strong>%1$s</strong> ha sido aprobado en su versión %2$s por el equipo pedagógico');
+-- -- por el coordinador
+    INSERT INTO mensaje VALUES(3, 'Ha sido publicado el objeto de aprendizaje <strong>%1$s</strong> en su versión %2$s');
+-- rechazo de una version para instructores
+-- -- por el equipo tecnico
+    INSERT INTO mensaje VALUES(4, 'El objeto de aprendizaje <strong>%1$s</strong> ha sido rechazado en su versión %2$s por el equipo técnico');
+-- -- por el equipo pedagogico
+    INSERT INTO mensaje VALUES(5, 'El objeto de aprendizaje <strong>%1$s</strong> ha sido rechazado en su versión %2$s por el equipo pedagógico');
+-- -- por el coordinador
+    INSERT INTO mensaje VALUES(6, 'El objeto de aprendizaje <strong>%1$s</strong> ha sido rechazado en su versión %2$s por el coordinador');
 
-CALL editar_estado(2, "Aprobado");
-CALL editar_tipo_archivo(2, ".rar");
-CALL editar_tipo_objeto_aprendizaje(2, "Presentación");
-CALL editar_producto(2, "GUIA PHP", "mucho php", "java", 2);
-CALL editar_regional("1", "Direccion General");
-CALL editar_ciudad("05001", "Medellín");
-CALL editar_centro("9214", "Centro Metalmecanico", "11", "11001");
-CALL editar_version(2, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 2, "9303");
-CALL editar_tipo_documento(2, "tarjeta de identidad");
-CALL editar_funcionario(2, 1, 2, "01", "funcionario2@misena.edu.co", "pass", "funcionario2", "voluntario2", NULL, "9303");
-CALL editar_tipo_lista(2, 'lista Equipo Tecnico');
-CALL editar_lista(2, "Lista para Presentaciones", '01-01-01', "lista Equipo Pedagofico", 1, 1 ,1);
-CALL editar_item(2, "item pedagogico 2", 1);
-CALL editar_evaluacion_lista(2, 2, 2, NULL, NULL, NULL, 1);
-CALL editar_evaluacion_item(2, NULL, NULL, 2, 2);
-CALL editar_rol(2, "Equipo Tecnico");
-CALL editar_area(2, "Mercadeo", TRUE, "9303");
-CALL editar_programa(2, "Redes", 1, 1);
-CALL editar_comentario(2, "muy bonito x2", 4, '2016-08-13', 1, 2);
-CALL editar_visita(2 ,'2016-12-13', 1, 2);
-CALL editar_mensaje(2, 'objeto de aprendizaje rechazado');
-CALL editar_notificacion(2, 0, 1, 1, 1, 1);
-CALL editar_categoria(2, "Infraestructura", TRUE, "9303");
+-- para el coordinador
+    INSERT INTO mensaje VALUES(7, 'El objeto de aprendizaje <strong>%1$s</strong> en su version %2$s ha sido aprobado por los equipos técnico y pedagógico');
 
--- -----------------------------------------------------
--- SP VER (ejecutar uno por uno en phpmyadmin)
--- -----------------------------------------------------
-
-CALL ver_estado(2);
-CALL ver_tipo_archivo(2);
-CALL ver_tipo_objeto_aprendizaje(2);
-CALL ver_producto(2);
-CALL ver_regional("1");
-CALL ver_ciudad("05001");
-CALL ver_centro("9214");
-CALL ver_version(2);
-CALL ver_tipo_documento(2);
-CALL ver_funcionario(2);
-CALL ver_autor(2,2);
-CALL ver_tipo_lista(2);
-CALL ver_lista(2);
-CALL ver_item(2);
-CALL ver_item_lista(2,2);
-CALL ver_evaluacion_lista(2);
-CALL ver_evaluacion_item(2);
-CALL ver_rol(2);
-CALL ver_area(2);
-CALL ver_programa(2);
-CALL ver_comentario(2);
-CALL ver_visita(2);
-CALL ver_mensaje(2);
-CALL ver_notificacion(2);
-CALL ver_categoria(2);
-CALL ver_programa_producto(2,1);
-CALL ver_categoria_producto(1,2);
-CALL ver_funcionario_rol(2,1);
-
--- -----------------------------------------------------
--- SP ELIMINAR
--- -----------------------------------------------------
-
-CALL eliminar_funcionario_rol(2,1);
-CALL eliminar_categoria_producto(1,2);
-CALL eliminar_programa_producto(2,1);
-CALL eliminar_categoria(2);
-CALL eliminar_notificacion(2);
-CALL eliminar_mensaje(2);
-CALL eliminar_visita(2);
-CALL eliminar_comentario(2);
-CALL eliminar_programa(2);
-CALL eliminar_area(2);
-CALL eliminar_rol(2);
-CALL eliminar_evaluacion_item(2);
-CALL eliminar_evaluacion_lista(2);
-CALL eliminar_item_lista(2,2);
-CALL eliminar_item(2);
-CALL eliminar_lista(2);
-CALL eliminar_tipo_lista(2);
-CALL eliminar_autor(2,2);
-CALL eliminar_funcionario(2);
-CALL eliminar_tipo_documento(2);
-CALL eliminar_version(2);
-CALL eliminar_centro("9214");
-CALL eliminar_ciudad("05001");
-CALL eliminar_regional("1");
-CALL eliminar_producto(2);
-CALL eliminar_tipo_objeto_aprendizaje(2);
-CALL eliminar_tipo_archivo(2);
-CALL eliminar_estado(2);
-
--- -----------------------------------------------------
--- SP ALTERNOS
--- -----------------------------------------------------
-
-CALL login("funcionario@misena.edu.co");
-CALL REGISTRAR_FUNCIONARIO (1, '10000000', 'fulanito@correo', "NN", "prueba", "apellido", "telefono", "9303");
-
-
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS PruebaPaginacion$$
-CREATE PROCEDURE PruebaPaginacion()
-BEGIN
-    declare i int;
-    set i = 0;
-    while i<100 do
-        CALL REGISTRAR_FUNCIONARIO (1, concat('', i), concat('fulanito',i,'@correo'), "NN", "prueba", "apellido", "telefono", "9303");
-        set i=i+1;
-    end while;
-END $$
-
-DELIMITER ;
-
-call Pruebapaginacion()
-call ver_funcionarios_centro('9303', 1, 10)
+-- para los equipos
+    INSERT INTO mensaje VALUES(8, 'Objeto de aprendizaje <strong>%1$s</strong> en su version %2$s requiere ser calificado');
 
 -- -----------------------------------------------------
 -- Insercion de datos de la aplicacion v1
 -- -----------------------------------------------------
 
-INSERT INTO estado VALUES(1, "Rechazado");
-INSERT INTO estado VALUES(2, "Aprovado");
-INSERT INTO estado VALUES(3, "Revision Equipo tecnico");
-INSERT INTO estado VALUES(4, "Revision Equipo pedagógico");
-INSERT INTO estado VALUES(5, "Revision de Coordinación");
-INSERT INTO estado VALUES(6, "Correcciones pendientes");
-
-INSERT INTO tipo_archivo VALUES(1, ".doc");
-
-INSERT INTO tipo_objeto_aprendizaje VALUES(1, "Guia");
-
-
-INSERT INTO producto VALUES(1, "GUIA JAVA", "mucho java", "java", 1);
-
-
+INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
 INSERT INTO regional VALUES("11", "Regional Distrito Capital");
 
-INSERT INTO ciudad VALUES("11001", "SANTA FE DE BOGOTA, D. C." );
+    INSERT INTO centro VALUES("9303", "Centro de gestión de mercados, logística y tecnología de la información","11","11001");
 
-INSERT INTO centro VALUES("9303", "CENTRO DE GESTION DE MERCADOS, LOGISTICA Y TECNOLOGIAS DE LA INFORMACION","11","11001");
+        INSERT INTO area VALUES(1, "Teleinformática", 1, "9303");
+            INSERT INTO programa VALUES(1, "Tecnólogo en análisis y desarrollo de sistemas de información", 1, 1);
+            INSERT INTO programa VALUES(2, "Tecnólogo en gestión de redes de datos", 1, 1);
+            INSERT INTO programa VALUES(3, "Tecnólogo en desarrollo de videojuegos", 1, 1);
+            INSERT INTO programa VALUES(4, "Tecnólogo en mantenimiento de equipos de cómputo, diseño e instalación de cableado estructurado", 1, 1);
+            INSERT INTO programa VALUES(5, "Tecnólogo en mantenimiento de equipos de cómputo", 1, 1);
+            INSERT INTO programa VALUES(6, "Especialización tecnologa en desarrollo de aplicaciones para dispositivos móviles", 1, 1);
+            INSERT INTO programa VALUES(7, "Especialización tecnológica en gestión y seguridad de bases de datos", 1, 1);
 
-INSERT INTO version VALUES(1, 1, "NoExiste", '11-11-11', '12-03-01', NULL, 1, 1, 1, "9303");
-INSERT INTO tipo_documento VALUES (1, "CEDULA");
-/*pass= Admin123 */
-INSERT INTO funcionario VALUES(1, 1, 1,"111111111111", "funcionario@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "funcionario", "voluntario", NULL, "9303");
+        INSERT INTO area VALUES(2, "Mercadeo", 1, "9303");
+            INSERT INTO programa VALUES(8, "Tecnólogo en gestión de mercados", 1, 2);
+            INSERT INTO programa VALUES(9, "Tecnólogo en negociación internacional", 1, 2);
+            INSERT INTO programa VALUES(10, "Tecnólogo en dirección de ventas", 1, 2);
+            INSERT INTO programa VALUES(11, "Tecnólogo en comunicación comercial", 1, 2);
+            INSERT INTO programa VALUES(12, "Técnico en ventas de productos y servicios", 1, 2);
+            INSERT INTO programa VALUES(13, "Técnico en comercialización de productos masivos", 1, 2);
+            INSERT INTO programa VALUES(14, "Técnico en operaciones comerciales", 1, 2);
+            INSERT INTO programa VALUES(15, "Especialización tecnológica en diseño y desarrollo de investigación de mercado", 1, 2);
+            INSERT INTO programa VALUES(16, "Especialización tecnológica en marketing y modelo de negocio online", 1, 2);
 
+        INSERT INTO area VALUES(3, "Industrias creativas", 1, "9303");
+            INSERT INTO programa VALUES(17, "Tecnólogo en animación 3D", 1, 3);
+            INSERT INTO programa VALUES(18, "Tecnólogo en escritura para productos audiovisuales", 1, 3);
+            INSERT INTO programa VALUES(19, "Tecnólogo en producción de medios audiovisuales digitales", 1, 3);
+            INSERT INTO programa VALUES(20, "Tecnólogo en producción de multimedia", 1, 3);
+            INSERT INTO programa VALUES(21, "Técnico en diseño e integración de multimedia", 1, 3);
+            INSERT INTO programa VALUES(22, "Técnico en operación de cámaras y luces de televisión", 1, 3);
 
-INSERT INTO autor VALUES(1,1);
-INSERT INTO tipo_lista VALUES(1,'lista Equipo Pedagógico');
+        INSERT INTO area VALUES(4, "Logística", 1, "9303");
+            INSERT INTO programa VALUES(23, "Tecnólogo en gestión logística", 1, 4);
+            INSERT INTO programa VALUES(24, "Tecnólogo en logística del transporte", 1, 4);
+            INSERT INTO programa VALUES(25, "Técnico en desarrollo de operaciones logísticas en la cadena de abastecimiento", 1, 4);
+            INSERT INTO programa VALUES(26, "Técnico en comercio internacional", 1, 4);
+            INSERT INTO programa VALUES(27, "Auxiliar en apoyo logístico a eventos y servicios empresariales", 1, 4);
+            INSERT INTO programa VALUES(28, "Auxiliar en almacenamiento, empaque y embalaje de objetos", 1, 4);
+
+    INSERT INTO categoria VALUES(1, "programación", 1, "9303");
+    INSERT INTO categoria VALUES(2, "estadistica", 1, "9303");
+    INSERT INTO categoria VALUES(3, "mercadeo", 1, "9303");
+    INSERT INTO categoria VALUES(4, "redes", 1, "9303");
+    INSERT INTO categoria VALUES(5, "logística", 1, "9303");
+    INSERT INTO categoria VALUES(6, "bases de datos", 1, "9303");
+    INSERT INTO categoria VALUES(7, "asp.net", 1, "9303");
+    INSERT INTO categoria VALUES(8, "php", 1, "9303");
+    INSERT INTO categoria VALUES(9, "mantenimiento", 1, "9303");
+    INSERT INTO categoria VALUES(10, "servicios", 1, "9303");
+    INSERT INTO categoria VALUES(11, "moviles", 1, "9303");
+    INSERT INTO categoria VALUES(12, "seguridad informática", 1, "9303");
+    INSERT INTO categoria VALUES(13, "transporte", 1, "9303");
+    INSERT INTO categoria VALUES(14, "desarrollo", 1, "9303");
+    INSERT INTO categoria VALUES(15, "videojuegos", 1, "9303");
+    INSERT INTO categoria VALUES(16, "comercio", 1, "9303");
+    INSERT INTO categoria VALUES(17, "internacional", 1, "9303");
+    INSERT INTO categoria VALUES(18, "eventos", 1, "9303");
+    INSERT INTO categoria VALUES(19, "servicios", 1, "9303");
+    INSERT INTO categoria VALUES(20, "embalaje", 1, "9303");
+    INSERT INTO categoria VALUES(21, "multimedia", 1, "9303");
+    INSERT INTO categoria VALUES(22, "animacion", 1, "9303");
+    INSERT INTO categoria VALUES(23, "3D", 1, "9303");
+    INSERT INTO categoria VALUES(24, "escritura", 1, "9303");
+    INSERT INTO categoria VALUES(25, "audiovisuales", 1, "9303");
+    INSERT INTO categoria VALUES(26, "digital", 1, "9303");
+    INSERT INTO categoria VALUES(27, "luces", 1, "9303");
+    INSERT INTO categoria VALUES(28, "camara", 1, "9303");
+    INSERT INTO categoria VALUES(29, "marketing", 1, "9303");
+    INSERT INTO categoria VALUES(30, "online", 1, "9303");
+    INSERT INTO categoria VALUES(31, "mercado", 1, "9303");
+    INSERT INTO categoria VALUES(32, "negociación", 1, "9303");
+
+    INSERT INTO funcionario VALUES(1, 1, 1,"1", "funcionario@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "funcionario", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(1,1);
+        INSERT INTO funcionario_rol VALUES(1,2);
+        INSERT INTO funcionario_rol VALUES(1,3);
+        INSERT INTO funcionario_rol VALUES(1,4);
+        INSERT INTO funcionario_rol VALUES(1,5);
+
+    INSERT INTO funcionario VALUES(2, 1, 1,"2", "coordinador1@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "coordinador", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(2,2);
+        INSERT INTO funcionario_rol VALUES(2,5);
+
+    INSERT INTO funcionario VALUES(3, 1, 1,"3", "coordinador2@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "coordinador", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(3,2);
+        INSERT INTO funcionario_rol VALUES(3,5);
+
+    INSERT INTO funcionario VALUES(4, 1, 1,"4", "et1@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "equipoT", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(4,3);
+        INSERT INTO funcionario_rol VALUES(4,5);
+
+    INSERT INTO funcionario VALUES(5, 1, 1,"5", "et2@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "equipoT", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(5,3);
+        INSERT INTO funcionario_rol VALUES(5,5);
+
+    INSERT INTO funcionario VALUES(6, 1, 1,"6", "ep1@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "equipoP", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(6,4);
+        INSERT INTO funcionario_rol VALUES(6,5);
+
+    INSERT INTO funcionario VALUES(7, 1, 1,"7", "ep2@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "equipoP", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(7,4);
+        INSERT INTO funcionario_rol VALUES(7,5);
+
+    INSERT INTO funcionario VALUES(8, 1, 1,"8", "instructor1@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(8,5);
+
+    INSERT INTO funcionario VALUES(9, 1, 1,"9", "instructor2@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(9,5);
+
+    INSERT INTO funcionario VALUES(10, 1, 1,"10", "instructor3@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(10,5);
+
+    INSERT INTO funcionario VALUES(11, 1, 1,"11", "instructor4@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(11,5);
+
+    INSERT INTO funcionario VALUES(12, 1, 1,"12", "instructor5@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(12,5);
+
+    INSERT INTO funcionario VALUES(13, 1, 1,"13", "instructor6@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(13,5);
+
+    INSERT INTO funcionario VALUES(14, 1, 1,"14", "instructor7@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(14,5);
+
+    INSERT INTO funcionario VALUES(15, 1, 1,"15", "instructor8@misena.edu.co", "sha512:64000:153:GOI6UC/RbiUDYATVV+/58mNdugc00Sud:RFYrXysZ2+fFfajAFb8se6YyNf9cBZ4BXX+T3hvuUn+zy1JIwiOZyP+GHOhDC1rAva0F+BR6HCOr7jw31mVULnKlp1G4M+Uy8MxnsDaLOcZYAizFVE/rG1FKUhgD1RhhHXtB5lhMnaLpJ7eynPDIxXm/Vb1nczzusxFsUqjORhmT7WXE841XWGAyF2wNomQEb8HJFsFUCNdt", "instructor", "voluntario", NULL, "9303");
+        INSERT INTO funcionario_rol VALUES(15,5);
+
+INSERT INTO producto VALUES(
+    1, 
+    "Guía nivel básico java", 
+    "Guía nivel básico de java, con temas como: declaración e instanciación de variables, operaciones matemáticas básicas, condicionales y ciclos.", 
+    "programación;java;condicionales;ciclos;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(1,1);
+    INSERT INTO programa_producto VALUES(1,3);
+    INSERT INTO programa_producto VALUES(1,6);
+
+    INSERT INTO categoria_producto VALUES(1,1);
+    INSERT INTO categoria_producto VALUES(11,1);
+    INSERT INTO categoria_producto VALUES(14,1);
+
+    INSERT INTO version VALUES(
+        1, 
+        1, 
+        "No Disponible", 
+        '2017-01-22', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        1, 
+        "9303");
+        INSERT INTO autor VALUES(8,1);
+
+    INSERT INTO version VALUES(
+        2, 
+        2, 
+        "No Disponible", 
+        '2017-02-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1, 
+        1, 
+        "9303");
+        INSERT INTO autor VALUES(8,2);
+
+    INSERT INTO version VALUES(
+        3, 
+        3, 
+        "No Disponible", 
+        '2017-02-08', 
+        '2018-02-08', 
+        '2017-02-16', 
+        2, 
+        1,
+        1, 
+        "9303");
+        INSERT INTO autor VALUES(8,3);
+
+    INSERT INTO version VALUES(
+        4, 
+        4, 
+        "No Disponible", 
+        '2017-02-15', 
+        NULL, 
+        NULL, 
+        3, 
+        1,
+        1, 
+        "9303");
+        INSERT INTO autor VALUES(8,4);
+        INSERT INTO autor VALUES(9,4);
+
+INSERT INTO producto VALUES(
+    2, 
+    "Guía nivel medio java", 
+    "Guía media de java, con temas como: encapsulamiento, herencia, cohesión, abstracción, polimorfismo, acoplamiento, lectura de archivos planos y aplicaciones básicas stand alone.", 
+    "programación;java;programación orientada a objetos;stand alone;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(2,1);
+    INSERT INTO programa_producto VALUES(2,3);
+    INSERT INTO programa_producto VALUES(2,6);
+
+    INSERT INTO categoria_producto VALUES(1,2);
+    INSERT INTO categoria_producto VALUES(11,2);
+    INSERT INTO categoria_producto VALUES(14,2);
+    INSERT INTO categoria_producto VALUES(15,2);
+
+    INSERT INTO version VALUES(
+        5, 
+        1, 
+        "No Disponible", 
+        '2017-01-22', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        2, 
+        "9303");
+        INSERT INTO autor VALUES(8,5);
+
+    INSERT INTO version VALUES(
+        6, 
+        2, 
+        "No Disponible", 
+        '2017-01-30', 
+        NULL, 
+        NULL, 
+        4, 
+        1,
+        2, 
+        "9303");
+        INSERT INTO autor VALUES(8,6);
+
+INSERT INTO producto VALUES(
+    3, 
+    "Guía java web", 
+    "Guía de java para desarrollo para aplicaciones web, con temas como: consulta a bases de datos, MVC, tecnologías para desarrollo de interfaz gráfica y mejores prácticas para desarrollo.", 
+    "programación;java;web;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(3,1);
+    INSERT INTO programa_producto VALUES(3,3);
+    INSERT INTO programa_producto VALUES(3,6);
+
+    INSERT INTO categoria_producto VALUES(1,3);
+    INSERT INTO categoria_producto VALUES(11,3);
+    INSERT INTO categoria_producto VALUES(14,3);
+    INSERT INTO categoria_producto VALUES(19,3);
+    INSERT INTO categoria_producto VALUES(30,3);
+
+    INSERT INTO version VALUES(
+        7, 
+        1, 
+        "No Disponible", 
+        '2017-03-01', 
+        '2017-06-01', 
+        NULL, 
+        6, 
+        1,
+        3, 
+        "9303");
+        INSERT INTO autor VALUES(8,7);
+
+INSERT INTO producto VALUES(
+    4, 
+    "Guía nivel básico .net", 
+    "Guía nivel básico de .net, con temas como: declaración e instanciación de variables, operaciones matemáticas básicas, condicionales y ciclos.", 
+    "programación;.net;condicionales;ciclos;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(4,1);
+    INSERT INTO programa_producto VALUES(4,3);
+    INSERT INTO programa_producto VALUES(4,6);
+
+    INSERT INTO categoria_producto VALUES(1,4);
+    INSERT INTO categoria_producto VALUES(7,4);
+    INSERT INTO categoria_producto VALUES(11,4);
+    INSERT INTO categoria_producto VALUES(14,4);
+
+    INSERT INTO version VALUES(
+        8, 
+        1, 
+        "No Disponible", 
+        '2017-06-03', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        4, 
+        "9303");
+        INSERT INTO autor VALUES(10,8);
+
+    INSERT INTO version VALUES(
+        9, 
+        2, 
+        "No Disponible", 
+        '2017-03-01', 
+        '2018-03-01', 
+        '2017-03-08', 
+        2, 
+        1,
+        4, 
+        "9303");
+        INSERT INTO autor VALUES(10,9);
+
+INSERT INTO producto VALUES(
+    5, 
+    "Guía nivel medio .net", 
+    "Guía media de .net, con temas como: encapsulamiento, herencia, cohesión, abstracción, polimorfismo, acoplamiento, lectura de archivos planos y aplicaciones básicas stand alone.", 
+    "programación;.net;programación orientada a objetos;stand alone;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(5,1);
+    INSERT INTO programa_producto VALUES(5,3);
+    INSERT INTO programa_producto VALUES(5,6);
+
+    INSERT INTO categoria_producto VALUES(1,5);
+    INSERT INTO categoria_producto VALUES(7,5);
+    INSERT INTO categoria_producto VALUES(11,5);
+    INSERT INTO categoria_producto VALUES(14,5);
+
+    INSERT INTO version VALUES(
+        10, 
+        1, 
+        "No Disponible", 
+        '2017-03-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        5, 
+        "9303");
+        INSERT INTO autor VALUES(10,10);
+
+    INSERT INTO version VALUES(
+        11, 
+        2, 
+        "No Disponible", 
+        '2017-03-01', 
+        NULL, 
+        NULL, 
+        3, 
+        1,
+        5, 
+        "9303");
+        INSERT INTO autor VALUES(10,11);
+
+INSERT INTO producto VALUES(
+    6, 
+    "Guía asp.net web", 
+    "Guía de asp.net para desarrollo para aplicaciones web, con temas como: consulta a bases de datos, MVC, tecnologías para desarrollo de interfaz gráfica y mejores prácticas para desarrollo.", 
+    "programación;asp.net;web;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(6,1);
+    INSERT INTO programa_producto VALUES(6,6);
+    
+    INSERT INTO categoria_producto VALUES(1,6);
+    INSERT INTO categoria_producto VALUES(11,6);
+    INSERT INTO categoria_producto VALUES(12,6);
+    INSERT INTO categoria_producto VALUES(14,6);
+    INSERT INTO categoria_producto VALUES(30,6);
+
+    INSERT INTO version VALUES(
+        12, 
+        1, 
+        "No Disponible", 
+        '2017-04-05', 
+        '2018-04-05', 
+        '2017-04-14', 
+        2, 
+        1,
+        6, 
+        "9303");
+        INSERT INTO autor VALUES(10,12);
+
+    INSERT INTO version VALUES(
+        13, 
+        2, 
+        "No Disponible", 
+        '2017-03-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        6, 
+        "9303");
+        INSERT INTO autor VALUES(11,13);
+
+INSERT INTO producto VALUES(
+    7, 
+    "Guía nivel básico php", 
+    "Guía nivel básico de php, con temas como: declaración e instanciación de variables, operaciones matemáticas básicas, condicionales y ciclos.", 
+    "programación;php;condicionales;ciclos;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(7,1);
+    INSERT INTO programa_producto VALUES(7,6);
+
+    INSERT INTO categoria_producto VALUES(1,7);
+    INSERT INTO categoria_producto VALUES(11,7);
+    INSERT INTO categoria_producto VALUES(14,7);
+
+    INSERT INTO version VALUES(
+        14, 
+        1, 
+        "No Disponible", 
+        '2017-04-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        7, 
+        "9303");
+        INSERT INTO autor VALUES(12,14);
+    INSERT INTO version VALUES(
+        15, 
+        2, 
+        "No Disponible", 
+        '2017-04-11', 
+        '2017-06-11', 
+        NULL, 
+        6, 
+        1,
+        7, 
+        "9303");
+        INSERT INTO autor VALUES(12,15);
+
+INSERT INTO producto VALUES(
+    8, 
+    "Guía nivel medio php", 
+    "Guía media de php, con temas como: encapsulamiento, herencia, cohesión, abstracción, polimorfismo, acoplamiento, lectura de archivos planos y aplicaciones básicas stand alone.", 
+    "programación;php;programación orientada a objetos;stand alone;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(8,1);
+    INSERT INTO programa_producto VALUES(8,6);
+
+    INSERT INTO categoria_producto VALUES(1,8);
+    INSERT INTO categoria_producto VALUES(11,8);
+    INSERT INTO categoria_producto VALUES(14,8);
+
+    INSERT INTO version VALUES(
+        16, 
+        1, 
+        "No Disponible", 
+        '2017-04-20', 
+        '2017-06-20', 
+        NULL, 
+        6, 
+        1,
+        8, 
+        "9303");
+        INSERT INTO autor VALUES(12,16);
+
+INSERT INTO producto VALUES(
+    9, 
+    "Guía php avanzado", 
+    "Guía php avanzado para desarrollo para aplicaciones web, con temas como: consulta a bases de datos, MVC, tecnologías para desarrollo de interfaz gráfica y mejores prácticas para desarrollo.", 
+    "programación;php;web;", 
+    1);
+
+    INSERT INTO programa_producto VALUES(9,1);
+    INSERT INTO programa_producto VALUES(9,6);
+
+    INSERT INTO categoria_producto VALUES(1,9);
+    INSERT INTO categoria_producto VALUES(11,9);
+    INSERT INTO categoria_producto VALUES(14,9);
+
+    INSERT INTO version VALUES(
+        17, 
+        1, 
+        "No Disponible", 
+        '2017-04-22', 
+        '2018-04-22', 
+        '2017-04-30', 
+        2, 
+        1,
+        9, 
+        "9303");
+        INSERT INTO autor VALUES(12,17);
+
+    INSERT INTO version VALUES(
+        18, 
+        2, 
+        "No Disponible", 
+        '2017-04-21', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        9, 
+        "9303");
+        INSERT INTO autor VALUES(12,18);
+
+INSERT INTO producto VALUES(
+    10, 
+    "taller php", 
+    "Quisque vitae iaculis mi. Maecenas blandit auctor ex quis dictum. Aliquam eu sem ligula. Praesent consequat nisl nec diam pretium.", 
+    "programación;php;web;", 
+    2);
+
+    INSERT INTO programa_producto VALUES(10,1);
+    INSERT INTO programa_producto VALUES(10,6);
+
+    INSERT INTO categoria_producto VALUES(1,10);
+    INSERT INTO categoria_producto VALUES(11,10);
+    INSERT INTO categoria_producto VALUES(14,10);
+
+    INSERT INTO version VALUES(
+        19, 
+        1, 
+        "No Disponible", 
+        '2017-04-30', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        10, 
+        "9303");
+        INSERT INTO autor VALUES(13,19);
+
+    INSERT INTO version VALUES(
+        20, 
+        2, 
+        "No Disponible", 
+        '2017-04-26', 
+        '2017-07-30', 
+        NULL, 
+        6, 
+        1,
+        10, 
+        "9303");
+        INSERT INTO autor VALUES(13,20);
+
+INSERT INTO producto VALUES(
+    11, 
+    "taller java", 
+    "Cras nec aliquet nisl. Fusce aliquet pellentesque diam at ultrices. Maecenas ornare dolor sed arcu mattis, vel placerat velit lacinia.", 
+    "programación;java;web;", 
+    2);
+
+    INSERT INTO programa_producto VALUES(11,1);
+    INSERT INTO programa_producto VALUES(11,6);
+
+    INSERT INTO categoria_producto VALUES(1,11);
+    INSERT INTO categoria_producto VALUES(11,11);
+    INSERT INTO categoria_producto VALUES(14,11);
+
+    INSERT INTO version VALUES(
+        21, 
+        1, 
+        "No Disponible", 
+        '2017-05-03', 
+        NULL, 
+        NULL, 
+        4, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,21);
+
+    INSERT INTO version VALUES(
+        22, 
+        2, 
+        "No Disponible", 
+        '2017-04-30', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,22);
+
+    INSERT INTO version VALUES(
+        23, 
+        3, 
+        "No Disponible", 
+        '2017-05-01', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        11, 
+        "9303");
+        INSERT INTO autor VALUES(9,23);
+
+INSERT INTO producto VALUES(
+    12, 
+    "taller .net", 
+    "Aenean eu ante sit amet neque vulputate volutpat. Ut eu laoreet diam, id facilisis erat. Suspendisse laoreet pellentesque justo ac.", 
+    "programación;.net;web;", 
+    2);
+
+    INSERT INTO programa_producto VALUES(12,1);
+    INSERT INTO programa_producto VALUES(12,6);
+
+    INSERT INTO categoria_producto VALUES(1,12);
+    INSERT INTO categoria_producto VALUES(11,12);
+    INSERT INTO categoria_producto VALUES(14,12);
+
+    INSERT INTO version VALUES(
+        24, 
+        1, 
+        "No Disponible", 
+        '2017-05-03', 
+        NULL, 
+        NULL, 
+        4, 
+        1,
+        12, 
+        "9303");
+        INSERT INTO autor VALUES(10,24);
+
+    INSERT INTO version VALUES(
+        25, 
+        2, 
+        "No Disponible", 
+        '2017-05-04', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        12, 
+        "9303");
+        INSERT INTO autor VALUES(10,25);
+
+INSERT INTO producto VALUES(
+    13, 
+    "lectura php", 
+    "Quisque vitae iaculis mi. Maecenas blandit auctor ex quis dictum. Aliquam eu sem ligula. Praesent consequat nisl nec diam pretium.", 
+    "programación;php;web;", 
+    3);
+
+    INSERT INTO programa_producto VALUES(13,1);
+    INSERT INTO programa_producto VALUES(13,6);
+
+    INSERT INTO categoria_producto VALUES(1,13);
+    INSERT INTO categoria_producto VALUES(11,13);
+    INSERT INTO categoria_producto VALUES(14,13);
+
+    INSERT INTO version VALUES(
+        26, 
+        1, 
+        "No Disponible", 
+        '2017-05-06', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        13, 
+        "9303");
+        INSERT INTO autor VALUES(13,26);
+
+    INSERT INTO version VALUES(
+        27, 
+        2, 
+        "No Disponible", 
+        '2017-05-03', 
+        '2018-05-03', 
+        '2017-05-10', 
+        2, 
+        1,
+        13, 
+        "9303");
+        INSERT INTO autor VALUES(13,27);
+
+INSERT INTO producto VALUES(
+    14, 
+    "lectura java", 
+    "Cras nec aliquet nisl. Fusce aliquet pellentesque diam at ultrices. Maecenas ornare dolor sed arcu mattis, vel placerat velit lacinia.", 
+    "programación;java;web;", 
+    3);
+
+    INSERT INTO programa_producto VALUES(14,1);
+    INSERT INTO programa_producto VALUES(14,6);
+
+    INSERT INTO categoria_producto VALUES(1,14);
+    INSERT INTO categoria_producto VALUES(11,14);
+    INSERT INTO categoria_producto VALUES(14,14);
+
+    INSERT INTO version VALUES(
+        28, 
+        1, 
+        "No Disponible", 
+        '2017-05-08', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        14, 
+        "9303");
+        INSERT INTO autor VALUES(9,28);
+
+    INSERT INTO version VALUES(
+        29, 
+        2, 
+        "No Disponible", 
+        '2017-05-02', 
+        '2018-05-02', 
+        NULL, 
+        5, 
+        1,
+        14, 
+        "9303");
+        INSERT INTO autor VALUES(9,29);
+INSERT INTO producto VALUES(
+    15, 
+    "lectura .net", 
+    "Aenean eu ante sit amet neque vulputate volutpat. Ut eu laoreet diam, id facilisis erat. Suspendisse laoreet pellentesque justo ac.", 
+    "programación;.net;web;", 
+    3);
+
+    INSERT INTO programa_producto VALUES(15,1);
+    INSERT INTO programa_producto VALUES(15,6);
+
+    INSERT INTO categoria_producto VALUES(1,15);
+    INSERT INTO categoria_producto VALUES(11,15);
+    INSERT INTO categoria_producto VALUES(14,15);
+
+    INSERT INTO version VALUES(
+        30, 
+        1, 
+        "No Disponible", 
+        '2017-05-01', 
+        '2018-05-01', 
+        '2017-05-08', 
+        2, 
+        1,
+        15, 
+        "9303");
+        INSERT INTO autor VALUES(11,30);
+
+    INSERT INTO version VALUES(
+        31, 
+        2, 
+        "No Disponible", 
+        '2017-05-05', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        15, 
+        "9303");
+        INSERT INTO autor VALUES(11,31);
+
+INSERT INTO producto VALUES(
+    16, 
+    "evaluación php", 
+    "Quisque vitae iaculis mi. Maecenas blandit auctor ex quis dictum. Aliquam eu sem ligula. Praesent consequat nisl nec diam pretium.", 
+    "programación;php;web;", 
+    4);
+
+    INSERT INTO programa_producto VALUES(16,1);
+    INSERT INTO programa_producto VALUES(16,6);
+
+    INSERT INTO categoria_producto VALUES(1,16);
+    INSERT INTO categoria_producto VALUES(11,16);
+    INSERT INTO categoria_producto VALUES(14,16);
+
+    INSERT INTO version VALUES(
+        32, 
+        1, 
+        "No Disponible", 
+        '2017-05-06', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        16, 
+        "9303");
+        INSERT INTO autor VALUES(13,32);
+
+    INSERT INTO version VALUES(
+        33, 
+        2, 
+        "No Disponible", 
+        '2017-05-10', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        16, 
+        "9303");
+        INSERT INTO autor VALUES(13,33);
+
+    INSERT INTO version VALUES(
+        34, 
+        3, 
+        "No Disponible", 
+        '2017-05-15', 
+        NULL, 
+        NULL, 
+        4, 
+        1,
+        16, 
+        "9303");
+        INSERT INTO autor VALUES(11,34);
+
+INSERT INTO producto VALUES(
+    17, 
+    "evaluación java", 
+    "Cras nec aliquet nisl. Fusce aliquet pellentesque diam at ultrices. Maecenas ornare dolor sed arcu mattis, vel placerat velit lacinia.", 
+    "programación;java;web;", 
+    4);
+
+    INSERT INTO programa_producto VALUES(17,1);
+    INSERT INTO programa_producto VALUES(17,6);
+
+    INSERT INTO categoria_producto VALUES(1,17);
+    INSERT INTO categoria_producto VALUES(11,17);
+    INSERT INTO categoria_producto VALUES(14,17);
+
+    INSERT INTO version VALUES(
+        35, 
+        1, 
+        "No Disponible", 
+        '2017-02-20', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        17, 
+        "9303");
+        INSERT INTO autor VALUES(8,35);
+
+    INSERT INTO version VALUES(
+        36, 
+        2, 
+        "No Disponible", 
+        '2017-03-14', 
+        '2017-09-25', 
+        '2017-03-25', 
+        2, 
+        1,
+        17, 
+        "9303");
+        INSERT INTO autor VALUES(8,36);
+
+    INSERT INTO version VALUES(
+        37, 
+        3, 
+        "No Disponible", 
+        '2017-04-18', 
+        '2017-10-28', 
+        '2017-04-28', 
+        2, 
+        1,
+        17, 
+        "9303");
+        INSERT INTO autor VALUES(8,37);
+        INSERT INTO autor VALUES(9,37);
+        INSERT INTO autor VALUES(10,37);
+
+INSERT INTO producto VALUES(
+    18, 
+    "evaluación .net", 
+    "Aenean eu ante sit amet neque vulputate volutpat. Ut eu laoreet diam, id facilisis erat. Suspendisse laoreet pellentesque justo ac.", 
+    "programación;.net;web;", 
+    4);
+
+    INSERT INTO programa_producto VALUES(18,1);
+    INSERT INTO programa_producto VALUES(18,6);
+
+    INSERT INTO categoria_producto VALUES(1,18);
+    INSERT INTO categoria_producto VALUES(11,18);
+    INSERT INTO categoria_producto VALUES(14,18);
+
+    INSERT INTO version VALUES(
+        38, 
+        1, 
+        "No Disponible", 
+        '2017-02-26', 
+        NULL, 
+        NULL, 
+        1, 
+        1,
+        18, 
+        "9303");
+        INSERT INTO autor VALUES(11,38);
+
+    INSERT INTO version VALUES(
+        39, 
+        2, 
+        "No Disponible", 
+        '2017-03-12', 
+        '2017-09-29', 
+        '2017-03-29', 
+        2, 
+        1,
+        18, 
+        "9303");
+        INSERT INTO autor VALUES(11,39);
+
+    INSERT INTO version VALUES(
+        40, 
+        3, 
+        "No Disponible", 
+        '2017-04-18', 
+        '2017-10-28', 
+        '2017-04-28', 
+        2, 
+        1,
+        18, 
+        "9303");
+        INSERT INTO autor VALUES(11,40);
+        INSERT INTO autor VALUES(12,40);
+
+INSERT INTO producto VALUES(
+    19, 
+    "video php", 
+    "Quisque vitae iaculis mi. Maecenas blandit auctor ex quis dictum. Aliquam eu sem ligula. Praesent consequat nisl nec diam pretium.", 
+    "programación;php;web;", 
+    5); 
+
+    INSERT INTO programa_producto VALUES(19,1);
+    INSERT INTO programa_producto VALUES(19,6);
+
+    INSERT INTO categoria_producto VALUES(1,19);
+    INSERT INTO categoria_producto VALUES(11,19);
+    INSERT INTO categoria_producto VALUES(14,19);
+
+    INSERT INTO version VALUES(
+        41, 
+        1, 
+        "No Disponible", 
+        '2017-02-26', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        19, 
+        "9303");
+        INSERT INTO autor VALUES(13,41);
+
+    INSERT INTO version VALUES(
+        42, 
+        2, 
+        "No Disponible", 
+        '2017-03-12', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        19, 
+        "9303");
+        INSERT INTO autor VALUES(13,42);
+
+    INSERT INTO version VALUES(
+        43, 
+        3, 
+        "No Disponible", 
+        '2017-04-01', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        19, 
+        "9303");
+        INSERT INTO autor VALUES(13,43);
+
+    INSERT INTO version VALUES(
+        44, 
+        4, 
+        "No Disponible", 
+        '2017-04-20', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        19, 
+        "9303");
+        INSERT INTO autor VALUES(13,44);
+
+INSERT INTO producto VALUES(
+    20, 
+    "video java", 
+    "Cras nec aliquet nisl. Fusce aliquet pellentesque diam at ultrices. Maecenas ornare dolor sed arcu mattis, vel placerat velit lacinia.", 
+    "programación;java;web;", 
+    5);
+
+    INSERT INTO programa_producto VALUES(20,1);
+    INSERT INTO programa_producto VALUES(20,6);
+
+    INSERT INTO categoria_producto VALUES(1,20);
+    INSERT INTO categoria_producto VALUES(11,20);
+    INSERT INTO categoria_producto VALUES(14,20);
+
+    INSERT INTO version VALUES(
+        45, 
+        1, 
+        "No Disponible", 
+        '2017-03-19', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        20, 
+        "9303");
+        INSERT INTO autor VALUES(9,45);
+        INSERT INTO autor VALUES(10,45);
+    INSERT INTO version VALUES(
+        46, 
+        2, 
+        "No Disponible", 
+        '2017-04-20', 
+        NULL, 
+        NULL, 
+        1, 
+        5,
+        20, 
+        "9303");
+        INSERT INTO autor VALUES(9,46);
+        INSERT INTO autor VALUES(10,46);
+        
+INSERT INTO producto VALUES(
+    21, 
+    "video .net", 
+    "Aenean eu ante sit amet neque vulputate volutpat. Ut eu laoreet diam, id facilisis erat. Suspendisse laoreet pellentesque justo ac.", 
+    "programación;.net;web;", 
+    5);
+
+    INSERT INTO programa_producto VALUES(21,1);
+    INSERT INTO programa_producto VALUES(21,6);
+
+    INSERT INTO categoria_producto VALUES(1,21);
+    INSERT INTO categoria_producto VALUES(11,21);
+    INSERT INTO categoria_producto VALUES(14,21);
+
+    INSERT INTO version VALUES(
+        47, 
+        1, 
+        "No Disponible", 
+        '2017-05-22', 
+        '2018-06-22', 
+        '2017-05-29', 
+        2, 
+        5,
+        21, 
+        "9303");
+        INSERT INTO autor VALUES(9,47);
+        INSERT INTO autor VALUES(10,47);
+        INSERT INTO autor VALUES(11,47);
+        INSERT INTO autor VALUES(12,47);
+
 INSERT INTO lista VALUES(1, "Lista para Guias", "lista para revisar guias", '01-01-01', 1, 1, 1);
 INSERT INTO item VALUES(1, "item pedagogico", 1);
 INSERT INTO item_lista VALUES(1,1);
 INSERT INTO evaluacion_lista VALUES(1, 1, 1, 1, "mu bonito", '11-01-02', 1);
 INSERT INTO evaluacion_item VALUES(1, 1, "bueno", 1, 1);
 
-
-INSERT INTO rol VALUES(1, "Administrador");
-INSERT INTO rol VALUES(2, "Coordinador");
-INSERT INTO rol VALUES(3, "Equipo Tecnico");
-INSERT INTO rol VALUES(4, "Equipo Pedagogico");
-INSERT INTO rol VALUES(5, "Instructor");
-
-INSERT INTO funcionario_rol VALUES(1,1);
-INSERT INTO funcionario_rol VALUES(1,2);
-INSERT INTO funcionario_rol VALUES(1,3);
-INSERT INTO funcionario_rol VALUES(1,4);
-INSERT INTO funcionario_rol VALUES(1,5);
-
-INSERT INTO area VALUES(1, "teleinformatica", 1, "9303");
-INSERT INTO programa VALUES(1, "ADSI", 1, 1);
 INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
 INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
-INSERT INTO mensaje VALUES(1, 'Objeto de aprendizaje aprovado');
-INSERT INTO notificacion VALUES(1, 0, 1, 1, 1, 1);
-INSERT INTO categoria VALUES(1, "programación", 1, "9303");
-INSERT INTO programa_producto VALUES(1,1);
-INSERT INTO categoria_producto VALUES(1,1);
+
+INSERT INTO notificacion VALUES(1, 1, 0, 1, 1, 1, 1);

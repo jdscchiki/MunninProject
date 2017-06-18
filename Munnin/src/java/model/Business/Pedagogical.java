@@ -33,7 +33,7 @@ public class Pedagogical {
         int countAreas;
         VersionDAO versionDAO = new VersionDAO();
         countAreas = versionDAO.countFilesPedagocicalCenter(idCentro, search);
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
             paginas++;
@@ -47,7 +47,7 @@ public class Pedagogical {
         VersionDAO versionDAO = new VersionDAO();
         version = versionDAO.selectSomeFilesPedagogicalCenter(idCentro, pagina, cantXpag, search);
 
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
 
         return version;
     }    
@@ -56,8 +56,8 @@ public class Pedagogical {
         int paginas;
         int cantFuncionarios;
         ListaDAO listaDAO = new ListaDAO();
-        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, false);
-        listaDAO.cerrarConexion();
+        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, true);
+        listaDAO.closeConnection();
 
         paginas = cantFuncionarios / cantXpag;
         if (cantFuncionarios % cantXpag != 0) {
@@ -71,7 +71,7 @@ public class Pedagogical {
         ArrayList<Lista> lista;
         ListaDAO listaDAO = new ListaDAO();
         lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);        
-        listaDAO.cerrarConexion();
+        listaDAO.closeConnection();
 
         return lista;
     }
@@ -82,7 +82,7 @@ public class Pedagogical {
         resultado.setId(idVersion);
         resultado = versionDAO.select(resultado);
         
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
         
         return resultado;
     }
@@ -93,7 +93,7 @@ public class Pedagogical {
         resultado.setId(idLista);
         resultado = listaDAO.select(resultado);
         
-        listaDAO.cerrarConexion();
+        listaDAO.closeConnection();
         
         return resultado;
     }
@@ -104,14 +104,13 @@ public class Pedagogical {
         item.setId(idItem);
         ItemDAO itemDAO = new ItemDAO();
         items = itemDAO.selectItems(item);
-        itemDAO.cerrarConexion();
+        itemDAO.closeConnection();
 
         return items;
     }
     
     public static boolean AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
         boolean resultado = false;
-        System.out.println("bandera");
         Version version = new Version();
         Lista lista = new Lista();
         version.setId(idVer);        
@@ -125,7 +124,7 @@ public class Pedagogical {
         //se realizan la operaciones en la base de datos
         EvaluacionListaDAO evaluacionListaDAO = new EvaluacionListaDAO();
         resultado = evaluacionListaDAO.agregarListaVersion(evaluacionLista);
-        evaluacionListaDAO.cerrarConexion();
+        evaluacionListaDAO.closeConnection();
 
         return resultado;
     }
@@ -141,6 +140,7 @@ public class Pedagogical {
         evaluacionLista.setVersion(version);
         EvaluacionListaDAO evListDAO = new EvaluacionListaDAO();
         evaluacionLista = evListDAO.selectEvList(evaluacionLista);
+        evListDAO.closeConnection();
         return evaluacionLista;
     }
     
@@ -173,7 +173,7 @@ public class Pedagogical {
             evItem.setItem(item);
             resultado = evItemDAO.AsignEvaluacionItem(evItem);
         }
-        evItemDAO.cerrarConexion();
+        evItemDAO.closeConnection();
 
         return resultado;
     }
@@ -189,6 +189,8 @@ public class Pedagogical {
         if (versionDAO.updateEstado(version)) {
             resultado = true;
         }
+        versionDAO.closeConnection();
+        
         return resultado;
     }
     
@@ -203,6 +205,8 @@ public class Pedagogical {
         if (versionDAO.updateEstado(version)) {
             resultado = true;
         }
+        versionDAO.closeConnection();
+        
         return resultado;
     }
 }

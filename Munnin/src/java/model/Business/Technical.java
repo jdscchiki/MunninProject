@@ -33,7 +33,7 @@ public class Technical {
         int countAreas;
         VersionDAO versionDAO = new VersionDAO();
         countAreas = versionDAO.countFilesCenter(idCentro, search);
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
             paginas++;
@@ -47,7 +47,7 @@ public class Technical {
         VersionDAO versionDAO = new VersionDAO();
         version = versionDAO.selectSomeFilesCenter(idCentro, pagina, cantXpag, search);
 
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
 
         return version;
     }
@@ -56,8 +56,8 @@ public class Technical {
         int paginas;
         int cantFuncionarios;
         ListaDAO listaDAO = new ListaDAO();
-        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, false);
-        listaDAO.cerrarConexion();
+        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, true);
+        listaDAO.closeConnection();
 
         paginas = cantFuncionarios / cantXpag;
         if (cantFuncionarios % cantXpag != 0) {
@@ -71,7 +71,7 @@ public class Technical {
         ArrayList<Lista> lista;
         ListaDAO listaDAO = new ListaDAO();
         lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);
-        listaDAO.cerrarConexion();
+        listaDAO.closeConnection();
 
         return lista;
     }
@@ -80,10 +80,8 @@ public class Technical {
         Version resultado = new Version();
         VersionDAO versionDAO = new VersionDAO();
         resultado.setId(idVersion);
-        resultado = versionDAO.select(resultado);
-
-        versionDAO.cerrarConexion();
-
+        resultado = versionDAO.select(resultado);        
+        versionDAO.closeConnection();
         return resultado;
     }
 
@@ -93,7 +91,7 @@ public class Technical {
         resultado.setId(idLista);
         resultado = listaDAO.select(resultado);
 
-        listaDAO.cerrarConexion();
+        listaDAO.closeConnection();
 
         return resultado;
     }
@@ -104,7 +102,7 @@ public class Technical {
         item.setId(idItem);
         ItemDAO itemDAO = new ItemDAO();
         items = itemDAO.selectItems(item);
-        itemDAO.cerrarConexion();
+        itemDAO.closeConnection();
 
         return items;
     }
@@ -124,7 +122,7 @@ public class Technical {
         //se realizan la operaciones en la base de datos
         EvaluacionListaDAO evaluacionListaDAO = new EvaluacionListaDAO();
         resultado = evaluacionListaDAO.agregarListaVersion(evaluacionLista);
-        evaluacionListaDAO.cerrarConexion();
+        evaluacionListaDAO.closeConnection();
 
         return resultado;
     }
@@ -140,6 +138,7 @@ public class Technical {
         evaluacionLista.setVersion(version);
         EvaluacionListaDAO evListDAO = new EvaluacionListaDAO();
         evaluacionLista = evListDAO.selectEvList(evaluacionLista);
+        evListDAO.closeConnection();
         return evaluacionLista;
     }
 
@@ -172,7 +171,7 @@ public class Technical {
             evItem.setItem(item);
             resultado = evItemDAO.AsignEvaluacionItem(evItem);
         }
-        evItemDAO.cerrarConexion();
+        evItemDAO.closeConnection();
 
         return resultado;
     }
@@ -188,6 +187,7 @@ public class Technical {
         if (versionDAO.updateEstado(version)) {
             resultado = true;
         }
+        versionDAO.closeConnection();
         return resultado;
     }
 
@@ -202,6 +202,7 @@ public class Technical {
         if (versionDAO.updateEstado(version)) {
             resultado = true;
         }
+        versionDAO.closeConnection();
         return resultado;
     }
 }

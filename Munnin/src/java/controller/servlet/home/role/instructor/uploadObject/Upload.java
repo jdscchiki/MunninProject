@@ -49,7 +49,7 @@ public class Upload extends HttpServlet {
             String strIdObjectType = request.getParameter("objectType");
             Part filePart = request.getPart("objectFile");
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            String idCentro = ((Funcionario) sesion.getAttribute("usuario")).getCentro().getId();
+            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
             Producto producto = new Producto();
             producto.setNombre(name);
@@ -59,13 +59,13 @@ public class Upload extends HttpServlet {
             tipoObjetoAprendizaje.setId(Integer.parseInt(strIdObjectType));
             producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
 
-            int[] operationResult = Instructor.uploadNewLearningObject(filePart, producto, idCentro);
+            int[] operationResult = Instructor.uploadNewLearningObject(filePart, producto, funcionario.getCentro().getId(), funcionario.getId());
 
             switch (operationResult[0]) {
                 case 1:
                     request.setAttribute("messageType", "success");
                     request.setAttribute("message", "Se ha subido satisfactoriamente el objeto de aprendizaje");
-                    request.setAttribute("categories", Instructor.viewAllCategoryCenter(idCentro));
+                    request.setAttribute("categories", Instructor.viewAllCategoryCenter(funcionario.getCentro().getId()));
                     request.setAttribute("learningObject", operationResult[1]);
                     
                     request.getRequestDispatcher("/home/role/instructor/uploadobject/modalcategory.jsp").forward(request, response);

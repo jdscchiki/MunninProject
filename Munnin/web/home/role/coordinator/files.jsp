@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+<%@taglib prefix="tables" tagdir="/WEB-INF/tags/template/basicTemplate/tables" %>
 <template:basicTemplate actualPage="7"
                         actualRole="2"
                         funcionario="${sessionScope.usuario}"
@@ -16,49 +17,19 @@
     </jsp:attribute>
     <jsp:body>
         <div class="row">
-            <div class="col-lg-12" id="message_file">
-
-            </div>
+            <div class="col-lg-12" id="message_file"></div>
             <div class="col-lg-12">
-                <form id="formSearchFileEnable" 
-                      class="form-horizontal" 
-                      method="POST" 
-                      action="${pageContext.request.contextPath}/home/role/coordinator/pagerFileCoordinator"
-                      data-ajax-form="true"
-                      data-display="fulltable">                    
-                    <div class="form-group">                        
-                        <label class="control-label col-sm-1" for="searchMunnin">Buscar:</label>
-                        <div class="col-sm-5">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar Archivo" id="searchMunnin" name="search">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <tables:dataTableSearch id="formSearchFileEnable"
+                                                urlServlet="${pageContext.request.contextPath}/home/role/coordinator/pagerFileCoordinator"
+                                                placeholder="Buscar Archivo"
+                                                display="fulltable"
+                                                width="8"/>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="col-lg-8" id="fulltable">
-
-            </div>
-            <div class="col-lg-2">
-                <button type="button" 
-                        class="btn btn-primary btn-block" 
-                        data-panel-table="formActionFileEnable"
-                        data-action="checkList">
-                    Aprobar</button>
+            <div class="col-lg-12" id="fulltable"></div>
         </div>
-        <form id="formActionFileEnable"
-              method="POST"
-              action="${pageContext.request.contextPath}/home/role/coordinator/files/approve"
-              data-display="message_file"
-              data-ajax-form="true"
-              data-data-table="tableBodyFileCoordinator">
-            <input type="hidden" name="id" value="-1" data-selected-item="">
-            <input type="hidden" name="action" data-action="">
-        </form>
     </jsp:body>
 </template:basicTemplate>

@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Funcionario;
 import model.bean.Item;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ItemDAO extends ConexionBD {
+public class ItemDAO extends connectionDB {
 
     private static final String COL_ID = "id_item";
     private static final String COL_DESCRIPTOR = "descriptor_item";
@@ -27,8 +27,8 @@ public class ItemDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public ItemDAO() throws NamingException, SQLException {
         super();
@@ -152,18 +152,16 @@ public class ItemDAO extends ConexionBD {
         return Item;
     }
     
-    public ArrayList<Item> selectItems(Item item) throws SQLException {
+    public ArrayList<Item> selectAll() throws SQLException {
         ArrayList<Item> result = new ArrayList<>();
         
-        String query = "{CALL VER_ITEMS_LISTA(?)}";
-        int indexId = 1;
-        
+        String query = "{CALL VER_TODOS_ITEM()}";
+
         CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, item.getId());
         ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
-            item = new Item();
+            Item item = new Item();
             item.setId(rs.getInt(COL_ID));
             item.setDescriptor(rs.getString(COL_DESCRIPTOR));
             Funcionario funcionario = new Funcionario();
@@ -176,16 +174,18 @@ public class ItemDAO extends ConexionBD {
         return result;
     }
     
-    public ArrayList<Item> selectAll() throws SQLException {
+    public ArrayList<Item> selectItems(Item item) throws SQLException {
         ArrayList<Item> result = new ArrayList<>();
         
-        String query = "{CALL VER_TODOS_ITEM()}";
-
+        String query = "{CALL VER_ITEMS_LISTA(?)}";
+        int indexId = 1;
+        
         CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, item.getId());
         ResultSet rs = statement.executeQuery();
 
         while (rs.next()) {
-            Item item = new Item();
+            item = new Item();
             item.setId(rs.getInt(COL_ID));
             item.setDescriptor(rs.getString(COL_DESCRIPTOR));
             Funcionario funcionario = new Funcionario();

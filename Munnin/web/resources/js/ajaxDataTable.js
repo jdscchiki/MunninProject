@@ -1,10 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 $(document).ready(function () {
 
     //class
@@ -19,6 +12,9 @@ $(document).ready(function () {
     var $selectedItemAttr = "data-selected-item";
     var $panelTableAttr = 'data-panel-table';
     var $actionAttr = 'data-action';
+    var $actionMultiple = 'data-action-multiple';
+    var $actionDisplay = 'data-action-display';
+    var $actionUrlServlet = 'data-action-url-servlet';
 
     function refreshDataTable($dataTable) {
         var $displayElement = $("#" + $dataTable.attr($displayAttr));
@@ -31,9 +27,9 @@ $(document).ready(function () {
             data: $state,
             success: function (response) {
                 $displayElement.html(response);
-                var $panelTable = $('form['+$dataTableAttr+'='+$dataTable.attr('id')+']');
+                var $panelTable = $('form[' + $dataTableAttr + '=' + $dataTable.attr('id') + ']');
                 $panelTable.find("input[" + $selectedItemAttr + "]").val(-1);
-                $panelTable.find('input['+$actionAttr+']').val("");
+                $panelTable.find('input[' + $actionAttr + ']').val("");
             }
         });
     }
@@ -43,9 +39,9 @@ $(document).ready(function () {
         var $action = $actionButton.attr($actionAttr);
         var $displayElement = $("#" + $panelTable.attr($displayAttr));
         var $dataTable = $("#" + $panelTable.attr($dataTableAttr));
-        
-        $panelTable.find('input['+$actionAttr+']').val($action);
-        
+
+        $panelTable.find('input[' + $actionAttr + ']').val($action);
+
         $.ajax({
             type: "POST",
             url: $panelTable.attr('action'),
@@ -66,17 +62,41 @@ $(document).ready(function () {
         var $panelTable = $("form[" + $dataTableAttr + "=" + $item.attr($dataTableAttr) + "]");
 
         $panelTable.find("input[" + $selectedItemAttr + "]").val($id);
-        
-        $dataTable.find("."+$selectedCls).removeClass($selectedCls);
+
+        $dataTable.find("." + $selectedCls).removeClass($selectedCls);
         $item.addClass($selectedCls);
     }
-    
-    $(document).on("click", "tr["+$idAttr+"]", function (event) {
+
+    function selectItemSingleAction($item) {
+        var $dataTable = $item.parent();
+        var $displayElement = $("#"+$dataTable.attr($actionDisplay));
+        var params = {
+            id: $item.attr($idAttr)
+        };
+        $.ajax({
+            type: "POST",
+            url: $dataTable.attr($actionUrlServlet),
+            data: $.param(params),
+            success: function (response) {
+                $displayElement.html(response);
+            },
+            complete: function (response) {
+                refreshDataTable($dataTable);
+            }
+        });
+    }
+
+    $(document).on("click", "tbody[" + $actionMultiple + "=true] tr[" + $idAttr + "]", function (event) {
         event.preventDefault();
         selectItem($(this));
     });
-    
-    $(document).on("click", "button["+$actionAttr+"]", function (event) {
+
+    $(document).on("click", "tbody[" + $actionMultiple + "=false] tr[" + $idAttr + "]", function (event) {
+        event.preventDefault();
+        selectItemSingleAction($(this));
+    });
+
+    $(document).on("click", "button[" + $actionAttr + "]", function (event) {
         event.preventDefault();
         executeAction($(this));
     });

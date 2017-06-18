@@ -13,23 +13,24 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Estado;
+import model.bean.Funcionario;
 import model.bean.Producto;
 import model.bean.TipoArchivo;
 import model.bean.Version;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class VersionDAO extends ConexionBD {
+public class VersionDAO extends connectionDB {
 
     private static final String COL_ID = "id_version";
     private static final String COL_NUMERO = "numero_version";
     private static final String COL_URL = "url_version";
     private static final String COL_FECHA = "fecha_version";
     private static final String COL_FECHA_CADUCIDAD = "fecha_caducidad_version";
-    private static final String COL_FECHA_APROBACION = "fecha_aprobacion_version";
+    private static final String COL_FECHA_APROVACION = "fecha_aprobacion_version";
     private static final String COL_ID_ESTADO = "id_estado_version";
     private static final String COL_ID_TIPO_ARCHIVO = "id_tipo_archivo_version";
     private static final String COL_ID_PRODUCTO = "id_producto_version";
@@ -38,8 +39,8 @@ public class VersionDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public VersionDAO() throws NamingException, SQLException {
         super();
@@ -187,7 +188,7 @@ public class VersionDAO extends ConexionBD {
             version.setUrl(rs.getString(COL_URL));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROBACION));
+            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);
@@ -195,11 +196,10 @@ public class VersionDAO extends ConexionBD {
             tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
             version.setTipoArchivo(tipoArchivo);
             Producto producto = new Producto();
-            producto.setId(rs.getInt(COL_ID_PRODUCTO));                        
-            Centro centro = new Centro();
-            centro.setId(rs.getString(COL_ID_CENTRO));
             producto.setNombre(rs.getString("nombre_producto_version"));
             version.setProducto(producto);
+            Centro centro = new Centro();
+            centro.setId(rs.getString(COL_ID_CENTRO));
             version.setCentro(centro);
         }
         if (!encontrado) {
@@ -208,7 +208,7 @@ public class VersionDAO extends ConexionBD {
 
         return version;
     }
-    
+
     public ArrayList<Version> selectAll() throws SQLException {
         ArrayList<Version> result = new ArrayList<>();
 
@@ -224,7 +224,7 @@ public class VersionDAO extends ConexionBD {
             version.setUrl(rs.getString(COL_URL));
             version.setFecha(rs.getDate(COL_FECHA));
             version.setFechaCaducidad(rs.getDate(COL_FECHA_CADUCIDAD));
-            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROBACION));
+            version.setFechaAprovacion(rs.getDate(COL_FECHA_APROVACION));
             Estado estado = new Estado();
             estado.setId(rs.getInt(COL_ID_ESTADO));
             version.setEstado(estado);
@@ -237,24 +237,24 @@ public class VersionDAO extends ConexionBD {
             Centro centro = new Centro();
             centro.setId(rs.getString(COL_ID_CENTRO));
             version.setCentro(centro);
-            
+
             result.add(version);
         }
 
         return result;
     }
-    
-    public int create(Version version) throws SQLException{
+
+    public int create(Version version) throws SQLException {
         int result = 0;
 
         String query = "INSERT INTO version ("
-                +COL_NUMERO+","
-                +COL_URL+","
-                +COL_FECHA+","
-                +COL_ID_ESTADO+","
-                +COL_ID_TIPO_ARCHIVO+","
-                +COL_ID_PRODUCTO+","
-                +COL_ID_CENTRO+") "
+                + COL_NUMERO + ","
+                + COL_URL + ","
+                + COL_FECHA + ","
+                + COL_ID_ESTADO + ","
+                + COL_ID_TIPO_ARCHIVO + ","
+                + COL_ID_PRODUCTO + ","
+                + COL_ID_CENTRO + ") "
                 + "VALUES(?,'',CURRENT_DATE,3,?,?,?)";
         int indexNumero = 1;
         int indexIdTipoArchivo = 2;
@@ -280,13 +280,13 @@ public class VersionDAO extends ConexionBD {
 
         return result;
     }
-    
-    public boolean editUrl(Version version) throws SQLException{
+
+    public boolean editUrl(Version version) throws SQLException {
         boolean result = false;
-        
+
         String query = "UPDATE version SET "
-                + COL_URL +"=? "
-                + "WHERE "+COL_ID +"=?";
+                + COL_URL + "=? "
+                + "WHERE " + COL_ID + "=?";
         int indexURL = 1;
         int indexId = 2;
 
@@ -299,15 +299,35 @@ public class VersionDAO extends ConexionBD {
             this.getConexion().commit();
             result = true;
         }
-        
+
         return result;
     }
+
+    public boolean updateEstado(Version version) throws SQLException {
+        boolean resultado;
+
+        String query = "{CALL CAMBIO_ESTADO(?,?)}";
+        int indexId = 1;
+        int indexIdEstado = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexId, version.getId());
+        statement.setInt(indexIdEstado, version.getEstado().getId());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            resultado = true;
+        } else {
+            this.getConexion().rollback();
+            resultado = false;
+        }
+        return resultado;
+    }
     
-    public int countFilesCenter(String idCentro, String search) throws SQLException {
+    public int countFilesCoordinatorCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_ARCHIVOS_CENTRO(?,?)}";
+        String query = "{CALL CONTEO_ARCHIVOS_COORDINADOR_CENTRO(?,?)}";
         int indexCentro = 1;
         int indexFiltro = 2;
 
@@ -323,6 +343,39 @@ public class VersionDAO extends ConexionBD {
             conteo = rs.getInt(resConteo);
         }
         return conteo;
+    }
+    
+    public ArrayList<Version> selectSomeFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_ARCHIVOS_COORDINADOR_CENTRO(?,?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setFecha((rs.getDate(COL_FECHA)));
+            version.setUrl(rs.getString(COL_URL));
+            Producto producto = new Producto();
+            producto.setNombre(rs.getString("nombre_producto_version"));
+            version.setProducto(producto);
+            versions.add(version);
+        }
+        return versions;
     }
     
     public int countFilesPedagocicalCenter(String idCentro, String search) throws SQLException {
@@ -347,11 +400,44 @@ public class VersionDAO extends ConexionBD {
         return conteo;
     }
     
-    public int countFilesCoordinatorCenter(String idCentro, String search) throws SQLException {
+    public ArrayList<Version> selectSomeFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
+        ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_ARCHIVOS_PEDAGOGICO_CENTRO(?,?,?,?)}";
+        int indexCentro = 1;
+        int indexPagina = 2;
+        int indexCantXPag = 3;
+        int indexSearch = 4;
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setString(indexCentro, idCentro);
+        statement.setInt(indexPagina, pagina);
+        statement.setInt(indexCantXPag, cantXpag);
+        statement.setString(indexSearch, search);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            Version version = new Version();
+            version.setId(rs.getInt(COL_ID));
+            version.setNumero(rs.getInt(COL_NUMERO));
+            version.setFecha((rs.getDate(COL_FECHA)));
+            version.setUrl(rs.getString(COL_URL));
+            Producto producto = new Producto();
+            producto.setNombre(rs.getString("nombre_producto_version"));
+            version.setProducto(producto);
+            versions.add(version);
+        }
+        return versions;
+    }
+    
+    public int countFilesCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL CONTEO_ARCHIVOS_COORDINADOR_CENTRO(?,?)}";
+        String query = "{CALL CONTEO_ARCHIVOS_CENTRO(?,?)}";
         int indexCentro = 1;
         int indexFiltro = 2;
 
@@ -402,89 +488,28 @@ public class VersionDAO extends ConexionBD {
         return versions;
     }
     
-    public ArrayList<Version> selectSomeFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
-        ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
-
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_ARCHIVOS_PEDAGOGICO_CENTRO(?,?,?,?)}";
-        int indexCentro = 1;
-        int indexPagina = 2;
-        int indexCantXPag = 3;
-        int indexSearch = 4;
-
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setInt(indexPagina, pagina);
-        statement.setInt(indexCantXPag, cantXpag);
-        statement.setString(indexSearch, search);
-
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Version version = new Version();
-            version.setId(rs.getInt(COL_ID));
-            version.setNumero(rs.getInt(COL_NUMERO));
-            version.setFecha((rs.getDate(COL_FECHA)));
-            version.setUrl(rs.getString(COL_URL));
-            Producto producto = new Producto();
-            producto.setNombre(rs.getString("nombre_producto_version"));
-            version.setProducto(producto);
-            versions.add(version);
+    public boolean setAutores(Version version) throws SQLException{
+        boolean result = false;
+        
+        String query = "{CALL INSERTAR_AUTOR(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdVersion = 2;
+        
+        boolean commit = true;
+        for (Funcionario funcionario : version.getFuncionarios()) {
+            CallableStatement statement = this.getConexion().prepareCall(query);
+            statement.setInt(indexIdFuncionario, funcionario.getId());
+            statement.setInt(indexIdVersion, version.getId());
+            if(statement.executeUpdate()!=1){
+                this.getConexion().rollback();
+                commit = false;
+                break;
+            }
         }
-        return versions;
-    }
-    
-    public ArrayList<Version> selectSomeFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
-        ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
-
-        //datos de la consulta en base de datos
-        String query = "{CALL VER_ARCHIVOS_COORDINADOR_CENTRO(?,?,?,?)}";
-        int indexCentro = 1;
-        int indexPagina = 2;
-        int indexCantXPag = 3;
-        int indexSearch = 4;
-
-        //prepara la consulta
-        CallableStatement statement = getConexion().prepareCall(query);
-        statement.setString(indexCentro, idCentro);
-        statement.setInt(indexPagina, pagina);
-        statement.setInt(indexCantXPag, cantXpag);
-        statement.setString(indexSearch, search);
-
-        ResultSet rs = statement.executeQuery();//ejecuta la consulta
-        while (rs.next()) {
-            //asigna los valores resultantes de la consulta
-            Version version = new Version();
-            version.setId(rs.getInt(COL_ID));
-            version.setNumero(rs.getInt(COL_NUMERO));
-            version.setFecha((rs.getDate(COL_FECHA)));
-            version.setUrl(rs.getString(COL_URL));
-            Producto producto = new Producto();
-            producto.setNombre(rs.getString("nombre_producto_version"));
-            version.setProducto(producto);
-            versions.add(version);
-        }
-        return versions;
-    }
-    
-    public boolean updateEstado(Version version) throws SQLException {
-        boolean resultado;
-
-        String query = "{CALL CAMBIO_ESTADO(?,?)}";
-        int indexId = 1;
-        int indexIdEstado = 2;
-
-        CallableStatement statement = this.getConexion().prepareCall(query);
-        statement.setInt(indexId, version.getId());
-        statement.setInt(indexIdEstado, version.getEstado().getId());
-        if (statement.executeUpdate() == 1) {
+        if (commit) {
             this.getConexion().commit();
-            resultado = true;
-        } else {
-            this.getConexion().rollback();
-            resultado = false;
         }
-        return resultado;
+        
+        return result;
     }
 }

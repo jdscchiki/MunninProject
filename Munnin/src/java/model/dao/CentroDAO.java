@@ -13,13 +13,13 @@ import javax.naming.NamingException;
 import model.bean.Centro;
 import model.bean.Ciudad;
 import model.bean.Regional;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class CentroDAO extends ConexionBD {
+public class CentroDAO extends connectionDB {
 
     private static final String COL_ID = "id_centro";
     private static final String COL_NOMBRE = "nombre_centro";
@@ -29,8 +29,8 @@ public class CentroDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public CentroDAO() throws NamingException, SQLException {
         super();

@@ -77,6 +77,7 @@ public class SessionFilter implements Filter {
             httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             httpResponse.setHeader("Pragma", "no-cache");
             httpResponse.setDateHeader("Expires", 0);
+            httpResponse.setCharacterEncoding("UTF-8");
 
             //codigo para verificar sessiones
             String contextPath = ((HttpServletRequest) request).getContextPath();

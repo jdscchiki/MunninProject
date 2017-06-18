@@ -11,20 +11,25 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
 import model.bean.Area;
+import model.bean.Categoria;
 import model.bean.Centro;
 import model.bean.Estado;
 import model.bean.Funcionario;
 import model.bean.Lista;
+import model.bean.Programa;
 import model.bean.Rol;
 import model.bean.TipoDocumento;
 import model.bean.Version;
 import model.dao.AreaDAO;
+import model.dao.CategoriaDAO;
 import model.dao.TipoDocumentoDAO;
-import util.Encriptado;
-import util.PassGenerator;
-import util.Mail;
+import util.security.Encrypt;
+import util.security.PassGenerator;
+import util.message.Mail;
 import model.dao.FuncionarioDAO;
 import model.dao.ListaDAO;
+import model.dao.NotificacionDAO;
+import model.dao.ProgramaDAO;
 import model.dao.RolDAO;
 import model.dao.VersionDAO;
 
@@ -40,20 +45,19 @@ public class Coordinator {
      * registro de funcionarios con la logica de un admin
      *
      * @param funcionario Datos del funcionario a registerFunctionary
-     * @param idCentro Id del centro en que va a ser registrado
+     * @param idCenter Id del centro en que va a ser registrado
      * @return un entero entre 0 y 5. 0 fallo. 1 completado. 2 existe un usuario
      * activo con los datos ingresados. 3 existe un usuario no-activo con el
      * mismo correo. 4 existe un usuario no-activo con el mismo documento. 5 el
      * correo no pudo ser enviado.
-     * @throws util.Encriptado.CannotPerformOperationException Error al realizar
-     * la encriptacion de la contraseña, verificar la version de java
+     * @throws util.security.Encrypt.CannotPerformOperationException
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD
      * @throws java.io.UnsupportedEncodingException Problemas con los Correos de
      * origen
      * @throws javax.mail.MessagingException Problemas con el Correo de destino
      */
-    public static int registerFunctionary(Funcionario funcionario, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    public static int registerFunctionary(Funcionario funcionario, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -65,10 +69,10 @@ public class Coordinator {
 
         int resultado = 0;
         Centro centro = new Centro();
-        centro.setId(idCentro);
+        centro.setId(idCenter);
         funcionario.setCentro(centro);
         String contrasena = PassGenerator.getSecurePassword();
-        funcionario.setContrasena(Encriptado.createHash(contrasena));
+        funcionario.setContrasena(Encrypt.createHash(contrasena));
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
         if (funcionarioDAO.isActiveFunctionary(funcionario.getCorreo(), funcionario.getTipoDocumento().getId(), funcionario.getDocumento())) {
@@ -90,7 +94,7 @@ public class Coordinator {
             }
         }
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -108,7 +112,7 @@ public class Coordinator {
         TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoDAO();
         tiposDoc = tipoDocumentoDAO.selectAll();
 
-        tipoDocumentoDAO.cerrarConexion();
+        tipoDocumentoDAO.closeConnection();
 
         return tiposDoc;
     }
@@ -131,37 +135,26 @@ public class Coordinator {
             }
         }
 
-        rolDAO.cerrarConexion();
+        rolDAO.closeConnection();
 
         return roles;
     }
-        
-    public static ArrayList<Lista> viewLista(String IdCentro) throws NamingException, SQLException {
-        ArrayList<Lista> items;
-        Lista lista = new Lista();
-        lista.setIdAutor(Integer.parseInt(IdCentro));
-        ListaDAO listaDAO = new ListaDAO();
-        items = listaDAO.selectListas(lista);
-        listaDAO.cerrarConexion();
 
-        return items;
-    }
-    
-    public static int countPagesAreasCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+    public static int countPagesAreasCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int countAreas;
         AreaDAO areaDAO = new AreaDAO();
-        countAreas = areaDAO.countAreasCenter(idCentro, search);
-        areaDAO.cerrarConexion();
-        paginas = countAreas / cantXpag;
-        if (countAreas % cantXpag != 0) {
+        countAreas = areaDAO.countAreasCenter(idCenter, search, true);
+        areaDAO.closeConnection();
+        paginas = countAreas / resultsInPage;
+        if (countAreas % resultsInPage != 0) {
             paginas++;
         }
 
         return paginas;
-    }    
-        
-    public static int registerArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+    }
+
+    public static int registerArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -173,78 +166,77 @@ public class Coordinator {
 
         int resultado = 0;
         Centro centro = new Centro();
-        centro.setId(idCentro);
+        centro.setId(idCenter);
         area.setCentro(centro);
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
+        if (areaDAO.isNameAreaOcuped(area.getNombre(), idCenter)) {
             resultado = 2;
         } else if (areaDAO.registerArea(area)) {
             resultado = 1;
         }
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return resultado;
     }
-    
-    public static ArrayList<Area> viewAreasCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+
+    public static ArrayList<Area> viewAreasCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
-        area = areaDAO.selectSomeAreasCenter(idCentro, pagina, cantXpag, search);
+        area = areaDAO.selectSomeAreasCenter(idCenter, pagina, cantXpag, search, true);
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return area;
     }
-    
+
     /**
      * Consulta la cantidad de paginas necesarias para mostrar todos los
      * funcionarios
      *
-     * @param idCentro Id del centro al cual se va a realizar la consulta
-     * @param cantXpag Cantidad de funcionarios por pagina
+     * @param idCenter Id del centro al cual se va a realizar la consulta
+     * @param resultsInPage Cantidad de funcionarios por pagina
      * @param search filtro de busqueda
      * @return la cantidad de paginas
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static int countPagesFunctionariesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+    public static int countPagesFunctionariesCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, true);
-        funcionarioDAO.cerrarConexion();
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCenter, search, true);
+        funcionarioDAO.closeConnection();
 
-        paginas = cantFuncionarios / cantXpag;
-        if (cantFuncionarios % cantXpag != 0) {
+        paginas = cantFuncionarios / resultsInPage;
+        if (cantFuncionarios % resultsInPage != 0) {
             paginas++;
         }
 
         return paginas;
     }
-    
-    public static int countPagesFunctionariesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+
+    public static int countPagesFunctionariesDisabledCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int cantFuncionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCentro, search, false);
-        funcionarioDAO.cerrarConexion();
+        cantFuncionarios = funcionarioDAO.countFunctionariesCenter(idCenter, search, false);
+        funcionarioDAO.closeConnection();
 
-        paginas = cantFuncionarios / cantXpag;
-        if (cantFuncionarios % cantXpag != 0) {
+        paginas = cantFuncionarios / resultsInPage;
+        if (cantFuncionarios % resultsInPage != 0) {
             paginas++;
         }
 
         return paginas;
     }
-    
 
     /**
      * Consulta los funcionarios de un centro en especifico, en una pagina
      * especifica
      *
-     * @param idCentro Id del centro a consultar
+     * @param idCenter Id del centro a consultar
      * @param pagina El numero de la pagina a consultar
      * @param cantXpag La cantidad de funcionarios por pagina
      * @param search filtro de busqueda de funcionario, por nombre, apellido,
@@ -254,12 +246,12 @@ public class Coordinator {
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static ArrayList<Funcionario> viewFunctionariesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+    public static ArrayList<Funcionario> viewFunctionariesCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, true);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCenter, pagina, cantXpag, search, true);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return funcionarios;
     }
@@ -268,16 +260,16 @@ public class Coordinator {
      * Inhabilita la cuenta de un funcionario
      *
      * @param idFuncionario Id del funcionario a inhabilitar
-     * @param idCentro
+     * @param idCenter
      * @return True, si el funcionario fue inhabilitado correctamente
      * @throws NamingException Error en el constructor ConexionBD
      * @throws SQLException Error en el constructor ConexionBD o en el query de
      * la consulta
      */
-    public static int disableFunctionary(int idFuncionario, String idCentro) throws NamingException, SQLException {
+    public static int disableFunctionary(int idFuncionario, String idCenter) throws NamingException, SQLException {
         int resultado = 0;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCentro,idFuncionario)) {
+        if (funcionarioDAO.isLastCoordinatorEnableCenter(idCenter, idFuncionario)) {
             resultado = 2;
         } else {
             if (funcionarioDAO.disableFunctionary(idFuncionario)) {
@@ -285,7 +277,7 @@ public class Coordinator {
             }
         }
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -295,21 +287,7 @@ public class Coordinator {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         resultado = funcionarioDAO.enableFunctionary(idFuncionario);
 
-        funcionarioDAO.cerrarConexion();
-
-        return resultado;
-    }
-    
-    public static boolean approveVersion(int idVersion) throws NamingException, SQLException {
-        boolean resultado;
-        Version version = new Version();
-        VersionDAO versionDAO = new VersionDAO();        
-        Estado estado = new Estado();
-        estado.setId(2);
-        version.setId(idVersion);
-        version.setEstado(estado);
-        resultado = versionDAO.updateEstado(version);
-        versionDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -322,7 +300,7 @@ public class Coordinator {
         resultado.setRoles(funcionarioDAO.selectRolesFunctionary(resultado.getId()));
         resultado.setContrasena(null);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
@@ -397,11 +375,11 @@ public class Coordinator {
         if (resultado == 0) {//si resultado no cambia en ningun momento la operacion fue exitosa
             resultado = 1;//operacion exitosa
         }
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return resultado;
     }
-    
+
     /**
      * Verificacion para realizar un cambio de roles, solo por seguridad se
      * revisan nuevamente los roles disponibles y se comparan con los roles que
@@ -430,17 +408,17 @@ public class Coordinator {
         return answer;
     }
 
-    public static ArrayList<Funcionario> viewFunctionariesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+    public static ArrayList<Funcionario> viewFunctionariesDisabledCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Funcionario> funcionarios;
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCentro, pagina, cantXpag, search, false);
+        funcionarios = funcionarioDAO.selectSomeFunctionariesCenter(idCenter, pagina, cantXpag, search, false);
 
-        funcionarioDAO.cerrarConexion();
+        funcionarioDAO.closeConnection();
 
         return funcionarios;
     }
-    
-    public static int updateArea(Area area, String idCentro) throws Encriptado.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
+
+    public static int updateArea(Area area, String idCenter) throws Encrypt.CannotPerformOperationException, NamingException, SQLException, UnsupportedEncodingException, MessagingException {
         /*
         0. fallo
         1. completado
@@ -452,86 +430,331 @@ public class Coordinator {
 
         int resultado = 0;
         Centro centro = new Centro();
-        centro.setId(idCentro);
+        centro.setId(idCenter);
         area.setCentro(centro);
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isActiveArea(area.getNombre())) {
+        if (areaDAO.isNameAreaOcuped(area.getNombre(), idCenter)) {
             resultado = 2;
         } else if (areaDAO.updateArea(area)) {
             resultado = 1;
         }
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return resultado;
     }
-    
+
     public static boolean enableArea(int idFuncionario) throws NamingException, SQLException {
         boolean resultado;
         AreaDAO areaDAO = new AreaDAO();
         resultado = areaDAO.enableArea(idFuncionario);
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return resultado;
     }
-    
-    public static int disableArea(int idArea, String idCentro) throws NamingException, SQLException {
+
+    public static int disableArea(int idArea, String idCenter) throws NamingException, SQLException {
         int resultado = 0;
         AreaDAO areaDAO = new AreaDAO();
-        if (areaDAO.isLastAreaEnableCenter(idCentro, idArea)) {
+        if (areaDAO.isLastAreaEnableArea(idCenter, idArea)) {
             resultado = 2;
         } else if (areaDAO.disableArea(idArea)) {
             resultado = 1;
         }
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return resultado;
     }
-    
+
     public static Area viewAllInfoArea(int idArea) throws NamingException, SQLException {
         Area resultado = new Area();
         AreaDAO areaDAO = new AreaDAO();
         resultado.setId(idArea);
         resultado = areaDAO.select(resultado);
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return resultado;
     }
-    
-    public static int countPagesAreaDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+
+    public static int countPagesAreaDisabledCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
         int paginas;
         int cantArea;
         AreaDAO areaDAO = new AreaDAO();
-        cantArea = areaDAO.countAreasDisabledCenter(idCentro, search);
-        areaDAO.cerrarConexion();
+        cantArea = areaDAO.countAreasCenter(idCenter, search, false);
+        areaDAO.closeConnection();
 
-        paginas = cantArea / cantXpag;
-        if (cantArea % cantXpag != 0) {
+        paginas = cantArea / resultsInPage;
+        if (cantArea % resultsInPage != 0) {
             paginas++;
         }
 
         return paginas;
     }
-    
-    public static ArrayList<Area> viewAreaDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+
+    public static ArrayList<Area> viewAreaDisabledCenter(String idCenter, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Area> area;
         AreaDAO areaDAO = new AreaDAO();
-        area = areaDAO.selectSomeAreaDisableCenter(idCentro, pagina, cantXpag, search);
+        area = areaDAO.selectSomeAreasCenter(idCenter, pagina, cantXpag, search, false);
 
-        areaDAO.cerrarConexion();
+        areaDAO.closeConnection();
 
         return area;
     }
-    
+
+    public static int countPagesProgramsCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
+        int result;
+
+        int quantityProgrms;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        quantityProgrms = programaDAO.countProgramsCenter(idCenter, search, true);
+        programaDAO.closeConnection();
+
+        result = quantityProgrms / resultsInPage;
+        if (quantityProgrms % resultsInPage != 0) {
+            result++;
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Programa> viewProgramsCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
+        ArrayList<Programa> result;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        result = programaDAO.selectSomeProgramsCenter(idCenter, page, resultsInPage, search, true);
+
+        programaDAO.closeConnection();
+
+        return result;
+    }
+
+    public static int countPagesProgramsDisableCenter(String idCenter, int resultsInPage, String search) throws NamingException, SQLException {
+        int result;
+
+        int quantityPrograms;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        quantityPrograms = programaDAO.countProgramsCenter(idCenter, search, false);
+        programaDAO.closeConnection();
+
+        result = quantityPrograms / resultsInPage;
+        if (quantityPrograms % resultsInPage != 0) {
+            result++;
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Programa> viewProgramsDisableCenter(String idCenter, int page, int resultsInPage, String search) throws NamingException, SQLException {
+        ArrayList<Programa> result;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        result = programaDAO.selectSomeProgramsCenter(idCenter, page, resultsInPage, search, false);
+
+        programaDAO.closeConnection();
+
+        return result;
+    }
+
+    public static ArrayList<Area> viewAllAreasCenter(String idCenter) throws NamingException, SQLException {
+        ArrayList<Area> result;
+        AreaDAO areaDAO = new AreaDAO();
+        result = areaDAO.selectAllCenter(idCenter);
+        areaDAO.closeConnection();
+        return result;
+    }
+
+    public static int registerProgram(Programa programa) throws NamingException, SQLException {
+        int result = 0;
+
+        programa.setActivo(true);
+
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if (programaDAO.Insert(programa)) {
+            result = 1;
+        }
+        programaDAO.closeConnection();
+
+        return result;
+    }
+
+    public static int disableProgram(Programa programa) throws NamingException, SQLException {
+        int result = 0;
+
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if (programaDAO.disable(programa)) {
+            result = 1;
+        }
+        programaDAO.closeConnection();
+
+        return result;
+    }
+
+    public static int enableProgram(Programa programa) throws NamingException, SQLException {
+        int resultado = 0;
+        ProgramaDAO programaDAO = new ProgramaDAO();
+        if (programaDAO.enable(programa)) {
+            resultado = 1;
+        }
+        return resultado;
+    }
+
+    public static boolean enableCategories(int idFuncionario) throws NamingException, SQLException {
+        boolean resultado;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        resultado = categoriaDAO.enableCategory(idFuncionario);
+
+        categoriaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int updateCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
+        int resultado = 0;
+
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        categoria.setCentro(centro);
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isNameCategoryOcuped(categoria.getNombre(), idCentro)) {
+            resultado = 2;
+        } else if (categoriaDAO.updateCategory(categoria)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int registerCategories(Categoria categoria, String idCentro) throws NamingException, SQLException {
+
+        int resultado = 0;
+        Centro centro = new Centro();
+        centro.setId(idCentro);
+        categoria.setCentro(centro);
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isNameCategoriesOcuped(categoria.getNombre(), idCentro)) {
+            resultado = 2;
+        } else if (categoriaDAO.registerCategories(categoria)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static int countPagesCategoriesDisabledCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int cantCategoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        cantCategoria = categoriaDAO.countCategoriesCenter(idCentro, search, false);
+        categoriaDAO.closeConnection();
+
+        paginas = cantCategoria / cantXpag;
+        if (cantCategoria % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static Object viewCategoriesDisabledCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Categoria> categoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoria = categoriaDAO.selectSomeCategoriesCenter(idCentro, pagina, cantXpag, search, false);
+
+        categoriaDAO.closeConnection();
+
+        return categoria;
+    }
+
+    public static int countPagesCategoriesCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
+        int paginas;
+        int countCategorias;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        countCategorias = categoriaDAO.countCategoriesCenter(idCentro, search, true);
+        categoriaDAO.closeConnection();
+        paginas = countCategorias / cantXpag;
+        if (countCategorias % cantXpag != 0) {
+            paginas++;
+        }
+
+        return paginas;
+    }
+
+    public static Object viewCategoriesCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
+        ArrayList<Categoria> categoria;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        categoria = categoriaDAO.selectSomeCategoriesCenter(idCentro, pagina, cantXpag, search, true);
+
+        categoriaDAO.closeConnection();
+
+        return categoria;
+    }
+
+    public static int disableCategories(int idCate, String idCentro) throws SQLException, NamingException {
+        int resultado = 0;
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        if (categoriaDAO.isLastCategoriesEnableArea(idCentro, idCate)) {
+            resultado = 2;
+        } else if (categoriaDAO.disableCategories(idCate)) {
+            resultado = 1;
+        }
+
+        categoriaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static Categoria viewAllInfoCategories(int idCate) throws NamingException, SQLException {
+        Categoria resultado = new Categoria();
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        resultado.setId(idCate);
+        resultado = categoriaDAO.select(resultado);
+
+        categoriaDAO.closeConnection();
+
+        return resultado;
+    }
+
+    public static ArrayList<Lista> viewLista(String IdCentro) throws NamingException, SQLException {
+        ArrayList<Lista> items;
+        Lista lista = new Lista();
+        lista.setIdAutor(Integer.parseInt(IdCentro));
+        ListaDAO listaDAO = new ListaDAO();
+        items = listaDAO.selectListas(lista);
+        listaDAO.closeConnection();
+
+        return items;
+    }
+
+    public static boolean approveVersion(int idVersion) throws NamingException, SQLException {
+        boolean resultado;
+        Version version = new Version();
+        Estado estado = new Estado();
+        estado.setId(2);
+        version.setId(idVersion);
+        version.setEstado(estado);
+        VersionDAO versionDAO = new VersionDAO();
+        resultado = versionDAO.updateEstado(version);
+        versionDAO.closeConnection();
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(6, idVersion);
+        notificacionDAO.closeConnection();
+        
+        return resultado;
+    }
+
     public static int countPagesFilesCoordinatorCenter(String idCentro, int cantXpag, String search) throws NamingException, SQLException {
         int paginas;
         int countAreas;
         VersionDAO versionDAO = new VersionDAO();
         countAreas = versionDAO.countFilesCoordinatorCenter(idCentro, search);
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
+        
         paginas = countAreas / cantXpag;
         if (countAreas % cantXpag != 0) {
             paginas++;
@@ -539,14 +762,14 @@ public class Coordinator {
 
         return paginas;
     }
-    
+
     public static ArrayList<Version> viewFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Version> version;
         VersionDAO versionDAO = new VersionDAO();
         version = versionDAO.selectSomeFilesCoordinatorCenter(idCentro, pagina, cantXpag, search);
 
-        versionDAO.cerrarConexion();
+        versionDAO.closeConnection();
 
         return version;
-    } 
+    }
 }

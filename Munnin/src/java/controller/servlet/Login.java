@@ -17,11 +17,10 @@ import model.Business.General;
 
 /**
  *
- * Se encarga de administrar la solicitudes realizadas desde el login de la
+ * Servlet encargado de administrar la solicitudes realizadas desde el login de la
  * aplicación
  *
  * @version 1.0
- * @author Juan David Segura Castro
  */
 @WebServlet(urlPatterns = {"/login"})
 public class Login extends HttpServlet {
@@ -47,7 +46,8 @@ public class Login extends HttpServlet {
             String contrasena = request.getParameter("textContr");
             Funcionario funcionario = General.verifyFunctionary(correo, contrasena);
             if (funcionario == null) {
-                request.setAttribute("Mensaje", "<script>usuarioNoValido()</script>");
+                request.setAttribute("message", "Usuario o contraseña incorrectos");
+                request.setAttribute("messageType", "danger");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
                 HttpSession sesion = (HttpSession) request.getSession();

@@ -16,8 +16,9 @@ import model.bean.Funcionario;
 import model.Business.General;
 
 /**
+ * Servlet encargado de administrar las solicitudes de cambio de contraseña
  *
- * @author Sergio
+ * @version 1.0
  */
 @WebServlet(urlPatterns = {"/home/change-password"})
 public class ChangePassword extends HttpServlet {
@@ -54,9 +55,9 @@ public class ChangePassword extends HttpServlet {
                 } else {
                     if (!result[2]) {
                         message = "Nueva contraseña no es segura, necesita de letras en mayúscula y minúscula, y números.";
-                        
+
                         request.setAttribute("messageType", "warning");
-                    }else{
+                    } else {
                         message = "Ha ocurrido un problema";
                         request.setAttribute("messageType", "danger");
                     }

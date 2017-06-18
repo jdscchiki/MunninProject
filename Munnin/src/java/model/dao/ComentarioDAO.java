@@ -14,13 +14,13 @@ import javax.naming.NamingException;
 import model.bean.Comentario;
 import model.bean.Funcionario;
 import model.bean.Producto;
-import util.ConexionBD;
+import util.database.connectionDB;
 
 /**
  *
  * @author Juan David Segura
  */
-public class ComentarioDAO extends ConexionBD {
+public class ComentarioDAO extends connectionDB {
 
     private static final String COL_ID = "id_comentario";
     private static final String COL_VALORACION = "valoracion_comentario";
@@ -32,8 +32,8 @@ public class ComentarioDAO extends ConexionBD {
     /**
      * Este constructor permite establecer la conexion con la base de datos
      *
-     * @throws NamingException Error en el constructor ConexionBD
-     * @throws SQLException Error en el constructor ConexionBD
+     * @throws NamingException Error en el constructor connectionDB
+     * @throws SQLException Error en el constructor connectionDB
      */
     public ComentarioDAO() throws NamingException, SQLException {
         super();
