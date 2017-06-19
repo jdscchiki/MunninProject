@@ -1,9 +1,3 @@
-<%-- 
-    Document   : modalVerObjeto
-    Created on : 1/04/2017, 05:56:40 PM
-    Author     : Monica
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <div id="verObjeto" class="modal fade" role="dialog">
