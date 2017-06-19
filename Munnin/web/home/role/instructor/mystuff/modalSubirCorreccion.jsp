@@ -18,7 +18,7 @@
           action="${pageContext.request.contextPath}/home/role/instructor/mystuff/correccion"
           data-ajax-form="true"
           data-display="message_mystuff">
-        <input type="hidden" name="correction" value="${Version.getProducto().getId()}">
+        <input type="hidden" name="correction" value="${version.getProducto().getId()}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -26,33 +26,27 @@
                     <h4 class="modal-title">Subir Correción</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoNombre">Nombre:</label>
-                        <div class="col-sm-10">
-                            <input type="text" 
-                                   class="form-control" 
-                                   name="objectoNombre" 
-                                   id="objectoNombre">
+                     <div class="form-group">
+                        <label for="ObjetoNombre" class="control-label col-xs-4">Nombre:</label>
+                        <div class="col-xs-8">
+                            <label class="fontL control-label">${version.getProducto().getNombre()}</label>            
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoDescripcion">Descripción:</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" 
-                                      name="objectoDescripcion" 
-                                      id="objectoDescripcion" 
-                                      rows="3"></textarea>
+                   <div class="form-group">    
+                        <label for="formVerObjetoDescripcion" class="control-label col-xs-4">Descripción:</label>
+                        <div class="col-xs-8">
+                            <label class="fontL control-label">${version.getProducto().getDescripcion()}</label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoTipo">Tipo de objeto:</label>
+                        <label class="control-label col-sm-2" for="objectoTipo">Tipo de archivo:</label>
                         <div class="col-sm-3">
                             <select class="form-control" 
                                     name="objectoTipo"
                                     id="objectoTipo">
-                                <c:forEach items="${objectTypes}" var="objectoTipo">
-                                    <option value="${objectType.getId()}">${objectType.getNombre()}</option>
+                                <c:forEach items="${typeFiles}" var="typeFile">
+                                    <option value="${typeFile.getId()}">${typeFile.getExtension()}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -66,8 +60,8 @@
                                     <span class="btn btn-default">
                                         Buscar&hellip; <input type="file" 
                                                               style="display: none;" 
-                                                              name="objectoArchivo" 
-                                                              id="objectoArchivo" 
+                                                              name="objectFile" 
+                                                              id="objectFile" 
                                                               required="required">
                                     </span>
                                 </label>

@@ -348,4 +348,42 @@ public class VersionDAO extends ConexionBD {
         return version;
 
     }
+
+   public int createNextVersion(Version version) throws SQLException {
+        int result = 0;
+
+        String query = "INSERT INTO version ("
+                + COL_NUMERO +","
+                + COL_URL + ","
+                + COL_FECHA + ","
+                + COL_ID_ESTADO + ","
+                + COL_ID_TIPO_ARCHIVO + ","
+                + COL_ID_PRODUCTO + ","
+                + COL_ID_CENTRO + ") "
+                + "VALUES((select  max (numero_version)from  version where id_Producto_version = ?)+1, '',CURRENT_DATE,3,?,?,?)";
+        int indexIdProducto1 = 1;
+        int indexIdTipoArchivo = 2;
+        int indexIdProducto2 = 3;
+        int indexIdCentro = 4;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setInt(indexIdProducto1, version.getProducto().getId());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto2, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
+    }
+
 }

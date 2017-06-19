@@ -20,7 +20,7 @@ import util.ConexionBD;
 public class TipoArchivoDAO extends ConexionBD {
 
     private static final String COL_ID = "id_tipo_archivo";
-    private static final String COL_EXTENSION = "extension_tipo_archivo";
+    private static final String COL_EXTENSION = "nombre_tipo_archivo";
 
     /**
      * Este constructor permite establecer la conexion con la base de datos
