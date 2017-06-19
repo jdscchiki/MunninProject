@@ -24,19 +24,29 @@
                     <div class="form-group">
                         <label for="formVerObjetoNombre" class="control-label col-xs-4">Nombre:</label>
                         <div class="col-xs-8">
-                            <label class="fontL control-label">${verResult.getProducto().getNombre()}</label>            
+                            <p class="form-control-static">${verResult.getProducto().getNombre()}</p>            
                         </div>
                     </div>
                     <div class="form-group">    
                         <label for="formVerObjetoDescripcion" class="control-label col-xs-4">Descripción:</label>
                         <div class="col-xs-8">
-                            <label class="fontL control-label">${verResult.getProducto().getDescripcion()}</label>
+                            <p class="form-control-static">${verResult.getProducto().getDescripcion()}</p>
                         </div>
                     </div>
                     <div class="form-group">    
                         <label for="formVerObjetoPalabra" class="control-label col-xs-4">Palabras Clave:</label>
                         <div class="col-xs-8">
-                            <label class="fontL control-label">${verResult.getProducto().getPalabrasClave()}"</label> 
+                            <div class="tagcloud">
+                                <ul>
+                                    <c:forEach items="${verResult.getProducto().getPalabrasClave().split(';')}" var="keyword" >
+                                        <li>
+                                            <div>
+                                                ${keyword}
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
                     </div>    
                     <div class="form-group">

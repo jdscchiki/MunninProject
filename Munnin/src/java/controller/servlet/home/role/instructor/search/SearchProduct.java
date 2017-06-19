@@ -48,11 +48,8 @@ public class SearchProduct extends HttpServlet {
             if (strPage != null) {
                 page = Integer.parseInt(strPage);
             }
-
+            
             int cantXpag = 10;
-
-            HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
-            Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
 
             int totalPages = Instructor.countPagesProductoApproved(filter, cantXpag, search);
             request.setAttribute("page", page);
@@ -65,6 +62,7 @@ public class SearchProduct extends HttpServlet {
             request.getRequestDispatcher("/home/role/instructor/search/tablaSearch.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
+            ex.printStackTrace();
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }

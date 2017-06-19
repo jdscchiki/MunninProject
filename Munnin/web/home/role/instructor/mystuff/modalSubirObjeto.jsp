@@ -11,36 +11,35 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="formSubirObjetoNumero" class="control-label col-lg-3">Número Version :</label>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formSubirObjetoNumero" name="numero" maxlength="70" value="${verResult.getNumero()}" disabled>                
+                        <label for="formSubirObjetoNumero" class="control-label col-xs-4">Número Version:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getNumero()}</p>
                         </div>
                     </div> 
                     <div class="form-group">
-                        <label for="formSubirObjetoEstado" class="control-label col-lg-3">Estado Version :</label>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formSubirObjetoNombre" name="estado" maxlength="70" value="${verResult.getEstado().getNombre()}" disabled>                
+                        <label for="formSubirObjetoEstado" class="control-label col-xs-4">Estado Version:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getEstado().getNombre()}</p>                
                         </div>
                     </div>    
                     <div class="form-group">
-                        <label for="formVerObjetoNombre" class="control-label col-lg-3">Nombre :</label>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formVerObjetoNombre" name="nombre" maxlength="70" value="${verResult.getProducto().getNombre()}" disabled>                
+                        <label for="formVerObjetoNombre" class="control-label col-xs-4">Nombre:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getProducto().getNombre()}</p>                
                         </div>
                     </div>
                     <div class="form-group">    
-                        <label for="formVerObjetoDescripcion" class="control-label col-lg-3">Descripción :</label>
-                        <div class="col-lg-6">
-                            <textarea class="form-control" rows="5" id="formVerObjetoDescrpcion" disabled>${verResult.getProducto().getDescripcion()}</textarea>
+                        <label for="formVerObjetoDescripcion" class="control-label col-xs-4">Descripción:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getProducto().getDescripcion()}</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="formSubirObjetoPalabra" class="control-label col-lg-3">Palabra Clave :</label>
-                        <div class="col-lg-4">
-                            <input type="text" class="form-control" id="formVerObjetoNombre" name="nombre" maxlength="70" value="${verResult.getProducto().getPalabrasClave()}" disabled>                
+                        <label for="formSubirObjetoPalabra" class="control-label col-xs-4">Palabra Clave:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getProducto().getPalabrasClave()}</p>                
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button id="btnSubirCorreccion"
@@ -57,14 +56,13 @@
             $("#modalSubirObjeto").modal();
             $(document).on("click", "#btnSubirCorreccion", function (event) {
                 event.preventDefault();
-                
+
                 $("#modalSubirObjeto").modal("hide");
                 $("#modalSubirCorreccion").modal("show");
-                
+
             });
         });
     </script>
 </div>
 
-<jsp:include page="/home/role/instructor/mystuff/modalSubirCorreccion.jsp" />            
-
+<jsp:include page="/home/role/instructor/mystuff/modalSubirCorreccion.jsp" />   

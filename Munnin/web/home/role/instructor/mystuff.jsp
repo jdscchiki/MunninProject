@@ -7,6 +7,7 @@
                         title="Mi material Munnin"
                         panelTitle="Buscar mi material ">
     <jsp:attribute name="additionalJS">
+        <script src="${pageContext.request.contextPath}/resources/js/inputFile.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/resources/js/ajaxMunnin.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/resources/js/ajaxDataTable.js" type="text/javascript"></script>
         <script type="text/javascript">

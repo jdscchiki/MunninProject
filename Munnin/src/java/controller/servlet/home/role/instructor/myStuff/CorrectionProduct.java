@@ -18,6 +18,9 @@ import model.bean.Funcionario;
 import model.bean.Producto;
 import model.bean.TipoObjetoAprendizaje;
 import javax.servlet.http.Part;
+import model.bean.Centro;
+import model.bean.TipoArchivo;
+import model.bean.Version;
 
 /**
  *
@@ -40,50 +43,35 @@ public class CorrectionProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-             int filter = 0;
-            String search = request.getParameter("search");
-            String strPage = request.getParameter("page");
-            int page = 1;
-            if (strPage != null) {
-                page = Integer.parseInt(strPage);
-            }
-
-            int cantXpag = 10;
             String id = request.getParameter("idProducto");
-            String strIdObjectoArchivo = request.getParameter("objectoTipo");
+            String strIdTipoArchivo = request.getParameter("objectoTipo");
             Part archivoPart = request.getPart("objectoArchivo");
-            
+
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
             Funcionario funcionario = (Funcionario) sesion.getAttribute("usuario");
-            
+
+            Version version = new Version();
             Producto producto = new Producto();
             producto.setId(Integer.parseInt(id));
-            TipoObjetoAprendizaje tipoObjetoAprendizaje = new TipoObjetoAprendizaje();
-            tipoObjetoAprendizaje.setId(Integer.parseInt(strIdObjectoArchivo));
-            producto.setTipoObjetoAprendizaje(tipoObjetoAprendizaje);
-            int[] operationResult = Instructor.uploadNewVersion(archivoPart, producto, funcionario.getCentro().getId(), funcionario.getId());
-
-             switch (operationResult[0]) {
+            version.setProducto(producto);
+            TipoArchivo tipoArchivo = new TipoArchivo();
+            tipoArchivo.setId(Integer.parseInt(strIdTipoArchivo));
+            version.setTipoArchivo(tipoArchivo);
+            version.setCentro(new Centro());
+            version.getCentro().setId(funcionario.getCentro().getId());
+            int operationResult = Instructor.uploadNewVersion(archivoPart, version, funcionario.getId());
+            switch (operationResult) {
                 case 1:
                     request.setAttribute("messageType", "success");
-                    request.setAttribute("message", "Se ha subido satisfactoriamente el objeto de aprendizaje");
-                    request.setAttribute("categories", Instructor.viewAllCategoryCenter(funcionario.getCentro().getId()));
-                    request.setAttribute("learningObject", operationResult[1]);
-                    request.setAttribute("messageType", "danger");
-                    request.setAttribute("message", "Lo sentimos ha ocurrido un problema, por favor vuelva a intentarlo");
+                    request.setAttribute("message", "Se ha subido satisfactoriamente la nueva version del objeto de aprendizaje");
                     request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
-                    break;    
+                    break;
+                default:
+                    request.setAttribute("messageType", "danger");
+                    request.setAttribute("message", "Lo sentimos ha ocurrido un error durante la carga");
+                    request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
+                    break;
             }
-             
-            int totalPages = Instructor.countPagesCorrectionProducto(filter, cantXpag, search);
-            request.setAttribute("page", page);
-            request.setAttribute("pages", util.Pager.showLinkedPages(page, totalPages, cantXpag));
-            request.setAttribute("contentTable",Instructor.viewObjet(filter, page, cantXpag, search));
-            request.setAttribute("lastSearch", util.Pager.getSearchParameters(request));
-            request.setAttribute("displayResult", "fulltable");
-            request.setAttribute("idTable", "tableBodyCorrecion");
-            request.setAttribute("urlServlet", (request.getContextPath()+"/home/role/instructor/mystuff/correccion"));
-            request.getRequestDispatcher("/home/role/instructor/mystuff/modalSubirCorrecion.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("mensaje", ex);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

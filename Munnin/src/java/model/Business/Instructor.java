@@ -22,6 +22,7 @@ import model.dao.CategoriaDAO;
 import model.dao.NotificacionDAO;
 import model.dao.ProductoDAO;
 import model.dao.ProgramaDAO;
+import model.dao.TipoArchivoDAO;
 import model.dao.TipoObjetoAprendizajeDAO;
 import model.dao.VersionDAO;
 import util.file.FileManager;
@@ -257,51 +258,52 @@ public class Instructor {
         return paginas;
     }
 
-    public static int[] uploadNewVersion(Part file, Producto producto, String idCentro, int idAutor) throws NamingException, SQLException {
-        int[] result = {0, 0};
+    public static int uploadNewVersion(Part file, Version version, int idAutor) throws NamingException, SQLException {
+        int result = 0;
         int idVersion = 0;
         //crea el registro de la version en la base de datos
-        Version version = new Version();
-        version.setNumero(1);
-        version.setCentro(new Centro());
-        version.getCentro().setId(idCentro);
-        version.setProducto(producto);
-        version.setTipoArchivo(new TipoArchivo());
-        version.getTipoArchivo().setId(1);
-
         VersionDAO versionDAO = new VersionDAO();
-        idVersion = versionDAO.create(version);
+        idVersion = versionDAO.createNextVersion(version);
         versionDAO.closeConnection();
+
         if (idVersion == 0) {
-            result[0] = 3;
+            result = 2;
         } else {
             //calcula la ruta en donde se guardara el archivo con el id del centro, id producto y id version
-            String savePath = File.separator + "c" + idCentro + File.separator + "p" + producto.getId() + File.separator + "v" + idVersion;
+            String savePath = File.separator + "c" + version.getCentro().getId() + File.separator + "p" + version.getProducto().getId() + File.separator + "v" + idVersion;
 
             //guarda el archivo
             if (!FileManager.saveFileMunninServer(file, savePath)) {
-                result[0] = 4;
+                result = 3;
             } else {
                 //guarda la ruta en la base de datos
                 version.setId(idVersion);
                 version.setUrl(savePath + File.separator + file.getSubmittedFileName());
                 versionDAO = new VersionDAO();
                 if (versionDAO.editUrl(version)) {
-                    result[0] = 1;
-                    result[1] = producto.getId();
+                    result = 1;
                     ArrayList<Funcionario> autores = new ArrayList<>();
                     Funcionario funcionario = new Funcionario();
                     funcionario.setId(idAutor);
                     autores.add(funcionario);
                     version.setFuncionarios(autores);
-                    //versionDAO.setAutores(version);
+                    
+                    versionDAO.setAutores(version);
                 } else {
-                    result[0] = 5;
+                    result = 4;
                 }
                 versionDAO.closeConnection();
             }
 
         }
+        return result;
+    }
+    
+    public static ArrayList<TipoArchivo> viewTypeFile() throws NamingException, SQLException {
+        ArrayList<TipoArchivo> result = new ArrayList<>();
+        TipoArchivoDAO tipoArchivoDAO = new TipoArchivoDAO();
+        result = tipoArchivoDAO.selectAll();
+        tipoArchivoDAO.closeConnection();
         return result;
     }
 }

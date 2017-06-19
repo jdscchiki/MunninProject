@@ -6,12 +6,14 @@
 package controller.servlet.home.role.instructor.myStuff;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Business.Instructor;
+import model.bean.TipoArchivo;
 import model.bean.Version;
 
 /**
@@ -36,7 +38,6 @@ public class ManageMystuff extends HttpServlet {
         try {
             String idVersion = request.getParameter("id");
             int idVersionI;
-            String opcion = request.getParameter("action");
             idVersionI = Integer.parseInt(idVersion);
             if (idVersionI <= 0) {
                 request.setAttribute("messageType", "warning");
@@ -44,7 +45,9 @@ public class ManageMystuff extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
             } else {
                 Version verResult = Instructor.viewAllInfoVersion(idVersionI);
-                request.setAttribute("verResult", verResult);
+                request.setAttribute("version", verResult);
+                ArrayList<TipoArchivo> tipoArchivos = Instructor.viewTypeFile();
+                request.setAttribute("typeFiles", tipoArchivos);
                 request.getRequestDispatcher("/home/role/instructor/mystuff/modalSubirObjeto.jsp").forward(request, response);
             }
         } catch (Exception e) {

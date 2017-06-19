@@ -38,26 +38,16 @@ public class ManageProduct extends HttpServlet {
         try {
             String idVersion = request.getParameter("id");
             int idVersionI;
-            String opcion = request.getParameter("action");
             idVersionI = Integer.parseInt(idVersion);
             if (idVersionI <= 0) {
                 request.setAttribute("messageType", "warning");
                 request.setAttribute("message", "Para realizar la operación es necesario seleccionar el objeto");
+                request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
             } else {
-                switch (opcion) {
-
-                    case "verObjeto":
-                        Version verResult = Instructor.viewAllInfoVersion(idVersionI);
-                        request.setAttribute("verResult", verResult);
-                        request.getRequestDispatcher("/home/role/instructor/search/modalVerObjeto.jsp").forward(request, response);
-                        return;
-                    default:
-                        request.setAttribute("messageType", "danger");
-                        request.setAttribute("message", "no ha podido ser completada la accion");
-                        break;
-                }
+                Version verResult = Instructor.viewAllInfoVersion(idVersionI);
+                request.setAttribute("verResult", verResult);
+                request.getRequestDispatcher("/home/role/instructor/search/modalVerObjeto.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("/WEB-INF/model/message.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensaje", e);
             request.getRequestDispatcher("/error.jsp").forward(request, response);

@@ -325,7 +325,7 @@ public class VersionDAO extends connectionDB {
         }
         return result;
     }
-    
+
     public int countFilesCoordinatorCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
@@ -347,7 +347,7 @@ public class VersionDAO extends connectionDB {
         }
         return conteo;
     }
-    
+
     public ArrayList<Version> selectSomeFilesCoordinatorCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
         ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
 
@@ -380,7 +380,7 @@ public class VersionDAO extends connectionDB {
         }
         return versions;
     }
-    
+
     public int countFilesPedagocicalCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
@@ -402,7 +402,7 @@ public class VersionDAO extends connectionDB {
         }
         return conteo;
     }
-    
+
     public ArrayList<Version> selectSomeFilesPedagogicalCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
         ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
 
@@ -435,7 +435,7 @@ public class VersionDAO extends connectionDB {
         }
         return versions;
     }
-    
+
     public int countFilesCenter(String idCentro, String search) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
@@ -457,7 +457,7 @@ public class VersionDAO extends connectionDB {
         }
         return conteo;
     }
-    
+
     public ArrayList<Version> selectSomeFilesCenter(String idCentro, int pagina, int cantXpag, String search) throws SQLException {
         ArrayList<Version> versions = new ArrayList<>();//esta es la futura respuesta
 
@@ -490,20 +490,20 @@ public class VersionDAO extends connectionDB {
         }
         return versions;
     }
-    
-    public boolean setAutores(Version version) throws SQLException{
+
+    public boolean setAutores(Version version) throws SQLException {
         boolean result = false;
-        
+
         String query = "{CALL INSERTAR_AUTOR(?,?)}";
         int indexIdFuncionario = 1;
         int indexIdVersion = 2;
-        
+
         boolean commit = true;
         for (Funcionario funcionario : version.getFuncionarios()) {
             CallableStatement statement = this.getConexion().prepareCall(query);
             statement.setInt(indexIdFuncionario, funcionario.getId());
             statement.setInt(indexIdVersion, version.getId());
-            if(statement.executeUpdate()!=1){
+            if (statement.executeUpdate() != 1) {
                 this.getConexion().rollback();
                 commit = false;
                 break;
@@ -512,10 +512,10 @@ public class VersionDAO extends connectionDB {
         if (commit) {
             this.getConexion().commit();
         }
-        
+
         return result;
     }
-    
+
     public Version selectInfo(Version version) throws SQLException {
 
         String query = "{CALL VER_VERSION_COMPLETA(?)}";
@@ -558,5 +558,54 @@ public class VersionDAO extends connectionDB {
         }
         return version;
 
+    }
+
+    public int createNextVersion(Version version) throws SQLException {
+        int result = 0;
+        
+        String maxQuery = "SELECT MAX(numero_version) as max_numero_version "
+                + "FROM version "
+                + "WHERE id_producto_version = ?";
+        int indexIdProducto = 1;
+        PreparedStatement statement = this.getConexion().prepareStatement(maxQuery);
+        statement.setInt(indexIdProducto, version.getProducto().getId());
+        ResultSet rs = statement.executeQuery();
+        
+        while(rs.next()){
+            version.setNumero(rs.getInt("max_numero_version") + 1);
+        }
+        
+        String query = "INSERT INTO version ("
+                + COL_NUMERO + ","
+                + COL_URL + ","
+                + COL_FECHA + ","
+                + COL_ID_ESTADO + ","
+                + COL_ID_TIPO_ARCHIVO + ","
+                + COL_ID_PRODUCTO + ","
+                + COL_ID_CENTRO + ") "
+                + "VALUES(?, '',CURRENT_DATE,3,?,?,?)";
+        int indexNumero = 1;
+        int indexIdTipoArchivo = 2;
+        int indexIdProducto2 = 3;
+        int indexIdCentro = 4;
+
+        statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setInt(indexNumero, version.getNumero());
+        statement.setInt(indexIdTipoArchivo, version.getTipoArchivo().getId());
+        statement.setInt(indexIdProducto2, version.getProducto().getId());
+        statement.setString(indexIdCentro, version.getCentro().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
     }
 }

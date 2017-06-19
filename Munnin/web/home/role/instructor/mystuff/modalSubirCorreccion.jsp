@@ -1,9 +1,3 @@
-<%-- 
-    Document   : SubirCorrecion
-    Created on : 5/06/2017, 07:26:30 AM
-    Author     : Monica
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -17,8 +11,8 @@
           method="POST" 
           action="${pageContext.request.contextPath}/home/role/instructor/mystuff/correccion"
           data-ajax-form="true"
-          data-display="message_mystuff">
-        <input type="hidden" name="correction" value="${Version.getProducto().getId()}">
+          data-display="message_mystuffUploadCorection">
+        <input type="hidden" name="idProducto" value="${version.getProducto().getId()}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -27,40 +21,37 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoNombre">Nombre:</label>
-                        <div class="col-sm-10">
-                            <input type="text" 
-                                   class="form-control" 
-                                   name="objectoNombre" 
-                                   id="objectoNombre">
+                        <div class="col-xs-12" id="message_mystuffUploadCorection">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoDescripcion">Descripción:</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" 
-                                      name="objectoDescripcion" 
-                                      id="objectoDescripcion" 
-                                      rows="3"></textarea>
+                        <label for="ObjetoNombre" class="control-label col-xs-4">Nombre:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getProducto().getNombre()}</p>            
+                        </div>
+                    </div>
+                    <div class="form-group">    
+                        <label for="formVerObjetoDescripcion" class="control-label col-xs-4">Descripción:</label>
+                        <div class="col-xs-8">
+                            <p class="form-control-static">${version.getProducto().getDescripcion()}</p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoTipo">Tipo de objeto:</label>
-                        <div class="col-sm-3">
+                        <label class="control-label col-xs-4" for="objectoTipo">Tipo de archivo:</label>
+                        <div class="col-xs-5">
                             <select class="form-control" 
                                     name="objectoTipo"
                                     id="objectoTipo">
-                                <c:forEach items="${objectTypes}" var="objectoTipo">
-                                    <option value="${objectType.getId()}">${objectType.getNombre()}</option>
+                                <c:forEach items="${typeFiles}" var="typeFile">
+                                    <option value="${typeFile.getId()}">${typeFile.getNombre()}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </div>    
-
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="objectoArchivo">Archivo</label>
-                        <div class="col-sm-10">
+                        <label class="control-label col-xs-4" for="objectoArchivo">Archivo</label>
+                        <div class="col-xs-8">
                             <div class="input-group">
                                 <label class="input-group-btn">
                                     <span class="btn btn-default">
