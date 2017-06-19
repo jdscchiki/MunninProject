@@ -296,6 +296,9 @@ public class Instructor {
             }
 
         }
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(1, idVersion);
+        notificacionDAO.closeConnection();
         return result;
     }
     

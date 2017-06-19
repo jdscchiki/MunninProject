@@ -23,8 +23,8 @@ import model.bean.Notificacion;
  *
  * @author Juan David Segura
  */
-@WebFilter(urlPatterns = {"/home/role/coordinator/authorize.jsp"})
-public class NotificationAuthorize implements Filter {
+@WebFilter(urlPatterns = {"/home/role/coordinator/file.jsp"})
+public class NotificationFile implements Filter {
 
     private static final boolean debug = false;
 
@@ -33,7 +33,7 @@ public class NotificationAuthorize implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public NotificationAuthorize() {
+    public NotificationFile() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -114,8 +114,8 @@ public class NotificationAuthorize implements Filter {
                 Integer idNotification = Integer.parseInt(request.getParameter("notification"));
                 Notificacion notificacion = new Notificacion();
                 notificacion.setId(idNotification);
-
-                General.checkNotification(notificacion);
+                
+                request.setAttribute("idVersionNotificacion", General.checkNotification(notificacion));
             }
 
             chain.doFilter(request, response);

@@ -296,8 +296,7 @@ public class NotificacionDAO extends connectionDB {
     }
     
     /**
-     * 
-     * @deprecated 
+     *  
      * @param notificacion
      * @return
      * @throws SQLException 

@@ -177,6 +177,7 @@ public class General {
         if (notificacionDAO.markAsSeen(notificacion)) {
             result = 1;
         }
+        result = notificacionDAO.select(notificacion).getVersion().getId();
         notificacionDAO.closeConnection();
 
         return result;

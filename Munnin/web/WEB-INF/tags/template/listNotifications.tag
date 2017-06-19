@@ -9,13 +9,13 @@
     <c:forEach items="${notifications}" var="notification">
         <c:choose>
             <c:when test="${notification.getRol().getId() == 2 && notification.getMensaje().getId() == 7}" >
-                <a href="${pageContext.request.contextPath}/home/role/coordinator/authorize.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
+                <a href="${pageContext.request.contextPath}/home/role/coordinator/files.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
             </c:when>
             <c:when test="${notification.getRol().getId() == 3 && notification.getMensaje().getId() == 8}" >
-                <a href="${pageContext.request.contextPath}/home/role/technical/qualify.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
+                <a href="${pageContext.request.contextPath}/home/role/technical/check.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
             </c:when>
             <c:when test="${notification.getRol().getId() == 4 && notification.getMensaje().getId() == 8}" >
-                <a href="${pageContext.request.contextPath}/home/role/pedagogical/qualify.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
+                <a href="${pageContext.request.contextPath}/home/role/pedagogical/check.jsp?notification=${notification.getId()}" class="list-group-item ${notification.isVisto()?"":"list-group-item-info"}">${notification.getMensaje().getTexto()}</a>
             </c:when>
             <c:when test="${notification.getRol().getId() == 5 && (
                             notification.getMensaje().getId() == 1 ||

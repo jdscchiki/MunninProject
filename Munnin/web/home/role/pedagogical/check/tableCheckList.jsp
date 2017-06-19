@@ -8,7 +8,7 @@
                   urlServlet="${urlServlet}">
     <jsp:attribute name="thead">
         <th>Id Lista</th>
-        <th>Numero Lista</th>
+        <th>Nombre Lista</th>
         <th>Descripcion Lista</th>
         <th>Fecha Lista</th>  
         </jsp:attribute>

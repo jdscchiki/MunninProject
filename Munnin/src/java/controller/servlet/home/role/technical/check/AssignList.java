@@ -22,8 +22,6 @@ import javax.servlet.http.HttpSession;
 import model.Business.Technical;
 import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
-import model.bean.Item;
-import model.bean.Lista;
 
 /**
  *

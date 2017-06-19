@@ -34,9 +34,9 @@ public class SelectFile extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String idVersion = request.getParameter("id");
+            String id = request.getParameter("id");
             int idItem;
-            idItem = Integer.parseInt(idVersion);
+            idItem = Integer.parseInt(id);
 
             if (idItem <= 0) {
                 request.setAttribute("messageType", "warning");

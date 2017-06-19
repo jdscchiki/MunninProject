@@ -20,6 +20,7 @@ import model.dao.EvaluacionItemDAO;
 import model.dao.EvaluacionListaDAO;
 import model.dao.ItemDAO;
 import model.dao.ListaDAO;
+import model.dao.NotificacionDAO;
 import model.dao.VersionDAO;
 
 /**
@@ -111,7 +112,6 @@ public class Pedagogical {
     
     public static boolean AssignLista(int idVer, int idList, Funcionario funcionario) throws NamingException, SQLException {
         boolean resultado = false;
-        System.out.println("bandera");
         Version version = new Version();
         Lista lista = new Lista();
         version.setId(idVer);        
@@ -192,6 +192,11 @@ public class Pedagogical {
         }
         versionDAO.closeConnection();
         
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(5, idVer);
+        notificacionDAO.sendNotification(3, idVer);
+        notificacionDAO.closeConnection();
+        
         return resultado;
     }
     
@@ -207,7 +212,9 @@ public class Pedagogical {
             resultado = true;
         }
         versionDAO.closeConnection();
-        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(8, idVer);
+        notificacionDAO.closeConnection();
         return resultado;
     }
 }

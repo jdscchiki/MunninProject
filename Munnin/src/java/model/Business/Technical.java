@@ -20,6 +20,7 @@ import model.dao.EvaluacionItemDAO;
 import model.dao.EvaluacionListaDAO;
 import model.dao.ItemDAO;
 import model.dao.ListaDAO;
+import model.dao.NotificacionDAO;
 import model.dao.VersionDAO;
 
 /**
@@ -190,6 +191,11 @@ public class Technical {
             resultado = true;
         }
         versionDAO.closeConnection();
+        
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(4, idVer);
+        notificacionDAO.sendNotification(2, idVer);
+        notificacionDAO.closeConnection();
         return resultado;
     }
 
@@ -205,6 +211,9 @@ public class Technical {
             resultado = true;
         }
         versionDAO.closeConnection();
+        NotificacionDAO notificacionDAO = new NotificacionDAO();
+        notificacionDAO.sendNotification(7, idVer);
+        notificacionDAO.closeConnection();
         return resultado;
     }
 }

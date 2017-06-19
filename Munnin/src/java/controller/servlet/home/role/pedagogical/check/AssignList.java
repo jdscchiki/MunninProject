@@ -54,11 +54,8 @@ public class AssignList extends HttpServlet {
                 }
             }  
             String opcion = request.getParameter("action");
-            System.out.println(opcion);
             String idVersion = request.getParameter("idVersion");
             String idLista = request.getParameter("idLista");
-            System.out.println("bandera 4");
-            System.out.println(idLista);
             int idVer = Integer.parseInt(idVersion);
             int idLis = Integer.parseInt(idLista);            
             HttpSession sesion = (HttpSession) ((HttpServletRequest) request).getSession();
