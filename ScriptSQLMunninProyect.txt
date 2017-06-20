@@ -1834,6 +1834,7 @@ CREATE PROCEDURE ver_notificacion (
 BEGIN
 	SELECT 
                 id_notificacion ,
+                activo_notificacion ,
                 visto_notificacion ,
                 id_mensaje_notificacion ,
                 id_version_notificacion ,
@@ -4111,17 +4112,22 @@ DROP PROCEDURE IF EXISTS VER_LISTAS_FUNCIONARIO_CONTEO $$
 CREATE PROCEDURE VER_LISTAS_FUNCIONARIO_CONTEO (
         IN _id_autor VARCHAR(10),
         IN _filtro VARCHAR(140),
-        IN _activo BOOLEAN
+        IN _activo BOOLEAN,
+        IN _id_tipo_lista INT
     )
 BEGIN
     IF (_filtro IS null OR _filtro = "") THEN(
         SELECT COUNT(id_lista) as conteo
         FROM  lista
-        WHERE id_autor_lista = _id_autor AND activo_lista = _activo);
+        WHERE id_autor_lista = _id_autor AND
+            id_tipo_lista_lista = _id_tipo_lista AND
+            activo_lista = _activo);
     ELSE 
         SELECT COUNT(id_lista) as conteo
         FROM lista
-        WHERE id_autor_lista = _id_autor AND activo_lista = _activo AND 
+        WHERE id_autor_lista = _id_autor AND 
+            id_tipo_lista_lista = _id_tipo_lista AND
+            activo_lista = _activo AND 
             (LOWER(id_lista) REGEXP LOWER(_filtro) OR
             LOWER(nombre_lista) REGEXP LOWER(_filtro) OR
             LOWER(descripcion_lista) REGEXP LOWER(_filtro));
@@ -4141,7 +4147,9 @@ CREATE PROCEDURE ver_listas_funcionarios (
         IN _id_autor VARCHAR(10),
         IN _pagina INT,
         IN _listasXpagina INT,
-        IN _search VARCHAR(140)
+        IN _search VARCHAR(140),
+        IN _activo BOOLEAN,
+        IN _id_tipo_lista INT
     )
 BEGIN
     DECLARE _inicio INT;
@@ -4153,7 +4161,9 @@ BEGIN
             descripcion_lista,
         	fecha_lista
         FROM lista
-        WHERE id_autor_lista = _id_autor AND activo_lista = 1
+        WHERE id_autor_lista = _id_autor 
+            AND activo_lista = _activo
+            AND id_tipo_lista_lista = _id_tipo_lista
         LIMIT _inicio, _listasXpagina );
     ELSE
         SELECT 
@@ -4162,9 +4172,9 @@ BEGIN
             descripcion_lista,
         	fecha_lista
         FROM lista
-        WHERE id_autor_lista = _id_autor AND activo_lista = 1
-
-AND
+        WHERE id_autor_lista = _id_autor 
+            AND activo_lista = _activo
+            AND id_tipo_lista_lista = _id_tipo_lista
         (LOWER(id_lista) REGEXP LOWER(_search) OR
         LOWER(nombre_lista) REGEXP LOWER(_search) OR
         LOWER(descripcion_lista) REGEXP LOWER(_search))
@@ -4915,6 +4925,48 @@ BEGIN
 	INNER JOIN estado
 	ON id_estado = id_estado_version
         WHERE id_version = _id_version;
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- INSERTAR_LISTA_NUEVA
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS insertar_lista_nueva $$
+CREATE PROCEDURE insertar_lista_nueva (
+	IN _nombre_lista VARCHAR(100) ,
+	IN _descripcion_lista VARCHAR(255) ,
+	IN _id_autor_lista INT ,
+        IN _id_tipo_lista_lista INT )
+BEGIN
+	CALL insertar_lista(
+		_nombre_lista,
+		_descripcion_lista,
+		CURDATE(),
+		_id_autor_lista,
+		1,
+		_id_tipo_lista_lista);
+END $$
+
+DELIMITER ;
+
+-- ----------------------------------------------------
+-- EDITAR_LISTA_ACTIVO
+-- ----------------------------------------------------
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS EDITAR_LISTA_ACTIVO $$
+CREATE PROCEDURE EDITAR_LISTA_ACTIVO (
+	IN _id_lista INT,
+        IN _activo_lista BOOLEAN )
+BEGIN
+	UPDATE lista
+        SET activo_lista = _activo_lista
+        WHERE id_lista = _id_lista;
 END $$
 
 DELIMITER ;
