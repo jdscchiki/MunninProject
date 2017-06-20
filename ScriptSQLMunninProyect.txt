@@ -4195,16 +4195,13 @@ CREATE PROCEDURE ver_items_lista (
 	IN _id_lista_item_lista INT)
 BEGIN
 	SELECT
-		id_item,
-		descriptor_item,
-		id_autor_item
-	FROM item
-	WHERE id_item = (
-	SELECT
-            id_item_item_lista
-	FROM item_lista
-	WHERE id_lista_item_lista = _id_lista_item_lista);
-	
+		i.id_item,
+		i.descriptor_item,
+		i.id_autor_item
+	FROM item i
+	INNER JOIN item_lista il
+    on i.id_item = il.id_item_item_lista
+    WHERE il.id_lista_item_lista = _id_lista_item_lista;
 END $$
 
 DELIMITER ;
