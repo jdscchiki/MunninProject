@@ -21,7 +21,7 @@ for (i = 0; i < close.length; i++) {
 }
 
 // Create a new list item when clicking on the "Add" button
-function newElement() {    
+function newElement() {
     var li = document.createElement("li");
     li.setAttribute("class", "cl");
     var inputValue = document.getElementById("myInput").value;
@@ -34,6 +34,7 @@ function newElement() {
     inputT.setAttribute("type", "hidden");
     inputT.setAttribute("name", "itemchecklist");
     inputT.setAttribute("value", inputValue);
+    //var t = document.createTextNode(inputValue);
     li.appendChild(input);
     if (inputValue === '') {
         alert("HEY! LISTEN! Debes escribir algo. ");
@@ -52,7 +53,7 @@ function newElement() {
     for (i = 0; i < close.length; i++) {
         close[i].onclick = function () {
             var div = this.parentElement;
-            div.style.display = "none";
+            $(div).remove();
         }
     }
 }
