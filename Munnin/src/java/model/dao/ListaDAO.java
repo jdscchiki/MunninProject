@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.naming.NamingException;
+import model.bean.Funcionario;
 import model.bean.Lista;
 import model.bean.TipoLista;
 import util.database.connectionDB;
@@ -217,14 +218,15 @@ public class ListaDAO extends connectionDB {
         return result;
     }
     
-    public int countCheckListFunctionay(int idAutor, String search, boolean active) throws SQLException {
+    public int countCheckListFunctionay(int idAutor, String search, boolean active, int idListType) throws SQLException {
         int conteo = 0;//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_LISTAS_FUNCIONARIO_CONTEO(?,?,?)}";
+        String query = "{CALL VER_LISTAS_FUNCIONARIO_CONTEO(?,?,?,?)}";
         int indexIdAutor = 1;
         int indexSearch = 2;
         int indexActive = 3;
+        int indexListType = 4;
 
         String resConteo = "conteo";//nombre de la columna del select
 
@@ -233,6 +235,7 @@ public class ListaDAO extends connectionDB {
         statement.setInt(indexIdAutor, idAutor);
         statement.setString(indexSearch, search);
         statement.setBoolean(indexActive, active);
+        statement.setInt(indexListType, idListType);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
@@ -242,15 +245,17 @@ public class ListaDAO extends connectionDB {
         return conteo;
     }
     
-    public ArrayList<Lista> selectSomeCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws SQLException {
+    public ArrayList<Lista> selectSomeCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search, int idTypeList, boolean active) throws SQLException {
         ArrayList<Lista> listas = new ArrayList<>();//esta es la futura respuesta
 
         //datos de la consulta en base de datos
-        String query = "{CALL VER_LISTAS_FUNCIONARIOS(?,?,?,?)}";
+        String query = "{CALL VER_LISTAS_FUNCIONARIOS(?,?,?,?,?,?)}";
         int indexAutor = 1;
         int indexPagina = 2;
         int indexCantXPag = 3;
         int indexSearch = 4;
+        int indexActive = 5;
+        int indexIdTypeList = 6;
 
         //prepara la consulta
         CallableStatement statement = getConexion().prepareCall(query);
@@ -258,6 +263,8 @@ public class ListaDAO extends connectionDB {
         statement.setInt(indexPagina, pagina);
         statement.setInt(indexCantXPag, cantXpag);
         statement.setString(indexSearch, search);
+        statement.setBoolean(indexActive, active);
+        statement.setInt(indexIdTypeList, idTypeList);
 
         ResultSet rs = statement.executeQuery();//ejecuta la consulta
         while (rs.next()) {
@@ -270,5 +277,75 @@ public class ListaDAO extends connectionDB {
             listas.add(lista);
         }
         return listas;
+    }
+    
+    public boolean newList(Lista lista) throws SQLException {
+        boolean result;
+
+        String query = "{CALL INSERTAR_LISTA_NUEVA(?,?,?,?)}";
+        int indexNombre = 1;
+        int indexDescripcion = 2;
+        int indexIdAutor = 3;
+        int indexTipo = 4;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setString(indexNombre, lista.getNombre());
+        statement.setString(indexDescripcion, lista.getDescripcion());
+        statement.setInt(indexTipo, lista.getTipoLista().getId());
+        statement.setInt(indexIdAutor, lista.getIdAutor());
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
+        return result;
+    }
+    
+    public int countListsFunctionary(Funcionario funcionario, int idTipoLista, boolean activo) throws SQLException{
+        int conteo = 0;//esta es la futura respuesta
+
+        //datos de la consulta en base de datos
+        String query = "{CALL VER_TODAS_LISTA_FUNCIONARIO_CONTEO(?,?)}";
+        int indexIdFuncionario = 1;
+        int indexIdTipoLista = 2;
+        int indexActivo = 3;
+
+        String resConteo = "conteo";//nombre de la columna del select
+
+        //prepara la consulta
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexIdFuncionario, funcionario.getId());
+        statement.setInt(indexIdTipoLista, idTipoLista);
+        statement.setBoolean(indexActivo, activo);
+
+        ResultSet rs = statement.executeQuery();//ejecuta la consulta
+        while (rs.next()) {
+            //asigna los valores resultantes de la consulta
+            conteo = rs.getInt(resConteo);
+        }
+        return conteo;
+    }
+    
+    public boolean changeActive(int idList, boolean active) throws SQLException{
+        boolean result;
+
+        String query = "{CALL EDITAR_LISTA_ACTIVO(?,?)}";
+        int indexId = 1;
+        int indexActive = 2;
+
+        CallableStatement statement = getConexion().prepareCall(query);
+        statement.setInt(indexId, idList);
+        statement.setBoolean(indexActive, active);
+
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
+        return result;
     }
 }

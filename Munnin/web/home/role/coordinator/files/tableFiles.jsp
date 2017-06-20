@@ -20,9 +20,9 @@
                 <tables:dataTableContentRow idRow="${version.getId()}" 
                                             idTable="${idTable}">
                 <td>${version.getId()}</td>
-                    <td>${version.getNumero()}</td>
-                    <td>${version.getFecha()}</td>
-                    <td>${version.getProducto().getNombre()}</td>
+                <td>${version.getNumero()}</td>
+                <td>${version.getFecha()}</td>
+                <td>${version.getProducto().getNombre()}</td>
             </tables:dataTableContentRow>
         </c:forEach>
     </jsp:attribute>

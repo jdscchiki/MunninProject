@@ -15,6 +15,7 @@ import model.bean.EvaluacionLista;
 import model.bean.Funcionario;
 import model.bean.Item;
 import model.bean.Lista;
+import model.bean.TipoLista;
 import model.bean.Version;
 import model.dao.EvaluacionItemDAO;
 import model.dao.EvaluacionListaDAO;
@@ -57,7 +58,7 @@ public class Technical {
         int paginas;
         int cantFuncionarios;
         ListaDAO listaDAO = new ListaDAO();
-        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, true);
+        cantFuncionarios = listaDAO.countCheckListFunctionay(idAutor, search, true, 1);
         listaDAO.closeConnection();
 
         paginas = cantFuncionarios / cantXpag;
@@ -71,7 +72,7 @@ public class Technical {
     public static ArrayList<Lista> viewCheckListFunctionary(int idAutor, int pagina, int cantXpag, String search) throws NamingException, SQLException {
         ArrayList<Lista> lista;
         ListaDAO listaDAO = new ListaDAO();
-        lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search);
+        lista = listaDAO.selectSomeCheckListFunctionary(idAutor, pagina, cantXpag, search, 1, true);
         listaDAO.closeConnection();
 
         return lista;
@@ -215,5 +216,42 @@ public class Technical {
         notificacionDAO.sendNotification(7, idVer);
         notificacionDAO.closeConnection();
         return resultado;
+    }
+    
+    public static int guardarLista(Lista lista) throws NamingException, SQLException {
+        lista.setTipoLista(new TipoLista());
+        lista.getTipoLista().setId(1);
+        
+        ListaDAO listaDAO = new ListaDAO();
+        int result = 0;
+        listaDAO.newList(lista);
+        boolean resultCreatelist = listaDAO.newList(lista);
+        listaDAO.closeConnection();
+        
+        if(resultCreatelist){
+            ItemDAO itemDAO = new ItemDAO();
+            for (int i = 0; i < lista.getItems().size(); i++) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(lista.getIdAutor());
+                lista.getItems().get(i).setAutor(funcionario);
+                itemDAO.Insert(lista.getItems().get(i));
+            }
+            itemDAO.closeConnection();
+            result = 1;
+        }else{
+            result = 2;
+        }
+        return result;
+    }
+    
+    public static int changeActiveList(int idList, boolean active) throws SQLException, NamingException{
+        int result = 0;
+        
+        ListaDAO listaDAO = new ListaDAO();
+        if(listaDAO.changeActive(idList, active)){
+            result = 1;
+        }
+        
+        return result;
     }
 }

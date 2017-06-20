@@ -9,7 +9,7 @@
     </head>
     <body>
         <h1>Munnin</h1>
-        <p>Lo sentimos, a ocurrido un error</p>
+        <p>Lo sentimos, ha ocurrido un error</p>
         <c:if test="${initParam['debug']}">
             <p>
                 ${mensaje}
