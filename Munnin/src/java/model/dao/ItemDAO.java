@@ -6,6 +6,7 @@
 package model.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -60,7 +61,36 @@ public class ItemDAO extends connectionDB {
             result = false;
         }
         return result;
+    }   
+    
+    public int create(Item item) throws SQLException {
+        int result = 0;
+
+        String query = "INSERT INTO item ("
+                + COL_DESCRIPTOR + ","
+                + COL_ID_AUTOR + ")"
+                + "VALUES(?,?)";
+        int indexDesciptor = 1;
+        int indexIdAutor = 2;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(indexDesciptor, item.getDescriptor());
+        statement.setInt(indexIdAutor, item.getAutor().getId());
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
+        return result;
     }
+    
 
     /**
      * Metodo para actualizar un item en la base de datos
@@ -195,6 +225,26 @@ public class ItemDAO extends connectionDB {
             result.add(item);
         }
 
+        return result;
+    }
+    
+    public boolean insertItemLista(int idLista, int idItem) throws SQLException {
+        boolean result;
+
+        String query = "{CALL INSERTAR_ITEM_LISTA(?,?)}";
+        int indexIdLista = 1;
+        int indexIdItem = 2;
+
+        CallableStatement statement = this.getConexion().prepareCall(query);
+        statement.setInt(indexIdLista, idLista);
+        statement.setInt(indexIdItem, idItem);
+        if (statement.executeUpdate() == 1) {
+            this.getConexion().commit();
+            result = true;
+        } else {
+            this.getConexion().rollback();
+            result = false;
+        }
         return result;
     }
 }

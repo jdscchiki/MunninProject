@@ -226,20 +226,20 @@ public class Pedagogical {
         
         ListaDAO listaDAO = new ListaDAO();
         int result = 0;
-        listaDAO.newList(lista);
-        boolean resultCreatelist = listaDAO.newList(lista);
+        int resultCreatelist = listaDAO.create(lista);
         listaDAO.closeConnection();
         
-        if(resultCreatelist){
+        if(resultCreatelist != 0){
             ItemDAO itemDAO = new ItemDAO();
             for (int i = 0; i < lista.getItems().size(); i++) {
                 Funcionario funcionario = new Funcionario();
                 funcionario.setId(lista.getIdAutor());
                 lista.getItems().get(i).setAutor(funcionario);
-                itemDAO.Insert(lista.getItems().get(i));
+                int resultItem = itemDAO.create(lista.getItems().get(i));                
+                if(itemDAO.insertItemLista(resultCreatelist, resultItem))
+                    result = 1; 
             }
-            itemDAO.closeConnection();
-            result = 1;
+            itemDAO.closeConnection();            
         }else{
             result = 2;
         }

@@ -6,6 +6,7 @@
 package model.dao;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -300,6 +301,42 @@ public class ListaDAO extends connectionDB {
             this.getConexion().rollback();
             result = false;
         }
+        return result;
+    }
+    
+    public int create(Lista lista) throws SQLException {
+        int result = 0;
+        System.out.println("bandera");
+        String query = "INSERT INTO lista ("
+                + COL_NOMBRE + ","
+                + COL_DESCRIPCION + ","
+                + COL_FECHA + ","
+                + COL_ID_AUTOR + ","
+                + "activo_lista ,"
+                + COL_ID_TIPO_LISTA + ") "
+                + "VALUES(?,?,CURRENT_DATE,?,1,?)";
+        int indexNombre = 1;
+        int indexDescripcion = 2;        
+        int indexIdAutor = 3;
+        int indexTipo = 4;
+
+        PreparedStatement statement = this.getConexion().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+        statement.setString(indexNombre, lista.getNombre());
+        statement.setString(indexDescripcion, lista.getDescripcion());
+        statement.setInt(indexIdAutor, lista.getIdAutor());
+        statement.setInt(indexTipo, lista.getTipoLista().getId());       
+
+        if (statement.executeUpdate() != 1) {
+            this.getConexion().rollback();
+        } else {
+            this.getConexion().commit();
+        }
+
+        ResultSet rs = statement.getGeneratedKeys();
+        while (rs.next()) {
+            result = rs.getInt(1);
+        }
+
         return result;
     }
     
