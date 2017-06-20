@@ -33,7 +33,7 @@
                                 <div class="checkbox">
                                     <label><input type="checkbox" 
                                                   name="item" 
-                                                  value="${item.getId()}">
+                                                  value="${item.getId()}" required>
                                         ${item.getDescriptor()}
                                     </label>
                                     <textarea name="coment${item.getId()}" maxlength="50" placeholder=" Comentario"></textarea>

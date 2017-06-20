@@ -18,10 +18,10 @@
                 <div class="container-checklist">
                     <div id="myDIV" class="header">
                         <h4 class="nomLista">Nombre de la lista: </h4>
-                        <input type="text" name="title" id="titlelist" placeholder="Aqui Nombre de la Lista..." maxlength="40">
+                        <input type="text" name="title" id="titlelist" placeholder="Aqui Nombre de la Lista..." maxlength="40" required >
                         <h4 class="nomLista">Decripcion: </h4>
-                        <textarea name="description" class="description" rows="5" id="comment" placeholder="Aqui una breve descripcion de su lista..." minlength="1" maxlength="254"></textarea>
-                        <input type="text" id="myInput" placeholder="Nuevo Item..." maxlength="100" class="IngresarItem">
+                        <textarea name="description" class="description" rows="5" id="comment" placeholder="Aqui una breve descripcion de su lista..." minlength="1" maxlength="254" required ></textarea>
+                        <input type="text" id="myInput" placeholder="Nuevo Item..." maxlength="100" class="IngresarItem"  >
                         <span onclick="newElement()" class="addBtn">Agregar</span>
                     </div>
                     <ul id="myUL">
