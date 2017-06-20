@@ -157,6 +157,7 @@ public class Pedagogical {
                 if (((strIdItems.get(d)).equals(strComents.get(i).substring(6, 7))) || ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 8)))
                         || ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 9)))) {
                     StringTokenizer tokens = new StringTokenizer(strComents.get(i), "=");
+                    System.out.println(tokens.nextToken());
                     comentarios.add(tokens.nextToken());
                 }
                 d++;
