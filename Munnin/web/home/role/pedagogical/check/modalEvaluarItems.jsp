@@ -8,7 +8,7 @@
           data-ajax-form="true"
           action="${pageContext.request.contextPath}/home/role/pedagogical/check/assign-list"
           data-data-table="tableBodyFiles"
-          data-display="formCalificarArchivo_message">
+          data-display="message_file5">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,7 +33,7 @@
                                 <div class="checkbox">
                                     <label><input type="checkbox" 
                                                   name="item" 
-                                                  value="${item.getId()}" required>
+                                                  value="${item.getId()}" >
                                         ${item.getDescriptor()}
                                     </label>
                                     <textarea name="coment${item.getId()}" maxlength="50" placeholder=" Comentario"></textarea>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div id="message_file" class="col-lg-offset-3 col-lg-8">
+                        <div id="message_file5" class="col-lg-offset-3 col-lg-8">
 
                         </div>
                     </div>

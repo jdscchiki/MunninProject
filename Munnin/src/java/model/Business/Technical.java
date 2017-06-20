@@ -151,7 +151,8 @@ public class Technical {
         int calificacion = 1, d=0;
         ArrayList<String> comentarios = new ArrayList<>();
         for (int i = 0; i < strComents.size(); i++) {
-            if ("coment".equals(strComents.get(i).substring(0, 6))) {
+            if (((strIdItems.get(d)).equals(strComents.get(i).substring(6, 7))) || ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 8)))
+                        || ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 9)))) {
                 if ((strIdItems.get(d)).equals(strComents.get(i).substring(6, 7))) {
                     StringTokenizer tokens = new StringTokenizer(strComents.get(i), "=");
                     System.out.println(tokens.nextToken());

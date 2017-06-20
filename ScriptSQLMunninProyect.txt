@@ -1275,7 +1275,7 @@ BEGIN
 		_id_lista_evaluacion_lista ,
 		_calificacion_evaluacion_lista ,
 		_observaciones_evaluacion_lista ,
-		_fecha_evaluacion_lista ,
+		CURRENT_DATE,
 		_id_evaluador_evaluacion_lista );
 END $$
 

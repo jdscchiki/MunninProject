@@ -197,7 +197,6 @@ public class EvaluacionItemDAO extends connectionDB {
     
     public boolean AsignEvaluacionItem(EvaluacionItem evaluacionItem) throws SQLException {
         boolean result;
-
         String query = "{CALL INSERTAR_EVALUACION_ITEM(?,?,?,?)}";
         int indexCalificacion = 1;
         int indexObservacion = 2;

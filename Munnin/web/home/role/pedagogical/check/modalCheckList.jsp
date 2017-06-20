@@ -20,7 +20,7 @@
                     <div class="col-lg-12">
                         <div id="showCheckList"></div>
                     </div>
-                    <div id="showDisabledAreaMessage" class="col-lg-offset-1 col-lg-10"></div>
+                    <div id="message_file" class="col-lg-offset-1 col-lg-10"></div>
                 </div>
             </div>
             <div class="modal-footer">
