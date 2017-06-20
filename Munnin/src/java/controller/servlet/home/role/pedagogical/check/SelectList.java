@@ -38,6 +38,7 @@ public class SelectList extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String idVer = request.getParameter("idVersion");
+            System.out.println(idVer);
             String idIte = request.getParameter("id");
             int idItem, idVersion;
             idVersion = Integer.parseInt(idVer);

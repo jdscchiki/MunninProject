@@ -1183,3 +1183,39 @@ INSERT INTO comentario VALUES(1, "muy bonito", 4, '2016-08-13', 1, 1);
 INSERT INTO visita VALUES(1, '2016-12-13', 1, 1);
 
 INSERT INTO notificacion VALUES(1, 1, 0, 1, 1, 1, 1);
+
+INSERT INTO lista VALUES (2, "lista chequeo PHP", "lista para evaluar archivos sobre PHP", '2017-05-05', 5, 1, 2);
+INSERT INTO lista VALUES (3, "lista chequeo pedagogica1", "lista para equipo pedagogico", '2017-04-05', 6, 1, 1);
+INSERT INTO lista VALUES (4, "lista chequeo pedagogica2", "lista para equipo pedagogico", '2017-05-05', 7, 1, 1);
+
+INSERT INTO item VALUES (2, "item tecnico2", 4);
+INSERT INTO item VALUES (3, "item tecnico3", 4);
+INSERT INTO item VALUES (4, "item tecnico4", 4);
+INSERT INTO item VALUES (5, "item tecnico5", 5);
+INSERT INTO item VALUES (6, "item tecnico6", 5);
+INSERT INTO item VALUES (7, "item tecnico7", 5);
+INSERT INTO item VALUES (8, "item tecnico8", 5);
+INSERT INTO item VALUES (9, "item pedagogico1", 6);
+INSERT INTO item VALUES (10, "item pedagogico2", 6);
+INSERT INTO item VALUES (11, "item pedagogico3", 6);
+INSERT INTO item VALUES (12, "item pedagogico4", 6);
+INSERT INTO item VALUES (13, "item pedagogico5", 7);
+INSERT INTO item VALUES (14, "item pedagogico6", 8);
+INSERT INTO item VALUES (15, "item pedagogico7", 8);
+INSERT INTO item VALUES (16, "item pedagogico8", 8);
+
+INSERT INTO item_lista VALUES (1, 2);
+INSERT INTO item_lista VALUES (1, 3);
+INSERT INTO item_lista VALUES (1, 4);
+INSERT INTO item_lista VALUES (2, 5);
+INSERT INTO item_lista VALUES (2, 6);
+INSERT INTO item_lista VALUES (2, 7);
+INSERT INTO item_lista VALUES (2, 8);
+INSERT INTO item_lista VALUES (3, 9);
+INSERT INTO item_lista VALUES (3, 10);
+INSERT INTO item_lista VALUES (3, 11);
+INSERT INTO item_lista VALUES (3, 12);
+INSERT INTO item_lista VALUES (4, 13);
+INSERT INTO item_lista VALUES (4, 14);
+INSERT INTO item_lista VALUES (4, 15);
+INSERT INTO item_lista VALUES (4, 16);

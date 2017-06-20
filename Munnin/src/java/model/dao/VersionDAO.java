@@ -196,7 +196,7 @@ public class VersionDAO extends connectionDB {
             tipoArchivo.setId(rs.getInt(COL_ID_TIPO_ARCHIVO));
             version.setTipoArchivo(tipoArchivo);
             Producto producto = new Producto();
-            producto.setId(rs.getInt(COL_ID_PRODUCTO));
+            producto.setNombre(rs.getString("nombre_producto_version"));
             version.setProducto(producto);
             Centro centro = new Centro();
             centro.setId(rs.getString(COL_ID_CENTRO));
